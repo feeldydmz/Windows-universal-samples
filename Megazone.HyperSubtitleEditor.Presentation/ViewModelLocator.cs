@@ -32,5 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public CopySubtitleViewModel CopySubtitle => Bootstrapper.Container.Resolve<CopySubtitleViewModel>();
         public GoToLineViewModel GoToLine => Bootstrapper.Container.Resolve<GoToLineViewModel>();
         public FindAndReplaceViewModel FindAndReplace => Bootstrapper.Container.Resolve<FindAndReplaceViewModel>();
+
+        public LoginViewModel Login => Bootstrapper.Container.Resolve<LoginViewModel>();
     }
 }

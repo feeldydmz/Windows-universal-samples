@@ -150,6 +150,7 @@
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
+    <Compile Include="Command\UI\OpenAssetListCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\PlayBackByHalfSecondCommand.cs" />
     <Compile Include="Command\UI\PlayForwardByHalfSecondCommand.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
     <Compile Include="ViewModel\Data\ProfileLoader.cs" />
@@ -268,6 +270,12 @@
     </Compile>
     <Compile Include="View\GoToLineView.xaml.cs">
       <DependentUpon>GoToLineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainFrameView.xaml.cs">
+      <DependentUpon>MainFrameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\OpenSubtitleView.xaml.cs">
       <DependentUpon>OpenSubtitleView.xaml</DependentUpon>
@@ -467,6 +475,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GoToLineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainFrameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

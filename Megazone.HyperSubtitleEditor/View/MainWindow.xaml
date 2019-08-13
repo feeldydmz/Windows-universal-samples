@@ -13,7 +13,7 @@
         MinHeight="600">
     <Grid x:Name="RootPanel">
         <Border>
-            <view:MainView x:Name="MainView" />
+            <view:MainFrameView x:Name="MainView" />
         </Border>
     </Grid>
 </Window>
