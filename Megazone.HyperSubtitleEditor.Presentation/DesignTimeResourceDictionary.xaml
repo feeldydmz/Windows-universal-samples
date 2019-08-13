@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <!--<ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/ResourceDictionary.xaml" />-->
+
+        <!-- 디자인 타임에서 pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/ResourceDictionary.xaml 에 걸린 Reosource를 찾지 못한다.. -->
+
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/Common.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/Button.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/RadioButton.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ListView.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ListBox.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/CheckBox.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ScrollViewer.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/Menu.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/TextBox.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ComboBox.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/TreeView.xaml" />
+        <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/TimeSpinner.xaml" />
+        <ResourceDictionary
+            Source="/Megazone.HyperSubtitleEditor.Presentation;component/ResourceDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

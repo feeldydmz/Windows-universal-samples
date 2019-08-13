@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CNT_ADD_NEW_CAPTION" xml:space="preserve">
+    <value>Add New Track</value>
+  </data>
+  <data name="CNT_ADD_ROW" xml:space="preserve">
+    <value>Add New Row</value>
+  </data>
+  <data name="CNT_ADD_ROW_ABOVE" xml:space="preserve">
+    <value>Add row above</value>
+  </data>
+  <data name="CNT_ADD_ROW_BELOW" xml:space="preserve">
+    <value>Add row below</value>
+  </data>
+  <data name="CNT_ADD_CAPTION" xml:space="preserve">
+    <value>Add track</value>
+  </data>
+  <data name="CNT_ADJUST_ALL_TIME" xml:space="preserve">
+    <value>Adjust all time</value>
+  </data>
+  <data name="CNT_ADJUST_TIME" xml:space="preserve">
+    <value>Adjust time</value>
+  </data>
+  <data name="CNT_ALL_FILES" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="CNT_ALL_CAPTIONS" xml:space="preserve">
+    <value>All subtitle</value>
+  </data>
+  <data name="CNT_APPLICATION_NAME" xml:space="preserve">
+    <value>Hyper Subtitle Editor</value>
+  </data>
+  <data name="CNT_APPLY" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CNT_BACKWARD" xml:space="preserve">
+    <value>Backward</value>
+  </data>
+  <data name="CNT_PREVIOUS_PAGE" xml:space="preserve">
+    <value>Previous page</value>
+  </data>
+  <data name="CNT_BOLD" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="CNT_BUFFERING_TIME" xml:space="preserve">
+    <value>Buffering time(second)</value>
+  </data>
+  <data name="CNT_CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CNT_CHARS_PER_SECOND" xml:space="preserve">
+    <value>Character/Second</value>
+  </data>
+  <data name="CNT_CLOSE" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CNT_CONFIRM" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="CNT_CONTENTS" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="CNT_COPY" xml:space="preserve">
+    <value>_Copy</value>
+  </data>
+  <data name="CNT_COPY_ROW" xml:space="preserve">
+    <value>Copy row</value>
+  </data>
+  <data name="CNT_COPY_CAPTION" xml:space="preserve">
+    <value>Copy track</value>
+  </data>
+  <data name="CNT_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="CNT_CREATE_NEW_CAPTION" xml:space="preserve">
+    <value>Create new track</value>
+  </data>
+  <data name="CNT_CRITERIA_NOT_MATCH_RESULT" xml:space="preserve">
+    <value>There is no condition that matches result.</value>
+  </data>
+  <data name="CNT_CUT_ROW" xml:space="preserve">
+    <value>Cut row(s)</value>
+  </data>
+  <data name="CNT_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CNT_DELETE_ROWS" xml:space="preserve">
+    <value>Delete row(s)</value>
+  </data>
+  <data name="CNT_DEPLOY" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
+  <data name="CNT_DOWNLOAD_EXCEL_TEMPLET" xml:space="preserve">
+    <value>Download excel forms</value>
+  </data>
+  <data name="CNT_DURATION" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="CNT_EDIT" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CNT_EDIT_CAPTION_INFO" xml:space="preserve">
+    <value>Edit track info</value>
+  </data>
+  <data name="CNT_END_TIME" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="CNT_ERROR" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CNT_EXIT" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="CNT_EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="CNT_EXPORT_ALL_WEBVTT" xml:space="preserve">
+    <value>Export all to WebVtt</value>
+  </data>
+  <data name="CNT_EXPORT_EXCEL" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="CNT_EXPORT_PROJECT" xml:space="preserve">
+    <value>Export to Project</value>
+  </data>
+  <data name="CNT_EXPORT_WEBVTT" xml:space="preserve">
+    <value>Export to WebVtt</value>
+  </data>
+  <data name="CNT_FILE" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="CNT_FIND" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="CNT_FIND_ALL" xml:space="preserve">
+    <value>Find all</value>
+  </data>
+  <data name="CNT_FIND_CONTENTS" xml:space="preserve">
+    <value>Find contents</value>
+  </data>
+  <data name="CNT_FIND_FILE" xml:space="preserve">
+    <value>Find file</value>
+  </data>
+  <data name="CNT_FIND_NEXT" xml:space="preserve">
+    <value>Find next</value>
+  </data>
+  <data name="CNT_FORWARD" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="CNT_GO_TO_NUMBER" xml:space="preserve">
+    <value>Go to number</value>
+  </data>
+  <data name="CNT_GO_TO_CAPTION_NUMBER" xml:space="preserve">
+    <value>Go to subtitle number</value>
+  </data>
+  <data name="CNT_HOW_MANY_MATCH" xml:space="preserve">
+    <value>Word match</value>
+  </data>
+  <data name="CNT_HYPER_SUBTITLE_EDITOR_INFO" xml:space="preserve">
+    <value>Hyper Subtitle Editor Info</value>
+  </data>
+  <data name="CNT_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="CNT_IMPORT_EXCEL" xml:space="preserve">
+    <value>Import excel</value>
+  </data>
+  <data name="CNT_IMPORT_PROJECT" xml:space="preserve">
+    <value>Import project</value>
+  </data>
+  <data name="CNT_INFO" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_PATH" xml:space="preserve">
+    <value>Browse file or enter URL to import</value>
+  </data>
+  <data name="CNT_INSERT_AFTER" xml:space="preserve">
+    <value>Insert into a next position</value>
+  </data>
+  <data name="CNT_INSERT_AT_CURRENT_POSITION" xml:space="preserve">
+    <value>Insert into a current position</value>
+  </data>
+  <data name="CNT_INSERT_BEFORE" xml:space="preserve">
+    <value>Insert into a previous position</value>
+  </data>
+  <data name="CNT_ITALIC" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="CNT_JOB_ID" xml:space="preserve">
+    <value>JOB ID</value>
+  </data>
+  <data name="CNT_KIND" xml:space="preserve">
+    <value>Track type</value>
+  </data>
+  <data name="CNT_LANGUAGE" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="CNT_LOAD_ALL_CAPTIONS" xml:space="preserve">
+    <value>Load all tracks</value>
+  </data>
+  <data name="CNT_LOAD_CAPTION" xml:space="preserve">
+    <value>Load track</value>
+  </data>
+  <data name="CNT_MAX_LENGTH_PER_ROW" xml:space="preserve">
+    <value>Max length per row</value>
+  </data>
+  <data name="CNT_MAX_ROW_COUNT" xml:space="preserve">
+    <value>Max row number</value>
+  </data>
+  <data name="CNT_MAX_TEXT_COUNT_PER_SECOND" xml:space="preserve">
+    <value>Max character per second</value>
+  </data>
+  <data name="CNT_MINUTE_SECOND_MILLISECOND" xml:space="preserve">
+    <value>Minute : Second : Millisecond</value>
+  </data>
+  <data name="CNT_MOVE" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="CNT_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CNT_NEXT_PAGE" xml:space="preserve">
+    <value>Next page</value>
+  </data>
+  <data name="CNT_NOT_CONNECTED" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="CNT_NOT_EXIST_PATH" xml:space="preserve">
+    <value>Path does not exist</value>
+  </data>
+  <data name="CNT_OPEN" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="CNT_OPEN_IN_JOB" xml:space="preserve">
+    <value>Open from job</value>
+  </data>
+  <data name="CNT_OPEN_CAPTION_FILE" xml:space="preserve">
+    <value>Open track file</value>
+  </data>
+  <data name="CNT_OPEN_URL" xml:space="preserve">
+    <value>Open as URL</value>
+  </data>
+  <data name="CNT_OPEN_VIDEO" xml:space="preserve">
+    <value>Open video</value>
+  </data>
+  <data name="CNT_OPEN_WITH_FILE_ADDRESS" xml:space="preserve">
+    <value>Open as file path</value>
+  </data>
+  <data name="CNT_PASTE_ROW" xml:space="preserve">
+    <value>Paste row(s)</value>
+  </data>
+  <data name="CNT_PLAY_AND_PAUSE_VIDEO" xml:space="preserve">
+    <value>Play/Pause</value>
+  </data>
+  <data name="CNT_PLAY_BACKWARD_BY_HALF_SEC" xml:space="preserve">
+    <value>Play Backward by 0.5 sec</value>
+  </data>
+  <data name="CNT_PLAY_FORWARD_BY_HALF_SEC" xml:space="preserve">
+    <value>Play Forward by 0.5 sec</value>
+  </data>
+  <data name="CNT_PROGRAM_INFO" xml:space="preserve">
+    <value>Program info</value>
+  </data>
+  <data name="CNT_PROGRAM_SETTING" xml:space="preserve">
+    <value>Program settings</value>
+  </data>
+  <data name="CNT_REFRESH" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="CNT_REMOVE_CAPTION" xml:space="preserve">
+    <value>Delete subtitle</value>
+  </data>
+  <data name="CNT_REMOVE_TEXT_FORMATTING" xml:space="preserve">
+    <value>Delete font style</value>
+  </data>
+  <data name="CNT_REPLACE" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="CNT_REPLACE_ALL" xml:space="preserve">
+    <value>Replace all</value>
+  </data>
+  <data name="CNT_REPLACE_CONTENTS" xml:space="preserve">
+    <value>Replace with</value>
+  </data>
+  <data name="CNT_RESET" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="CNT_SAVE" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CNT_SEARCH" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="CNT_SELECTED_CAPTION" xml:space="preserve">
+    <value>Only selected subtitle</value>
+  </data>
+  <data name="CNT_SELECTED_CAPTION_AND_ALL_AFTER" xml:space="preserve">
+    <value>Only selected subtitle and rest</value>
+  </data>
+  <data name="CNT_SELECT_ALL_ROWS" xml:space="preserve">
+    <value>Select all rows</value>
+  </data>
+  <data name="CNT_SELECT_BEFORE_ROW" xml:space="preserve">
+    <value>Select previous rows</value>
+  </data>
+  <data name="CNT_SELECT_CAPTION_TO_COPY" xml:space="preserve">
+    <value>Please select subtitle that you want copy</value>
+  </data>
+  <data name="CNT_SELECT_EXCEL_CAPTION_FILE" xml:space="preserve">
+    <value>Please select subtitle file that is in excel format</value>
+  </data>
+  <data name="CNT_SELECT_JOB" xml:space="preserve">
+    <value>Select job</value>
+  </data>
+  <data name="CNT_SELECT_NEXT_ROW" xml:space="preserve">
+    <value>Select next row</value>
+  </data>
+  <data name="CNT_SELECT_CAPTION_FILE" xml:space="preserve">
+    <value>Please select a track file</value>
+  </data>
+  <data name="CNT_SELECT_VIDEO" xml:space="preserve">
+    <value>Select video</value>
+  </data>
+  <data name="CNT_SETTING" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="CNT_SETTING_CAPTION" xml:space="preserve">
+    <value>Subtitle settings</value>
+  </data>
+  <data name="CNT_SETTING_VIDEO_PLAYER" xml:space="preserve">
+    <value>Video player settings</value>
+  </data>
+  <data name="CNT_SET_END_TIME" xml:space="preserve">
+    <value>Set end time</value>
+  </data>
+  <data name="CNT_SET_START_TIME" xml:space="preserve">
+    <value>Set start time</value>
+  </data>
+  <data name="CNT_SHEET" xml:space="preserve">
+    <value>Sheet</value>
+  </data>
+  <data name="CNT_SINGLE_LINE_LENGTH" xml:space="preserve">
+    <value>Single line length</value>
+  </data>
+  <data name="CNT_SPACE_BETWEEN_CAPTIONS" xml:space="preserve">
+    <value>Space between subtitle</value>
+  </data>
+  <data name="CNT_START_TIME" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="CNT_CAPTION_MAX_LENGTH" xml:space="preserve">
+    <value>Max length of subtitle</value>
+  </data>
+  <data name="CNT_CAPTION_MIN_LENGTH" xml:space="preserve">
+    <value>Min length of subtitle</value>
+  </data>
+  <data name="CNT_TIME_ADJUSTMENT_UNIT" xml:space="preserve">
+    <value>Time adjustment unit</value>
+  </data>
+  <data name="CNT_TOOL" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="CNT_TOTAL_LENGTH" xml:space="preserve">
+    <value>Total length</value>
+  </data>
+  <data name="CNT_UNDERLINE" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="CNT_VIDEO" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="CNT_WAITING" xml:space="preserve">
+    <value>Waiting...</value>
+  </data>
+  <data name="CNT_WARNING" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY" xml:space="preserve">
+    <value>Please try again after checking elastic transcoder authorization.</value>
+  </data>
+  <data name="MSG_DEPLOY_FAIL" xml:space="preserve">
+    <value>Deploy failed. Please try again.</value>
+  </data>
+  <data name="MSG_DEPLOY_SUCCESS" xml:space="preserve">
+    <value>Successfully deployed.</value>
+  </data>
+  <data name="MSG_DRAG_OPEN_CAPTION" xml:space="preserve">
+    <value>No registered tracks.
+You can add one by dragging a file.</value>
+  </data>
+  <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
+    <value>No video.
+You can load one by dragging a file.</value>
+  </data>
+  <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
+    <value>Duplicate subtitle with next one.</value>
+  </data>
+  <data name="MSG_DUPLICATE_TO_THE_PREVIOUS_CAPTION" xml:space="preserve">
+    <value>Duplicate subtitle with previous one.</value>
+  </data>
+  <data name="MSG_ERROR_TRYING_TO_PLAY" xml:space="preserve">
+    <value>Error occurred during play.</value>
+  </data>
+  <data name="MSG_EXPORT_EXCEL_FILE_FAIL" xml:space="preserve">
+    <value>Failed to create excel file.</value>
+  </data>
+  <data name="MSG_INPUT_MOVE_ROW_NUMBER" xml:space="preserve">
+    <value>Please enter a row number that you are going to move.</value>
+  </data>
+  <data name="MSG_INVALID_APPLICATION_INFO" xml:space="preserve">
+    <value>Infomation required to execute application is incorrect.</value>
+  </data>
+  <data name="MSG_JOB_ID_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>Job id {0} has been copied to clipboard.</value>
+  </data>
+  <data name="MSG_KEEP_CURRENT_TAB" xml:space="preserve">
+    <value>Keep the current tab?</value>
+  </data>
+  <data name="MSG_LICENSE_FFMPEG" xml:space="preserve">
+    <value>- Hyper Subtitle Editor is using FFmpeg.exe for extracting thumbnail images and media metadata under the LGPLv2.1</value>
+  </data>
+  <data name="MSG_LICENSE_NAUDIO" xml:space="preserve">
+    <value>- Hyper Subtitle Editor is using naudio for Video Player under the Ms-PL licnese</value>
+  </data>
+  <data name="MSG_LOAD_GROUP_FILE" xml:space="preserve">
+    <value>You have a file that you are working on.
+Are you going to load a project?</value>
+  </data>
+  <data name="MSG_NO_PRINTABLE_CONTENTS" xml:space="preserve">
+    <value>No displayable contents.</value>
+  </data>
+  <data name="MSG_PATH_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>{0}'s path has been copied to clipboard.</value>
+  </data>
+  <data name="MSG_SAVE_FAIL" xml:space="preserve">
+    <value>Error occurred during save.</value>
+  </data>
+  <data name="MSG_SAVE_SUCCESS" xml:space="preserve">
+    <value>Successfully saved.</value>
+  </data>
+  <data name="MSG_VIDEO_PLAY_CONDITION" xml:space="preserve">
+    <value>Videos playback status can vary with user's network condition or pc environment.</value>
+  </data>
+  <data name="MSG_NO_CAPTION_SELECTED" xml:space="preserve">
+    <value>No subtitle selected.</value>
+  </data>
+  <data name="CNT_ADD_ROW_AT_LAST" xml:space="preserve">
+    <value>Add row at last</value>
+  </data>
+  <data name="CNT_NEXT" xml:space="preserve">
+    <value>NEXT</value>
+  </data>
+  <data name="CNT_PREVIOUS" xml:space="preserve">
+    <value>PREV</value>
+  </data>
+  <data name="CNT_PUBLISH" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE" xml:space="preserve">
+    <value>Just now</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE_HOURS" xml:space="preserve">
+    <value>{0} hours ago</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE_MINUTES" xml:space="preserve">
+    <value>{0} minutes ago</value>
+  </data>
+  <data name="CNT_CONVERTER_MMDD" xml:space="preserve">
+    <value>{0} / {1} {2:t}</value>
+  </data>
+  <data name="CNT_CONVERTER_YESTERDAY" xml:space="preserve">
+    <value>Yesterday {0:t}</value>
+  </data>
+  <data name="CNT_CONVERTER_YYYYMMDD" xml:space="preserve">
+    <value>{1} / {2}, {0}</value>
+  </data>
+  <data name="CNT_AUTOADJUST_ENDTIMES" xml:space="preserve">
+    <value>Auto adjust end times</value>
+  </data>
+  <data name="CNT_VIEW_LOG_FOLDERE" xml:space="preserve">
+    <value>View log folder</value>
+  </data>
+</root>

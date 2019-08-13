@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.GoToLineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d" Width="330" Height="180"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=GoToLine}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Style="{StaticResource Style_PopupContentAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#FFc4cbd5" BorderThickness="1" Padding="20">
+
+                    <!--컨텐츠 영역-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{x:Static resources:Resource.MSG_INPUT_MOVE_ROW_NUMBER}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock Text="(" />
+                            <TextBlock Text="{Binding MinimumNumber}" />
+                            <TextBlock Text="-" />
+                            <TextBlock Text="{Binding MaximumNumber}" />
+                            <TextBlock Text=")" />
+                        </StackPanel>
+                        <TextBox Grid.Row="1">
+                            <i:Interaction.Behaviors>
+                                <mz:NumericTextBoxBehavior AllowDecimalPoint="False" Maximum="0"
+                                                           ShouldCheckMaximum="False" Value="{Binding LineNumber}" />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                    </Grid>
+
+                </Border>
+                <Rectangle Grid.Row="1" Fill="#FFeceef0" Height="2" />
+            </Grid>
+        </Border>
+
+        <!--하단 버튼 영역-->
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_MOVE}" IsDefault="True"
+                        Command="{Binding GoToLineCommand}" Click="ButtonBase_OnClick" />
+                <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}" Click="ButtonBase_OnClick" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

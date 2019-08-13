@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.JobMediaItemSelectorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=JobMediaItemSelector}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue" />
+            <mz:CurrentDateTimeBasedDateTimeConverter x:Key="CurrentDateTimeBasedDateTimeConverter"
+                                                      CntConverterBefore="{x:Static resources:Resource.CNT_CONVERTER_BEFORE}"
+                                                      CntConverterBeforeMinutes="{x:Static resources:Resource.CNT_CONVERTER_BEFORE_MINUTES}"
+                                                      CntConverterBeforeHours="{x:Static resources:Resource.CNT_CONVERTER_BEFORE_HOURS}"
+                                                      CntConverterYesterday="{x:Static resources:Resource.CNT_CONVERTER_YESTERDAY}"
+                                                      CntConverterYyyymmdd="{x:Static resources:Resource.CNT_CONVERTER_YYYYMMDD}"
+                                                      CntConverterMmdd="{x:Static resources:Resource.CNT_CONVERTER_MMDD}" />
+            <mz:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Style="{StaticResource Style_PopupContentAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#FFc4cbd5" BorderThickness="1" Padding="20">
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid x:Name="PreviewArea" Background="#FF78818e" Height="138" Width="222"
+                              HorizontalAlignment="Left" Margin="0,0,0,17">
+                            <!--기본 BG처럼 보여지는 플레이어 영역 아이콘-->
+                            <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_PlayerDefaultImage.png" />
+                            <view:MiniMediaPlayerView
+                                x:Name="MiniMeidaPlayerView"
+                                BufferingSeconds="{Binding VideoBufferingSeconds}"
+                                GroupName="PlayVideoPreview"
+                                HasAudioOnly="{Binding HasAudioOnly}"
+                                MediaSource="{Binding Path=Url}"
+                                NaturalDuration="{Binding Path=NaturalDuration}"
+                                ThumbnailSource="{Binding Path=ThumbnailSource}" />
+                        </Grid>
+
+                        <TextBlock Grid.Row="1" FontSize="12px" FontWeight="Bold" VerticalAlignment="Center"
+                                   Text="{Binding Path=JobId}" ToolTip="{Binding Path=JobId}"
+                                   TextTrimming="CharacterEllipsis" />
+
+                        <TextBlock Grid.Row="2" Foreground="#FF878f9b" VerticalAlignment="Bottom" Margin="0,6"
+                                   FontSize="11px"
+                                   Text="{Binding Path=FinishTime, Converter={StaticResource CurrentDateTimeBasedDateTimeConverter}}" />
+
+                        <StackPanel Grid.Row="3" Margin="0,3">
+                            <Rectangle Height="1" Fill="#FFa0a8b6" />
+                            <Rectangle Height="1" Fill="White" />
+                        </StackPanel>
+
+                        <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Path=OutputList}" Margin="0,8"
+                                          Focusable="False" FontSize="11px">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton GroupName="JobMediaItemGroup" Padding="5,1,0,-1"
+                                                     IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                            <Grid HorizontalAlignment="Left" Margin="0,0,10,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border x:Name="Part_DisplayName" CornerRadius="2" Margin="0,-1,0,0">
+                                                    <TextBlock Text="{Binding Path=DisplayName}" Foreground="White"
+                                                               FontWeight="Bold" FontSize="10px"
+                                                               Margin="2,1,2,-1" TextAlignment="Center" />
+                                                </Border>
+                                                <TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                           Text="{Binding Path=DisplayPresetNames}"
+                                                           ToolTip="{Binding Path=DisplayPresetNames}"
+                                                           TextTrimming="CharacterEllipsis" />
+                                                <Image x:Name="ErrorImage"
+                                                       Visibility="{Binding Path=OutputStatus, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Error}"
+                                                       Grid.Column="3" Stretch="None"
+                                                       ToolTip="{x:Static resources:Resource.CNT_ERROR}"
+                                                       Margin="3,0,0,0"
+                                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_TranscodeError.png" />
+                                            </Grid>
+                                        </RadioButton>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Path=DisplayMediaType}"
+                                                         Value="AdaptiveStreaming">
+                                                <Setter Property="Background" Value="#FF6482a0"
+                                                        TargetName="Part_DisplayName" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=DisplayMediaType}"
+                                                         Value="DownloadableVideo">
+                                                <Setter Property="Background" Value="#FF4caf50"
+                                                        TargetName="Part_DisplayName" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=DisplayMediaType}"
+                                                         Value="DownloadableAudio">
+                                                <Setter Property="Background" Value="#FF70a2fc"
+                                                        TargetName="Part_DisplayName" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Control Grid.Row="0" x:Name="LoadingProgressView" Visibility="Collapsed"
+                 Style="{StaticResource Style_IndeterminateControl}" />
+
+        <!--하단 버튼 영역-->
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
+                        Command="{Binding OkCommand}"
+                        Click="ButtonBase_OnClick" />
+                <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}" Click="ButtonBase_OnClick" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

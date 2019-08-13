@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84740279-36A4-4BD8-8C84-9FF26D7B4594}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Megazone.HyperSubtitleEditor.Presentation</RootNamespace>
+    <AssemblyName>Megazone.HyperSubtitleEditor.Presentation</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.4.1\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=3.1.2.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.1.3.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.5.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.3.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.5.5\lib\net45\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
+    <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
+    <Compile Include="Behavior\ListViewItemDoubleClickBehavior.cs" />
+    <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
+    <Compile Include="Behavior\MediaPlayerPlayStateChangedToCommandBehavior.cs" />
+    <Compile Include="Behavior\MediaPlayerPositionChangedToCommandBehavior.cs" />
+    <Compile Include="Behavior\SubtitleItemsFilterBehavior.cs" />
+    <Compile Include="Behavior\VideoElementLogBehavior.cs" />
+    <Compile Include="Behavior\VideoElementSeekingBehavior.cs" />
+    <Compile Include="Behavior\VideoElementStopBehavior.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Browser.cs" />
+    <Compile Include="Command\UI\AddNewRowCommand.cs" />
+    <Compile Include="Command\UI\AdjustTimeCommand.cs" />
+    <Compile Include="Command\UI\ApplyItalicToAllTextCommand.cs" />
+    <Compile Include="Command\UI\AutoAdjustEndtimesCommand.cs" />
+    <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
+    <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
+    <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
+    <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
+    <Compile Include="Command\UI\PlayBackByHalfSecondCommand.cs" />
+    <Compile Include="Command\UI\PlayForwardByHalfSecondCommand.cs" />
+    <Compile Include="Command\UI\LoadGroupFileCommand.cs" />
+    <Compile Include="Command\UI\RemoveTextFormattingCommand.cs" />
+    <Compile Include="Command\UI\ApplyUnderlineToAllTextCommand.cs" />
+    <Compile Include="Command\UI\EditTabCommand.cs" />
+    <Compile Include="Command\UI\AddTabCommand.cs" />
+    <Compile Include="Command\UI\ApplyBoldToAllTextCommand.cs" />
+    <Compile Include="Command\UI\CopySelectedRowsCommand.cs" />
+    <Compile Include="Command\UI\CopyTabCommand.cs" />
+    <Compile Include="Command\UI\CreateNewFileCommand.cs" />
+    <Compile Include="Command\UI\CutSelectedRowsCommand.cs" />
+    <Compile Include="Command\UI\DeleteSelectedRowsCommand.cs" />
+    <Compile Include="Command\UI\DeleteTabCommand.cs" />
+    <Compile Include="Command\UI\DeployCommand.cs" />
+    <Compile Include="Command\UI\ExitApplicationCommand.cs" />
+    <Compile Include="Command\UI\ExportExcelFileCommand.cs" />
+    <Compile Include="Command\UI\FindTextCommand.cs" />
+    <Compile Include="Command\UI\GoToSubtitleNumberCommand.cs" />
+    <Compile Include="Command\UI\ImportExcelCommand.cs" />
+    <Compile Include="Command\UI\InsertRowAfterSelectedRowCommand.cs" />
+    <Compile Include="Command\UI\InsertRowBeforeSelectedRowCommand.cs" />
+    <Compile Include="Command\UI\OpenFindAndReplaceWindowCommand.cs" />
+    <Compile Include="Command\UI\OpenFindWindowCommand.cs" />
+    <Compile Include="Command\UI\OpenLocalVideoCommand.cs" />
+    <Compile Include="Command\UI\OpenSubtitleCommand.cs" />
+    <Compile Include="Command\UI\ReplaceTextCommand.cs" />
+    <Compile Include="Command\UI\SaveGroupFileCommand.cs" />
+    <Compile Include="Command\UI\SelectJobCommand.cs" />
+    <Compile Include="Command\UI\ShowApplicatoinInfoCommand.cs" />
+    <Compile Include="Command\UI\ShowJobMediaSelectorViewCommand.cs" />
+    <Compile Include="Command\UI\PasteRowCommand.cs" />
+    <Compile Include="Command\UI\PlayOrPauseVideoCommand.cs" />
+    <Compile Include="Command\UI\ExportAllTabsAsVttCommand.cs" />
+    <Compile Include="Command\UI\SaveAsCommand.cs" />
+    <Compile Include="Command\UI\ExportSelectedTabAsVttCommand.cs" />
+    <Compile Include="Command\UI\SelectAllRowsCommand.cs" />
+    <Compile Include="Command\UI\ShowJobSelectorViewCommand.cs" />
+    <Compile Include="Command\UI\ShowOpenVideoAddressWindowCommand.cs" />
+    <Compile Include="Command\UI\ShowSettingsViewCommand.cs" />
+    <Compile Include="Command\UI\SyncEndTimeToCurrentMediaPositionCommand.cs" />
+    <Compile Include="Command\UI\SyncStartTimeToCurrentMediaPositionCommand.cs" />
+    <Compile Include="Config\Domain\DownloadConfig.cs" />
+    <Compile Include="Config\Domain\GeneralConfig.cs" />
+    <Compile Include="Config\Domain\UploadConfig.cs" />
+    <Compile Include="Converter\InsertSharpAtTheBeginningToStringConverter.cs" />
+    <Compile Include="Converter\OverLengthConverter.cs" />
+    <Compile Include="Converter\OverMaxLineConverter.cs" />
+    <Compile Include="Converter\PlayDurationTimeConverter.cs" />
+    <Compile Include="Converter\TimeSpanToDisplayDurationConverter.cs" />
+    <Compile Include="Excel\ExcelService.cs" />
+    <Compile Include="Excel\ExcelSheetInfo.cs" />
+    <Compile Include="Excel\Subtitle.cs" />
+    <Compile Include="Excel\TrackFormat.cs" />
+    <Compile Include="Extension\ObjectExtension.cs" />
+    <Compile Include="ITimeSeeker.cs" />
+    <Compile Include="Message\Excel.cs" />
+    <Compile Include="Message\JobFoundMessage.cs" />
+    <Compile Include="Message\MediaPlayer.cs" />
+    <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
+    <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
+    <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
+    <Compile Include="Message\ReinitializeAppContextMessage.cs" />
+    <Compile Include="Message\Subtitle.cs" />
+    <Compile Include="Message\View\SubtitleView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializable\SubtitleGroup.cs" />
+    <Compile Include="Serializable\SubtitleTabItemParser.cs" />
+    <Compile Include="Serializable\SubtitleTabItem.cs" />
+    <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\AddAndEditSubtitleViewModel.cs" />
+    <Compile Include="ViewModel\CopySubtitleViewModel.cs" />
+    <Compile Include="ViewModel\CreateSubtitleViewModelBase.cs" />
+    <Compile Include="ViewModel\Data\BytePerSecondMeasurer.cs" />
+    <Compile Include="ViewModel\Data\MediaDataLoader.cs" />
+    <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
+    <Compile Include="ViewModel\GoToLineViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
+    <Compile Include="ViewModel\SettingViewModel.cs" />
+    <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
+    <Compile Include="ViewModel\Data\ProfileLoader.cs" />
+    <Compile Include="ViewModel\Data\MediaTypeExtension.cs" />
+    <Compile Include="ViewModel\Data\PipelineLoader.cs" />
+    <Compile Include="ViewModel\Data\PlaylistFormatExtension.cs" />
+    <Compile Include="ViewModel\Data\PresetLoader.cs" />
+    <Compile Include="ViewModel\Data\AppContext.cs" />
+    <Compile Include="ViewModel\ItemViewModel\JobItemViewModel.cs" />
+    <Compile Include="ViewModel\ImportExcelViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\ImportExcelItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\JobListItemOutputViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\JobListItemOutputViewModelBuilder.cs" />
+    <Compile Include="ViewModel\ItemViewModel\JobListPagingItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\LanguageItemViewModel.cs" />
+    <Compile Include="ViewModel\JobMediaItemSelectorViewModel.cs" />
+    <Compile Include="ViewModel\OpenSubtitleViewModel.cs" />
+    <Compile Include="ViewModel\Strategy\SettingSaveStrategyFactory.cs" />
+    <Compile Include="ViewModel\Strategy\DefaultSettingSaveStrategy.cs" />
+    <Compile Include="ViewModel\Strategy\ISettingSaveStrategy.cs" />
+    <Compile Include="ViewModel\SubtitleParserProxy.cs" />
+    <Compile Include="ViewModel\ViewModes.cs" />
+    <Compile Include="View\AddAndEditSubtitleView.xaml.cs">
+      <DependentUpon>AddAndEditSubtitleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AdjustTimeWindow.xaml.cs">
+      <DependentUpon>AdjustTimeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ApplicationInformationWindow.xaml.cs">
+      <DependentUpon>ApplicationInformationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CopySubtitleView.xaml.cs">
+      <DependentUpon>CopySubtitleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FindAndReplaceView.xaml.cs">
+      <DependentUpon>FindAndReplaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GoToLineView.xaml.cs">
+      <DependentUpon>GoToLineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OpenSubtitleView.xaml.cs">
+      <DependentUpon>OpenSubtitleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\JobMediaItemSelectorView.xaml.cs">
+      <DependentUpon>JobMediaItemSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\JobSelectorViewModel.cs" />
+    <Compile Include="ViewModel\Data\SubtitleListItemValidator.cs" />
+    <Compile Include="ViewModel\ItemViewModel\SubtitleTabItemViewModel.cs" />
+    <Compile Include="ViewModel\MediaPlayerViewModel.cs" />
+    <Compile Include="ViewModel\Data\FileTypeDistributer.cs" />
+    <Compile Include="ViewModel\FileManager.cs" />
+    <Compile Include="ViewModel\Data\ISubtitleListItemViewModelParser.cs" />
+    <Compile Include="ViewModel\ItemViewModel\SubtitleListItemViewModel.cs" />
+    <Compile Include="ViewModel\Data\SubtitleListItemViewModelExtension.cs" />
+    <Compile Include="ViewModel\Data\SubtitleListItemViewModelToWebVttStringParaser.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="MediaTimeSeeker.cs" />
+    <Compile Include="ViewModel\PagingViewModel.cs" />
+    <Compile Include="ViewModel\SubtitleViewModel.cs" />
+    <Compile Include="View\ImportExcelView.xaml.cs">
+      <DependentUpon>ImportExcelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\JobSelectorView.xaml.cs">
+      <DependentUpon>JobSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoadingManager.cs" />
+    <Compile Include="View\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MediaPlayerView.xaml.cs">
+      <DependentUpon>MediaPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MiniMediaPlayerView.xaml.cs">
+      <DependentUpon>MiniMediaPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OpenVideoAddressWindow.xaml.cs">
+      <DependentUpon>OpenVideoAddressWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingView.xaml.cs">
+      <DependentUpon>SettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubtitleView.xaml.cs">
+      <DependentUpon>SubtitleView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Excel\HyperSubtitleEditor_Caption_Format.xlsx" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <Content Include="PreferedLanguageInfo.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Domain\Megazone.Api.Transcoder.Domain.csproj">
+      <Project>{bbc0bb54-4768-43ed-afa3-f90c4d5f943b}</Project>
+      <Name>Megazone.Api.Transcoder.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.ServiceInterface\Megazone.Api.Transcoder.ServiceInterface.csproj">
+      <Project>{c04904c0-9065-4f6c-a76f-2556f53f5661}</Project>
+      <Name>Megazone.Api.Transcoder.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Service\Megazone.Api.Transcoder.Service.csproj">
+      <Project>{b59643bb-f955-4ce0-b04e-21eecc12cfbd}</Project>
+      <Name>Megazone.Api.Transcoder.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Aws.Domain\Megazone.Cloud.Aws.Domain.csproj">
+      <Project>{7f117f79-be0e-4f1a-aa5c-c17328fbf70e}</Project>
+      <Name>Megazone.Cloud.Aws.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Common.Domain\Megazone.Cloud.Common.Domain.csproj">
+      <Project>{881E7A8D-CF37-4D7C-909A-94B70569B914}</Project>
+      <Name>Megazone.Cloud.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Domain\Megazone.Cloud.Storage.Domain.csproj">
+      <Project>{35c2520d-61c1-4206-afe4-185a4a121013}</Project>
+      <Name>Megazone.Cloud.Storage.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Repository.S3\Megazone.Cloud.Storage.Repository.S3.csproj">
+      <Project>{67ef99e8-a604-4dd7-a0a6-a1878f1ca485}</Project>
+      <Name>Megazone.Cloud.Storage.Repository.S3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Service.S3\Megazone.Cloud.Storage.Service.S3.csproj">
+      <Project>{fcb618bd-9b51-422d-b11d-05cde6d6e3bc}</Project>
+      <Name>Megazone.Cloud.Storage.Service.S3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.ServiceInterface.S3\Megazone.Cloud.Storage.ServiceInterface.S3.csproj">
+      <Project>{4c3c8a0b-7a52-4e63-9f32-03912ce5b4b3}</Project>
+      <Name>Megazone.Cloud.Storage.ServiceInterface.S3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.csproj">
+      <Project>{7497ad35-a665-4b04-8ceb-33831026e93d}</Project>
+      <Name>Megazone.Cloud.Transcoder.Domain.ElasticTranscoder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Domain\Megazone.Cloud.Transcoder.Domain.csproj">
+      <Project>{3f5ba27c-f095-4638-8cf7-0e777ca2aa64}</Project>
+      <Name>Megazone.Cloud.Transcoder.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.csproj">
+      <Project>{eb27724e-6fc2-425a-912a-0252c9a1283b}</Project>
+      <Name>Megazone.Cloud.Transcoder.Repository.ElasticTranscoder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Client\Megazone.Core.Client.csproj">
+      <Project>{CE8F2D46-9F9E-4A36-8488-B3799D61F014}</Project>
+      <Name>Megazone.Core.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.IoC.Unity\Megazone.Core.IoC.Unity.csproj">
+      <Project>{9a5bdcba-168c-42ce-95b6-2db21c72c5fe}</Project>
+      <Name>Megazone.Core.IoC.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Log.Log4Net\Megazone.Core.Log.Log4Net.csproj">
+      <Project>{f8fb1c75-6c4a-4145-ade0-9c48f698f0e2}</Project>
+      <Name>Megazone.Core.Log.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.VideoTrack.WebVtt\Megazone.Core.VideoTrack.WebVtt.csproj">
+      <Project>{5896f10f-5fef-442e-9d2e-21bc60948ce7}</Project>
+      <Name>Megazone.Core.VideoTrack.WebVtt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.VideoTrack.Xaml\Megazone.Core.VideoTrack.Xaml.csproj">
+      <Project>{B47E1CFF-2CF5-4087-A0ED-078B104B9575}</Project>
+      <Name>Megazone.Core.VideoTrack.Xaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.VideoTrack\Megazone.Core.VideoTrack.csproj">
+      <Project>{56c6050f-9daa-4352-8356-e897da32e4c9}</Project>
+      <Name>Megazone.Core.VideoTrack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.RichTextBox\Megazone.Core.Windows.Control.RichTextBox.csproj">
+      <Project>{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}</Project>
+      <Name>Megazone.Core.Windows.Control.RichTextBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Spinner\Megazone.Core.Windows.Control.Spinner.csproj">
+      <Project>{758f49f9-16b6-44f8-ac09-5759528cbde9}</Project>
+      <Name>Megazone.Core.Windows.Control.Spinner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.TimeSpinner\Megazone.Core.Windows.Control.TimeSpinner.csproj">
+      <Project>{982f639e-95da-4346-967c-bda05502b4fe}</Project>
+      <Name>Megazone.Core.Windows.Control.TimeSpinner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.VideoPlayer\Megazone.Core.Windows.Control.VideoPlayer.csproj">
+      <Project>{b9b3db9a-f6cc-4cf4-9c94-e7ac056c1276}</Project>
+      <Name>Megazone.Core.Windows.Control.VideoPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Xaml\Megazone.Core.Windows.Xaml.csproj">
+      <Project>{ea02fc05-5b3c-4592-a25b-7b08094f3d84}</Project>
+      <Name>Megazone.Core.Windows.Xaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows\Megazone.Core.Windows.csproj">
+      <Project>{B1384E64-3A96-4C11-A58E-E2A37CF408EC}</Project>
+      <Name>Megazone.Core.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core\Megazone.Core.csproj">
+      <Project>{66231f5c-d01d-44f2-bd5b-93aa5ae64502}</Project>
+      <Name>Megazone.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.HyperSubtitleEditor.Presentation.Infrastructure\Megazone.HyperSubtitleEditor.Presentation.Infrastructure.csproj">
+      <Project>{1cde9457-cfe9-412f-a63a-4fc05906d6b9}</Project>
+      <Name>Megazone.HyperSubtitleEditor.Presentation.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.SubtitleEditor.Resources\Megazone.SubtitleEditor.Resources.csproj">
+      <Project>{e1baff66-a452-4d6a-b370-39d35948b3d5}</Project>
+      <Name>Megazone.SubtitleEditor.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.VideoStudio.Presentation.Common.Infrastructure\Megazone.VideoStudio.Presentation.Common.Infrastructure.csproj">
+      <Project>{1fd52181-6416-4b6b-a53f-4bdfd116229d}</Project>
+      <Name>Megazone.VideoStudio.Presentation.Common.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DesignTimeResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\AddAndEditSubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AdjustTimeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ApplicationInformationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CopySubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FindAndReplaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GoToLineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OpenSubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\JobMediaItemSelectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommandDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImportExcelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\JobSelectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MediaPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MiniMediaPlayerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\OpenVideoAddressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

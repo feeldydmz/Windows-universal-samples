@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.MiniMediaPlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:behaviors="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
+             xmlns:converters="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MiniMeidaPlayer"
+             Loaded="MiniMediaPlayerView_OnLoaded"
+             Unloaded="MiniMediaPlayerView_OnUnloaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+            <mz:BooleanToHiddenNVisibleConverter x:Key="BooleanToHiddenNVisibleConverter" />
+            <converters:PlayDurationTimeConverter x:Key="PlayDurationTimeConverter" />
+
+            <!--재생과 중지 버튼. 아래 라디오버튼과 버튼이 한쌍으로 동작-->
+            <!--재생 라디오버튼-->
+            <Style x:Key="Style_PlayPreviewRadioButton" TargetType="{x:Type RadioButton}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}">
+                            <Border Background="{TemplateBinding Background}">
+                                <Image x:Name="ContentImage" Visibility="Hidden" Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_PreviewPlayIcon.png" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" TargetName="ContentImage" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.7" TargetName="ContentImage" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--중지 버튼-->
+            <Style x:Key="Style_StopPreviewButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <Image x:Name="ContentImage" Visibility="Hidden" Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_PreviewStopIcon.png" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" TargetName="ContentImage" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.7" TargetName="ContentImage" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type mz:VideoElement}">
+                <Setter Property="Background" Value="DarkSlateGray" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type mz:VideoElement}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid>
+                                    <Image Name="Part_ScreenControl" />
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <!--비디오의 썸네일 이미지.-->
+        <Image Source="{Binding Path=ThumbnailSource}" Stretch="UniformToFill" />
+
+        <!--오디오만 있을때 보여지는 기본이미지-->
+        <Image x:Name="AudioDefaultImage" Stretch="Uniform"
+               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_AudioThumbnail.png"
+               Visibility="{Binding ElementName=MiniMeidaPlayer, Path=HasAudioOnly, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <mz:VideoElement x:Name="VideoElement" LoadedBehavior="Manual"
+                         BufferingSeconds="{Binding ElementName=MiniMeidaPlayer, Path=BufferingSeconds}"
+                         PlaybackReadyTimeOut="{Binding ElementName=MiniMeidaPlayer, Path=PlaybackReadyTimeOut}"
+                         Visibility="{Binding ElementName=VideoElement, Path=PlayState, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Play}">
+            <i:Interaction.Behaviors>
+                <behaviors:VideoElementLogBehavior />
+                <behaviors:VideoElementStopBehavior />
+            </i:Interaction.Behaviors>
+        </mz:VideoElement>
+
+        <Border x:Name="DurationArea" MinWidth="41" Height="21" IsHitTestVisible="False" Background="#AA62a7f2"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Visibility="{Binding ElementName=MiniMeidaPlayer, Path=NaturalDurationVisibility}">
+            <TextBlock
+                Text="{Binding ElementName=MiniMeidaPlayer, Path=NaturalDuration, Converter={StaticResource PlayDurationTimeConverter}}"
+                FontSize="11px" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" TextAlignment="Center"
+                Margin="3,0" />
+        </Border>
+
+        <Border MinWidth="41" Height="21" IsHitTestVisible="False" Background="#AA62a7f2" HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Visibility="{Binding ElementName=VideoElement, Path=IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock
+                Text="{Binding ElementName=VideoElement, Path=PositionSeconds, Converter={StaticResource PlayDurationTimeConverter}}"
+                FontSize="11px" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" TextAlignment="Center"
+                Margin="3,0" />
+        </Border>
+
+        <!--미리보기가 재생되면 재생버튼은 숨겨지고 정지버튼이 보여진다-->
+        <RadioButton x:Name="MediaPlayButton" Style="{StaticResource Style_PlayPreviewRadioButton}"
+                     GroupName="{Binding ElementName=MiniMeidaPlayer, Path=GroupName}"
+                     Visibility="{Binding ElementName=MediaPlayButton, Path=IsChecked, Converter={StaticResource BooleanToHiddenNVisibleConverter}}"
+                     Unchecked="MediaPlayButton_OnUnchecked"
+                     Click="MediaPlayButton_OnClick" />
+        <Button x:Name="MediaStopButton" Style="{StaticResource Style_StopPreviewButton}"
+                Visibility="{Binding ElementName=MediaPlayButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Click="MediaStopButton_OnClick" />
+
+        <!--테스트 : Seekbar-->
+        <Border VerticalAlignment="Center" Margin="5" Visibility="Collapsed">
+            <Slider
+                Visibility="{Binding ElementName=VideoElement, Path=IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
+                IsEnabled="False">
+                <i:Interaction.Behaviors>
+                    <behaviors:VideoElementSeekingBehavior TargetVideoElement="{Binding ElementName=VideoElement}" />
+                </i:Interaction.Behaviors>
+            </Slider>
+        </Border>
+
+        <!--오류 버퍼 등 상태 정보를 알리는 영역-->
+        <Grid>
+            <!--재생 오류상태 > 잡 에러 아님. 잡에러는 상위 datatemplate에서 처리-->
+            <Grid
+                Visibility="{Binding ElementName=VideoElement, Path=HasError, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.Background>
+                    <ImageBrush
+                        ImageSource="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Noise.png"
+                        Stretch="Fill" />
+                </Grid.Background>
+                <TextBlock Foreground="White" Opacity="0.7" LineHeight="20px" LineStackingStrategy="BlockLineHeight"
+                           Text="{x:Static resources:Resource.MSG_ERROR_TRYING_TO_PLAY}" TextAlignment="Center"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <!--버퍼링 중 노출되는 화면-->
+            <Grid
+                Visibility="{Binding ElementName=VideoElement, Path=IsBuffering, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Rectangle Fill="Black" Opacity="0.3" />
+                <Grid VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Stretch="None"
+                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Hourglass.png"
+                           Margin="0,0,0,5" />
+                    <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_WAITING}" FontWeight="Bold"
+                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="3,0,-3,0" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

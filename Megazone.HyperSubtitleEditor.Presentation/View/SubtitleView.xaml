@@ -1,0 +1,1731 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.SubtitleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
+             xmlns:model="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
+             xmlns:config="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
+             mc:Ignorable="d" Background="White"
+             d:DesignHeight="600" d:DesignWidth="900"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Subtitle}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <GridLength x:Key="GridLength_HeaderAreaHeight">27</GridLength>
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter" />
+            <mz:TimeSpanToTotalMillisecondsConverter x:Key="TimeSpanToTotalMillisecondsConverter" />
+            <converter:InsertSharpAtTheBeginningToStringConverter x:Key="InsertSharpAtTheBeginningToStringConverter" />
+            <converter:OverLengthConverter x:Key="OverLengthConverter" />
+            <converter:OverMaxLineConverter x:Key="OverMaxLineConverter" />
+            <converter:TimeSpanToDisplayDurationConverter x:Key="TimeSpanToDisplayDurationConverter" />
+            <ContextMenu x:Key="ContextMenuSubtitleItem">
+                <MenuItem Header="{x:Static resources:Resource.CNT_DELETE_ROWS}"
+                          Command="{StaticResource DeleteRowsCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_ROW_ABOVE}"
+                          Command="{StaticResource InsertRowBeforeSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_ROW_BELOW}"
+                          Command="{StaticResource InsertRowAfterSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_CUT_ROW}"
+                          Command="{StaticResource CutRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_ROW}"
+                          Command="{StaticResource CopyRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PASTE_ROW}"
+                          Command="{StaticResource PasteRowCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_TO_CLIPBOARD}"
+                          Command="{StaticResource CopyContentsToClipboardCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_REMOVE_TEXT_FORMATTING}"
+                          Command="{StaticResource RemoveTextFormattingCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_BOLD}"
+                          Command="{StaticResource ApplyBoldToAllTextCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ITALIC}"
+                          Command="{StaticResource ApplyItalicToAllTextCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_UNDERLINE}"
+                          Command="{StaticResource ApplyUnderlineToAllTextCommand}" CommandParameter="{Binding}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADJUST_ALL_TIME}"
+                          Command="{StaticResource AdjustTimeCommand}" />
+            </ContextMenu>
+
+            <ContextMenu x:Key="ContextMenuSubtitleBlank">
+                <MenuItem Header="{x:Static resources:Resource.CNT_DELETE_ROWS}"
+                          Command="{StaticResource DeleteRowsCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_ROW_ABOVE}"
+                          Command="{StaticResource InsertRowBeforeSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_ROW_BELOW}"
+                          Command="{StaticResource InsertRowAfterSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_CUT_ROW}"
+                          Command="{StaticResource CutRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_ROW}"
+                          Command="{StaticResource CopyRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PASTE_ROW}"
+                          Command="{StaticResource PasteRowCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_TO_CLIPBOARD}"
+                          Command="{StaticResource CopyContentsToClipboardCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_REMOVE_TEXT_FORMATTING}"
+                          Command="{StaticResource RemoveTextFormattingCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_BOLD}"
+                          Command="{StaticResource ApplyBoldToAllTextCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ITALIC}"
+                          Command="{StaticResource ApplyItalicToAllTextCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_UNDERLINE}"
+                          Command="{StaticResource ApplyUnderlineToAllTextCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADJUST_ALL_TIME}"
+                          Command="{StaticResource AdjustTimeCommand}" />
+            </ContextMenu>
+
+            <!--Rich Editor Style-->
+
+            <Style TargetType="{x:Type mz:RichTextBox}">
+                <Style.Resources>
+                    <Style x:Key="{x:Type Hyperlink}" BasedOn="{StaticResource {x:Type Hyperlink}}"
+                           TargetType="{x:Type Hyperlink}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="Blue" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0, 2" />
+                    </Style>
+                </Style.Resources>
+                <Setter Property="MinWidth" Value="10" />
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Background" Value="White" />
+                <Setter Property="BorderBrush" Value="#FFbec4ce" />
+                <Setter Property="Foreground" Value="#FF222222" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="AllowDrop" Value="true" />
+                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
+                <Setter Property="Padding" Value="5,7,0,7" />
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+                <Setter Property="SelectionBrush" Value="#FF75adea" />
+                <Setter Property="SelectionOpacity" Value="0.5" />
+                <Setter Property="CaretBrush" Value="White" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type mz:RichTextBox}">
+                            <ControlTemplate.Resources>
+                                <Style TargetType="{x:Type Hyperlink}">
+                                    <!--<Setter Property="Foreground" Value="SkyBlue" />-->
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <!--<Setter Property="Foreground" Value="AliceBlue" />-->
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ControlTemplate.Resources>
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <mz:ScrollViewerEx x:Name="HeaderTextScrollViewer"
+                                                       VerticalScrollBarVisibility="Hidden"
+                                                       Padding="{TemplateBinding Padding}"
+                                                       IsHitTestVisible="False" Focusable="False"
+                                                       BindableHorizontalOffset="{Binding BindableHorizontalOffset, Mode=TwoWay, ElementName=PART_ContentHost}"
+                                                       BindableVerticalOffset="{Binding BindableVerticalOffset, Mode=TwoWay, ElementName=PART_ContentHost}"
+                                                       Visibility="{Binding ShowLine, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <ItemsControl ItemsSource="{TemplateBinding LineInfos}"
+                                                      VerticalContentAlignment="Top" Focusable="False" MinWidth="38">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="mz:LineInfo">
+                                                    <Grid Height="{Binding Height}" HorizontalAlignment="Right"
+                                                          TextBlock.FontSize="10.5px" TextBlock.FontWeight="Bold"
+                                                          TextBlock.Foreground="#FF2887f5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock x:Name="Part_NumberTextBlock"
+                                                                   Text="{Binding Number, StringFormat={}&lt;{0}:}"
+                                                                   VerticalAlignment="Top" Margin="0,5,0,0" />
+                                                        <TextBlock x:Name="Part_LengthTextBlock" Grid.Column="1"
+                                                                   Text="{Binding Length, StringFormat={}{0}&gt;}"
+                                                                   VerticalAlignment="Top" Margin="0,5,0,0" />
+                                                    </Grid>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger
+                                                            Binding="{Binding Length, Converter={StaticResource OverLengthConverter}}"
+                                                            Value="True">
+                                                            <Setter TargetName="Part_LengthTextBlock"
+                                                                    Property="Foreground" Value="#FFff5019" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Number, Converter={StaticResource OverMaxLineConverter}}"
+                                                            Value="True">
+                                                            <Setter TargetName="Part_NumberTextBlock"
+                                                                    Property="Foreground" Value="#FFff5019" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </mz:ScrollViewerEx>
+                                    <mz:ScrollViewerEx Grid.Column="1" x:Name="PART_ContentHost"
+                                                       Padding="{TemplateBinding Padding}"
+                                                       Background="Transparent" Focusable="false"
+                                                       HorizontalScrollBarVisibility="Hidden"
+                                                       VerticalScrollBarVisibility="Hidden" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                             Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" Value="0.4" TargetName="PART_ContentHost" />
+                                    <Setter Property="Opacity" Value="0.6" />
+                                    <Setter Property="Background" Value="#12000000" />
+                                    <Setter Property="Opacity" Value="0" TargetName="HeaderTextScrollViewer" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" Value="#FF97c3f3" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" Value="#FF67a9ef" />
+                                    <Setter Property="Background" Value="#FFc5defa" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <!--<Style.BasedOn>
+                    <StaticResource ResourceKey="{x:Type TextBoxBase}" />
+                </Style.BasedOn>-->
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="MinWidth" Value="60" />
+                <Setter Property="MinHeight" Value="52" />
+                <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                <Setter Property="Margin" Value="0,5" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Foreground" Value="#FF222222" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="2" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#10000000" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Style_ValidateText" TargetType="{x:Type TextBlock}">
+                <!--기본 컬러-->
+                <Setter Property="Foreground" Value="#FF4191f6" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <!--유효성 오류 컬러-->
+                        <Setter Property="Foreground" Value="#FFff5019" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=LoadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Path=UnloadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <!--툴바 영역-->
+            <RowDefinition Height="63" />
+            <RowDefinition Height="2.2*" />
+            <RowDefinition Height="Auto" />
+            <!--"StartTime:" 부분이 딱 보일만큼의 높이로 MinHeight 설정. 스크롤 없이 자막 세줄이보일만큼 기본 Height 설정-->
+            <RowDefinition Height="180" MaxHeight="270" MinHeight="160" />
+            <RowDefinition Height="21" />
+        </Grid.RowDefinitions>
+
+        <!--툴바영역-->
+        <Border BorderThickness="0,1,0,0" BorderBrush="#FFd5d7d8">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFffffff" Offset="0" />
+                    <GradientStop Color="#FFeeeff2" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="1" />
+                        <Setter Property="Fill" Value="#FF78818e" />
+                        <Setter Property="Opacity" Value="0.3" />
+                        <Setter Property="Margin" Value="5,8" />
+                    </Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Stretch" Value="None" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="TextAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="3,3,3,-3" />
+                        <Setter Property="Grid.Row" Value="1" />
+                    </Style>
+                </Grid.Resources>
+                <StackPanel Orientation="Horizontal" Margin="5,0">
+                    <Button Command="{StaticResource LoadGroupFileCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_OpenCaption.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_OPEN}" />
+                        </Grid>
+                    </Button>
+                    <Button Command="{StaticResource SaveGroupCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Save.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_SAVE}" />
+                        </Grid>
+                    </Button>
+                    <Rectangle />
+                    <Button Command="{StaticResource OpenSubtitleCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Import_Vtt.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_IMPORT}" />
+                        </Grid>
+                    </Button>
+                    <Button Command="{StaticResource ExportSelectedTabAsVttCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Export_Vtt.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
+                        </Grid>
+                    </Button>
+                    <Rectangle />
+                    <Button Command="{StaticResource OpenExcelFileCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Import.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_IMPORT}" />
+                        </Grid>
+                    </Button>
+                    <Button Command="{StaticResource ExportExcelFileCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Export.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
+                        </Grid>
+                    </Button>
+                    <Rectangle />
+                    <Grid Margin="0,5">
+                        <CheckBox x:Name="OpenVideoButton">
+                            <CheckBox.Style>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                    <Setter Property="FocusVisualStyle"
+                                            Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                    <Setter Property="MinWidth" Value="60" />
+                                    <Setter Property="MinHeight" Value="52" />
+                                    <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                                    <!--<Setter Property="Margin" Value="0,5"/>-->
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="Foreground" Value="#FF222222" />
+                                    <Setter Property="FontSize" Value="11px" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                                <Border CornerRadius="2" Background="{TemplateBinding Background}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}">
+                                                    <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Background" Value="#10000000" />
+                                                        <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Opacity" Value="0.3" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </CheckBox.Style>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image Grid.Row="0" Margin="3,0,-3,0"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_OpenVideo.png" />
+                                <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_OPEN_VIDEO}" />
+                            </Grid>
+                        </CheckBox>
+                        <Popup StaysOpen="False" Placement="Bottom" AllowsTransparency="True" Focusable="False"
+                               IsOpen="{Binding IsChecked, ElementName=OpenVideoButton, Mode=TwoWay}">
+                            <Border Style="{StaticResource Style_PopupRootBorder}">
+                                <Grid>
+                                    <Border CornerRadius="2,0,0,2" Width="22"
+                                            Background="{DynamicResource Brush_MenuLeftAreBrush}"
+                                            BorderThickness="0,0,1,0" BorderBrush="#FFcdced3"
+                                            HorizontalAlignment="Left" />
+                                    <StackPanel Margin="4" Name="Panel" Focusable="True" FocusVisualStyle="{x:Null}">
+                                        <Button Content="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
+                                                Focusable="True"
+                                                Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
+                                        <Button Content="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
+                                                Command="{StaticResource ShowJobMediaSelectorViewCommand}"
+                                                Focusable="True" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <Rectangle />
+                    <Button Command="{StaticResource DeployCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Deploy.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_PUBLISH}" />
+                        </Grid>
+                    </Button>
+                    <Rectangle />
+                    <Button Command="{StaticResource AddTabCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Add.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_ADD_CAPTION}" />
+                        </Grid>
+                    </Button>
+                    <Button Command="{StaticResource CopyTabCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Copy.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_COPY_CAPTION}" />
+                        </Grid>
+                    </Button>
+                    <Rectangle />
+
+                </StackPanel>
+
+                <Button Grid.Column="1" Margin="5,0" VerticalAlignment="Center"
+                        Command="{StaticResource ShowSettingsViewCommand}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Settings.png" />
+                        <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_SETTING}" />
+                    </Grid>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="400" MinWidth="300" MaxWidth="800" />
+            </Grid.ColumnDefinitions>
+
+            <!--좌측 > 자막 편집 영역-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
+                    <!--<RowDefinition Height="Auto"/>-->
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--탭 목록-->
+                <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
+                <Border Grid.Row="0" Margin="0,-4,0,0">
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                            <ScrollViewer.Style>
+                                <Style TargetType="{x:Type ScrollViewer}">
+                                    <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+                                    <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+                                    <Setter Property="Background" Value="#FFf4f5f7" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                                <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                                            CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                                            CanHorizontallyScroll="False"
+                                                                            CanVerticallyScroll="False"
+                                                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                            Content="{TemplateBinding Content}"
+                                                                            Margin="{TemplateBinding Padding}" />
+                                                    <ScrollBar x:Name="PART_HorizontalScrollBar" Margin="-1,4,0,0"
+                                                               Height="Auto"
+                                                               AutomationProperties.AutomationId="HorizontalScrollBar"
+                                                               Grid.Column="1"
+                                                               Maximum="{TemplateBinding ScrollableWidth}" Minimum="0"
+                                                               Orientation="Horizontal"
+                                                               Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                               Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                               ViewportSize="{TemplateBinding ViewportWidth}">
+                                                        <ScrollBar.Template>
+                                                            <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                                                <StackPanel x:Name="Bg" SnapsToDevicePixels="true"
+                                                                            Orientation="Horizontal">
+                                                                    <StackPanel.Resources>
+                                                                        <Style TargetType="{x:Type RepeatButton}">
+                                                                            <Setter Property="UseLayoutRounding"
+                                                                                    Value="True" />
+                                                                            <Setter Property="SnapsToDevicePixels"
+                                                                                    Value="True" />
+                                                                            <Setter Property="Focusable" Value="False" />
+                                                                            <Setter Property="Background"
+                                                                                    Value="#FFf4f5f7" />
+                                                                            <Setter Property="BorderThickness"
+                                                                                    Value="1" />
+                                                                            <Setter Property="BorderBrush"
+                                                                                    Value="#FFa6adba" />
+                                                                            <Setter Property="Width" Value="28" />
+                                                                            <!--<Setter Property="Padding" Value="0,-2,0,2"/>-->
+                                                                            <Setter Property="VerticalAlignment"
+                                                                                    Value="Stretch" />
+                                                                            <Setter
+                                                                                Property="HorizontalContentAlignment"
+                                                                                Value="Center" />
+                                                                            <Setter Property="VerticalContentAlignment"
+                                                                                    Value="Center" />
+                                                                            <Setter Property="Template">
+                                                                                <Setter.Value>
+                                                                                    <ControlTemplate
+                                                                                        TargetType="{x:Type RepeatButton}">
+                                                                                        <Border
+                                                                                            Background="{TemplateBinding Background}"
+                                                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                                                            <ContentPresenter
+                                                                                                Margin="{TemplateBinding Padding}"
+                                                                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                                                        </Border>
+                                                                                        <ControlTemplate.Triggers>
+                                                                                            <Trigger
+                                                                                                Property="IsMouseOver"
+                                                                                                Value="True">
+                                                                                                <Setter
+                                                                                                    Property="Background"
+                                                                                                    Value="#EEFFFFFF" />
+                                                                                            </Trigger>
+                                                                                            <Trigger
+                                                                                                Property="IsPressed"
+                                                                                                Value="True">
+                                                                                                <Setter
+                                                                                                    Property="Background"
+                                                                                                    Value="#10000000" />
+                                                                                            </Trigger>
+                                                                                            <Trigger
+                                                                                                Property="IsEnabled"
+                                                                                                Value="False">
+                                                                                                <Setter
+                                                                                                    Property="Opacity"
+                                                                                                    Value="0.3" />
+                                                                                            </Trigger>
+                                                                                        </ControlTemplate.Triggers>
+                                                                                    </ControlTemplate>
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </Style>
+                                                                    </StackPanel.Resources>
+                                                                    <RepeatButton x:Name="PART_LineLeftButton"
+                                                                                  Command="{x:Static ScrollBar.LineLeftCommand}"
+                                                                                  Delay="0" Interval="20">
+                                                                        <Image RenderTransformOrigin="0.5,0.5"
+                                                                               HorizontalAlignment="Center"
+                                                                               VerticalAlignment="Center"
+                                                                               Opacity="0.65" Stretch="None"
+                                                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_NextPrevArrow.png" />
+                                                                    </RepeatButton>
+                                                                    <RepeatButton x:Name="PART_LineRightButton"
+                                                                                  Margin="-1,0,0,0"
+                                                                                  Command="{x:Static ScrollBar.LineRightCommand}"
+                                                                                  Delay="0" Interval="20">
+                                                                        <Image RenderTransformOrigin="0.5,0.5"
+                                                                               Margin="0,0,-1,0"
+                                                                               HorizontalAlignment="Center"
+                                                                               VerticalAlignment="Center"
+                                                                               Opacity="0.65" Stretch="None"
+                                                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_NextPrevArrow.png">
+                                                                            <Image.RenderTransform>
+                                                                                <RotateTransform Angle="180" />
+                                                                            </Image.RenderTransform>
+                                                                        </Image>
+                                                                    </RepeatButton>
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </ScrollBar.Template>
+                                                    </ScrollBar>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ScrollViewer.Style>
+                            <ItemsControl x:Name="TabList"
+                                          ItemsSource="{Binding Tabs, UpdateSourceTrigger=PropertyChanged}"
+                                          Background="#FFeeeff2">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Horizontal" IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleTabItemViewModel}">
+                                        <RadioButton GroupName="SubtitleTabs"
+                                                     IsChecked="{Binding IsSelected, Mode=TwoWay}">
+                                            <i:Interaction.Behaviors>
+                                                <behavior:CheckedToFocusBehavior />
+                                            </i:Interaction.Behaviors>
+                                            <!-- ContextMenu="{StaticResource ContextMenuTabItem}" > 버튼에 나오는 팝업으로 이동-->
+                                            <RadioButton.Style>
+                                                <Style TargetType="{x:Type RadioButton}">
+                                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                                    <!--<Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />-->
+                                                    <Setter Property="Width" Value="140" />
+                                                    <Setter Property="BorderBrush" Value="#FFa6adba" />
+                                                    <Setter Property="BorderThickness" Value="0,0,1,0" />
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                    <Setter Property="Padding" Value="10,0,4,0" />
+                                                    <Setter Property="ClickMode" Value="Press" />
+                                                    <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                                                    <Setter Property="Background" Value="#FFf4f5f7" />
+                                                    <!--<Setter Property="Margin" Value="0,-10,0,0"/>-->
+                                                    <Setter Property="FocusVisualStyle">
+                                                        <Setter.Value>
+                                                            <Style TargetType="{x:Type Control}">
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="{x:Type Control}">
+                                                                            <Border
+                                                                                BorderBrush="{DynamicResource Brush_PointColor}"
+                                                                                BorderThickness="1" Margin="0,4,1,0" />
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type RadioButton}">
+                                                                <Grid>
+                                                                    <Border Margin="0,4,0,0"
+                                                                            Background="{TemplateBinding Background}"
+                                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                                        <ContentPresenter
+                                                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                            Margin="{TemplateBinding Padding}" />
+                                                                    </Border>
+                                                                    <Rectangle x:Name="TopLine" Height="1"
+                                                                               Fill="#FFa6adba" Margin="0,4,1,0"
+                                                                               VerticalAlignment="Top" />
+                                                                    <Grid x:Name="ShadowPanel" Margin="0,5,0,0">
+                                                                        <Rectangle Height="1" Opacity="0.3"
+                                                                                   Fill="White" VerticalAlignment="Top" />
+                                                                        <Rectangle Height="1" Opacity="0.06"
+                                                                                   Fill="Black"
+                                                                                   VerticalAlignment="Bottom"
+                                                                                   Margin="0,0,0,1" />
+                                                                    </Grid>
+                                                                    <!--영역의 라인 역할-->
+                                                                    <Rectangle x:Name="BottomLine" Height="1"
+                                                                               Fill="#FFa6adba"
+                                                                               VerticalAlignment="Bottom" />
+                                                                    <!--선택 시 보여지는 상단 하일라이트 라인-->
+                                                                    <Border x:Name="SelectedLine"
+                                                                            Visibility="Collapsed" Margin="-1,0,0,0"
+                                                                            VerticalAlignment="Top"
+                                                                            BorderBrush="#FF1e74f2"
+                                                                            Background="#FF2887f5"
+                                                                            BorderThickness="1,1,1,0" Height="4" />
+                                                                    <Rectangle x:Name="FocusedElement"
+                                                                               IsHitTestVisible="False"
+                                                                               Visibility="Collapsed"
+                                                                               Stroke="{DynamicResource Brush_PointColor}"
+                                                                               Margin="-1,4,0,0" />
+                                                                </Grid>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="White" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                        <Setter Property="Background" Value="White" />
+                                                                        <Setter Property="Foreground" Value="#FF2887f5" />
+                                                                        <Setter Property="Visibility" Value="Collapsed"
+                                                                                TargetName="BottomLine" />
+                                                                        <Setter Property="Visibility" Value="Collapsed"
+                                                                                TargetName="ShadowPanel" />
+                                                                        <Setter Property="Visibility" Value="Collapsed"
+                                                                                TargetName="TopLine" />
+                                                                        <Setter Property="Visibility" Value="Visible"
+                                                                                TargetName="SelectedLine" />
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </RadioButton.Style>
+                                            <Grid Background="Transparent" ToolTip="{Binding Name}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid Margin="0,0,5,0">
+                                                    <Image x:Name="SubtitleKindImage" Stretch="None"
+                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleType_Subtitle.png" />
+                                                    <Image Stretch="None" HorizontalAlignment="Right"
+                                                           VerticalAlignment="Bottom" Margin="0,0,-2,2"
+                                                           Visibility="{Binding IsDirty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Subtitle_Submitted.png" />
+                                                </Grid>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                            TextBlock.FontWeight="Bold">
+                                                    <TextBlock Text="[" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{Binding LanguageCode}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="]" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Margin="0,0,2,0" FontWeight="Bold"
+                                                           Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+
+                                                <Grid Grid.Column="3">
+                                                    <ToggleButton x:Name="SubtitleCommandButton">
+                                                        <ToggleButton.Style>
+                                                            <Style TargetType="{x:Type ToggleButton}">
+                                                                <Setter Property="UseLayoutRounding" Value="True" />
+                                                                <Setter Property="SnapsToDevicePixels" Value="True" />
+                                                                <Setter Property="Focusable" Value="False" />
+                                                                <Setter Property="Background" Value="Transparent" />
+                                                                <Setter Property="Padding" Value="5,3" />
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate
+                                                                            TargetType="{x:Type ToggleButton}">
+                                                                            <Border
+                                                                                Background="{TemplateBinding Background}">
+                                                                                <Image
+                                                                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_DotDotDot.png"
+                                                                                    Stretch="None"
+                                                                                    Margin="{TemplateBinding Padding}" />
+                                                                            </Border>
+                                                                            <ControlTemplate.Triggers>
+                                                                                <Trigger Property="IsMouseOver"
+                                                                                         Value="True">
+                                                                                    <Setter Property="Background"
+                                                                                            Value="#11000000" />
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsPressed"
+                                                                                         Value="True">
+                                                                                    <Setter Property="Background"
+                                                                                            Value="#22000000" />
+                                                                                </Trigger>
+                                                                            </ControlTemplate.Triggers>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ToggleButton.Style>
+                                                    </ToggleButton>
+                                                    <Popup StaysOpen="False" Placement="Bottom"
+                                                           AllowsTransparency="True" Focusable="False"
+                                                           IsOpen="{Binding IsChecked, ElementName=SubtitleCommandButton, Mode=TwoWay}">
+                                                        <Border Style="{StaticResource Style_PopupRootBorder}">
+                                                            <Grid>
+                                                                <Border Width="22"
+                                                                        Background="{DynamicResource Brush_MenuLeftAreBrush}"
+                                                                        BorderThickness="0,0,1,0"
+                                                                        BorderBrush="#FFcdced3"
+                                                                        HorizontalAlignment="Left" />
+                                                                <StackPanel Margin="4">
+                                                                    <!--<Button Content="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}" Command="{StaticResource OpenSubtitleCommand}"/>
+                                                                    <Separator/>-->
+                                                                    <Button
+                                                                        Content="{x:Static resources:Resource.CNT_COPY_CAPTION}"
+                                                                        Command="{StaticResource CopyTabCommand}"
+                                                                        CommandParameter="{Binding}" />
+                                                                    <Button
+                                                                        Content="{x:Static resources:Resource.CNT_EDIT_CAPTION_INFO}"
+                                                                        Command="{StaticResource EditSubtitleCommand}"
+                                                                        CommandParameter="{Binding}" />
+                                                                    <Separator />
+                                                                    <Button
+                                                                        Content="{x:Static resources:Resource.CNT_REMOVE_CAPTION}"
+                                                                        Command="{StaticResource DeleteTabCommand}"
+                                                                        CommandParameter="{Binding}" />
+                                                                    <!--<Button Content="{x:Static resources:Resource.CNT_EDIT_CAPTION_INFO}" 
+                                                                            Command="{Binding DataContext.CloseTabCommand, ElementName=RootGrid}"
+                                                                            CommandParameter="{Binding}"/>-->
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </Border>
+                                                    </Popup>
+                                                </Grid>
+
+                                            </Grid>
+                                        </RadioButton>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Kind}" Value="Subtitle">
+                                                <Setter Property="Source"
+                                                        Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleType_Subtitle.png"
+                                                        TargetName="SubtitleKindImage" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Kind}" Value="Caption">
+                                                <Setter Property="Source"
+                                                        Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleType_Caption.png"
+                                                        TargetName="SubtitleKindImage" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Kind}" Value="Chapter">
+                                                <Setter Property="Source"
+                                                        Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleType_Chapter.png"
+                                                        TargetName="SubtitleKindImage" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <Button Grid.Column="1" ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
+                                Command="{StaticResource AddTabCommand}" Margin="-1,4,-1,0">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                    <Setter Property="FocusVisualStyle"
+                                            Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Focusable" Value="False" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="#FFa6adba" />
+                                    <Setter Property="Width" Value="28" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                                    <ContentPresenter
+                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                        Margin="{TemplateBinding Padding}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#EEFFFFFF" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter Property="Background" Value="#10000000" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Opacity" Value="0.3" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Rectangle Fill="#FF6a7482" Width="2" Height="10" />
+                                <Rectangle Fill="#FF6a7482" Width="10" Height="2" />
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <ListView x:Name="SubtitleListView" Grid.Row="1" Margin="0,4,0,0" BorderThickness="0,1,0,0"
+                          BorderBrush="#FF5e6671"
+                          SelectionMode="Extended" DataContext="{Binding SelectedTab}"
+                          ContextMenu="{StaticResource ContextMenuSubtitleBlank}"
+                          SelectedItem="{Binding SelectedRow, FallbackValue={x:Null}, TargetNullValue={x:Null}}"
+                          ItemsSource="{Binding Rows, FallbackValue={x:Null}, TargetNullValue={x:Null}, Mode=OneWay}">
+                    <i:Interaction.Behaviors>
+                        <mz:ListBoxScrollBehavior
+                            ListBoxScroll="{Binding ElementName=RootGrid, Path=DataContext.ListBoxScroll, Mode=OneWayToSource}" />
+                        <behavior:SubtitleItemsFilterBehavior
+                            FilterText="{Binding Path=Text, ElementName=SearchInputTextBox, UpdateSourceTrigger=PropertyChanged}" />
+                        <mz:BindableSelectedItemsBehavior
+                            SelectedItems="{Binding SelectedRows, FallbackValue={x:Null}, TargetNullValue={x:Null}, Mode=OneWayToSource}" />
+                        <behavior:ListViewItemDoubleClickBehavior
+                            Command="{Binding Path=SetFocusToSubtitleTextBoxCommand}" />
+                    </i:Interaction.Behaviors>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style_TabListItem}">
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenuSubtitleItem}" />
+                            <Setter Property="Height" Value="32" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <!--드래그앤 드롭을 담당하는 영역과 IsHitTest Visible만 다름. 추후 변경을 위해 나머지 구조는 유사하게 해놓음-->
+                                        <Grid>
+                                            <Border
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Background="{TemplateBinding Background}" Padding="0"
+                                                SnapsToDevicePixels="True">
+
+                                                <Grid x:Name="PART_ContentArea">
+                                                    <Grid.Resources>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                                        </Style>
+                                                    </Grid.Resources>
+                                                    <Rectangle x:Name="PART_Select" Fill="#FF61a5ef" Opacity="0.3"
+                                                               Visibility="Hidden"
+                                                               IsHitTestVisible="False" />
+                                                    <Rectangle x:Name="PART_Over" Fill="#FF61a5ef" Opacity="0.1"
+                                                               RadiusX="1" RadiusY="1" Visibility="Hidden"
+                                                               IsHitTestVisible="False" />
+                                                    <Rectangle x:Name="PART_Line" Height="1"
+                                                               Fill="{TemplateBinding BorderBrush}"
+                                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                               UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
+                                                               VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                                                </Grid>
+                                            </Border>
+                                            <GridViewRowPresenter x:Name="PART_Content"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  Margin="{TemplateBinding Padding}"
+                                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                                            <!--드래그 앤 드롭, 드래그 선택 등이 없기 때문에 보여질 필요가 없음-->
+                                            <!--<Rectangle x:Name="PART_SelectionGripper" Fill="Transparent" Visibility="Hidden" Opacity="0.3" />
+                        <Rectangle x:Name="PART_CanDrop" Fill="Transparent" Stroke="{DynamicResource Brush_PointColor}" StrokeThickness="1"
+                                   Visibility="Hidden" IsHitTestVisible="False" />-->
+                                            <Border x:Name="KeyboardFocusedObject" Background="#44afd7ff"
+                                                    BorderBrush="#FF5fa5f0" BorderThickness="0,1"
+                                                    IsHitTestVisible="False" Visibility="Collapsed" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"
+                                                        TargetName="KeyboardFocusedObject" />
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible" TargetName="PART_Over" />
+                                            </MultiTrigger>
+                                            <!--아이템은 선택도 안되고 리스트는 언포커스-->
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                                <!--선택되었으나 포커스를 잃은 상태. 포커스상태와 차이를 두기위해 적용-->
+                                                <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_Content" />-->
+                                            </MultiTrigger>
+                                            <!--선택되고 리스트는 언포커스-->
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <!--아이템이 선택되었을 때 버튼 등이 클릭될 수 있도록 zindex 위로. 선택되지 않았을 때는 Selection Gripper가 보이지 않으므로 상관없음-->
+                                                <!--<Setter Property="Background" Value="#FFe9ebef"/>-->
+                                                <Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />
+                                                <Setter Property="Panel.ZIndex" Value="1" TargetName="PART_Content" />
+                                                <Setter Property="Opacity" Value="0.85" TargetName="PART_ContentArea" />
+                                                <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
+                                                <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_SelectionGripper" />-->
+                                            </MultiTrigger>
+                                            <!--선택되고 리스트도 포커스드-->
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <!--아이템이 선택되었을 때 버튼 등이 클릭될 수 있도록 zindex 위로. 선택되지 않았을 때는 Selection Gripper가 보이지 않으므로 상관없음-->
+                                                <Setter Property="Panel.ZIndex" Value="1" TargetName="PART_Content" />
+                                                <Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />
+                                                <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_SelectionGripper" />-->
+                                            </MultiTrigger>
+
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value="0.3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="30">
+                                <GridViewColumn.Header>
+                                    <TextBlock IsHitTestVisible="False" Text="#" Margin="-1,0" />
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleListItemViewModel}">
+                                        <Grid>
+                                            <TextBlock Text="{Binding Number}" Background="Transparent"
+                                                       TextAlignment="Center" ToolTip="{Binding Number}"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            <Grid Width="18" Height="18"
+                                                  Visibility="{Binding IsNowPlaying, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Ellipse Fill="#FF1e74f2" UseLayoutRounding="True"
+                                                         SnapsToDevicePixels="True" />
+                                                <Path Data="M0,0L4,3.5 0,7z" HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" Margin="1,0,-1,0"
+                                                      Width="6" Height="7" Stretch="Fill" Fill="White"
+                                                      UseLayoutRounding="True" SnapsToDevicePixels="True" />
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{x:Static resources:Resource.CNT_START_TIME}" Width="142">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleListItemViewModel}">
+                                        <Grid>
+                                            <!--<Rectangle x:Name="WarningObject" Height="40"
+                                                       ToolTip="{x:Static resources:Resource.MSG_DUPLICATE_TO_THE_PREVIOUS_CAPTION}" />-->
+                                            <!--<TextBlock IsHitTestVisible="False" Text="{Binding StartTime}" Margin="6,0" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>-->
+                                            <mz:TimeSpinner x:Name="StartSpinner" Time="{Binding StartTime}"
+                                                            IsShowMilliseconds="True"
+                                                            Margin="4,0" VerticalAlignment="Center"
+                                                            MillisecondTickValue="{Binding Config.Subtitle.StartEndTimeTick, Mode=OneWay, Converter={StaticResource TimeSpanToTotalMillisecondsConverter}, Source={x:Static config:ConfigHolder.BindableCurrent}}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsStartTimeValid}" Value="False">
+                                                <Setter Property="Foreground" Value="#FFff5019"
+                                                        TargetName="StartSpinner" />
+                                                <Setter Property="FontWeight" Value="Bold" TargetName="StartSpinner" />
+                                                <!--<Setter Property="Fill" TargetName="WarningObject" Value="#FFfc7045" />-->
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{x:Static resources:Resource.CNT_END_TIME}" Width="142">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleListItemViewModel}">
+                                        <Grid>
+                                            <!--<Rectangle x:Name="WarningObject" Height="40"
+                                                       ToolTip="{x:Static resources:Resource.MSG_DUPLICATE_TO_THE_NEXT_CAPTION}" />-->
+                                            <!--<TextBlock IsHitTestVisible="False" Text="{Binding EndTime}" Margin="6,0" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />-->
+                                            <mz:TimeSpinner x:Name="EndSpinner" Time="{Binding EndTime}"
+                                                            IsShowMilliseconds="True"
+                                                            Margin="4,0" VerticalAlignment="Center"
+                                                            MillisecondTickValue="{Binding Config.Subtitle.StartEndTimeTick, Mode=OneWay, Converter={StaticResource TimeSpanToTotalMillisecondsConverter}, Source={x:Static config:ConfigHolder.BindableCurrent}}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsEndTimeValid}" Value="False">
+                                                <Setter Property="Foreground" Value="#FFff5019" TargetName="EndSpinner" />
+                                                <Setter Property="FontWeight" Value="Bold" TargetName="EndSpinner" />
+                                                <!--<Setter Property="Fill" TargetName="WarningObject" Value="#FFfc7045" />-->
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{x:Static resources:Resource.CNT_DURATION}" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleListItemViewModel}">
+                                        <Grid>
+                                            <!--<Rectangle x:Name="WarningObject" Height="40"/>-->
+                                            <TextBlock x:Name="DurationText" IsHitTestVisible="False"
+                                                       Text="{Binding Duration, Converter={StaticResource TimeSpanToDisplayDurationConverter}}"
+                                                       Margin="6,0" TextAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                            <!--<mz:TimeSpinner Style="{StaticResource TimeSpinnerSecondsMaxType}"
+                                                            Time="{Binding Duration}" MaximumTimeType="Seconds"
+                                                            SecondMaxLength="3" IsShowMilliseconds="True"
+                                                            Margin="4,0" MillisecondTickValue="100" />-->
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDurationValid}" Value="False">
+                                                <Setter Property="Foreground" Value="#FFff5019"
+                                                        TargetName="DurationText" />
+                                                <Setter Property="FontWeight" Value="Bold" TargetName="DurationText" />
+                                                <!--<Setter Property="Fill" TargetName="WarningObject"
+                                                        Value="#FFfc7045"/>-->
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{x:Static resources:Resource.CNT_CONTENTS}" Width="425">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleListItemViewModel}">
+                                        <TextBlock x:Name="DisplayTextBlock" Text="{Binding DisplayText}" Margin="6,0"
+                                                   ToolTip="{Binding DisplayText}" TextTrimming="CharacterEllipsis"
+                                                   VerticalAlignment="Center" />
+                                        <DataTemplate.Triggers>
+                                            <Trigger Property="Text" Value="" SourceName="DisplayTextBlock">
+                                                <Setter Property="ToolTip" Value="{x:Null}"
+                                                        TargetName="DisplayTextBlock" />
+                                            </Trigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <!--아이템 없을때 드래그 가이드-->
+                <Border Grid.Row="1"
+                        Visibility="{Binding ElementName=TabList, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                        Background="White">
+                    <Grid>
+                        <i:Interaction.Behaviors>
+                            <mz:DropToCommandBehavior Command="{Binding DropToAddSubtitleCommand}" />
+                        </i:Interaction.Behaviors>
+                        <Rectangle Margin="10"
+                                   Stroke="#FFb8bbbd" RadiusX="3" RadiusY="3" StrokeThickness="1.5"
+                                   StrokeDashArray="1.5,1.5" Fill="#FFeff1f3" />
+                        <Grid Margin="20,20,20,15" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Stretch="None" Margin="0,0,0,10"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_DragSubtitleTypeFileGuide.png" />
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="Gray" TextAlignment="Center"
+                                       Text="{x:Static resources:Resource.MSG_DRAG_OPEN_CAPTION}" />
+                            <UniformGrid Grid.Row="2" Rows="1" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                <UniformGrid.Resources>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ButtonDefault}">
+                                        <Setter Property="Background" Value="#FF5594d8" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF5fa5f0" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Background" Value="#FF9fc9f6" />
+                                                <Setter Property="Foreground" Value="#FFc9e0fa" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </UniformGrid.Resources>
+                                <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
+                                        Command="{StaticResource OpenSubtitleCommand}" />
+                                <Button Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0"
+                                        Command="{StaticResource AddTabCommand}" />
+                            </UniformGrid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <!--그리드 스플리터-->
+            <GridSplitter Grid.Column="1" Style="{StaticResource Style_VerticalGridSplitter}" />
+            <Rectangle Grid.Column="1" Height="1" VerticalAlignment="Top" Fill="#FFa6adba" IsHitTestVisible="False" />
+
+            <!--우측 > 비디오 플레이어 영역-->
+            <Grid x:Name="VideoPlayerGrid" Grid.Column="2" DataContext="{Binding MediaPlayer}">
+                <i:Interaction.Behaviors>
+                    <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
+                </i:Interaction.Behaviors>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <local:MediaPlayerView Grid.RowSpan="2"
+                                       HasAudioOnly="{Binding HasAudioOnly}"
+                                       MediaSource="{Binding MediaSource}"
+                                       NaturalDuration="{Binding NaturalDuration}"
+                                       ThumbnailSource="{Binding ThumbnailSource}"
+                                       TimeSeeker="{Binding TimeSeeker}"
+                                       IsEnabled="{Binding MediaSource, Converter={StaticResource NullToFalseNTrue}}"
+                                       SubtitleFlowDocumentText="{Binding CurrentPositionText, Mode=OneWay}"
+                                       BufferingSeconds="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=OneWay, Source={x:Static config:ConfigHolder.BindableCurrent}}"
+                                       PlaybackReadyTimeOut="5"
+                                       CurrentPosition="{Binding CurrentMediaPosition, Mode=OneWayToSource}"
+                                       IsPlaying="{Binding IsMediaPlaying, Mode=OneWayToSource}"
+                                       Volume="0.5">
+                    <i:Interaction.Behaviors>
+                        <behavior:MediaPlayerPlayStateChangedToCommandBehavior
+                            Command="{Binding PlayStateChangedCommand}" />
+                        <behavior:MediaPlayerPositionChangedToCommandBehavior
+                            Command="{Binding PositionChangedCommand}" />
+                    </i:Interaction.Behaviors>
+                </local:MediaPlayerView>
+            </Grid>
+
+            <!-- 우측 > 영상이 임포트 되지 않은 경우 노출되는 가이드 영역. Visiblity 걸려야 함-->
+            <Border Background="Black" Grid.Column="2"
+                    Visibility="{Binding MediaPlayer.MediaSource, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
+                <Grid Height="260" Background="#FF181a1c">
+                    <i:Interaction.Behaviors>
+                        <mz:DropToCommandBehavior Command="{Binding MediaPlayer.DropToSetMediaCommand}" />
+                    </i:Interaction.Behaviors>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="1" Stretch="None"
+                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_DragVideoFileGuide.png" />
+                    <TextBlock Grid.Row="2" TextAlignment="Center" Foreground="#FF697382" Margin="0,15"
+                               Text="{x:Static resources:Resource.MSG_DRAG_OPEN_VIDEO}" />
+                    <Button Grid.Row="3" Command="{StaticResource ShowOpenVideoAddressWindowCommand}"
+                            Content="{x:Static resources:Resource.CNT_OPEN_VIDEO}"
+                            Style="{StaticResource Style_IconLabelButton}" HorizontalAlignment="Center"
+                            FontWeight="Normal" />
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <GridSplitter Grid.Row="2" Style="{StaticResource Style_GridSplitter}" />
+
+        <Grid Grid.Row="3">
+            <Grid DataContext="{Binding SelectedItem}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="34" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Background="White" BorderBrush="#FFbec4ce" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MinWidth="120" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderThickness="0,0,1,0" BorderBrush="#FFa0a8b6">
+                            <Button HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Content="{Binding Number, Converter={StaticResource InsertSharpAtTheBeginningToStringConverter}}"
+                                    Command="{Binding DataContext.GoToSelectedRowCommand, ElementName=RootGrid}">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="UseLayoutRounding" Value="True" />
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="FocusVisualStyle"
+                                                Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="Padding" Value="8,2,8,3" />
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontSize" Value="15px" />
+                                        <Setter Property="Foreground" Value="#FF222222" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Grid Background="Transparent">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="2">
+                                                            <Border x:Name="PressedShadow" Visibility="Collapsed"
+                                                                    CornerRadius="1" BorderBrush="Black"
+                                                                    BorderThickness="1,1,1,0" Opacity="0.03">
+                                                                <Border CornerRadius="1" BorderBrush="Black"
+                                                                        BorderThickness="1,1,1,0" Opacity="0.5" />
+                                                            </Border>
+                                                        </Border>
+                                                        <ContentPresenter
+                                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                            Margin="{TemplateBinding Padding}" />
+                                                        <Rectangle Height="1" VerticalAlignment="Bottom"
+                                                                   Fill="{TemplateBinding Foreground}" Margin="6,4" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#FFeaecef" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#FFdfe1e6" />
+                                                            <Setter Property="Visibility" Value="Visible"
+                                                                    TargetName="PressedShadow" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Border>
+
+                        <StackPanel Grid.Column="1" Margin="10,0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_IconLabelButton}">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Height" Value="25" />
+                                    <Setter Property="MinWidth" Value="0" />
+                                    <Setter Property="Width" Value="25" />
+                                    <Setter Property="Margin" Value="2.5,0" />
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <!--맨 마지막에 행 추가-->
+                            <Button Command="{Binding DataContext.AddItemCommand, ElementName=RootGrid}"
+                                    ToolTip="{x:Static resources:Resource.CNT_ADD_ROW_AT_LAST}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_InsertLast.png" />
+                            </Button>
+                            <!--선택한것 앞에 행 추가-->
+                            <Button Command="{StaticResource InsertRowBeforeSelectedRowCommand}"
+                                    ToolTip="{x:Static resources:Resource.CNT_ADD_ROW_ABOVE}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_InsertNext.png" />
+                            </Button>
+                            <!--선택한것 다음에 행 추가-->
+                            <Button Command="{StaticResource InsertRowAfterSelectedRowCommand}"
+                                    ToolTip="{x:Static resources:Resource.CNT_ADD_ROW_BELOW}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_InsertPrev.png" />
+                            </Button>
+
+                            <Rectangle Width="1" Fill="#FFdee1e6" Margin="7,0" />
+
+                            <!--행 삭제-->
+                            <Button Command="{Binding DataContext.DeleteSelectedItemsCommand, ElementName=RootGrid}"
+                                    ToolTip="{x:Static resources:Resource.CNT_DELETE_ROWS}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_DeleteLine.png" />
+                            </Button>
+
+                            <!--클립보드로 복사-->
+                            <Button Command="{StaticResource CopyContentsToClipboardCommand}"
+                                    ToolTip="{x:Static resources:Resource.CNT_COPY_TO_CLIPBOARD}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_Duplicate.png" />
+                            </Button>
+
+                            <Rectangle Width="1" Fill="#FFdee1e6" Margin="7,0" />
+
+                            <!--전체 시간 조절-->
+                            <Button ToolTip="전체 시간 조정" Command="{StaticResource AdjustTimeCommand}">
+                                <Image Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_EditSubtitle_Adjust.png" />
+                            </Button>
+
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Height="1" Fill="#FFebedf0" VerticalAlignment="Top" Grid.ColumnSpan="3" />
+                    <Grid Grid.Column="0" x:Name="TimeControlGrid" Margin="20,15,10,3" HorizontalAlignment="Center"
+                          VerticalAlignment="Bottom">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Text="{Binding Source={x:Static resources:Resource.CNT_START_TIME}, StringFormat='{}{0} : '}"
+                                   FontWeight="Bold" VerticalAlignment="Center" />
+                        <mz:TimeSpinner Grid.Row="0" Grid.Column="1" Time="{Binding StartTime}"
+                                        IsShowMilliseconds="True"
+                                        MillisecondTickValue="{Binding Config.Subtitle.StartEndTimeTick, Mode=OneWay, Converter={StaticResource TimeSpanToTotalMillisecondsConverter}, Source={x:Static config:ConfigHolder.BindableCurrent}}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding Source={x:Static resources:Resource.CNT_END_TIME}, StringFormat='{}{0} : '}"
+                                   FontWeight="Bold" VerticalAlignment="Center" />
+                        <mz:TimeSpinner Grid.Row="2" Grid.Column="1" Time="{Binding EndTime}" IsShowMilliseconds="True"
+                                        MillisecondTickValue="{Binding Config.Subtitle.StartEndTimeTick, Mode=OneWay, Converter={StaticResource TimeSpanToTotalMillisecondsConverter}, Source={x:Static config:ConfigHolder.BindableCurrent}}" />
+                        <!--<TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:Resource.CNT_DURATION}, StringFormat='{}{0} : '}" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <mz:TimeSpinner Grid.Row="4" Grid.Column="1" Style="{StaticResource TimeSpinnerSecondsMaxType}" Time="{Binding Duration}" MaximumTimeType="Seconds" SecondMaxLength="3" IsShowMilliseconds="True"                                        
+                                        MillisecondTickValue="100"/>-->
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Margin="10,11,20,13">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Border CornerRadius="2,2,0,0" BorderThickness="1,1,1,0" BorderBrush="#FFbec4ce">
+                                <Grid Margin="10,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                        Value="{x:Null}">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.Resources>
+                                            <Style TargetType="{x:Type Button}"
+                                                   BasedOn="{StaticResource Style_IconLabelButton}">
+                                                <Setter Property="Padding" Value="0" />
+                                                <Setter Property="Height" Value="25" />
+                                                <Setter Property="MinWidth" Value="0" />
+                                                <Setter Property="Width" Value="25" />
+                                                <Setter Property="Margin" Value="0" />
+                                            </Style>
+                                        </Grid.Resources>
+                                        <!--볼드-->
+                                        <Button Grid.Column="0" ToolTip="{x:Static resources:Resource.CNT_BOLD}"
+                                                Command="EditingCommands.ToggleBold"
+                                                CommandTarget="{Binding ElementName=SubtitleRichTextBox}">
+                                            <Image Stretch="None"
+                                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Bold.png" />
+                                        </Button>
+                                        <!--이탤릭-->
+                                        <Button Grid.Column="1" Margin="5,0"
+                                                ToolTip="{x:Static resources:Resource.CNT_ITALIC}"
+                                                Command="EditingCommands.ToggleItalic"
+                                                CommandTarget="{Binding ElementName=SubtitleRichTextBox}">
+                                            <Image Stretch="None"
+                                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Italic.png" />
+                                        </Button>
+                                        <!--언더라인-->
+                                        <Button Grid.Column="2" ToolTip="{x:Static resources:Resource.CNT_UNDERLINE}"
+                                                Command="EditingCommands.ToggleUnderline"
+                                                CommandTarget="{Binding ElementName=SubtitleRichTextBox}">
+                                            <Image Stretch="None" Margin="0,1,0,0"
+                                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Underline.png" />
+                                        </Button>
+                                    </Grid>
+
+                                    <Rectangle Grid.Column="1" Width="1" Fill="#FFdee1e6" Margin="10,0" Height="25">
+                                        <Rectangle.Style>
+                                            <Style TargetType="{x:Type Rectangle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                        Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Rectangle.Style>
+                                    </Rectangle>
+
+                                    <!--전체 길이-->
+                                    <StackPanel Grid.Column="2" TextBlock.FontSize="11px"
+                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteeForeground}"
+                                                Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Text="{Binding Source={x:Static resources:Resource.CNT_TOTAL_LENGTH}, StringFormat='{}{0} : '}" />
+                                        <TextBlock Style="{StaticResource Style_ValidateText}"
+                                                   Text="{Binding Path=TextTotalLength}" FontWeight="Bold" />
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                        Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                    </StackPanel>
+
+                                    <!--단어/초-->
+                                    <StackPanel Grid.Column="3" TextBlock.FontSize="11px"
+                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteeForeground}"
+                                                Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Text="{Binding Source={x:Static resources:Resource.CNT_CHARS_PER_SECOND}, StringFormat='{}{0} : '}" />
+                                        <TextBlock Style="{StaticResource Style_ValidateText}"
+                                                   IsEnabled="{Binding Path=IsOverMaxCharacterPerSecond}"
+                                                   Text="{Binding Path=TextCharsPerSecond}" FontWeight="Bold" />
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                        Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+
+                            <mz:RichTextBox x:Name="SubtitleRichTextBox" Grid.Row="1" FontSize="15px"
+                                            VerticalScrollBarVisibility="Auto" ShowLine="True">
+                                <i:Interaction.Behaviors>
+                                    <behavior:InterpretRichTextBoxBehavior
+                                        BoundDocument="{Binding Texts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue={x:Null}}" />
+                                </i:Interaction.Behaviors>
+                            </mz:RichTextBox>
+                            <!--선택된 아이템이 하나도 없는 경우 보여지는 패널-->
+                            <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Static resources:Resource.MSG_NO_CAPTION_SELECTED}"
+                                           FontSize="11px" Opacity="0.5" HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" TextAlignment="Center" />
+                                <Button Grid.Row="1" Content="{x:Static resources:Resource.CNT_ADD_CAPTION}"
+                                        Command="{Binding DataContext.AddItemCommand, ElementName=RootGrid}"
+                                        Style="{StaticResource Style_ButtonDefault}" Margin="0,5,0,0"
+                                        HorizontalAlignment="Center" />
+                            </Grid>
+
+                            <!--행당 글자 수
+                            <StackPanel Grid.Row="1" IsHitTestVisible="False" TextBlock.FontSize="11px"
+                                        TextBlock.Foreground="{DynamicResource Brush_MinorWhiteeForeground}"
+                                        Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                        Margin="10">
+                                <TextBlock
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_SINGLE_LINE_LENGTH}, StringFormat='{}{0} : '}" />
+                                <TextBlock Style="{StaticResource Style_ValidateText}" IsEnabled="False"
+                                           Text="{Binding Path=TextSingleLineLength}" FontWeight="Bold" />
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem, ElementName=SubtitleListView}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                            </StackPanel>-->
+
+                        </Grid>
+                    </Grid>
+
+                    <StackPanel Grid.Column="2" Margin="0,15,20,13" VerticalAlignment="Bottom">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_IconLabelButton}">
+                                <Setter Property="Padding" Value="18,5" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Margin="0,0,0,10"
+                                Command="{Binding DataContext.SelectPreviousRowCommand, ElementName=RootGrid}"
+                                HorizontalContentAlignment="Stretch" MinWidth="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image RenderTransformOrigin="0.5,0.5" Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_NextPrevArrow.png">
+                                    <Image.RenderTransform>
+                                        <RotateTransform Angle="90" />
+                                    </Image.RenderTransform>
+                                </Image>
+                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_PREVIOUS}"
+                                           VerticalAlignment="Center" Margin="8,0,0,0" />
+                            </Grid>
+                        </Button>
+                        <Button Command="{Binding DataContext.SelectNextRowCommand, ElementName=RootGrid}"
+                                HorizontalContentAlignment="Stretch" MinWidth="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image RenderTransformOrigin="0.5,0.5" Stretch="None"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_NextPrevArrow.png">
+                                    <Image.RenderTransform>
+                                        <RotateTransform Angle="270" />
+                                    </Image.RenderTransform>
+                                </Image>
+                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_NEXT}"
+                                           VerticalAlignment="Center" Margin="8,0,0,0" />
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="#FFcbd0d8">
+            <Image HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0"
+                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ResizeGrip.png"
+                   Stretch="None" />
+        </Border>
+
+    </Grid>
+</UserControl>

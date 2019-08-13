@@ -1,0 +1,95 @@
+﻿<Window x:Class="Megazone.HyperSubtitleEditor.Presentation.View.AdjustTimeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mz="http://schemas.megazone.co.kr"
+        xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+        TextOptions.TextFormattingMode="Display" Title="{x:Static resources:Resource.CNT_ADJUST_TIME}"
+        Icon="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Logo.ico"
+        UseLayoutRounding="True" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" Width="430" Height="320">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Style="{StaticResource Style_PopupContentAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#FFc4cbd5" BorderThickness="1" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Static resources:Resource.CNT_MINUTE_SECOND_MILLISECOND}"
+                                       VerticalAlignment="Center" FontWeight="Bold" />
+                            <mz:TimeSpinner x:Name="TimeSpinner" Grid.Column="1"
+                                            Style="{StaticResource TimeSpinnerMinutesMaxType}"
+                                            VerticalAlignment="Center" Time="{Binding StartTime}"
+                                            MaximumTimeType="Minutes" MinuteMaxLength="3" IsShowMilliseconds="True" />
+                        </Grid>
+
+                        <Rectangle Grid.Row="1" Height="1" Fill="#FFe2e5e9" Margin="0,15" />
+
+                        <StackPanel Grid.Row="2" Margin="15,0">
+                            <RadioButton x:Name="AllRangeRadioButton" IsChecked="True"
+                                         Content="{x:Static resources:Resource.CNT_ALL_CAPTIONS}"
+                                         HorizontalAlignment="Left" />
+                            <RadioButton x:Name="SelectedItemsRangeRadioButton"
+                                         Content="{x:Static resources:Resource.CNT_SELECTED_CAPTION}" Margin="0,5"
+                                         HorizontalAlignment="Left" />
+                            <RadioButton x:Name="SelectedItemsAndBackItemsRangeRadioButton"
+                                         Content="{x:Static resources:Resource.CNT_SELECTED_CAPTION_AND_ALL_AFTER}"
+                                         HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+                <Rectangle Grid.Row="1" Fill="#FFeceef0" Height="2" />
+            </Grid>
+        </Border>
+
+        <!--하단 버튼 영역-->
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="FowardButton" Grid.Column="1" Content="{x:Static resources:Resource.CNT_FORWARD}"
+                        Style="{StaticResource Style_IconLabelButton}" Click="FowardButton_OnClick" />
+                <Button x:Name="BackwardButton" Grid.Column="3" Content="{x:Static resources:Resource.CNT_BACKWARD}"
+                        Style="{StaticResource Style_IconLabelButton}" Click="BackwardButton_OnClick" />
+                <Button Grid.Column="5" Content="{x:Static resources:Resource.CNT_CANCEL}" IsCancel="True" />
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>

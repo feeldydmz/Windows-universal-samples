@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CNT_ADD_NEW_CAPTION" xml:space="preserve">
+    <value>새 캡션 추가</value>
+  </data>
+  <data name="CNT_ADD_ROW" xml:space="preserve">
+    <value>행 추가</value>
+  </data>
+  <data name="CNT_ADD_ROW_ABOVE" xml:space="preserve">
+    <value>위에 행 추가</value>
+  </data>
+  <data name="CNT_ADD_ROW_BELOW" xml:space="preserve">
+    <value>아래에 행 추가</value>
+  </data>
+  <data name="CNT_ADD_CAPTION" xml:space="preserve">
+    <value>캡션 추가</value>
+  </data>
+  <data name="CNT_ADJUST_ALL_TIME" xml:space="preserve">
+    <value>전체 시간 조정</value>
+  </data>
+  <data name="CNT_ADJUST_TIME" xml:space="preserve">
+    <value>시간 조정</value>
+  </data>
+  <data name="CNT_ALL_FILES" xml:space="preserve">
+    <value>모든 파일</value>
+  </data>
+  <data name="CNT_ALL_CAPTIONS" xml:space="preserve">
+    <value>전체 캡션</value>
+  </data>
+  <data name="CNT_APPLY" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="CNT_BACKWARD" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="CNT_PREVIOUS_PAGE" xml:space="preserve">
+    <value>이전 페이지</value>
+  </data>
+  <data name="CNT_BOLD" xml:space="preserve">
+    <value>굵게</value>
+  </data>
+  <data name="CNT_BUFFERING_TIME" xml:space="preserve">
+    <value>버퍼링 시간(초)</value>
+  </data>
+  <data name="CNT_CANCEL" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="CNT_CHARS_PER_SECOND" xml:space="preserve">
+    <value>글자/초</value>
+  </data>
+  <data name="CNT_CLOSE" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="CNT_CONFIRM" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="CNT_CONTENTS" xml:space="preserve">
+    <value>내용</value>
+  </data>
+  <data name="CNT_COPY" xml:space="preserve">
+    <value>_사본</value>
+  </data>
+  <data name="CNT_COPY_ROW" xml:space="preserve">
+    <value>행 복사</value>
+  </data>
+  <data name="CNT_COPY_CAPTION" xml:space="preserve">
+    <value>캡션 복사</value>
+  </data>
+  <data name="CNT_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>클립보드에 복사</value>
+  </data>
+  <data name="CNT_CREATE_NEW_CAPTION" xml:space="preserve">
+    <value>새 캡션 생성</value>
+  </data>
+  <data name="CNT_CRITERIA_NOT_MATCH_RESULT" xml:space="preserve">
+    <value>조건과 일치하는 결과가 없습니다.</value>
+  </data>
+  <data name="CNT_CUT_ROW" xml:space="preserve">
+    <value>행 잘라내기</value>
+  </data>
+  <data name="CNT_DELETE" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="CNT_DELETE_ROWS" xml:space="preserve">
+    <value>행 삭제</value>
+  </data>
+  <data name="CNT_DEPLOY" xml:space="preserve">
+    <value>배포</value>
+  </data>
+  <data name="CNT_DOWNLOAD_EXCEL_TEMPLET" xml:space="preserve">
+    <value>Excel 양식 다운로드</value>
+  </data>
+  <data name="CNT_DURATION" xml:space="preserve">
+    <value>지속 시간</value>
+  </data>
+  <data name="CNT_EDIT" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="CNT_EDIT_CAPTION_INFO" xml:space="preserve">
+    <value>캡션 정보 수정</value>
+  </data>
+  <data name="CNT_END_TIME" xml:space="preserve">
+    <value>종료 시간</value>
+  </data>
+  <data name="CNT_ERROR" xml:space="preserve">
+    <value>에러</value>
+  </data>
+  <data name="CNT_EXIT" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="CNT_EXPORT" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="CNT_EXPORT_ALL_WEBVTT" xml:space="preserve">
+    <value>WebVTT로 전체 내보내기</value>
+  </data>
+  <data name="CNT_EXPORT_EXCEL" xml:space="preserve">
+    <value>Excel 내보내기</value>
+  </data>
+  <data name="CNT_EXPORT_PROJECT" xml:space="preserve">
+    <value>프로젝트 내보내기</value>
+  </data>
+  <data name="CNT_EXPORT_WEBVTT" xml:space="preserve">
+    <value>WebVTT로 내보내기</value>
+  </data>
+  <data name="CNT_FILE" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="CNT_FIND" xml:space="preserve">
+    <value>찾기</value>
+  </data>
+  <data name="CNT_FIND_ALL" xml:space="preserve">
+    <value>전체 찾기</value>
+  </data>
+  <data name="CNT_FIND_CONTENTS" xml:space="preserve">
+    <value>찾을 내용</value>
+  </data>
+  <data name="CNT_FIND_FILE" xml:space="preserve">
+    <value>파일 찾기</value>
+  </data>
+  <data name="CNT_FIND_NEXT" xml:space="preserve">
+    <value>다음 찾기</value>
+  </data>
+  <data name="CNT_FORWARD" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="CNT_GO_TO_NUMBER" xml:space="preserve">
+    <value>번호로 이동</value>
+  </data>
+  <data name="CNT_GO_TO_CAPTION_NUMBER" xml:space="preserve">
+    <value>캡션 번호로 이동</value>
+  </data>
+  <data name="CNT_HOW_MANY_MATCH" xml:space="preserve">
+    <value>개 일치</value>
+  </data>
+  <data name="CNT_HYPER_SUBTITLE_EDITOR_INFO" xml:space="preserve">
+    <value>Hyper Subtitle Editor 정보</value>
+  </data>
+  <data name="CNT_IMPORT" xml:space="preserve">
+    <value>불러오기</value>
+  </data>
+  <data name="CNT_IMPORT_EXCEL" xml:space="preserve">
+    <value>Excel 가져오기</value>
+  </data>
+  <data name="CNT_IMPORT_PROJECT" xml:space="preserve">
+    <value>프로젝트 가져오기</value>
+  </data>
+  <data name="CNT_INFO" xml:space="preserve">
+    <value>알림</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_PATH" xml:space="preserve">
+    <value>파일을 탐색하거나 가져올 수 있는 URL을 입력하세요.</value>
+  </data>
+  <data name="CNT_INSERT_AFTER" xml:space="preserve">
+    <value>이후 위치에 삽입</value>
+  </data>
+  <data name="CNT_INSERT_AT_CURRENT_POSITION" xml:space="preserve">
+    <value>현재 위치에 삽입</value>
+  </data>
+  <data name="CNT_INSERT_BEFORE" xml:space="preserve">
+    <value>이전 위치에 삽입</value>
+  </data>
+  <data name="CNT_ITALIC" xml:space="preserve">
+    <value>기울임</value>
+  </data>
+  <data name="CNT_JOB_ID" xml:space="preserve">
+    <value>잡 ID</value>
+  </data>
+  <data name="CNT_KIND" xml:space="preserve">
+    <value>캡션 종류</value>
+  </data>
+  <data name="CNT_LANGUAGE" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="CNT_LOAD_ALL_CAPTIONS" xml:space="preserve">
+    <value>전체 캡션 불러오기</value>
+  </data>
+  <data name="CNT_LOAD_CAPTION" xml:space="preserve">
+    <value>캡션 불러오기</value>
+  </data>
+  <data name="CNT_MAX_LENGTH_PER_ROW" xml:space="preserve">
+    <value>행당 최대 글자수</value>
+  </data>
+  <data name="CNT_MAX_ROW_COUNT" xml:space="preserve">
+    <value>최대 행 수</value>
+  </data>
+  <data name="CNT_MAX_TEXT_COUNT_PER_SECOND" xml:space="preserve">
+    <value>초당 최대 글자 수</value>
+  </data>
+  <data name="CNT_MINUTE_SECOND_MILLISECOND" xml:space="preserve">
+    <value>분 : 초 : 밀리세컨드</value>
+  </data>
+  <data name="CNT_MOVE" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="CNT_NAME" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="CNT_NEXT_PAGE" xml:space="preserve">
+    <value>다음 페이지</value>
+  </data>
+  <data name="CNT_NOT_CONNECTED" xml:space="preserve">
+    <value>연결 안 됨</value>
+  </data>
+  <data name="CNT_NOT_EXIST_PATH" xml:space="preserve">
+    <value>존재하지 않는 경로입니다.</value>
+  </data>
+  <data name="CNT_OPEN" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="CNT_OPEN_IN_JOB" xml:space="preserve">
+    <value>잡에서 열기</value>
+  </data>
+  <data name="CNT_OPEN_CAPTION_FILE" xml:space="preserve">
+    <value>캡션 파일 열기</value>
+  </data>
+  <data name="CNT_OPEN_URL" xml:space="preserve">
+    <value>URL로 열기</value>
+  </data>
+  <data name="CNT_OPEN_VIDEO" xml:space="preserve">
+    <value>비디오 열기</value>
+  </data>
+  <data name="CNT_OPEN_WITH_FILE_ADDRESS" xml:space="preserve">
+    <value>파일 주소로 열기</value>
+  </data>
+  <data name="CNT_PASTE_ROW" xml:space="preserve">
+    <value>행 붙여넣기</value>
+  </data>
+  <data name="CNT_PLAY_AND_PAUSE_VIDEO" xml:space="preserve">
+    <value>재생/일시 정지</value>
+  </data>
+  <data name="CNT_PLAY_BACKWARD_BY_HALF_SEC" xml:space="preserve">
+    <value>뒤로 0.5초 이동</value>
+  </data>
+  <data name="CNT_PLAY_FORWARD_BY_HALF_SEC" xml:space="preserve">
+    <value>앞으로 0.5초 이동</value>
+  </data>
+  <data name="CNT_PROGRAM_INFO" xml:space="preserve">
+    <value>프로그램 정보</value>
+  </data>
+  <data name="CNT_PROGRAM_SETTING" xml:space="preserve">
+    <value>프로그램 설정</value>
+  </data>
+  <data name="CNT_REFRESH" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="CNT_REMOVE_CAPTION" xml:space="preserve">
+    <value>캡션 삭제</value>
+  </data>
+  <data name="CNT_REMOVE_TEXT_FORMATTING" xml:space="preserve">
+    <value>글자 스타일 제거</value>
+  </data>
+  <data name="CNT_REPLACE" xml:space="preserve">
+    <value>바꾸기</value>
+  </data>
+  <data name="CNT_REPLACE_ALL" xml:space="preserve">
+    <value>전체 바꾸기</value>
+  </data>
+  <data name="CNT_REPLACE_CONTENTS" xml:space="preserve">
+    <value>바꿀 내용</value>
+  </data>
+  <data name="CNT_RESET" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="CNT_SAVE" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="CNT_SEARCH" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="CNT_SELECTED_CAPTION" xml:space="preserve">
+    <value>선택한 캡션만</value>
+  </data>
+  <data name="CNT_SELECTED_CAPTION_AND_ALL_AFTER" xml:space="preserve">
+    <value>선택한 캡션과 이후의 모든 캡션</value>
+  </data>
+  <data name="CNT_SELECT_ALL_ROWS" xml:space="preserve">
+    <value>전체 행 선택</value>
+  </data>
+  <data name="CNT_SELECT_BEFORE_ROW" xml:space="preserve">
+    <value>이전 행 선택</value>
+  </data>
+  <data name="CNT_SELECT_CAPTION_TO_COPY" xml:space="preserve">
+    <value>복사할 캡션을 선택하세요.</value>
+  </data>
+  <data name="CNT_SELECT_EXCEL_CAPTION_FILE" xml:space="preserve">
+    <value>Excel 형식의 캡션 파일을 선택하세요.</value>
+  </data>
+  <data name="CNT_SELECT_JOB" xml:space="preserve">
+    <value>잡 선택</value>
+  </data>
+  <data name="CNT_SELECT_NEXT_ROW" xml:space="preserve">
+    <value>다음 행 선택</value>
+  </data>
+  <data name="CNT_SELECT_CAPTION_FILE" xml:space="preserve">
+    <value>캡션 파일을 선택하세요.</value>
+  </data>
+  <data name="CNT_SELECT_VIDEO" xml:space="preserve">
+    <value>비디오 선택</value>
+  </data>
+  <data name="CNT_SETTING" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="CNT_SETTING_CAPTION" xml:space="preserve">
+    <value>캡션 설정</value>
+  </data>
+  <data name="CNT_SETTING_VIDEO_PLAYER" xml:space="preserve">
+    <value>동영상 플레이어 설정</value>
+  </data>
+  <data name="CNT_SET_END_TIME" xml:space="preserve">
+    <value>캡션 종료 시간 설정</value>
+  </data>
+  <data name="CNT_SET_START_TIME" xml:space="preserve">
+    <value>캡션 시작 시간 설정</value>
+  </data>
+  <data name="CNT_SHEET" xml:space="preserve">
+    <value>시트</value>
+  </data>
+  <data name="CNT_SINGLE_LINE_LENGTH" xml:space="preserve">
+    <value>행당 글자 수</value>
+  </data>
+  <data name="CNT_SPACE_BETWEEN_CAPTIONS" xml:space="preserve">
+    <value>캡션 간 공백</value>
+  </data>
+  <data name="CNT_START_TIME" xml:space="preserve">
+    <value>시작 시간</value>
+  </data>
+  <data name="CNT_CAPTION_MAX_LENGTH" xml:space="preserve">
+    <value>캡션의 최대 길이</value>
+  </data>
+  <data name="CNT_CAPTION_MIN_LENGTH" xml:space="preserve">
+    <value>캡션의 최소 길이</value>
+  </data>
+  <data name="CNT_TIME_ADJUSTMENT_UNIT" xml:space="preserve">
+    <value>시간 조절 증감 단위</value>
+  </data>
+  <data name="CNT_TOOL" xml:space="preserve">
+    <value>도구</value>
+  </data>
+  <data name="CNT_TOTAL_LENGTH" xml:space="preserve">
+    <value>전체 길이</value>
+  </data>
+  <data name="CNT_UNDERLINE" xml:space="preserve">
+    <value>밑줄</value>
+  </data>
+  <data name="CNT_VIDEO" xml:space="preserve">
+    <value>비디오</value>
+  </data>
+  <data name="CNT_WAITING" xml:space="preserve">
+    <value>기다리는 중...</value>
+  </data>
+  <data name="CNT_WARNING" xml:space="preserve">
+    <value>경고</value>
+  </data>
+  <data name="MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY" xml:space="preserve">
+    <value>Elastic Transcoder 권한을 확인 후 다시 시도해주세요.</value>
+  </data>
+  <data name="MSG_DEPLOY_FAIL" xml:space="preserve">
+    <value>배포 실패했습니다. 다시 시도해주세요.</value>
+  </data>
+  <data name="MSG_DEPLOY_SUCCESS" xml:space="preserve">
+    <value>성공적으로 배포했습니다. </value>
+  </data>
+  <data name="MSG_DRAG_OPEN_CAPTION" xml:space="preserve">
+    <value>등록된 캡션이 없습니다.
+파일을 드래그하여 추가할 수 있습니다.</value>
+  </data>
+  <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
+    <value>비디오가 없습니다.
+파일을 드래그하여 불러올 수 있습니다.</value>
+  </data>
+  <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
+    <value>다음 캡션과 중복 노출됩니다</value>
+  </data>
+  <data name="MSG_DUPLICATE_TO_THE_PREVIOUS_CAPTION" xml:space="preserve">
+    <value>이전 캡션과 중복 노출됩니다</value>
+  </data>
+  <data name="MSG_ERROR_TRYING_TO_PLAY" xml:space="preserve">
+    <value>재생 시도 중
+오류가 발생했습니다.</value>
+  </data>
+  <data name="MSG_EXPORT_EXCEL_FILE_FAIL" xml:space="preserve">
+    <value>Excel 파일 생성에 실패하였습니다.</value>
+  </data>
+  <data name="MSG_INPUT_MOVE_ROW_NUMBER" xml:space="preserve">
+    <value>이동할 행 번호를 입력하세요.</value>
+  </data>
+  <data name="MSG_INVALID_APPLICATION_INFO" xml:space="preserve">
+    <value>애플리케이션 구동을 위한 정보가 잘못되었습니다.</value>
+  </data>
+  <data name="MSG_JOB_ID_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>잡 아이디 {0} 가
+클립보드에 복사되었습니다.</value>
+  </data>
+  <data name="MSG_KEEP_CURRENT_TAB" xml:space="preserve">
+    <value>현재 텝을 유지하시겠습니까?</value>
+  </data>
+  <data name="MSG_LICENSE_FFMPEG" xml:space="preserve">
+    <value>- Hyper Subtitle Editor는 썸네일 이미지와 미디어 메타 데이타 추출을 위해 LGPLv2.1 라이선스 아래 FFmpeg.exe를 사용하고 있습니다.</value>
+  </data>
+  <data name="MSG_LICENSE_NAUDIO" xml:space="preserve">
+    <value>- Hyper Subtitle Edito는 비디오 플레이어를 위해 Ms-PL 라이선스 아래 naudio를 사용하고 있습니다.</value>
+  </data>
+  <data name="MSG_LOAD_GROUP_FILE" xml:space="preserve">
+    <value>작업 중인 내용이 있습니다.
+프로젝트를 불러 오시겠습니까?</value>
+  </data>
+  <data name="MSG_NO_PRINTABLE_CONTENTS" xml:space="preserve">
+    <value>출력 가능한 내용이 없습니다.</value>
+  </data>
+  <data name="MSG_PATH_COPY_TO_CLIPBOARD" xml:space="preserve">
+    <value>{0}의 경로가
+클립보드에 복사되었습니다.</value>
+  </data>
+  <data name="MSG_SAVE_FAIL" xml:space="preserve">
+    <value>저장 중 오류가 발생했습니다.</value>
+  </data>
+  <data name="MSG_SAVE_SUCCESS" xml:space="preserve">
+    <value>성공적으로 저장되었습니다.</value>
+  </data>
+  <data name="MSG_VIDEO_PLAY_CONDITION" xml:space="preserve">
+    <value>동영상의 재생 상태는 사용자의 네트워크 상태나
+PC 환경에 따라 차이가 있을 수 있습니다.</value>
+  </data>
+  <data name="MSG_NO_CAPTION_SELECTED" xml:space="preserve">
+    <value>선택된 캡션이 없습니다.</value>
+  </data>
+  <data name="CNT_ADD_ROW_AT_LAST" xml:space="preserve">
+    <value>마지막에 행 추가</value>
+  </data>
+  <data name="CNT_NEXT" xml:space="preserve">
+    <value>다음</value>
+  </data>
+  <data name="CNT_PREVIOUS" xml:space="preserve">
+    <value>이전</value>
+  </data>
+  <data name="CNT_PUBLISH" xml:space="preserve">
+    <value>게시</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE" xml:space="preserve">
+    <value>방금 전</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE_HOURS" xml:space="preserve">
+    <value>{0}시간 전</value>
+  </data>
+  <data name="CNT_CONVERTER_BEFORE_MINUTES" xml:space="preserve">
+    <value>{0}분 전</value>
+  </data>
+  <data name="CNT_CONVERTER_MMDD" xml:space="preserve">
+    <value>{0}월 {1}일 {2:t}</value>
+  </data>
+  <data name="CNT_CONVERTER_YESTERDAY" xml:space="preserve">
+    <value>어제 {0:t}</value>
+  </data>
+  <data name="CNT_CONVERTER_YYYYMMDD" xml:space="preserve">
+    <value>{0}년 {1}월 {2}일</value>
+  </data>
+  <data name="CNT_AUTOADJUST_ENDTIMES" xml:space="preserve">
+    <value>종료 시간 자동 조정</value>
+  </data>
+  <data name="CNT_VIEW_LOG_FOLDERE" xml:space="preserve">
+    <value>로그 폴더 보기</value>
+  </data>
+</root>

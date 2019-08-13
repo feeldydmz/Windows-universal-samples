@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.CopySubtitleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:model="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d" Width="430" Height="300"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CopySubtitle}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Style="{StaticResource Style_PopupContentAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#FFc4cbd5" BorderThickness="1" Padding="20">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{x:Static resources:Resource.CNT_SELECT_CAPTION_TO_COPY}" Margin="0,0,0,5" />
+                            <ComboBox Grid.Row="1" ItemsSource="{Binding Tabs}"
+                                      SelectedItem="{Binding SelectedTab, UpdateSourceTrigger=PropertyChanged}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type model:ISubtitleTabItemViewModel}">
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <Rectangle Grid.Row="1" Height="1" Fill="#FFe2e5e9" Margin="0,14" />
+
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="120" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Text="{Binding Source={x:Static resources:Resource.CNT_KIND}, StringFormat='{}{0} : '}"
+                                       VerticalAlignment="Center" FontWeight="Bold" />
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding Source={x:Static resources:Resource.CNT_LANGUAGE}, StringFormat='{}{0} : '}"
+                                       VerticalAlignment="Center" FontWeight="Bold" />
+                            <TextBlock Grid.Row="4"
+                                       Text="{Binding Source={x:Static resources:Resource.CNT_NAME}, StringFormat='{}{0} : '}"
+                                       VerticalAlignment="Center" FontWeight="Bold" />
+
+
+                            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=SubtitleKinds}"
+                                      SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"
+                                      SelectedItem="{Binding Path=SelectedLanguageItemViewModel, UpdateSourceTrigger=PropertyChanged}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type itemViewModel:LanguageItemViewModel}">
+                                        <TextBlock Text="{Binding Path=DisplayName}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ComboBox>
+                            <TextBox Grid.Column="1" Grid.Row="4"
+                                     Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+                <Rectangle Grid.Row="1" Fill="#FFeceef0" Height="2" />
+            </Grid>
+        </Border>
+
+        <!--하단 버튼 영역-->
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
+                        Command="{Binding OnConfirmCommand, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
+                        Click="CancelButtonBase_OnClick" />
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

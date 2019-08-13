@@ -1,0 +1,19 @@
+﻿<Window x:Class="Megazone.HyperSubtitleEditor.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View;assembly=Megazone.HyperSubtitleEditor.Presentation"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+        mc:Ignorable="d" Closed="MainWindow_OnClosed"
+        TextOptions.TextFormattingMode="Display"
+        Icon="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Logo.ico"
+        UseLayoutRounding="True" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen"
+        Title="{x:Static resources:Resource.CNT_APPLICATION_NAME}" Width="1280" Height="800" MinWidth="950"
+        MinHeight="600">
+    <Grid x:Name="RootPanel">
+        <Border>
+            <view:MainView x:Name="MainView" />
+        </Border>
+    </Grid>
+</Window>

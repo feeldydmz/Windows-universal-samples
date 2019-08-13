@@ -1,0 +1,147 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mz="http://schemas.megazone.co.kr">
+
+    <Style x:Key="Style_ListBoxDefault" TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{DynamicResource Brush_ListItemBackground}" />
+        <Setter Property="BorderBrush" Value="#FFc4cbd5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <Grid>
+                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}"
+                                          FocusVisualStyle="{x:Null}"
+                                          Background="Transparent">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                            <TextBlock x:Name="PART_GuideText" Text="{TemplateBinding mz:ListBoxProperty.GuideText}"
+                                       Foreground="#FF222222" Opacity="0.5" TextAlignment="Center"
+                                       LineHeight="20px" Margin="20,5" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" Visibility="Collapsed" TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_GuideText" />
+                        </Trigger>
+                        <!--<Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>-->
+                        <!--<DataTrigger Binding="{Binding mz:ListBoxProperty.GuideText}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_GuideText"/>
+                        </DataTrigger>-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsGrouping" Value="true" />
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style_ListBoxItemDefault" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="Background" Value="{DynamicResource Brush_ListItemBackground}" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="Foreground" Value="#FF222222" />
+        <Setter Property="BorderBrush" Value="#FFcdd2da" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="True">
+                        <Grid x:Name="PART_ContentArea">
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                </Style>
+                            </Grid.Resources>
+                            <Rectangle x:Name="PART_Select" Fill="#FF61a5ef" Opacity="0.3" Visibility="Hidden"
+                                       IsHitTestVisible="False" />
+                            <Rectangle x:Name="PART_Over" Fill="#FF61a5ef" Opacity="0.1" RadiusX="1"
+                                       RadiusY="1" Visibility="Hidden" IsHitTestVisible="False" />
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                            <Rectangle x:Name="PART_Line" Height="1" Fill="{TemplateBinding BorderBrush}"
+                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                       UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
+                                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                            <Rectangle x:Name="KeyboardFocusedObject" Stroke="{DynamicResource Brush_PointColor}"
+                                       StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="KeyboardFocusedObject" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_Over" />
+                        </MultiTrigger>
+                        <!--아이템은 선택도 안되고 리스트는 언포커스-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                <Condition Property="IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
+                            <!--<Setter Property="Foreground" Value="#FF9eaabb" />-->
+                        </MultiTrigger>
+                        <!--선택되고 리스트는 언포커스-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />
+                        </MultiTrigger>
+                        <!--선택되고 리스트도 포커스드-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="IsSelected" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource Style_ListBoxDefault}" />
+    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource Style_ListBoxItemDefault}" />
+
+</ResourceDictionary>

@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C489E69F-3CDC-460D-BE55-7DDEFEA02170}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Megazone.HyperSubtitleEditor.Presentation.Resource</RootNamespace>
+    <AssemblyName>Megazone.HyperSubtitleEditor.Presentation.Resource</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\TimeSpinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Spinner\Megazone.Core.Windows.Control.Spinner.csproj">
+      <Project>{758f49f9-16b6-44f8-ac09-5759528cbde9}</Project>
+      <Name>Megazone.Core.Windows.Control.Spinner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.TimeSpinner\Megazone.Core.Windows.Control.TimeSpinner.csproj">
+      <Project>{982f639e-95da-4346-967c-bda05502b4fe}</Project>
+      <Name>Megazone.Core.Windows.Control.TimeSpinner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Xaml\Megazone.Core.Windows.Xaml.csproj">
+      <Project>{ea02fc05-5b3c-4592-a25b-7b08094f3d84}</Project>
+      <Name>Megazone.Core.Windows.Xaml</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Spin_DownArrow_Down.png" />
+    <Resource Include="Image\img_Spin_DownArrow_Normal.png" />
+    <Resource Include="Image\img_Spin_DownArrow_Over.png" />
+    <Resource Include="Image\img_Spin_UpArrow_Down.png" />
+    <Resource Include="Image\img_Spin_UpArrow_Normal.png" />
+    <Resource Include="Image\img_Spin_UpArrow_Over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_CheckInCheckBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_PreviewPlayIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_PreviewStopIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_AudioThumbnail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Noise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_SubtitleEditor_Add.png" />
+    <Resource Include="Image\img_SubtitleEditor_Copy.png" />
+    <Resource Include="Image\img_SubtitleEditor_Deploy.png" />
+    <Resource Include="Image\img_SubtitleEditor_Export.png" />
+    <Resource Include="Image\img_SubtitleEditor_Import.png" />
+    <Resource Include="Image\img_SubtitleEditor_OpenVideoFromJob.png" />
+    <Resource Include="Image\img_SubtitleEditor_OpenVideoFromLocal.png" />
+    <Resource Include="Image\img_SubtitleEditor_Save.png" />
+    <Resource Include="Image\img_SubtitleEditor_SaveAll.png" />
+    <Resource Include="Image\img_SubtitleEditor_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_ResizeGrip.png" />
+    <Resource Include="Image\img_SubtitleEditor_Bold.png" />
+    <Resource Include="Image\img_SubtitleEditor_Italic.png" />
+    <Resource Include="Image\img_SubtitleEditor_Mute.png" />
+    <Resource Include="Image\img_SubtitleEditor_NextPrevArrow.png" />
+    <Resource Include="Image\img_SubtitleEditor_OpenVideo.png" />
+    <Resource Include="Image\img_SubtitleEditor_Pause.png" />
+    <Resource Include="Image\img_SubtitleEditor_Play.png" />
+    <Resource Include="Image\img_SubtitleEditor_PlayButton_Over.png" />
+    <Resource Include="Image\img_SubtitleEditor_PlayButton_Pressed.png" />
+    <Resource Include="Image\img_SubtitleEditor_SliderThumb.png" />
+    <Resource Include="Image\img_SubtitleEditor_Underline.png" />
+    <Resource Include="Image\img_SubtitleEditor_Volume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_SliderThumb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_TranscodeError.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_LinkIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_NavBackward.png" />
+    <Resource Include="Image\img_NavForward.png" />
+    <Resource Include="Image\img_NavUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_PlayerDefaultImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_DragSubtitleTypeFileGuide.png" />
+    <Resource Include="Image\img_DragVideoFileGuide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_EditSubtitle_DeleteLine.png" />
+    <Resource Include="Image\img_EditSubtitle_InsertLine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_SubtitleType_Caption.png" />
+    <Resource Include="Image\img_SubtitleType_Chapter.png" />
+    <Resource Include="Image\img_SubtitleType_Subtitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_SubtitleEditor_OpenCaption.png" />
+    <Resource Include="Image\img_TabCloseButton_Normal.png" />
+    <Resource Include="Image\img_TabCloseButton_Over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_SubtitleEditor_Export_Vtt.png" />
+    <Resource Include="Image\img_SubtitleEditor_Import_Vtt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_HorizontalSplitterThumb.png" />
+    <Resource Include="Image\img_VerticalSplitterThumb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_EditSubtitle_Adjust.png" />
+    <Resource Include="Image\img_EditSubtitle_DotDotDot.png" />
+    <Resource Include="Image\img_EditSubtitle_Duplicate.png" />
+    <Resource Include="Image\img_EditSubtitle_InsertLast.png" />
+    <Resource Include="Image\img_EditSubtitle_InsertNext.png" />
+    <Resource Include="Image\img_EditSubtitle_InsertPrev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_Subtitle_Submitted.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

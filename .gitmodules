@@ -1,0 +1,12 @@
+[submodule "Megazone.Core"]
+	path = Megazone.Core
+	url = https://github.com/mz-private-projects/Megazone.Core.git
+	branch = master
+[submodule "Megazone.Api.Transcoder"]
+	path = Megazone.Api.Transcoder
+	url = https://github.com/mz-private-projects/Megazone.Api.Transcoder.git
+	branch = master
+[submodule "Megazone.Cloud"]
+	path = Megazone.Cloud
+	url = https://github.com/mz-private-projects/Megazone.Cloud.git
+	branch = master

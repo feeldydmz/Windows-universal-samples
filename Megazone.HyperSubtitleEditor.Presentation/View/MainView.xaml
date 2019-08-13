@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cui="clr-namespace:Megazone.VideoStudio.Presentation.Common.Infrastructure.Command.UI;assembly=Megazone.VideoStudio.Presentation.Common.Infrastructure"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Main}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <mz:StringNullOrEmptyToParameterValueConverter x:Key="StringNullOrEmptyToParameterValueConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddNewRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=R, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource GoToSubtitleNumberCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=G, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource PlayOrPauseVideoCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=P, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource AdjustTimeCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Contorl=True, Shift=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource AutoAdjustEndtimesCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=E, Contorl=True, Shift=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowBeforeSelectedRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Contorl=True, Shift=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowAfterSelectedRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Alt=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource CutRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=X, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource CopyRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=C, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource PasteRowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=V, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource SelectAllRowsCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource ExportSelectedTabAsVttCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource ExportAllTabsAsVttCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Contorl=True, Shift=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddTabCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=N, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource DeleteRowsCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Delete}" />
+
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource OpenFindWindowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F, Contorl=True}" />
+
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource OpenFindAndReplaceWindowCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=H, Contorl=True}" />
+
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource SyncStartTimeToCurrentMediaPositionCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F1, Contorl=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource SyncEndTimeToCurrentMediaPositionCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F2, Contorl=True}" />
+
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource FindTextCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F3}" />
+
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource PlayBackByHalfSecondCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Left, Alt=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource PlayForwardByHalfSecondCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Right, Alt=True}" />
+        <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowAtCurrentMediaPositionCommand}"
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Contorl=True}" />
+        <!--<cui:DirectKeyCommandBinding RealCommand="{StaticResource ReplaceTextCommand}"
+                                    KeyGesture="{cui:KeyGestureMarkup Key=H, Contorl=True}" />-->
+    </UserControl.CommandBindings>
+    <!--<UserControl.CommandBindings>
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource SelectAllCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=A, Contorl=True}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource ClearSelectionCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=Escape}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource SearchCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=F, Contorl=True}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource BackCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=Back}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource RefreshCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=F5}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource DownloadCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=F8}" />
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource ShowApplicatoinInfoCommand}"
+                                          KeyGesture="{ui:KeyGestureMarkup Key=F12}" />
+    </UserControl.CommandBindings>-->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=LoadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Path=UnloadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid x:Name="RootGrid" Background="{StaticResource Brush_CommonBackground}">
+        <Grid.RowDefinitions>
+            <!--메뉴 영역-->
+            <RowDefinition Height="Auto" />
+            <!--툴바 영역-->
+            <RowDefinition Height="Auto" />
+            <!--나머지 영역-->
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="{x:Static resources:Resource.CNT_FILE}">
+                <!--<MenuItem Header="새 파일" Command="{StaticResource CreateNewFileCommand}" />-->
+                <!--<MenuItem Header="저장" Command="{StaticResource SaveCommand}" />
+                <MenuItem Header="다른 이름으로 저장" Command="{StaticResource SaveAsCommand}" />-->
+                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_PROJECT}"
+                          Command="{StaticResource LoadGroupFileCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_PROJECT}"
+                          Command="{StaticResource SaveGroupCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_WEBVTT}"
+                          Command="{StaticResource ExportAllTabsAsVttCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
+                          Command="{StaticResource ExportSelectedTabAsVttCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
+                          Command="{StaticResource OpenSubtitleCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_CAPTION}"
+                          Command="{StaticResource CopyTabCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
+                          Command="{StaticResource OpenExcelFileCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_EXCEL}"
+                          Command="{StaticResource ExportExcelFileCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_DOWNLOAD_EXCEL_TEMPLET}"
+                          Command="{StaticResource DownloadExcelTemplet}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXIT}" InputGestureText="Alt+F4"
+                          Command="{StaticResource ExitApplicationCommand}" />
+            </MenuItem>
+            <MenuItem Header="{x:Static resources:Resource.CNT_EDIT}">
+                <MenuItem Header="{x:Static resources:Resource.CNT_FIND}" InputGestureText="Ctrl+F"
+                          Command="{StaticResource OpenFindWindowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_REPLACE}" InputGestureText="Ctrl+H"
+                          Command="{StaticResource OpenFindAndReplaceWindowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_GO_TO_NUMBER}" InputGestureText="Ctrl+G"
+                          Command="{StaticResource GoToSubtitleNumberCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADJUST_TIME}" InputGestureText="Ctrl+Shift+A"
+                          Command="{StaticResource AdjustTimeCommand}" />
+            </MenuItem>
+            <MenuItem Header="{x:Static resources:Resource.CNT_TOOL}">
+                <MenuItem Header="{x:Static resources:Resource.CNT_ADD_ROW}" InputGestureText="Ctrl+R"
+                          Command="{StaticResource AddNewRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_COPY_ROW}" InputGestureText="Ctrl+C"
+                          Command="{StaticResource CopyRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PASTE_ROW}" InputGestureText="Ctrl+V"
+                          Command="{StaticResource PasteRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_CUT_ROW}" InputGestureText="Ctrl+X"
+                          Command="{StaticResource CutRowCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_REMOVE_TEXT_FORMATTING}"
+                          Command="{StaticResource RemoveTextFormattingCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_UNDERLINE}" InputGestureText="Ctrl+U"
+                          Command="{StaticResource ApplyUnderlineToAllTextCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_ITALIC}" InputGestureText="Ctrl+I"
+                          Command="{StaticResource ApplyItalicToAllTextCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_BOLD}" InputGestureText="Ctrl+B"
+                          Command="{StaticResource ApplyBoldToAllTextCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_SELECT_ALL_ROWS}" InputGestureText="Ctrl+A"
+                          Command="{StaticResource SelectAllRowsCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_DELETE}" InputGestureText="Delete"
+                          Command="{StaticResource DeleteRowsCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_INSERT_BEFORE}" InputGestureText="Ctrl+Shift+Insert"
+                          Command="{StaticResource InsertRowBeforeSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_INSERT_AFTER}" InputGestureText="Alt+Insert"
+                          Command="{StaticResource InsertRowAfterSelectedRowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_INSERT_AT_CURRENT_POSITION}"
+                          InputGestureText="Ctrl+Insert"
+                          Command="{StaticResource InsertRowAtCurrentMediaPositionCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_AUTOADJUST_ENDTIMES}"
+                          InputGestureText="Ctrl+Shift+E" Command="{StaticResource AutoAdjustEndtimesCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_SET_START_TIME}" InputGestureText="Ctrl+F1"
+                          Command="{StaticResource SyncStartTimeToCurrentMediaPositionCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_SET_END_TIME}" InputGestureText="Ctrl+F2"
+                          Command="{StaticResource SyncEndTimeToCurrentMediaPositionCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PLAY_BACKWARD_BY_HALF_SEC}"
+                          InputGestureText="Alt+Left" Command="{StaticResource PlayBackByHalfSecondCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PLAY_FORWARD_BY_HALF_SEC}"
+                          InputGestureText="Alt+Right" Command="{StaticResource PlayForwardByHalfSecondCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PLAY_AND_PAUSE_VIDEO}" InputGestureText="Ctrl+P"
+                          Command="{StaticResource PlayOrPauseVideoCommand}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_VIEW_LOG_FOLDERE}"
+                          Command="{StaticResource OpenLogFolderCommand}" />
+            </MenuItem>
+            <MenuItem Header="{x:Static resources:Resource.CNT_VIDEO}">
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
+                          Command="{StaticResource ShowJobMediaSelectorViewCommand}" />
+            </MenuItem>
+            <MenuItem Header="{x:Static resources:Resource.CNT_SETTING}">
+                <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_SETTING}"
+                          Command="{StaticResource ShowSettingsViewCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_INFO}"
+                          Command="{StaticResource ShowApplicatoinInfoCommand}" />
+            </MenuItem>
+        </Menu>
+        <StackPanel Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
+                       Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" />
+            <Button Margin="0,1,0,-1"
+                    Content="{Binding JobId, Converter={StaticResource StringNullOrEmptyToParameterValueConverter}, ConverterParameter={x:Static resources:Resource.CNT_NOT_CONNECTED}}"
+                    Command="{StaticResource SelectJobCommand}" VerticalAlignment="Center">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="UseLayoutRounding" Value="True" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Opacity" Value="0.8" />
+                        <Setter Property="Padding" Value="3,3,3,5" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Margin="{TemplateBinding Padding}" />
+                                        <Rectangle x:Name="Underline" Height="1" Visibility="Collapsed"
+                                                   VerticalAlignment="Bottom" Fill="{TemplateBinding Foreground}"
+                                                   Margin="4" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Opacity" Value="1" />
+                                            <Setter Property="Visibility" Value="Visible" TargetName="Underline" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Opacity" Value="0.6" />
+                                            <Setter Property="Visibility" Value="Visible" TargetName="Underline" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.3" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+        <!--툴바-->
+        <Border x:Name="TopToolBarContainer" Grid.Row="1" />
+
+        <!--컨텐츠 영역-->
+        <Border Grid.Row="2" x:Name="RootViewContainer" Background="#FF292f37" />
+        <Control x:Name="LoadingProgressView" Visibility="Collapsed"
+                 Grid.Row="0" Grid.RowSpan="3"
+                 Style="{StaticResource Style_IndeterminateControl}" />
+    </Grid>
+</UserControl>

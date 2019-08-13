@@ -1,0 +1,158 @@
+﻿<Menu x:Class="Megazone.HyperSubtitleEditor.Presentation.View.MainMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:mz="http://schemas.megazone.co.kr"
+      xmlns:config="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
+      mc:Ignorable="d" Style="{StaticResource Style_Menu}"
+      d:DesignHeight="300" d:DesignWidth="300">
+    <Menu.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <ControlTemplate x:Key="MenuSeprator">
+                <Separator>
+                    <Separator.Style>
+                        <Style TargetType="{x:Type Separator}">
+                            <Setter Property="OverridesDefaultStyle" Value="true" />
+                            <Setter Property="UseLayoutRounding" Value="True" />
+                            <Setter Property="SnapsToDevicePixels" Value="True" />
+                            <Setter Property="Margin" Value="24,2,2,2" />
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Separator}">
+                                        <StackPanel>
+                                            <Rectangle Fill="#FFd6d7d9" Height="1" />
+                                            <Rectangle Fill="#FFfcfcfc" Height="1" />
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Separator.Style>
+                </Separator>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Menu.Resources>
+
+    <!--파일-->
+    <MenuItem Header="파일">
+        <MenuItem Header="새 파일" Command="{StaticResource CreateNewFileCommand}" />
+        <MenuItem Header="저장" Command="{StaticResource SaveCommand}" />
+        <MenuItem Header="다른 이름으로 저장" Command="{StaticResource SaveAsCommand}" />
+        <MenuItem Header="자막 파일 열기" Command="{StaticResource OpenSubtitleFileCommand}" />
+        <MenuItem Header="Excel 파일 열기" Command="{StaticResource OpenExcelFileCommand}" />
+        <MenuItem Header="Excel 파일 내보내기" Command="{StaticResource ExportExcelFileCommand}" />
+        
+        <!--<MenuItem Header="프로필 가져오기" Command="{StaticResource ImportProfilesCommand}" />
+        <MenuItem Header="프로필 내보내기" Command="{StaticResource ExportProfilesCommand}"/>
+        <Separator />
+        <MenuItem Header="프로그램 설정 가져오기" Command="{StaticResource ImportSettingsCommand}" />
+        <MenuItem Header="프로그램 설정 내보내기" Command="{StaticResource ExportSettingsCommand}" />
+        <Separator />
+        <MenuItem Header="종료" InputGestureText="Alt+F4" Command="{StaticResource ExitApplicationCommand}" />-->
+    </MenuItem>
+    <!--편집-->
+    <MenuItem Header="편집">
+        <!--<MenuItem Header="실행 취소" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="다시 실행" InputGestureText="Ctrl+Y" />
+                <Separator />-->
+        <!--<MenuItem Header="Save Change File Info" InputGestureText="Ctrl+S" Foreground="Red" />
+                <Separator />-->
+        <!--<MenuItem Header="복사" InputGestureText="Ctrl+C" Command="{StaticResource CopyCommand}" />
+        <MenuItem Header="잘라내기" InputGestureText="Ctrl+X" Command="{StaticResource CutCommand}" />
+        <MenuItem Header="붙여넣기" InputGestureText="Ctrl+V" Command="{StaticResource PasteCommand}" />
+        <Separator />
+        <MenuItem Header="새 폴더" InputGestureText="Ctrl+Shift+N" Command="{StaticResource CreateNewFolderCommand}" />
+        <MenuItem Header="이름 바꾸기" InputGestureText="F2" Command="{StaticResource RenameCommand}" />
+        <MenuItem Header="삭제" InputGestureText="Del" Command="{StaticResource DeleteCommand}" />
+        <Separator />
+        <MenuItem Header="전체 선택" InputGestureText="Ctrl+A" Command="{StaticResource SelectAllCommand}" />
+        <MenuItem Header="선택 취소" InputGestureText="Esc" Command="{StaticResource ClearSelectionCommand}" />-->
+    </MenuItem>
+    <!--보기-->
+    <MenuItem Header="보기">
+        <!--<MenuItem Header="검색" InputGestureText="Ctrl+F" Command="{StaticResource SearchCommand}" />
+        <Separator />
+        <MenuItem Header="정렬" DataContext="{Binding Source={StaticResource Locator}, Path=Sort}"
+                  IsEnabled="{Binding CanSort}">
+            <MenuItem Header="이름 순" IsCheckable="True" IsChecked="{Binding IsSortedName}"
+                      Visibility="{Binding IsVisibleName, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <MenuItem Header="크기 순" IsCheckable="True" IsChecked="{Binding IsSortedSize}"
+                      Visibility="{Binding IsVisibleSize, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <MenuItem Header="수정한 날짜 순" IsCheckable="True" IsChecked="{Binding IsSortedLastUpdated}"
+                      Visibility="{Binding IsVisibleLastUpdated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <MenuItem Header="유형 순" IsCheckable="True" IsChecked="{Binding IsSortedFileType}"
+                      Visibility="{Binding IsVisibleFileType, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <MenuItem Header="체크 한 날짜 순" IsCheckable="True" IsChecked="{Binding IsSortedStorageClass}"
+                      Visibility="{Binding IsVisibleStorageClass, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Separator />
+            <MenuItem Header="오름차순" IsCheckable="True" IsChecked="{Binding IsAscending}" />
+            <MenuItem Header="내림차순" IsCheckable="True" IsChecked="{Binding IsDescending}" />
+        </MenuItem>-->
+        <!-- _______________________________ -->
+        <!--<MenuItem Header="숨겨진 파일 보기" IsCheckable="True" />-->
+        <!--<MenuItem Header="Show Toast Message" IsCheckable="True" Foreground="Red" />
+        <Separator />
+        <MenuItem Header="뒤로" InputGestureText="Backspace" Command="{StaticResource BackCommand}" />
+        <MenuItem Header="새로고침" InputGestureText="F5" Command="{StaticResource RefreshCommand}" />-->
+    </MenuItem>
+    <!--도구-->
+    <!--<MenuItem Header="도구">
+        --><!--<MenuItem Header="업로드 설정 화면 보기" InputGestureText="Ctrl+Shift+U" />
+                <Separator />-->
+    <!--<MenuItem Header="업로드" InputGestureText="F7" Command="{StaticResource UploadCommand}"/>--><!--
+        <MenuItem Header="다운로드" InputGestureText="F8" Command="{StaticResource DownloadCommand}"/>
+        <Separator />
+        <MenuItem Header="모든 완료된 작업목록 지우기" InputGestureText="F6" Command="{StaticResource ClearAllComplatedWorkCommand}"/>
+    </MenuItem>-->
+    <!--북마크-->
+    <!--<MenuItem x:Name="BookmarkMenuItem" Header="북마크" DataContext="{Binding Bookmark, Source={StaticResource Locator}}"
+              ItemsSource="{Binding MenuItems}">
+        <MenuItem.ItemContainerStyle>
+            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Style_MenuItemDefault}">
+                --><!--TODO: Style Setter에서 바인딩을 AttachedProperty 활용해서 TemplateBinding으로 대체--><!--
+                <Setter Property="Header" Value="{Binding Name}" />
+                <Setter Property="Command" Value="{Binding Command, Mode=OneTime}" />
+                <Setter Property="CommandParameter" Value="{Binding}" />
+                <Setter Property="InputGestureText" Value="{Binding InputGestureText, Mode=OneTime}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding MenuType}" Value="Separator">
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="Template" Value="{StaticResource MenuSeprator}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            --><!-- ReSharper restore Xaml.BindingWithContextNotResolved --><!--
+        </MenuItem.ItemContainerStyle>
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SubmenuOpened">
+                <i:InvokeCommandAction Command="{Binding RefreshCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </MenuItem>-->
+    <!--설정-->
+    <MenuItem Header="설정">
+        <!--<MenuItem Header="자동 로그인"
+                  IsCheckable="True"
+                  IsChecked="{Binding Config.General.IsAutoLogin, Source={x:Static config:ConfigHolder.BindableCurrent}}"
+                  Command="{StaticResource SaveConfigCommand}"/>
+        <Separator />-->
+        <MenuItem Header="프로그램 설정" Command="{StaticResource ShowSettingsViewCommand}" />
+    </MenuItem>
+    <!--도움말-->
+    <MenuItem Header="도움말">
+        <!--<MenuItem Header="프로그램 정보" InputGestureText="F12" Command="{StaticResource ShowApplicatoinInfoCommand}" />-->
+    </MenuItem>
+</Menu>
