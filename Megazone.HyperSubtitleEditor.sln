@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.HyperSubtitleEditor", "Megazone.HyperSubtitleEditor\Megazone.HyperSubtitleEditor.csproj", "{E3FA6B54-AD7E-4053-88CE-B27AF057D320}"
 EndProject
@@ -11,13 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{5D1F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{096153EC-C99A-4C36-9884-AEB29972E61E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Video", "Video", "{1C1C0F18-8689-426E-986F-D182AAC6F0CE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.HyperSubtitleEditor.Service", "Megazone.HyperSubtitleEditor.Service\Megazone.HyperSubtitleEditor.Service.csproj", "{CEBEE892-3059-411C-9C02-1CD782484683}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "View", "View", "{50285955-B431-46FB-AAEC-C13C7F6EB225}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.HyperSubtitleEditor.Domain.Video", "Megazone.HyperSubtitleEditor.Domain.Video\Megazone.HyperSubtitleEditor.Domain.Video.csproj", "{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.HyperSubtitleEditor.Domain", "Megazone.HyperSubtitleEditor.Domain\Megazone.HyperSubtitleEditor.Domain.csproj", "{19761767-46D2-423C-99AE-4C916771745B}"
 EndProject
@@ -136,10 +132,6 @@ Global
 		{CEBEE892-3059-411C-9C02-1CD782484683}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEBEE892-3059-411C-9C02-1CD782484683}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEBEE892-3059-411C-9C02-1CD782484683}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19761767-46D2-423C-99AE-4C916771745B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19761767-46D2-423C-99AE-4C916771745B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19761767-46D2-423C-99AE-4C916771745B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -325,9 +317,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1C1C0F18-8689-426E-986F-D182AAC6F0CE} = {096153EC-C99A-4C36-9884-AEB29972E61E}
 		{CEBEE892-3059-411C-9C02-1CD782484683} = {5D1FE9AC-C8B7-47E4-ABEB-0F8131A4063C}
-		{55DBA6DB-A7BD-4DD0-8899-BFB86B63B80F} = {1C1C0F18-8689-426E-986F-D182AAC6F0CE}
 		{19761767-46D2-423C-99AE-4C916771745B} = {096153EC-C99A-4C36-9884-AEB29972E61E}
 		{66231F5C-D01D-44F2-BD5B-93AA5AE64502} = {08892BEF-7756-44E8-99EA-A70E9F875B53}
 		{C8DC0C95-B1E6-414E-8B3A-6B8F80A43BCF} = {9D4F16FA-BBE5-48D1-B80C-949EDC701921}
@@ -377,5 +367,8 @@ Global
 		{3D1AC938-89E8-4A4F-8F86-0B7FC3068C41} = {08892BEF-7756-44E8-99EA-A70E9F875B53}
 		{E1BAFF66-A452-4D6A-B370-39D35948B3D5} = {50285955-B431-46FB-AAEC-C13C7F6EB225}
 		{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE} = {C8DC0C95-B1E6-414E-8B3A-6B8F80A43BCF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20F60F08-FC75-47C2-A848-D5CF832CE095}
 	EndGlobalSection
 EndGlobal

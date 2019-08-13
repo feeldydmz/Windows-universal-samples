@@ -17,8 +17,7 @@ namespace Megazone.AtomyExcelConverter.Presentation.View
             Self = this;
             InitializeComponent();
         }
-
-        internal static IMainView Self { get; private set; }
+		internal static IMainView Self { get; private set; }
 
         public ILoadingManager LoadingManager
         {

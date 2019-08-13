@@ -7,11 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Megazone.Api.Transcoder.Domain;
+using Megazone.Api.Transcoder.Service;
+using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Transcoder.Domain;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Enum;
 using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
-using Megazone.Cloud.Transcoder.Repository.ElasticTranscoder;
-using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
@@ -26,7 +26,8 @@ using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
-using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
+using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data;
+using Job = Megazone.Api.Transcoder.Domain.Job;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -34,9 +35,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class JobSelectorViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
+        private readonly IJobService _jobService;
         private readonly ILogger _logger;
         private readonly PresetLoader _presetLoader;
-        private readonly ITranscodingRepository _transcodingRepository;
 
         private CancellationTokenSource _cancellationTokenSource;
         private bool _isConnectVideoChecked;
@@ -53,12 +54,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _unloadedCommand;
 
         public JobSelectorViewModel(IBrowser browser,
-            ITranscodingRepository transcodingRepository,
+            IJobService jobService,
             ILogger logger,
             PresetLoader presetLoader)
         {
             _browser = browser;
-            _transcodingRepository = transcodingRepository;
+            _jobService = jobService;
             _logger = logger;
             _presetLoader = presetLoader;
         }
@@ -173,16 +174,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                     responsePagingItem.LastViewedPageIndex = 0;
                             }
 
-                            PagingViewModel.IsPagingEnabled = findAllJobsResult != null &&
-                                                              findAllJobsResult.NextPageToken.IsNotNullOrAny() ||
+                            PagingViewModel.IsPagingEnabled = findAllJobsResult?.LastEvaluatedKey != null ||
                                                               responsePagingItem.ContinuationParameterCount > 0;
-                            PagingViewModel.HasNext = findAllJobsResult?.NextPageToken.IsNotNullOrAny() ?? false;
+                            PagingViewModel.HasNext = findAllJobsResult?.LastEvaluatedKey != null;
                             PagingViewModel.HasPrevious = responsePagingItem.LastViewedPageIndex > 0;
-                            if (!string.IsNullOrEmpty(findAllJobsResult?.NextPageToken))
-                                responsePagingItem.SetContinuationParameter(findAllJobsResult.NextPageToken);
-
-                            // TODO: loading
-                            //_browser.Main.Transcoder.OuputGroup.JobList?.LoadingManager.Hide();
+                            if (findAllJobsResult?.LastEvaluatedKey != null)
+                                responsePagingItem.SetContinuationParameter(findAllJobsResult.LastEvaluatedKey);
                         });
                     });
             });
@@ -190,40 +187,42 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void FindAll(JobListPagingItemViewModel pagingItem,
             JobListPagingItemViewModel.PageIndexType pageIndexType,
-            Action<JobListPagingItemViewModel, FindAllJobsResult> completedAction)
+            Action<JobListPagingItemViewModel, GetJobsResult> completedAction)
         {
-            var findAllResult = FindAll(pagingItem, pageIndexType);
-            if (findAllResult == null)
+            var getJobsResult = FindAll(pagingItem, pageIndexType);
+            if (getJobsResult == null)
             {
                 completedAction?.Invoke(pagingItem, null);
             }
             else
             {
-                var jobitems = findAllResult.Items;
+                var jobitems = getJobsResult.Jobs;
                 _presetLoader.Load(new WeakAction<IList<Preset>>(presets =>
                     {
                         this.InvokeOnUi(() =>
                         {
                             AddToJobListItems(jobitems, presets);
-                            completedAction?.Invoke(pagingItem, findAllResult);
+                            completedAction?.Invoke(pagingItem, getJobsResult);
                         });
                     }),
                     true);
             }
         }
 
-        private FindAllJobsResult FindAll(JobListPagingItemViewModel pagingItem,
+        private GetJobsResult FindAll(JobListPagingItemViewModel pagingItem,
             JobListPagingItemViewModel.PageIndexType pageIndexType)
         {
-            var parameter =
-                new ParameterBuilder(AppContext.CredentialInfo).WithFindJobsParameter(new FindJobParameter
-                    {
-                        PipelineId = AppContext.Config.PipelineId,
-                        NextPageToken = pagingItem.GetContinuationParameter(pageIndexType)
-                    })
-                    .Build();
+            pagingItem.GetContinuationParameter(pageIndexType);
+            var topicArn = PipelineLoader.Instance.SelectedPipeline.Notifications
+                .Completed;
 
-            return _transcodingRepository.FindAllJobs(parameter);
+            var jobList = _jobService.Get(new GetJobsParameter(RegionManager.Instance.Current.API,
+                ParameterProvider.GetTopicNameFrom(topicArn), 
+                pagingItem.GetContinuationParameter(pageIndexType)));
+
+            //var jobList = _jobService.Get(RegionManager.Instance.Current.API, topicArn,
+            //    pagingItem.GetContinuationParameter(pageIndexType));
+            return new GetJobsResult(jobList.Jobs, jobList.LastEvaluatedKey);
         }
 
         private void OnNextPageRequested()
@@ -240,30 +239,30 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             _cancellationTokenSource = new CancellationTokenSource();
             Jobs = new ObservableCollection<JobItemViewModel>();
-            //var loadingManager = _browser.Main.Transcoder.OuputGroup.JobList.LoadingManager;
+            _browser.Main.JobSelector.LoadingManager.Show();
             try
             {
-                //loadingManager.Show();
                 await FindAllJobs(PagingItemViewModel, pageIndexType);
-                //MessageCenter.Instance.Send(new JobList.RequestScrollToTopMessage(this));
             }
             catch (TaskCanceledException)
             {
                 _logger.Debug.Write("refresh task cancel!!!");
-                //loadingManager.Hide();
             }
             catch (UnauthorizedAccessException e)
             {
                 _logger.Debug.Write(e.Message);
-                //loadingManager.Hide();
                 _browser.ShowConfirmWindow(
                     new ConfirmWindowParameter(Resource.CNT_WARNING,
                         Resource.MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY,
-                        MessageBoxButton.OK)); // TODO: 다국어
+                        MessageBoxButton.OK));
+            }
+            finally
+            {
+                _browser.Main.JobSelector.LoadingManager.Hide();
             }
         }
 
-        private async void AddToJobListItems(IEnumerable<ITranscodingJob> jobItems,
+        private async void AddToJobListItems(IEnumerable<Job> jobItems,
             IList<Preset> presets)
         {
             Jobs.Clear();
@@ -273,55 +272,37 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _cancellationTokenSource = new CancellationTokenSource();
             await this.CreateTask(() =>
             {
-                foreach (var job in jobItems.Cast<Job>()
-                    .ToList())
+                foreach (var job in jobItems)
                 {
-                    if (job.Status != Status.Complete) continue;
                     var jobListItemViewModel = new JobItemViewModel(_browser, job)
                     {
-                        InputVideoName = job.Inputs[0]
-                            ?.Key,
-                        InputOtherVideoCount = job.Inputs.Count - 1,
-                        FinishTime = job.Timing?.FinishTimeMillis?.EpocToDateTime() ?? DateTime.MinValue,
-                        Status = job.Status,
-                        OutputKeyPrefix = job.OutputKeyPrefix
+                        InputVideoName = job.Payload.Input.Key,
+                        FinishTime = job.Timestamp,
+                        Status = "Complete",
+                        OutputKeyPrefix = job.Payload.OutputKeyPrefix
                     };
-                    if (job.Inputs[0]
-                            ?.DetectedProperties !=
-                        null)
-                    {
-                        jobListItemViewModel.InputVideoResolution = job.Inputs[0]
-                                                                        ?.DetectedProperties?.Width +
-                                                                    " x " +
-                                                                    job.Inputs[0]
-                                                                        ?.DetectedProperties?.Height;
-                        jobListItemViewModel.InputVideoSize = job.Inputs[0]
-                            ?.DetectedProperties?.FileSize;
-                        jobListItemViewModel.InputVideoDuration = job.Inputs[0]
-                            ?.DetectedProperties?.DurationMillis;
-                    }
 
                     // Playlist에서 Format과 상대 경로를 저장.
-                    if (job.Playlists != null)
-                        foreach (var playlist in job.Playlists)
+                    if (job.Payload.Playlists != null)
+                        foreach (var playlist in job.Payload.Playlists)
                         {
                             var jobOutput = new JobListItemOutputViewModel
                             {
                                 DisplayMediaType = MediaType.AdaptiveStreaming,
-                                OutputKeys = playlist.OutputKeys,
+                                OutputKeys = playlist.OutputKeys?.ToList(),
                                 DisplayName = playlist.Format.ToDisplayValue(),
                                 RelativePath = playlist.Name,
-                                OutputKeyPrefix = job.OutputKeyPrefix,
+                                OutputKeyPrefix = job.Payload.OutputKeyPrefix,
                                 Extension = playlist.Format.GetExtension(),
-                                OutputStatus = playlist.Status
+                                OutputStatus = "Complete"
                             };
                             jobOutput.Initialize();
                             jobListItemViewModel.Outputs.Add(jobOutput);
                         }
 
                     // job의 output를 기준으로 playlist의 outputkey와 매칭하여 presetId를 저장.
-                    if (job.Outputs != null)
-                        foreach (var output in job.Outputs)
+                    if (job.Payload.Outputs != null)
+                        foreach (var output in job.Payload.Outputs)
                         {
                             var existOutputKey = false;
 
@@ -341,8 +322,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 {
                                     var matchedPresetId = presets.FirstOrDefault(p => p.Id == output.PresetId);
 
-                                    extension = matchedPresetId?.Container.ToString()
-                                                    .ToLower() ??
+                                    extension = (matchedPresetId?.Container)
+                                                .ToLower() ??
                                                 string.Empty;
 
                                     name = extension.ToUpper()
@@ -354,14 +335,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                         .ToUpper()
                                         .Trim();
                                 }
+
                                 var jobOutput = new JobListItemOutputViewModel
                                 {
                                     DisplayName = name,
                                     DisplayMediaType = name.ToMediaType(),
                                     RelativePath = output.Key,
-                                    OutputKeyPrefix = job.OutputKeyPrefix,
+                                    OutputKeyPrefix = job.Payload.OutputKeyPrefix,
                                     Extension = extension,
-                                    OutputStatus = output.Status
+                                    OutputStatus = "Complete"
                                 };
                                 jobOutput.Initialize();
                                 jobOutput.OutputKeys.Add(output.Key);
@@ -370,13 +352,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 jobListItemViewModel.Outputs.Add(jobOutput);
                             }
                         }
+
                     jobListItemViewModel.Url = jobListItemViewModel.Outputs?.FirstOrDefault()
                         ?.FullUrl;
                     Thread.Sleep(1);
                     this.InvokeOnUi(() => { Jobs.Add(jobListItemViewModel); }, true);
                 }
+
                 this.InvokeOnUi(() => { new MediaDataLoader(Jobs, _cancellationTokenSource).Run(); });
             });
+        }
+
+        private class GetJobsResult
+        {
+            public GetJobsResult(IEnumerable<Job> jobs, LastEvaluatedKey lastEvaluatedKey)
+            {
+                Jobs = jobs;
+                LastEvaluatedKey = lastEvaluatedKey;
+            }
+
+            public IEnumerable<Job> Jobs { get; }
+            public LastEvaluatedKey LastEvaluatedKey { get; }
         }
     }
 }

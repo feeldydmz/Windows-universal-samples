@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Transcoder.Domain;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
 using Megazone.Core.IoC;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
@@ -28,26 +28,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             var tempItems = new List<JobListItemOutputViewModel>();
 
             // Playlist에서 Format과 상대 경로를 저장.
-            if (job.Playlists != null)
-                foreach (var playlist in job.Playlists)
+            if (job.Payload.Playlists != null)
+                foreach (var playlist in job.Payload.Playlists)
                 {
                     var jobOutput = new JobListItemOutputViewModel
                     {
                         DisplayMediaType = MediaType.AdaptiveStreaming,
-                        OutputKeys = playlist.OutputKeys,
+                        OutputKeys = playlist.OutputKeys?.ToList(),
                         DisplayName = playlist.Format.ToDisplayValue(),
                         RelativePath = playlist.Name,
-                        OutputKeyPrefix = job.OutputKeyPrefix,
+                        OutputKeyPrefix = job.Payload.OutputKeyPrefix,
                         Extension = playlist.Format.GetExtension(),
-                        OutputStatus = playlist.Status
+                        OutputStatus = "Complete"
                     };
                     jobOutput.Initialize();
                     tempItems.Add(jobOutput);
                 }
 
             // job의 output를 기준으로 playlist의 outputkey와 매칭하여 presetId를 저장.
-            if (job.Outputs != null)
-                foreach (var output in job.Outputs)
+            if (job.Payload.Outputs != null)
+                foreach (var output in job.Payload.Outputs)
                 {
                     var existOutputKey = false;
 
@@ -67,8 +67,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                         {
                             var matchedPresetId = presets.FirstOrDefault(p => p.Id == output.PresetId);
 
-                            extension = matchedPresetId?.Container.ToString()
-                                            .ToLower() ??
+                            extension = (matchedPresetId?.Container)
+                                        .ToLower() ??
                                         string.Empty;
 
                             name = extension.ToUpper()
@@ -80,14 +80,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                                 .ToUpper()
                                 .Trim();
                         }
+
                         var jobOutput = new JobListItemOutputViewModel
                         {
                             DisplayName = name,
                             DisplayMediaType = name.ToMediaType(),
                             RelativePath = output.Key,
-                            OutputKeyPrefix = job.OutputKeyPrefix,
+                            OutputKeyPrefix = job.Payload.OutputKeyPrefix,
                             Extension = extension,
-                            OutputStatus = output.Status
+                            OutputStatus = "Complete"
                         };
                         jobOutput.Initialize();
                         jobOutput.OutputKeys.Add(output.Key);
@@ -96,6 +97,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                         tempItems.Add(jobOutput);
                     }
                 }
+
             return tempItems;
         }
     }

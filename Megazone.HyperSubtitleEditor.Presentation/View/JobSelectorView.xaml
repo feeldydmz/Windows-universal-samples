@@ -21,6 +21,7 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            <mz:EqualStringToTrueNFalseConverter x:Key="EqualStringToTrueNFalseConverter"/>
             <mz:CurrentDateTimeBasedDateTimeConverter x:Key="CurrentDateTimeBasedDateTimeConverter"
                                                       CntConverterBefore="{x:Static resources:Resource.CNT_CONVERTER_BEFORE}"
                                                       CntConverterBeforeMinutes="{x:Static resources:Resource.CNT_CONVERTER_BEFORE_MINUTES}"
@@ -152,7 +153,7 @@
                                                                   MediaSource="{Binding Path=Url}"
                                                                   NaturalDuration="{Binding Path=NaturalDuration}"
                                                                   ThumbnailSource="{Binding Path=ThumbnailSource}"
-                                                                  IsEnabled="{Binding Path=Status, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Complete}" />
+                                                                  IsEnabled="{Binding Path=Status, Converter={StaticResource EqualStringToTrueNFalseConverter}, ConverterParameter=Complete}" />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

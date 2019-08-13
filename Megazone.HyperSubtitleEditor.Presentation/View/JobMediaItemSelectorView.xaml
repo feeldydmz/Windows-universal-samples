@@ -18,7 +18,7 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
                 <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue" />
+            <mz:EqualStringToVisibleNCollapseConverter x:Key="EqualStringToVisibleNCollapseConverter" />
             <mz:CurrentDateTimeBasedDateTimeConverter x:Key="CurrentDateTimeBasedDateTimeConverter"
                                                       CntConverterBefore="{x:Static resources:Resource.CNT_CONVERTER_BEFORE}"
                                                       CntConverterBeforeMinutes="{x:Static resources:Resource.CNT_CONVERTER_BEFORE_MINUTES}"
@@ -26,7 +26,6 @@
                                                       CntConverterYesterday="{x:Static resources:Resource.CNT_CONVERTER_YESTERDAY}"
                                                       CntConverterYyyymmdd="{x:Static resources:Resource.CNT_CONVERTER_YYYYMMDD}"
                                                       CntConverterMmdd="{x:Static resources:Resource.CNT_CONVERTER_MMDD}" />
-            <mz:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -113,7 +112,7 @@
                                                            ToolTip="{Binding Path=DisplayPresetNames}"
                                                            TextTrimming="CharacterEllipsis" />
                                                 <Image x:Name="ErrorImage"
-                                                       Visibility="{Binding Path=OutputStatus, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Error}"
+                                                       Visibility="{Binding Path=OutputStatus, Converter={StaticResource EqualStringToVisibleNCollapseConverter}, ConverterParameter=Error}"
                                                        Grid.Column="3" Stretch="None"
                                                        ToolTip="{x:Static resources:Resource.CNT_ERROR}"
                                                        Margin="3,0,0,0"

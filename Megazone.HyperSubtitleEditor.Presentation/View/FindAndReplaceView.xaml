@@ -19,10 +19,6 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <mz:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-            <vm:ViewModes x:Key="FindView">FindView</vm:ViewModes>
-            <vm:ViewModes x:Key="ReplaceView">ReplaceView</vm:ViewModes>
-
             <ui:FindTextCommand x:Key="FindTextCommand" />
             <ui:ReplaceTextCommand x:Key="ReplaceTextCommand" />
         </ResourceDictionary>

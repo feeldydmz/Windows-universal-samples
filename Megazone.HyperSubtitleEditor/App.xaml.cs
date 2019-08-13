@@ -41,36 +41,13 @@ namespace Megazone.HyperSubtitleEditor
         private void Initialize(StartupEventArgs e)
         {
 #if DEBUG
-            InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1499781023404-tl0eyt", "1517818883688-tmur13", "ap-southeast-1" });
+            //InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1503635312970-mqi68t"});
+            //InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1503635312970-mqi68t", "1503991012824-nhzcae", "ap-southeast-1" });
+            InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1499781023404-tl0eyt", "1543807711137-znn0wp", "ap-southeast-1" });
+            //InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1499781023404-tl0eyt", "1518573724969-ngy3k1", "ap-southeast-1" });
 #else
             InitializeAppContext(e.Args);
 #endif
-        }
-
-        private static void InitializeAppContextForDebugMode(StartupEventArgs e)
-        {
-            if (e.Args.Length != 4)
-            {
-                //var profileId = "b9a19922-955e-489a-a0dd-66749ed6ea0a"; //"96813c47-ead6-4ab3-befa-e64e1f58d6bd"; // 디버그용
-                //var pipelineId =
-                // "1499781023404-tl0eyt"; //"1489492252497-6285ew"; // 디버그용 //test: 1499781023404-tl0eyt // kr: 1499779397208-9gjs8s
-                //var jobId = "1503650920978-1k2l1x"; //"1497391412204-9cw521";
-                //var region = "ap-southeast-1"; // singapore
-                var profileId =
-                    "b9a19922-955e-489a-a0dd-66749ed6ea0a"; //"96813c47-ead6-4ab3-befa-e64e1f58d6bd"; // 디버그용
-                var pipelineId =
-                    "1499781023404-tl0eyt"; //"1489492252497-6285ew"; // 디버그용 //test: 1499781023404-tl0eyt // kr: 1499779397208-9gjs8s
-                var jobId = "1510898711707-ysecmk"; //"1497391412204-9cw521";
-                var region = "ap-southeast-1"; // singapore
-                if (string.IsNullOrEmpty(profileId) ||
-                    string.IsNullOrEmpty(pipelineId))
-                    throw new InvalidOperationException();
-                new AppContext().SetConfig(profileId, pipelineId, jobId, region);
-            }
-            else
-            {
-                InitializeAppContext(e.Args);
-            }
         }
 
         private static void InitializeAppContext(string[] args)

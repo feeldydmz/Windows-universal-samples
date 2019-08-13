@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Megazone.Api.Transcoder.Domain;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -11,13 +12,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Next
         }
 
-        private readonly Dictionary<int, string> _pageIndexAndContinuationParameter = new Dictionary<int, string>();
+        private readonly Dictionary<int, LastEvaluatedKey> _pageIndexAndContinuationParameter = new Dictionary<int, LastEvaluatedKey>();
 
         public int LastViewedPageIndex { get; set; }
 
         public int ContinuationParameterCount => _pageIndexAndContinuationParameter.Count;
 
-        public string GetContinuationParameter(PageIndexType pageIndexType)
+        public LastEvaluatedKey GetContinuationParameter(PageIndexType pageIndexType)
         {
             var targetIndex = 0;
             if (pageIndexType == PageIndexType.Previous)
@@ -28,10 +29,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 targetIndex = LastViewedPageIndex;
             if (_pageIndexAndContinuationParameter.ContainsKey(targetIndex))
                 return _pageIndexAndContinuationParameter[targetIndex];
-            return null;
+            return default(LastEvaluatedKey);
         }
 
-        public void SetContinuationParameter(string parameter)
+        public void SetContinuationParameter(LastEvaluatedKey parameter)
         {
             if (_pageIndexAndContinuationParameter.ContainsKey(LastViewedPageIndex))
                 _pageIndexAndContinuationParameter[LastViewedPageIndex] = parameter;

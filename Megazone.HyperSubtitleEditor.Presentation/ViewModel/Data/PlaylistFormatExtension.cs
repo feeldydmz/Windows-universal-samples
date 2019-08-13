@@ -1,60 +1,59 @@
-using System;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Enum;
-
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
     internal static class PlaylistFormatExtension
     {
-        public static string GetExtension(this PlaylistFormat format)
+        public static string ToDisplayValue(this string value)
         {
-            switch (format)
+            if (string.IsNullOrEmpty(value))
+                return null;
+            switch (value.ToLower())
             {
-                case PlaylistFormat.HlsV3:
-                case PlaylistFormat.HlsV4:
-                    return "m3u8";
-                case PlaylistFormat.MpegDash:
-                    return "mpd";
-                case PlaylistFormat.Smooth:
-                    return "ism";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
-            }
-        }
-
-        public static string ToDisplayValue(this PlaylistFormat value)
-        {
-            switch (value)
-            {
-                case PlaylistFormat.None:
-                    return null;
-                case PlaylistFormat.HlsV3:
+                case "hlsv3":
                     return "HLS v3";
-                case PlaylistFormat.HlsV4:
+                case "hlsv4":
                     return "HLS v4";
-                case PlaylistFormat.MpegDash:
-                    return "MPEG-Dash";
-                case PlaylistFormat.Smooth:
+                case "mpeg-dash":
+                    return "MPEG-D";
+                case "smooth":
                     return "Smooth";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
+
+            return null;
         }
 
-        public static PresetContainer GetPresetContainer(this PlaylistFormat format)
+        public static string GetExtension(this string format)
         {
-            switch (format)
+            if (string.IsNullOrEmpty(format))
+                return null;
+            switch (format.ToLower())
             {
-                case PlaylistFormat.HlsV3:
-                    return PresetContainer.Ts;
-                case PlaylistFormat.HlsV4:
-                    return PresetContainer.Ts;
-                case PlaylistFormat.MpegDash:
-                    return PresetContainer.Fmp4;
-                case PlaylistFormat.Smooth:
-                    return PresetContainer.Fmp4;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                case "hlsv3":
+                case "hlsv4":
+                    return "m3u8";
+                case "mpeg-dash":
+                    return "mpd";
+                case "smooth":
+                    return "ism";
             }
+
+            return null;
+        }
+
+        public static string GetPresetContainer(this string format)
+        {
+            if (string.IsNullOrEmpty(format))
+                return null;
+            switch (format.ToLower())
+            {
+                case "hlsv3":
+                case "hlsv4":
+                    return "ts";
+                case "mpeg-dash":
+                case "smooth":
+                    return "fmp4";
+            }
+
+            return null;
         }
     }
 }

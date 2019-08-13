@@ -3,7 +3,9 @@ using Megazone.AtomyExcelConverter.Presentation.Infrastructure.Extension;
 using Megazone.Core.IoC.Unity;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Megazone.AtomyExcelConverter
 {

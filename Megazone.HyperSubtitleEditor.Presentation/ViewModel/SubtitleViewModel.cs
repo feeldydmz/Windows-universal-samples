@@ -11,7 +11,6 @@ using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
-using Megazone.Cloud.Transcoder.Domain;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
@@ -37,7 +36,6 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data;
 using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
-using Job = Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model.Job;
 using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -49,6 +47,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly IBrowser _browser;
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
+        private readonly IJobService _jobService;
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
@@ -58,7 +57,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private readonly SubtitleParserProxy _subtitleService;
         private readonly ITrackService _trackService;
-        private readonly ITranscodingRepository _transcodingRepository;
         private ICommand _addItemCommand;
         private ICommand _closeTabCommand;
         private IList<SubtitleListItemViewModel> _copiedRows;
@@ -88,9 +86,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ExcelService excelService,
             SubtitleListItemValidator subtitleListItemValidator,
             IBrowser browser,
-            ITranscodingRepository transcodingRepository,
             IS3Service s3Service,
-            ITrackService trackService)
+            ITrackService trackService,
+            IJobService jobService)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -98,9 +96,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _excelService = excelService;
             _browser = browser;
             _trackService = trackService;
+            _jobService = jobService;
             _subtitleListItemValidator = subtitleListItemValidator;
             _browser = browser;
-            _transcodingRepository = transcodingRepository;
             _s3Service = s3Service;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
@@ -262,6 +260,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return !(FileTypeDistributer.IsSupportedSubtitleFormat(fileExtension) || fileExtension == ".xlsx");
                 });
             }
+
             return false;
         }
 
@@ -315,6 +314,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         iTextList.AddRange(row.Texts.ToList());
                     }
                 }
+
                 MediaPlayer.CurrentPositionText = iTextList;
             }
             catch (Exception ex)
@@ -510,9 +510,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     // last one
                     var job = AppContext.Job;
                     if (job == null) return;
-                    var durationMillis = job.Outputs?.FirstOrDefault()
-                                             ?.DurationMillis ??
-                                         0;
+                    var durationMillis =
+                        job.Payload.Outputs?.FirstOrDefault()?.Duration ?? 0;
                     currentRow.EndTime = TimeSpan.FromMilliseconds(long.Parse(durationMillis.ToString()));
                 }
             }
@@ -571,6 +570,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         i.StartTime = TimeSpan.Zero;
                     }
+
                 i.EndTime = i.StartTime.Add(duration);
             });
         }
@@ -621,7 +621,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.Main.LoadingManager.Show();
             this.InvokeOnTask(() =>
             {
-                new AppContext().Initialize(_transcodingRepository,
+                new AppContext().Initialize(_jobService,
                     success =>
                     {
                         this.InvokeOnUi(() =>
@@ -739,8 +739,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             else
             {
                 SelectedTab.AddRows(_copiedRows.Select(r => r.Copy())
-                    .ToList(), SelectedTab.SelectedRow.Number - 1);
+                        .ToList(), SelectedTab.SelectedRow.Number - 1);
             }
+
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
         }
 
@@ -769,7 +770,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnDeleteSelectedRowsRequested(SubtitleView.DeleteSelectRowsMessage message)
         {
-            if (!HasSelectedRows) return;
+            if (!HasSelectedRows)
+                return;
+
             SelectedTab.DeleteSelectedItems();
         }
 
@@ -834,9 +837,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private string GetUsername(Job job)
         {
-            if (job.UserMetadata == null || !job.UserMetadata.ContainsKey("iam"))
-                return null;
-            return job.UserMetadata["iam"];
+            //return job.Payload.UserMetadata["iam"];
+            return job?.Payload?.UserMetadata?.Name;
         }
 
         private void OnDeployRequested(Subtitle.DeployRequestedMessage message)
@@ -849,19 +851,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 try
                 {
-                    var credentialInfo = (CredentialInfo) PipelineLoader.Instance.OutputBucketCredentialInfo;
                     var topicArn = PipelineLoader.Instance.SelectedPipeline.Notifications.Completed;
                     var job = AppContext.Job;
-
+                    var credentialInfo = (CredentialInfo)PipelineLoader.Instance.OutputBucketCredentialInfo;
                     var isExistRemovedTracks = _removedTracks.Any();
-                    if(isExistRemovedTracks)
+                    if (isExistRemovedTracks)
                         DeleteRemovedTracks(credentialInfo, job, topicArn, _removedTracks);
                     var isExistDirtyTabs = dirtyTabs.Any();
                     if (isExistDirtyTabs)
                         DeployDirtyTabs(dirtyTabs, credentialInfo, job, topicArn);
 
                     if (isExistRemovedTracks || isExistDirtyTabs)
-                    {
                         this.InvokeOnUi(() =>
                             {
                                 _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
@@ -870,7 +870,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 CommandManager.InvalidateRequerySuggested();
                             }
                         );
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -907,15 +906,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     userName,
                     tab.LanguageCode,
                     (long) epochTime);
+                var isUploaded = _trackService.UploadFile(new TrackInfo(credentialInfo,
+                    credentialInfo.Region,
+                    PipelineLoader.Instance.SelectedPipeline.OutputBucket,
+                    job.Payload.OutputKeyPrefix,
+                    newTrack,
+                    filePath));
+                if (!isUploaded)
+                    throw new Exception("Uploading a file failed");
                 try
                 {
-                    _trackService.Deploy(credentialInfo, PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-                        job.OutputKeyPrefix, filePath, RegionManager.Instance.Current.API, job.Id, topicArn, newTrack, tab.Track);
+                    _trackService.Deploy(RegionManager.Instance.Current.API,
+                        job.Payload.JobId,
+                        topicArn,
+                        newTrack,
+                        tab.Track);
                 }
                 catch (DeleteTrackFailedException)
                 {
                     // ignore
                 }
+
                 tab.SetAsDeployed();
             }
         }
@@ -927,8 +938,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 foreach (var removedTrack in removedTracks)
                 {
-                    if (!_trackService.Delete(credentialInfo, PipelineLoader.Instance.SelectedPipeline.OutputBucket, 
-                        job.OutputKeyPrefix, RegionManager.Instance.Current.API, job.Id, topicArn, removedTrack))
+                    var myTrackInfo = new TrackInfo(credentialInfo,
+                        credentialInfo.Region,
+                        PipelineLoader.Instance.SelectedPipeline.OutputBucket,
+                        job.Payload.OutputKeyPrefix,
+                        removedTrack);
+                    if (!_trackService.DeleteFile(myTrackInfo))
+                        throw new Exception("Deleting file failed");
+                    if (!_trackService.Delete(RegionManager.Instance.Current.API,
+                        job.Payload.JobId,
+                        topicArn,
+                        removedTrack))
                         throw new Exception("Deleting track failed");
                     succeedList.Add(removedTrack);
                 }
@@ -942,20 +962,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private string GetMediaItemUrl(Job job, int outputIndex = 0)
         {
-            if (job.Outputs == null) return null;
-            if (job.Outputs.Count - 1 < outputIndex) return null;
-            var output = job.Outputs[outputIndex];
+            var outputList = job?.Payload?.Outputs?.ToList();
+            if (outputList == null) return null;
+            if (outputList.Count - 1 < outputIndex) return null;
+            var output = outputList[outputIndex];
             if (output != null)
             {
                 string relativeUrl;
-                var outputKeyPrefix = job.OutputKeyPrefix;
+                var outputKeyPrefix = job.Payload.OutputKeyPrefix;
 
-                var playlist = job.Playlists?.FirstOrDefault(p => p.OutputKeys.Any(o => o == output.Key));
+                var playlist = job.Payload.Playlists?.FirstOrDefault(p => p.OutputKeys.Any(o => o == output.Key));
                 if (playlist != null)
                 {
                     // streaming type은 playlist봐야함 
                     var masterPlaylistName = playlist.Name;
                     var extension = playlist.Format.GetExtension();
+
                     relativeUrl = masterPlaylistName.Contains(extension)
                         ? $"{outputKeyPrefix}{masterPlaylistName}"
                         : $"{outputKeyPrefix}{masterPlaylistName}.{extension}";
@@ -964,11 +986,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     relativeUrl = $"{outputKeyPrefix}{output.Key}";
                 }
+
                 var outputBucket = PipelineLoader.Instance.SelectedPipeline.OutputBucket;
                 var credentialInfo = AppContext.CredentialInfo;
                 var baseUrl = _s3Service.GetUrlWith(credentialInfo.Region, outputBucket);
                 return $"{baseUrl}{relativeUrl}";
             }
+
             return null;
         }
 
@@ -986,6 +1010,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     SelectedTab = null;
                 }
             }
+
             _browser.Main.LoadingManager.Show();
             this.InvokeOnTask(() =>
             {
@@ -1008,7 +1033,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             TrackList trackList;
             try
             {
-                trackList = _trackService.Get(RegionManager.Instance.Current.API, job.Id,
+                trackList = _trackService.Get(RegionManager.Instance.Current.API, job.Payload.JobId,
                     PipelineLoader.Instance.SelectedPipeline.Notifications.Completed);
                 if (trackList?.Tracks == null)
                     return;
@@ -1018,9 +1043,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 // ignored
                 return;
             }
+
             var credentialInfo = (CredentialInfo) PipelineLoader.Instance.InputBucketCredentialInfo;
             var tempFolderPath = this.GetTempFolderPath();
-            foreach (var track in trackList.Tracks)
+
+//#if DEBUG
+//            foreach (var track in trackList.Tracks)
+//            {
+//                try
+//                {
+//                    _trackService.DeleteFile(new TrackInfo(credentialInfo, credentialInfo.Region,
+//                        PipelineLoader.Instance.SelectedPipeline.OutputBucket,
+//                        job.Payload.OutputKeyPrefix, track));
+//                }
+//                catch
+//                {
+//                    // ignored
+//                }
+
+//                _trackService.Delete(RegionManager.Instance.Current.API,
+//                    job.Payload.JobId,
+//                    PipelineLoader.Instance.SelectedPipeline.Notifications.Completed,
+//                    track);
+//            }
+//#endif
+
+                foreach (var track in trackList.Tracks)
                 try
                 {
                     var filePath = tempFolderPath + "\\" + Guid.NewGuid() + DateTime.UtcNow.DateTimeToEpoch() + ".vtt";
@@ -1028,7 +1076,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _trackService.DownloadFile(new TrackInfo(credentialInfo,
                             credentialInfo.Region,
                             PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-                            job.OutputKeyPrefix,
+                            job.Payload.OutputKeyPrefix,
                             track,
                             filePath));
                     if (isDownloaded)
@@ -1059,6 +1107,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     _logger.Error.Write(ex);
                 }
+
             this.InvokeOnUi(() =>
             {
                 if (SelectedTab != null) return;
@@ -1085,6 +1134,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var tempITextList = row.Texts.ToList();
                 iTextList.AddRange(tempITextList);
             }
+
             MediaPlayer.CurrentPositionText = iTextList;
         }
 
@@ -1095,6 +1145,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 this.InvokeOnUi(() => { MediaPlayer.RemoveMediaItem(); });
                 return;
             }
+
             var url = GetMediaItemUrl(job, outputIndex);
             if (string.IsNullOrEmpty(url)) return;
             this.InvokeOnUi(() => { MediaPlayer.OpenMedia(url, false); });
@@ -1120,8 +1171,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         saveFilePath = _fileManager.OpenSaveFileDialog(null, "WebVtt files (.vtt)|*.vtt", tab.Name);
                         if (string.IsNullOrEmpty(saveFilePath)) return;
                     }
+
                     await SaveTabAsFile(tab, saveFilePath);
                 }
+
                 this.InvokeOnUi(
                     () =>
                     {
@@ -1162,6 +1215,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 saveFilePath = _fileManager.OpenSaveFileDialog(null, "WebVtt files (.vtt)|*.vtt", SelectedTab.Name);
                 if (string.IsNullOrEmpty(saveFilePath)) return;
             }
+
             _browser.Main.LoadingManager.Show();
             try
             {
@@ -1182,6 +1236,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _browser.Main.LoadingManager.Hide();
             }
+
             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
                 MessageBoxButton.OK));
         }
@@ -1289,6 +1344,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             firstTab = newTab;
                         Tabs.Add(newTab);
                     }
+
                     if (SelectedTab != null)
                         SelectedTab.IsSelected = false;
                     if (firstTab != null)
@@ -1298,6 +1354,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _subtitleListItemValidator.IsEnabled = true;
                         _subtitleListItemValidator.Validate(SelectedTab.Rows);
                     }
+
                     _browser.Main.LoadingManager.Hide();
                 });
             });

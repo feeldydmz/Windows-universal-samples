@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Megazone.Core.IoC.Unity;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Megazone.AtomyExcelConverter.Presentation
 {

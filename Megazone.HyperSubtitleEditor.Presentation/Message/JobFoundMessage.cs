@@ -1,4 +1,4 @@
-﻿using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
+﻿using Megazone.Api.Transcoder.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message

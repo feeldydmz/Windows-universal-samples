@@ -1,21 +1,17 @@
-﻿using Megazone.AtomyExcelConverter.Presentation.Excel;
-using Megazone.AtomyExcelConverter.Presentation.Infrastructure;
+﻿using Megazone.AtomyExcelConverter.Presentation.Infrastructure;
 
 namespace Megazone.AtomyExcelConverter.Presentation.ItemViewModel
 {
-    internal class ExcelFileItemViewModel : ViewModelBase
-    {
-        public ExcelFileItemViewModel(ExcelInfo excelInfo)
-        {
-            DisplayName = excelInfo.FileName;
-            DisplayFileFullPath = excelInfo.FileFullPath;
-            ExcelInfo = excelInfo;
-        }
+	internal class ExcelFileItemViewModel : ViewModelBase
+	{
+		public ExcelFileItemViewModel(string fileName, string fullPath)
+		{
+			DisplayName = fileName;
+			DisplayFileFullPath = fullPath;
+		}
 
-        public string DisplayFileFullPath { get; }
+		public string DisplayFileFullPath { get; }
 
-        public string DisplayName { get; }
-
-        public ExcelInfo ExcelInfo { get; }
-    }
+		public string DisplayName { get; }
+	}
 }

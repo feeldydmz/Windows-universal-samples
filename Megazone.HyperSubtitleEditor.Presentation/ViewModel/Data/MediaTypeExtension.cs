@@ -37,6 +37,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 case "GIF":
                 case "MPG":
                     return MediaType.DownloadableVideo;
+                case "MP2":
                 case "MP3":
                 case "FLAC":
                 case "WAV":

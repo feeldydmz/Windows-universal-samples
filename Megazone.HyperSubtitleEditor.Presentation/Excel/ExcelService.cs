@@ -44,6 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 
                         foreach (var selectedSheet in sheets.ToList())
                         {
+                            // TODO: Context Sheet 만들어서 있으면 묶어서 내보내줘서 파싱할 때 사용될 수 있도록 구현하자.
                             if (selectedSheet == null || selectedSheet.Name == "Code")
                                 continue;
 
@@ -128,11 +129,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                     {
                                         switch (columCount)
                                         {
-                                            case 0:
-                                                subtitleItem.StartTime = TimeSpan.Parse(text);
+                                            case 0: 
+                                                subtitleItem.StartTime = TimeSpan.Parse(RefineTime(text));
                                                 break;
                                             case 1:
-                                                subtitleItem.EndTime = TimeSpan.Parse(text);
+                                                subtitleItem.EndTime = TimeSpan.Parse(RefineTime(text));
                                                 break;
                                             case 2:
                                                 subtitleItem.Texts = _webVttInterpreter.ParseLine(text)
@@ -164,6 +165,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                 _logger.Error.Write(ex.Message);
             }
             return subtitles;
+        }
+
+        private static string RefineTime(string text)
+        {
+            // TODO: FramePerSecond 받아서 ; 있는 경우 프레임 값을 총 프레임 값으로 나눠서 밀리세컨즈로 표시필요함
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            var semicolonIndex = text.IndexOf(";", StringComparison.InvariantCultureIgnoreCase);
+            if (semicolonIndex > -1)
+                return text.Substring(0, semicolonIndex);
+            return text;
         }
 
         public bool CreateFile(IEnumerable<Subtitle> subtitles, string saveFilePath)

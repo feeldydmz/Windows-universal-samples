@@ -1,15 +1,13 @@
 using System;
 using System.Linq;
+using Megazone.Api.Transcoder.Domain;
+using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
-using Megazone.Cloud.Transcoder.Domain;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
-using Megazone.Cloud.Transcoder.Repository.ElasticTranscoder;
 using Megazone.Core.Windows.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data;
 using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data.Profile;
-using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
@@ -24,7 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Config = new Configuration(profileId, pipelineId, jobId, region);
         }
 
-        public void Initialize(ITranscodingRepository transcodingRepository, Action<bool> completeAction)
+        public void Initialize(IJobService jobService, Action<bool> completeAction)
         {
             var profiles = ClientProfileManager.Instance.Load();
             var profile = profiles?.Profiles?.FirstOrDefault(p => p.Id == Config.ProfileId);
@@ -43,14 +41,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 return;
 #endif
             }
+
             if (string.IsNullOrEmpty(Config.PipelineId))
             {
                 completeAction?.Invoke(true);
                 return;
             }
+
             var profileRegion = profiles.ProfileRegions?.FirstOrDefault(p => p.ProfileID == profile.Id);
             RegionManager.Instance.Initialize(profileRegion?.RegionInformations);
-            var matchingRegion = RegionManager.Instance.Regions.FirstOrDefault(r => r.Name == Config.Region);
+            var matchingRegion = RegionManager.Instance.Regions.FirstOrDefault(r => r.Code == Config.Region);
             if (matchingRegion != null)
                 RegionManager.Instance.Current = matchingRegion;
 
@@ -66,15 +66,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                         completeAction?.Invoke(false);
                         return;
                     }
+
                     if (string.IsNullOrEmpty(Config.JobId))
                     {
                         completeAction?.Invoke(true);
                         return;
                     }
-                    var parameter = new ParameterBuilder(CredentialInfo).Build();
+
                     try
                     {
-                        Job = transcodingRepository.FindJob(parameter, Config.JobId) as Job;
+                        Job = jobService.Get(RegionManager.Instance.Current.API, Config.JobId,
+                            PipelineLoader.Instance.SelectedPipeline.Notifications.Completed);
                         if (Job != null)
                             this.InvokeOnUi(() => { MessageCenter.Instance.Send(new JobFoundMessage(this, Job)); });
                     }

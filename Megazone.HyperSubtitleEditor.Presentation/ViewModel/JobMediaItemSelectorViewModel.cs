@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public JobMediaItemSelectorViewModel()
         {
-            JobId = AppContext.Job.Id;
+            JobId = AppContext.Job.Payload.JobId;
         }
 
         public ICommand LoadedCommand
@@ -161,7 +161,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             LoadingCount++;
             await this.CreateTask(async () =>
             {
-                FinishTime = AppContext.Job.Timing?.FinishTimeMillis?.EpocToDateTime() ?? DateTime.MinValue;
+                //FinishTime = AppContext.Job.Timing?.FinishTimeMillis?.EpocToDateTime() ?? DateTime.MinValue;
+                FinishTime = AppContext.Job.Timestamp;
 
                 var ouputItems = await new JobListItemOutputViewModelBuilder().BuildAsync(AppContext.Job);
                 this.InvokeOnUi(async () =>

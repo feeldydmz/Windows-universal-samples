@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Cloud.Transcoder.Domain;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Enum;
 using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
 using Megazone.Core.Extension;
 using Megazone.Core.Reference;
@@ -43,7 +42,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string RelativePath { get; set; }
         public string Extension { get; internal set; }
         public string FullUrl { get; internal set; }
-        public Status OutputStatus { get; internal set; }
+        public string OutputStatus { get; internal set; }
 
         public MediaType DisplayMediaType
         {
@@ -86,6 +85,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 _presetLoader.Load(new WeakAction<IList<Preset>>(SetPresetNamesHandler));
                 return null;
             }
+
             return SetPresetNames(_presetLoader.Presets);
         }
 
@@ -100,6 +100,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                     .TrimStart();
                 temp += replacedName + ", ";
             }
+
             temp = temp.TrimEnd();
             if (temp.IsNotNullOrAny())
                 temp = temp.Substring(0, temp.Length - 1);

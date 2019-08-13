@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Input;
-using Megazone.Cloud.Transcoder.Domain;
+using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Core.IoC;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
@@ -15,14 +15,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class MainViewModel : ViewModelBase
     {
-        private readonly ITranscodingRepository _transcodingRepository;
+        private readonly IJobService _jobService;
         private string _jobId;
         private ICommand _loadedCommand;
         private ICommand _unloadedCommand;
 
-        public MainViewModel(ITranscodingRepository transcodingRepository)
+        public MainViewModel(IJobService jobService)
         {
-            _transcodingRepository = transcodingRepository;
+            _jobService = jobService;
         }
 
         public ICommand LoadedCommand
@@ -69,7 +69,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnJobFound(JobFoundMessage message)
         {
             AppContext.SetJob(message.Job);
-            JobId = message.Job.Id;
+            JobId = message.Job.Payload.JobId;
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -83,9 +83,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 JobId = null;
                 return;
             }
+
             var appContext = new AppContext();
             appContext.SetConfig(message.ProfileId, message.PipelineId, message.JobId, message.Region);
-            appContext.Initialize(_transcodingRepository, null);
+            appContext.Initialize(_jobService, null);
         }
 
         private void OnUnloaded()

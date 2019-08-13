@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:Megazone.AtomyExcelConverter.Presentation.View;assembly=Megazone.AtomyExcelConverter.Presentation"
         mc:Ignorable="d"
-        Title="AtomyExcelConverter" Height="768" Width="1024" WindowStartupLocation="CenterScreen"
+        Title="AtomyExcelConverter V1.2" 
+        MinHeight="768" 
+        MinWidth="1024"
+        Height="768" 
+        Width="1024"
+        WindowStartupLocation="CenterScreen"
         Closed="MainWindow_OnClosed">
     <Grid>
         <Border>

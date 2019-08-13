@@ -1,8 +1,7 @@
 ﻿using System.Windows;
 using Megazone.Core.Log;
 using Megazone.Core.Windows;
-using Microsoft.Practices.Unity;
-using System;
+using Unity;
 
 namespace Megazone.AtomyExcelConverter
 {

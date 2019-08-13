@@ -4,8 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Enum;
-using Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.Model;
+using Megazone.Api.Transcoder.Domain;
 using Megazone.Core.Windows.Control.VideoPlayer;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -33,7 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             _browser = browser;
             Data = job;
-            Id = job.Id;
+            Id = job.Payload.JobId;
         }
 
         public Job Data { get; }
@@ -44,17 +43,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public string InputVideoName { get; set; }
 
-        public int? InputOtherVideoCount { get; set; }
-
-        public string InputVideoResolution { get; set; }
-
-        public long? InputVideoSize { get; set; }
-
-        public long? InputVideoDuration { get; set; }
-
         public DateTime FinishTime { get; set; }
 
-        public Status Status { get; set; }
+        public string Status { get; set; }
 
         public decimal NaturalDuration
         {

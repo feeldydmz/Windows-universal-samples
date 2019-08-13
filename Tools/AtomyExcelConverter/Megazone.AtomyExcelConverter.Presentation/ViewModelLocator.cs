@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using Megazone.AtomyExcelConverter.Presentation.ViewModel;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Megazone.AtomyExcelConverter.Presentation
 {
