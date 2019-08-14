@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.HyperSubtitleEditor", "Megazone.HyperSubtitleEditor\Megazone.HyperSubtitleEditor.csproj", "{E3FA6B54-AD7E-4053-88CE-B27AF057D320}"
 EndProject
@@ -114,6 +114,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.SubtitleEditor.Resources", "Megazone.SubtitleEditor.Resources\Megazone.SubtitleEditor.Resources.csproj", "{E1BAFF66-A452-4D6A-B370-39D35948B3D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.Core.Windows.Control.RichTextBox", "Megazone.Core\Megazone.Core.Windows.Control.RichTextBox\Megazone.Core.Windows.Control.RichTextBox.csproj", "{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CloudMedia", "CloudMedia", "{FCE4A6DD-CBCE-4650-A453-F4E06DA90038}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.Cloud.Media.Repository", "Megazone.Cloud.Media.Repository\Megazone.Cloud.Media.Repository.csproj", "{2782FD63-F8CC-46F0-BFE1-AF25971290FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.Cloud.Media.Domain", "Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj", "{C829E377-BAE6-47BC-BA36-27DAA818A518}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.Cloud.Meida.Service", "Megazone.Cloud.Meida.Service\Megazone.Cloud.Meida.Service.csproj", "{7F923980-D051-412E-B619-6D8AE512FABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Megazone.Cloud.Meida.ServiceInterface", "Megazone.Cloud.Meida.ServiceInterface\Megazone.Cloud.Meida.ServiceInterface.csproj", "{7FC24D83-7EC1-49B2-9091-78230BC37E69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -312,6 +322,22 @@ Global
 		{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2782FD63-F8CC-46F0-BFE1-AF25971290FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2782FD63-F8CC-46F0-BFE1-AF25971290FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2782FD63-F8CC-46F0-BFE1-AF25971290FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2782FD63-F8CC-46F0-BFE1-AF25971290FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C829E377-BAE6-47BC-BA36-27DAA818A518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C829E377-BAE6-47BC-BA36-27DAA818A518}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C829E377-BAE6-47BC-BA36-27DAA818A518}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C829E377-BAE6-47BC-BA36-27DAA818A518}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F923980-D051-412E-B619-6D8AE512FABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F923980-D051-412E-B619-6D8AE512FABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F923980-D051-412E-B619-6D8AE512FABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F923980-D051-412E-B619-6D8AE512FABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FC24D83-7EC1-49B2-9091-78230BC37E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC24D83-7EC1-49B2-9091-78230BC37E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC24D83-7EC1-49B2-9091-78230BC37E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC24D83-7EC1-49B2-9091-78230BC37E69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -367,6 +393,11 @@ Global
 		{3D1AC938-89E8-4A4F-8F86-0B7FC3068C41} = {08892BEF-7756-44E8-99EA-A70E9F875B53}
 		{E1BAFF66-A452-4D6A-B370-39D35948B3D5} = {50285955-B431-46FB-AAEC-C13C7F6EB225}
 		{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE} = {C8DC0C95-B1E6-414E-8B3A-6B8F80A43BCF}
+		{FCE4A6DD-CBCE-4650-A453-F4E06DA90038} = {096153EC-C99A-4C36-9884-AEB29972E61E}
+		{2782FD63-F8CC-46F0-BFE1-AF25971290FB} = {FCE4A6DD-CBCE-4650-A453-F4E06DA90038}
+		{C829E377-BAE6-47BC-BA36-27DAA818A518} = {FCE4A6DD-CBCE-4650-A453-F4E06DA90038}
+		{7F923980-D051-412E-B619-6D8AE512FABB} = {5D1FE9AC-C8B7-47E4-ABEB-0F8131A4063C}
+		{7FC24D83-7EC1-49B2-9091-78230BC37E69} = {5D1FE9AC-C8B7-47E4-ABEB-0F8131A4063C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20F60F08-FC75-47C2-A848-D5CF832CE095}

@@ -13,11 +13,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     public class LoginViewModel : ViewModelBase
     {
-        public ICommand _loginCommand;
+        private ICommand _loginCommand;
 
-        string _loginId;
-        string _password;
-        bool _isLogin;
+        private string _authorization;
+        private string _project;
+        private string _stage;
+
+        private string _loginId;
+        private string _password;
+        private bool _isLogin;
 
         public bool IsLogin
         {
@@ -45,6 +49,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Login()
         {
             IsLogin = true;
+
+            var authorization = getClientAuthorization();
+            System.Diagnostics.Debug.WriteLine($"authorization : {authorization}");
+
+
+            // https://megaone.io/oauth/token
         }
+
     }
 }
