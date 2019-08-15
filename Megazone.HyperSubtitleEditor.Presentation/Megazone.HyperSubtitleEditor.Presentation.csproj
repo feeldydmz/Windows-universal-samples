@@ -230,6 +230,8 @@
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
+    <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
@@ -316,6 +318,9 @@
     <Compile Include="View\OpenVideoAddressWindow.xaml.cs">
       <DependentUpon>OpenVideoAddressWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ProjectSelectView.xaml.cs">
+      <DependentUpon>ProjectSelectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
@@ -343,6 +348,18 @@
     <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Service\Megazone.Api.Transcoder.Service.csproj">
       <Project>{b59643bb-f955-4ce0-b04e-21eecc12cfbd}</Project>
       <Name>Megazone.Api.Transcoder.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
+      <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
+      <Name>Megazone.Cloud.Media.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.ServiceInterface\Megazone.Cloud.Media.ServiceInterface.csproj">
+      <Project>{df0d1eae-deb3-4518-bd64-4be12ec10d9b}</Project>
+      <Name>Megazone.Cloud.Media.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Service\Megazone.Cloud.Media.Service.csproj">
+      <Project>{afd40395-55f2-4e76-8e9f-e3d649ae813c}</Project>
+      <Name>Megazone.Cloud.Media.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Aws.Domain\Megazone.Cloud.Aws.Domain.csproj">
       <Project>{7f117f79-be0e-4f1a-aa5c-c17328fbf70e}</Project>
@@ -391,6 +408,10 @@
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Log.Log4Net\Megazone.Core.Log.Log4Net.csproj">
       <Project>{f8fb1c75-6c4a-4145-ade0-9c48f698f0e2}</Project>
       <Name>Megazone.Core.Log.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Security\Megazone.Core.Security.csproj">
+      <Project>{326ca287-112f-4b53-b3ce-18a44c433fcf}</Project>
+      <Name>Megazone.Core.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.VideoTrack.WebVtt\Megazone.Core.VideoTrack.WebVtt.csproj">
       <Project>{5896f10f-5fef-442e-9d2e-21bc60948ce7}</Project>
@@ -519,6 +540,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\OpenVideoAddressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProjectSelectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

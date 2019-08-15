@@ -41,16 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asset.cs" />
     <Compile Include="AuthorizationRequest.cs" />
     <Compile Include="AuthorizationResponse.cs" />
+    <Compile Include="CaptionListRequest.cs" />
+    <Compile Include="CaptionListResponse.cs" />
+    <Compile Include="CaptionRequest.cs" />
     <Compile Include="IAuthorizationRepository.cs" />
-    <Compile Include="IProjectRepository.cs" />
-    <Compile Include="IStageRepository.cs" />
-    <Compile Include="ProjectsRequest.cs" />
-    <Compile Include="ProjectResponse.cs" />
+    <Compile Include="ICloudMediaRepository.cs" />
+    <Compile Include="Megaone.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StageRequest.cs" />
-    <Compile Include="StageResponse.cs" />
+    <Compile Include="MeResponse.cs" />
+    <Compile Include="MeRequest.cs" />
+    <Compile Include="Stage.cs" />
+    <Compile Include="Video.cs" />
+    <Compile Include="VideoListRequest.cs" />
+    <Compile Include="VideoListResponse.cs" />
+    <Compile Include="VideoRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

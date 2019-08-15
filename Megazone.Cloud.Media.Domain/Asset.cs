@@ -1,8 +1,8 @@
 ﻿namespace Megazone.Cloud.Media.Domain
 {
-    public class StageResponse
+    public class Asset
     {
-        public StageResponse(string id, string name)
+        public Asset(string id, string name)
         {
             Id = id;
             Name = name;

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2782FD63-F8CC-46F0-BFE1-AF25971290FB}</ProjectGuid>
+    <ProjectGuid>{AFD40395-55F2-4E76-8E9F-E3D649AE813C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Megazone.Cloud.Media.Repository</RootNamespace>
-    <AssemblyName>Megazone.Cloud.Media.Repository</AssemblyName>
+    <RootNamespace>Megazone.Cloud.Media.Service</RootNamespace>
+    <AssemblyName>Megazone.Cloud.Media.Service</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,15 +34,8 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.5\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,20 +65,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizationRepository.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="CloudMediaRepository.cs" />
+    <Compile Include="CloudMediaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestSharpExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
       <Project>{c829e377-bae6-47bc-ba36-27daa818a518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Repository\Megazone.Cloud.Media.Repository.csproj">
+      <Project>{2782fd63-f8cc-46f0-bfe1-af25971290fb}</Project>
+      <Name>Megazone.Cloud.Media.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.ServiceInterface\Megazone.Cloud.Media.ServiceInterface.csproj">
+      <Project>{df0d1eae-deb3-4518-bd64-4be12ec10d9b}</Project>
+      <Name>Megazone.Cloud.Media.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Common.Domain\Megazone.Cloud.Common.Domain.csproj">
+      <Project>{881E7A8D-CF37-4D7C-909A-94B70569B914}</Project>
+      <Name>Megazone.Cloud.Common.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.IoC.Unity\Megazone.Core.IoC.Unity.csproj">
       <Project>{9a5bdcba-168c-42ce-95b6-2db21c72c5fe}</Project>
       <Name>Megazone.Core.IoC.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Log.Log4Net\Megazone.Core.Log.Log4Net.csproj">
+      <Project>{f8fb1c75-6c4a-4145-ade0-9c48f698f0e2}</Project>
+      <Name>Megazone.Core.Log.Log4Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core\Megazone.Core.csproj">
       <Project>{66231f5c-d01d-44f2-bd5b-93aa5ae64502}</Project>

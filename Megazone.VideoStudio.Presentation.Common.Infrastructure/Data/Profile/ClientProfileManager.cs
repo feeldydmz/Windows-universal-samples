@@ -12,7 +12,7 @@ namespace Megazone.VideoStudio.Presentation.Common.Infrastructure.Data.Profile
 {
     public class ClientProfileManager
     {
-        public const string PROGRAM_KEY = "Megazone.VideoStudio";
+        public const string PROGRAM_KEY = "Megazone.HyperSubtitleEditor";
         private const string PROFILE_FOLDER_NAME = "Profiles";
         private const string PROFILE_FILE_NAME = "Profiles.json";
         private static readonly object _lockObject = new object();

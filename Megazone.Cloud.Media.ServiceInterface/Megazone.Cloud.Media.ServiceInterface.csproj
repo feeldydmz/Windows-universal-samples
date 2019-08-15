@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>7f923980-d051-412e-b619-6d8ae512fabb</ProjectGuid>
+    <ProjectGuid>{DF0D1EAE-DEB3-4518-BD64-4BE12EC10D9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Megazone.Cloud.Meida.Service</RootNamespace>
-    <AssemblyName>Megazone.Cloud.Meida.Service</AssemblyName>
+    <RootNamespace>Megazone.Cloud.Media.ServiceInterface</RootNamespace>
+    <AssemblyName>Megazone.Cloud.Media.ServiceInterface</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,24 +31,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ICloudMediaService.cs" />
+    <Compile Include="Model\Authorization.cs" />
+    <Compile Include="Model\CaptionList.cs" />
+    <Compile Include="Model\Pagination.cs" />
+    <Compile Include="Model\PagingResultModel.cs" />
+    <Compile Include="Model\UserProfile.cs" />
+    <Compile Include="Model\VideoList.cs" />
+    <Compile Include="Parameter\GetCaptionParameter.cs" />
+    <Compile Include="Parameter\GetCaptionsParameter.cs" />
+    <Compile Include="Parameter\GetVideoParameter.cs" />
+    <Compile Include="Parameter\GetVideosParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
+      <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
+      <Name>Megazone.Cloud.Media.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>

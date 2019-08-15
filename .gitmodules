@@ -10,3 +10,6 @@
 	path = Megazone.Cloud
 	url = https://github.com/mz-private-projects/Megazone.Cloud.git
 	branch = master
+[submodule "Megazone.ActivityLog"]
+	path = Megazone.ActivityLog
+	url = https://github.com/mz-private-projects/Megazone.ActivityLog.git

@@ -1,4 +1,5 @@
-﻿namespace Megazone.Cloud.Media.Domain
+﻿// ReSharper disable InconsistentNaming
+namespace Megazone.Cloud.Media.Domain
 {
     public class AuthorizationResponse
     {

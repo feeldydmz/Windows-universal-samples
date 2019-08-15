@@ -21,6 +21,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation
             new S3Repository.Bootstrapper().Initialize();
             new Cloud.Transcoder.Repository.ElasticTranscoder.Bootstrapper().Initialize();
             new Api.Transcoder.Service.Bootstrapper().Initialize();
+            new Megazone.Cloud.Media.Service.Bootstrapper().Initialize();
         }
     }
 }
