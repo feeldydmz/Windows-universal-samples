@@ -15,17 +15,19 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     [Inject(Scope = LifetimeScope.Singleton)]
-    public class LoginViewModel : ViewModelBase
+    public class SignInViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
 
         private Authorization _authorization;
 
+        private bool _canSignIn = true;
+
         private ICommand _enterPasswordCommand;
-        private bool _isLogin;
         private bool _isProjectViewVisible = true;
+        private bool _isSignIn;
         private ICommand _loadedCommand;
-        private ICommand _loginCommand;
+        private ICommand _signInCommand;
 
         private string _loginId;
 
@@ -40,7 +42,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _selectProjectCommand;
         private IEnumerable<StageItemViewModel> _stageItems;
 
-        public LoginViewModel(ICloudMediaService cloudMediaService)
+        public SignInViewModel(ICloudMediaService cloudMediaService)
         {
             _cloudMediaService = cloudMediaService;
         }
@@ -71,10 +73,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isProjectViewVisible, value);
         }
 
-        public bool IsLogin
+        public bool CanSignIn
         {
-            get => _isLogin;
-            set => Set(ref _isLogin, value);
+            get => _canSignIn;
+            set => Set(ref _canSignIn, value);
+        }
+
+        public bool IsSignIn
+        {
+            get => _isSignIn;
+            set => Set(ref _isSignIn, value);
         }
 
         public string LoginId
@@ -94,9 +102,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
         }
 
-        public ICommand LoginCommand
+        public ICommand SignInCommand
         {
-            get { return _loginCommand = _loginCommand ?? new RelayCommand(LoginAsync); }
+            get { return _signInCommand = _signInCommand ?? new RelayCommand(SigninAsync, () => CanSignIn); }
         }
 
         public ICommand LogoutCommand
@@ -131,13 +139,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = true;
         }
 
-        private void Logout()
-        {
-            IsProjectViewVisible = true;
-            IsLogin = false;
-            ClearLoginInfo();
-            ClearAuthorization();
-        }
 
         private void ClearAuthorization()
         {
@@ -166,7 +167,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             PasswordClearAction?.Invoke();
         }
 
-        private async void LoginAsync()
+        private async void SigninAsync()
         {
             IsProjectViewVisible = true;
 
@@ -184,8 +185,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             try
             {
+                CanSignIn = false;
                 _authorization = await _cloudMediaService.LoginAsync(LoginId, Password);
-                IsLogin = !string.IsNullOrEmpty(_authorization?.AccessToken);
+                IsSignIn = !string.IsNullOrEmpty(_authorization?.AccessToken);
 
                 var user = await _cloudMediaService.GetUserAsync(_authorization);
                 var stageItemList = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
@@ -197,6 +199,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Console.WriteLine(e);
             }
+            finally
+            {
+                CanSignIn = true;
+            }
+        }
+
+        private void Logout()
+        {
+            IsProjectViewVisible = true;
+            IsSignIn = false;
+            ClearLoginInfo();
+            ClearAuthorization();
         }
 
         private void OnSelectProject(ProjectItemViewModel projectItemVm)

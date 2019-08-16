@@ -9,7 +9,7 @@
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Login}">
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
     <Grid Background="White">
         <ItemsControl ItemsSource="{Binding Path=StageItems}" VerticalAlignment="Center" HorizontalAlignment="Center">
             <ItemsControl.ItemsPanel>
@@ -30,9 +30,17 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                         <Grid>
-                                            <Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Login.SelectProjectCommand}" 
-                                                    CommandParameter="{Binding}" 
-                                                    Content="{Binding Path=Name}" />
+                                            <Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectProjectCommand}" 
+                                                    CommandParameter="{Binding}" Style="{x:Null}">
+                                                <Button.Content>
+                                                    <MultiBinding StringFormat="{}{0}/{1}">
+                                                        <MultiBinding.Bindings>
+                                                            <Binding Path="Name" />
+                                                            <Binding Path="ProjectId" />
+                                                        </MultiBinding.Bindings>
+                                                    </MultiBinding>
+                                                </Button.Content>
+                                            </Button>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

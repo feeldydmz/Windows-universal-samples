@@ -33,6 +33,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public GoToLineViewModel GoToLine => Bootstrapper.Container.Resolve<GoToLineViewModel>();
         public FindAndReplaceViewModel FindAndReplace => Bootstrapper.Container.Resolve<FindAndReplaceViewModel>();
 
-        public LoginViewModel Login => Bootstrapper.Container.Resolve<LoginViewModel>();
+        public SignInViewModel SignIn => Bootstrapper.Container.Resolve<SignInViewModel>();
     }
 }
