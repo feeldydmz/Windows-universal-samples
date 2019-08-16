@@ -13,8 +13,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             StageId = stageId;
             ProjectId = project.Id;
             Name = project.Name;
+            DisplayTitle = $"{Name}/{ProjectId}";
         }
-
+        public string DisplayTitle { get; }
         public string StageId { get; }
         public string ProjectId { get; }
         public string Name { get; }

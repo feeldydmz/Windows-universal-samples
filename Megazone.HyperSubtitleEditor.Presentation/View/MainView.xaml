@@ -218,7 +218,7 @@
         </Menu>
 
         <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <StackPanel Orientation="Horizontal" DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Login}" TextBlock.Foreground="Azure" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" TextBlock.Foreground="Azure" VerticalAlignment="Center">
                 <Button Style="{x:Null}" Command="{Binding Path=MoveProjectStepCommand}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Path=SelectedStage.Name, StringFormat='{}Stage: {0}'}" Margin="2,0" />

@@ -31,16 +31,7 @@
                                     <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                         <Grid>
                                             <Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectProjectCommand}" 
-                                                    CommandParameter="{Binding}" Style="{x:Null}">
-                                                <Button.Content>
-                                                    <MultiBinding StringFormat="{}{0}/{1}">
-                                                        <MultiBinding.Bindings>
-                                                            <Binding Path="Name" />
-                                                            <Binding Path="ProjectId" />
-                                                        </MultiBinding.Bindings>
-                                                    </MultiBinding>
-                                                </Button.Content>
-                                            </Button>
+                                                    CommandParameter="{Binding}" Content="{Binding Path=DisplayTitle}" MaxWidth="200" />
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
