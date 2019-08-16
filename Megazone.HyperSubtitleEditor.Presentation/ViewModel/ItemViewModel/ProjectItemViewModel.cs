@@ -8,13 +8,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isDefault;
         private bool _isSelected;
 
-        public ProjectItemViewModel(Project project)
+        public ProjectItemViewModel(string stageId, Project project)
         {
-            Id = project.Id;
+            StageId = stageId;
+            ProjectId = project.Id;
             Name = project.Name;
         }
 
-        public string Id { get; }
+        public string StageId { get; }
+        public string ProjectId { get; }
         public string Name { get; }
 
         public bool IsSelected

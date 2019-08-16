@@ -30,7 +30,9 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                         <Grid>
-                                            <TextBlock Text="{Binding Path=Name}" />
+                                            <Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Login.SelectProjectCommand}" 
+                                                    CommandParameter="{Binding}" 
+                                                    Content="{Binding Path=Name}" />
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
