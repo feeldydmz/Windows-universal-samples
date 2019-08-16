@@ -223,15 +223,18 @@
     <Compile Include="Serializable\SubtitleTabItem.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\AddAndEditSubtitleViewModel.cs" />
+    <Compile Include="ViewModel\CaptionListViewModel.cs" />
     <Compile Include="ViewModel\CopySubtitleViewModel.cs" />
     <Compile Include="ViewModel\CreateSubtitleViewModelBase.cs" />
     <Compile Include="ViewModel\Data\BytePerSecondMeasurer.cs" />
     <Compile Include="ViewModel\Data\MediaDataLoader.cs" />
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
@@ -254,6 +257,7 @@
     <Compile Include="ViewModel\Strategy\DefaultSettingSaveStrategy.cs" />
     <Compile Include="ViewModel\Strategy\ISettingSaveStrategy.cs" />
     <Compile Include="ViewModel\SubtitleParserProxy.cs" />
+    <Compile Include="ViewModel\VideoListViewModel.cs" />
     <Compile Include="ViewModel\ViewModes.cs" />
     <Compile Include="View\AddAndEditSubtitleView.xaml.cs">
       <DependentUpon>AddAndEditSubtitleView.xaml</DependentUpon>
@@ -263,6 +267,9 @@
     </Compile>
     <Compile Include="View\ApplicationInformationWindow.xaml.cs">
       <DependentUpon>ApplicationInformationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CaptionListView.xaml.cs">
+      <DependentUpon>CaptionListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CopySubtitleView.xaml.cs">
       <DependentUpon>CopySubtitleView.xaml</DependentUpon>
@@ -326,6 +333,9 @@
     </Compile>
     <Compile Include="View\SubtitleView.xaml.cs">
       <DependentUpon>SubtitleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VideoListView.xaml.cs">
+      <DependentUpon>VideoListView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -487,6 +497,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\CaptionListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CopySubtitleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -552,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VideoListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

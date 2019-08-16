@@ -211,18 +211,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public void ShowOpenAssetListDialog()
         {
-            var text = new TextBlock();
-            text.HorizontalAlignment = HorizontalAlignment.Center;
-            text.VerticalAlignment = VerticalAlignment.Center;
-            text.Text = "Asset List Dialog Window";
             var wnd = new Window
             {
                 Owner = Application.Current.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
-                Width = 500,
-                Height = 600,
-                Content = text
+                Width = 600,
+                Height = 450,
+                Content = new CaptionListView()
             };
             wnd.ShowDialog();
         }

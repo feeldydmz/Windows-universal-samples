@@ -42,6 +42,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _selectProjectCommand;
         private IEnumerable<StageItemViewModel> _stageItems;
 
+        
+        public Authorization GetAuthorization()
+        {
+            // 유효성 검사.
+            // 유효한 토큰인지 확인한다.
+            // 유효하지 않다면, refresh token을 받도록 exception을 낸다.
+            return _authorization;
+        }
+
         public SignInViewModel(ICloudMediaService cloudMediaService)
         {
             _cloudMediaService = cloudMediaService;
@@ -189,11 +198,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _authorization = await _cloudMediaService.LoginAsync(LoginId, Password);
                 IsSignIn = !string.IsNullOrEmpty(_authorization?.AccessToken);
 
+                // 로그인 실패.
+                if (!IsSignIn)
+                    return;
+                
                 var user = await _cloudMediaService.GetUserAsync(_authorization);
-                var stageItemList = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
-                                    new List<StageItemViewModel>();
-                StageItems = stageItemList;
-                //StageItems = new ObservableCollection<StageItemViewModel>(stageItemList);
+                StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                             new List<StageItemViewModel>();
             }
             catch (Exception e)
             {

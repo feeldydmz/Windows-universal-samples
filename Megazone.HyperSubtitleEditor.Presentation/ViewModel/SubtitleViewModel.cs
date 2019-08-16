@@ -105,7 +105,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         public MediaPlayerViewModel MediaPlayer { get; }
-        public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current.API);
+        public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current?.API);
 
         public ICommand DeleteSelectedItemsCommand
         {
