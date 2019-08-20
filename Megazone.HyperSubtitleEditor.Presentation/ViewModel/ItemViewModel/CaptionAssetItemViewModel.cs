@@ -1,6 +1,5 @@
-﻿using Megazone.Cloud.Media.Domain;
+﻿using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private IEnumerable<CaptionElementItemViewModel> _elements;
         private string _kind;
 
-        public CaptionAssetItemViewModel(Asset<Caption> asset)
+        public CaptionAssetItemViewModel(CaptionAsset asset)
         {
             _cloudMediaService = Bootstrapper.Container.Resolve<ICloudMediaService>();
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
@@ -41,7 +40,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Kind = asset.Elements?.FirstOrDefault()?.Kind;
         }
 
-        public Asset<Caption> Source { get; }
+        public CaptionAsset Source { get; }
         public string Id { get; }
         public string Name { get; }
         public bool IsActive { get; }
@@ -61,22 +60,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _kind;
             set => Set(ref _kind, value);
-        }
-        public ICommand LoadCommand
-        {
-            get { return _loadCommand = _loadCommand ?? new RelayCommand(LoadAsync); }
-        }
-        private void LoadAsync()
-        {
-            if (Elements != null)
-                return;
-
-            //var authorization = _signInViewModel.GetAuthorization();
-            //var stageId = _signInViewModel.SelectedStage?.Id;
-            //var projectId = _signInViewModel.SelectedStage?.Id;
-
-            //var caption = await _cloudMediaService.GetCaptionAsync(new GetCaptionParameter(authorization, stageId, projectId, Id));
-            //Elements = caption.Elements?.Select(element => new CaptionElementItemViewModel(element)).ToList();
         }
     }
 }

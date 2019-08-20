@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
@@ -14,9 +15,9 @@ namespace Megazone.Cloud.Media.Service
         private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
 
         //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
-        //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
-        private const string CLOUD_MEDIA_ENDPOINT =
-            "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
+        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
+        //private const string CLOUD_MEDIA_ENDPOINT =
+        //    "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
 
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
@@ -28,17 +29,31 @@ namespace Megazone.Cloud.Media.Service
             _cloudMediaRepository = cloudMediaRepository;
         }
 
-        public async Task<Authorization> LoginAsync(string userName, string password)
+        public Task<CaptionAsset> CreateCaptionAsync(CreateCaptionParameter parameter)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<CaptionAsset> GetCaptionAsync(GetCaptionParameter parameter)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var authorizationResponse =
-                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_ENDPOINT, userName, password));
-                var accessToken = authorizationResponse.AccessToken;
-                var refreshToken = authorizationResponse.RefreshToken;
-                var expires = authorizationResponse.Expires;
+                var response = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
 
-                return new Authorization(accessToken, refreshToken, expires);
+                return response;
+            });
+        }
+
+        public async Task<CaptionList> GetCaptionsAsync(GetCaptionsParameter parameter)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                var response = _cloudMediaRepository.GetCaptions(new AssetListRequest(CLOUD_MEDIA_ENDPOINT, accessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination, parameter.SearchConditions));
+
+                return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
+                    response.TotalCount, response.Assets);
             });
         }
 
@@ -49,15 +64,14 @@ namespace Megazone.Cloud.Media.Service
                     _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))));
         }
 
-        public async Task<CaptionList> GetCaptionsAsync(GetCaptionsParameter parameter)
+        public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetCaptions(new CaptionListRequest(CLOUD_MEDIA_ENDPOINT, accessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination, parameter.SearchConditions));
+                var response = _cloudMediaRepository.GetVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
 
-                return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
-                    response.TotalCount, response.Assets);
+                return response;
             });
         }
 
@@ -74,26 +88,33 @@ namespace Megazone.Cloud.Media.Service
             });
         }
 
-        public async Task<Asset<Caption>> GetCaptionAsync(GetCaptionParameter parameter)
+        public async Task<Authorization> LoginAsync(string userName, string password)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
+                var authorizationResponse =
+                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_ENDPOINT, userName, password));
+                var accessToken = authorizationResponse.AccessToken;
+                var refreshToken = authorizationResponse.RefreshToken;
+                var expires = authorizationResponse.Expires;
 
-                return response;
+                return new Authorization(accessToken, refreshToken, expires);
             });
         }
 
-        public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
+        public Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter)
         {
-            return await Task.Factory.StartNew(() =>
-            {
-                var response = _cloudMediaRepository.GetVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
+            throw new System.NotImplementedException();
+        }
 
-                return response;
-            });
+        public Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

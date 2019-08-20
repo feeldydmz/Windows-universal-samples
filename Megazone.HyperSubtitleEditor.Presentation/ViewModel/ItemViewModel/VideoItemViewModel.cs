@@ -1,12 +1,7 @@
 ﻿using Megazone.Cloud.Media.Domain;
-using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -27,7 +22,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             HasCaptions = video.Captions?.Any() ?? false;
             PrimaryImageUrl = GetPrimaryImage(video);
-            //CaptionItems = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
             Source = video;
         }
 
@@ -51,12 +45,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         }
 
         public bool HasCaptions { get; }
-        public Video Source { get; }
+        public Video Source { get; private set; }
         public string Id { get; }
         public string Name { get; }
         public string Description { get; }
         public string Status { get; }
         public TimeSpan Duration { get; }
         public DateTime CreatedAt { get; }
+
+        internal void UpdateSource(Video result)
+        {
+            Source = result;
+        }
     }
 }

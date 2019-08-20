@@ -4,9 +4,9 @@ namespace Megazone.Cloud.Media.Domain
 {
     public class MeResponse
     {
-        public MeResponse(Megaone megaone, string type, string latestAccessedAt, IEnumerable<Stage> stages)
+        public MeResponse(string id, string name, string username, string type, string latestAccessedAt, IEnumerable<Stage> stages)
         {
-            Megaone = megaone;
+            Megaone = new Megaone(id, name, username);
             Type = type;
             LatestAccessedAt = latestAccessedAt;
             Stages = stages;

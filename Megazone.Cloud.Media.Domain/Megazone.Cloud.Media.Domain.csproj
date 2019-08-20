@@ -41,12 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asset.cs" />
+    <Compile Include="Assets\Asset.cs" />
+    <Compile Include="Assets\AudioSetting.cs" />
+    <Compile Include="Assets\Caption.cs" />
+    <Compile Include="Assets\CaptionAsset.cs" />
+    <Compile Include="Assets\IAsset.cs" />
+    <Compile Include="Assets\IAssetElement.cs" />
+    <Compile Include="Assets\Image.cs" />
+    <Compile Include="Assets\Rendition.cs" />
+    <Compile Include="Assets\RenditionAsset.cs" />
+    <Compile Include="Assets\ThumbnailAsset.cs" />
+    <Compile Include="Assets\VideoSetting.cs" />
     <Compile Include="AuthorizationRequest.cs" />
     <Compile Include="AuthorizationResponse.cs" />
-    <Compile Include="CaptionListRequest.cs" />
-    <Compile Include="CaptionListResponse.cs" />
-    <Compile Include="CaptionRequest.cs" />
+    <Compile Include="AssetListRequest.cs" />
+    <Compile Include="AssetListResponse.cs" />
+    <Compile Include="AssetRequest.cs" />
     <Compile Include="IAuthorizationRepository.cs" />
     <Compile Include="ICloudMediaRepository.cs" />
     <Compile Include="Megaone.cs" />
@@ -61,8 +71,6 @@
     <Compile Include="VideoListResponse.cs" />
     <Compile Include="VideoRequest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

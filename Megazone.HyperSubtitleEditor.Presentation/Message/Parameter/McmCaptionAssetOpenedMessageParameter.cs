@@ -1,15 +1,12 @@
 ﻿using Megazone.Cloud.Media.Domain;
-using System;
+using Megazone.Cloud.Media.Domain.Assets;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
     public class McmCaptionAssetOpenedMessageParameter
     {
-        public McmCaptionAssetOpenedMessageParameter(Video video, Asset<Caption> asset, IEnumerable<Caption> captions)
+        public McmCaptionAssetOpenedMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions)
         {
             Video = video;
             Asset = asset;
@@ -17,7 +14,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
         }
 
         public Video Video { get; }
-        public Asset<Caption> Asset { get; }
+        public CaptionAsset Asset { get; }
         public IEnumerable<Caption> Captions { get; }
     }
 }

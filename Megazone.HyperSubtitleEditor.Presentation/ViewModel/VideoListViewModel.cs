@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
@@ -130,7 +131,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _isLoading = false;
             }
         }
-
         private async void OnVideoSelectionChanged()
         {
             if (_isLoading)
@@ -152,10 +152,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedStage?.Id;
 
-                var results = await _cloudMediaService.GetCaptionsAsync(new GetCaptionsParameter(authorization, stageId,
-                    projectId, new Pagination(SelectedPageIndex), new Dictionary<string, string> { { "videoId", videoId } }));
-                TotalCount = results.TotalCount;
-                var list = results.List?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
+                var result = await _cloudMediaService.GetVideoAsync(new GetVideoParameter(authorization, stageId, projectId, videoId));
+                var list = result.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
+                SelectedVideoItem.UpdateSource(result);
                 CaptionItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
             }
             finally
@@ -164,6 +163,40 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CommandManager.InvalidateRequerySuggested();
             }
         }
+
+        //private async void OnVideoSelectionChanged()
+        //{
+        //    if (_isLoading)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("isLoading");
+        //        return;
+        //    }
+        //    // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
+        //    IsBusy = true;
+        //    try
+        //    {
+        //        CaptionItems?.Clear();
+        //        CaptionItems = null;
+        //        var videoId = SelectedVideoItem?.Id;
+        //        if (string.IsNullOrEmpty(videoId))
+        //            return;
+
+        //        var authorization = _signInViewModel.GetAuthorization();
+        //        var stageId = _signInViewModel.SelectedStage?.Id;
+        //        var projectId = _signInViewModel.SelectedStage?.Id;
+
+        //        var results = await _cloudMediaService.GetCaptionsAsync(new GetCaptionsParameter(authorization, stageId,
+        //            projectId, new Pagination(SelectedPageIndex), new Dictionary<string, string> { { "videoId", videoId } }));
+
+        //        var list = results.List?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
+        //        CaptionItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+        //    }
+        //    finally
+        //    {
+        //        IsBusy = false;
+        //        CommandManager.InvalidateRequerySuggested();
+        //    }
+        //}
 
         private bool CanConfirm()
         {

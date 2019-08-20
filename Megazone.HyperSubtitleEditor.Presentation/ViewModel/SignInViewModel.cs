@@ -206,6 +206,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 
                 var user = await _cloudMediaService.GetUserAsync(_authorization);
+
                 StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                              new List<StageItemViewModel>();
             }

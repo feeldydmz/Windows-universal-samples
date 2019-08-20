@@ -1,0 +1,18 @@
+﻿using Megazone.Cloud.Media.Domain;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
+{
+    internal class WorkContext
+    {
+        public static Video Video { get; private set; }
+        public static void SetVideo(Video video)
+        {
+            Video = video;
+        }
+    }
+}

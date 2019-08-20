@@ -1,19 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using Megazone.Cloud.Media.Domain.Assets;
+using System.Collections.Generic;
 
 namespace Megazone.Cloud.Media.Domain
 {
     public class Video
     {
-        public Video(string id, string name, string description, string status, long duration, string createdAt,
+        public Video(
+            string id, string name, string description, string status, long duration, string createdAt, int version,
             IEnumerable<RenditionAsset> origins, IEnumerable<RenditionAsset> sources, IEnumerable<CaptionAsset> captions,
             IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters)
         {
             Id = id;
             Name = name;
             Description = description;
-            Status = status;
             Duration = duration;
+            Status = status;
             CreatedAt = createdAt;
+            Version = version;
 
             Origins = origins;
             Sources = sources;
@@ -27,6 +30,7 @@ namespace Megazone.Cloud.Media.Domain
         public string Description { get; }
         public string Status { get; }
         public long Duration { get; }
+        public int Version { get; }
         public string CreatedAt { get; }
         public IEnumerable<RenditionAsset> Origins { get; }
         public IEnumerable<RenditionAsset> Sources { get; }

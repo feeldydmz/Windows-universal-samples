@@ -11,14 +11,16 @@ namespace Megazone.Cloud.Media.ServiceInterface.Model
             Name = response.Megaone.Name;
             Username = response.Megaone.Username;
             Type = response.Type;
-            LatestAccessedAt = DateTimeOffset.Parse(response.LatestAccessedAt);
+            //LatestAccessedAt = string.IsNullOrEmpty(response.LatestAccessedAt) ? 
+            //    DateTime.MinValue : 
+            //    DateTimeOffset.Parse(response.LatestAccessedAt).Date;
             Stages = response.Stages;
         }
 
         public string Name { get; }
         public string Username { get; }
         public string Type { get; }
-        public DateTimeOffset LatestAccessedAt { get; set; }
+        //public DateTime LatestAccessedAt { get; set; }
         public IEnumerable<Stage> Stages { get; }
     }
 }

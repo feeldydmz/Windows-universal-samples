@@ -1,18 +1,15 @@
-﻿using Megazone.Cloud.Media.Domain;
+﻿using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
-    public class AssetItemViewModel<TAssetElement> : ViewModelBase
-        where TAssetElement : IAssetElement
+    public class AssetItemViewModel<TAsset> : ViewModelBase where TAsset : IAsset
     {
-        private IEnumerable<TAssetElement> _elements;
-        
+        private IEnumerable _elements;
 
-        public AssetItemViewModel(Asset<TAssetElement> asset)
+        public AssetItemViewModel(TAsset asset)
         {
             Id = asset.Id;
             Name = asset.Name;
@@ -24,11 +21,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CreatedAt = string.IsNullOrEmpty(asset.CreatedAt)
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
-            Elements = asset.Elements;
             Source = asset;
         }
 
-        public Asset<TAssetElement> Source { get; }
+        public TAsset Source { get; }
         public string Id { get; }
         public string Name { get; }
         public bool IsActive { get; }
@@ -38,7 +34,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public int Version { get; }
         public DateTime CreatedAt { get; }
 
-        public IEnumerable<TAssetElement> Elements
+        public IEnumerable Elements
         {
             get => _elements;
             set => Set(ref _elements, value);

@@ -1267,17 +1267,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!message.Param.Captions?.Any() ?? true)
                 return;
 
-            if (video != null)
-            {
-                // video영상을 가져온다.
-                
-            }
-
             var paramList = new List<FileOpenedMessageParameter>();
             _browser.Main.LoadingManager.Show();
+
             await Task.Factory.StartNew(()=> {
                 try
                 {
+                    // video영상을 가져온다.
+                    var mediaUrl = GetMediaUrl();
+                    if (!string.IsNullOrEmpty(mediaUrl))
+                        MediaPlayer.OpenMedia(mediaUrl, false);
+                    //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
+
                     var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
                     var trackKind = TrackKind.Caption;
                     switch (kind)
@@ -1316,15 +1317,37 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
                 catch (Exception e)
                 {
-
                 }
             });
 
-            foreach(var param in paramList)
+            foreach (var param in paramList)
             {
                 MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
             }
-            _browser.Main.LoadingManager.Hide();
+
+            this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
+
+            string GetMediaUrl()
+            {
+                if (video == null)
+                    return string.Empty;
+
+                // video영상을 가져온다.
+                var mediaAsset = video.Sources.FirstOrDefault(rendition => rendition.Type.ToUpper().Equals("HLS"));
+                var url = string.Empty;
+                if (mediaAsset != null)
+                {
+                    url = mediaAsset.Urls?.FirstOrDefault();
+                }
+                else
+                {
+                    mediaAsset = video.Sources.FirstOrDefault();
+                    url = mediaAsset.Urls?.FirstOrDefault();
+                }
+                if (string.IsNullOrEmpty(url))
+                    url = mediaAsset.Elements.FirstOrDefault()?.Urls.FirstOrDefault();
+                return url;
+            }
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)

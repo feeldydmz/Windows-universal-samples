@@ -2,9 +2,9 @@
 
 namespace Megazone.Cloud.Media.Domain
 {
-    public class CaptionListRequest
+    public class AssetListRequest
     {
-        public CaptionListRequest(string endpoint, string accessToken, string stageId, string projectId, Pagination pagination , Dictionary<string, string> searchConditions = null)
+        public AssetListRequest(string endpoint, string accessToken, string stageId, string projectId, Pagination pagination , Dictionary<string, string> searchConditions = null)
         {
             Endpoint = endpoint;
             AccessToken = accessToken;
