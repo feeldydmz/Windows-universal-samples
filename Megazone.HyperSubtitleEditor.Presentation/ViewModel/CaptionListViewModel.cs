@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
@@ -14,7 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
-        private IEnumerable<AssetItemViewModel> _assetItems;
+        private IEnumerable<AssetItemViewModel<Caption>> _assetItems;
 
         private ICommand _loadCommand;
 
@@ -24,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel = signInViewModel;
         }
 
-        public IEnumerable<AssetItemViewModel> AssetItems
+        public IEnumerable<AssetItemViewModel<Caption>> AssetItems
         {
             get => _assetItems;
             set => Set(ref _assetItems, value);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
@@ -11,7 +12,7 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
             Authorization = authorization;
             StageId = stageId;
             ProjectId = projectId;
-            Pagination = pagination ?? new Pagination();
+            Pagination = pagination;
             SearchConditions = searchConditions;
         }
 

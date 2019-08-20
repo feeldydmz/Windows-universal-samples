@@ -34,5 +34,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public FindAndReplaceViewModel FindAndReplace => Bootstrapper.Container.Resolve<FindAndReplaceViewModel>();
 
         public SignInViewModel SignIn => Bootstrapper.Container.Resolve<SignInViewModel>();
+        public VideoListViewModel VideoList => Bootstrapper.Container.Resolve<VideoListViewModel>();
     }
 }

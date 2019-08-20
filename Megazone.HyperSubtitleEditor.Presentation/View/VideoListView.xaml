@@ -3,10 +3,217 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:convert="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:TimeSpanToTotalMillisecondsConverter x:Key="TimeSpanToTotalMillisecondsConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+
+            <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
+                <Setter Property="Height" Value="Auto" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource Style_PopupContentAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!-- 검색 -->
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <TextBlock Text="{Binding Path=TotalCount, StringFormat='{}Total {0}'}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Button Content="refresh" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.Resources>
+                        <Style TargetType="Image">
+                            <Setter Property="MaxWidth" Value="50" />
+                            <Setter Property="MaxHeight" Value="50" />
+                            <Setter Property="Stretch" Value="Uniform" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border>
+                        <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}" SelectedItem="{Binding Path=SelectedVideoItem}" 
+                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                            <i:Interaction.Behaviors>
+                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=VideoSelectionChangedCommand}" />
+                            </i:Interaction.Behaviors>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type itemVm:VideoItemViewModel}">
+                                    <!--Width="{Binding Path=ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}"-->
+                                    <Border HorizontalAlignment="Stretch">
+                                        <Grid HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Width="50" Height="50" VerticalAlignment="Center">
+                                                <Image Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
+                                                <Image Source="{Binding Path=PrimaryImageUrl}" />
+                                            </Grid>
+                                            <Grid Grid.Column="1" Margin="5, 1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0" Margin="0, 1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Background="Purple" Text="Video" Foreground="White" Margin="0,0,10,0" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Path=Name}" />
+                                                </Grid>
+                                                <TextBlock Grid.Row="1" Text="{Binding Path=Id,StringFormat='{}{0}'}" Margin="0, 1" />
+                                                <TextBlock Grid.Row="2" Text="{Binding Path=Duration, StringFormat={}{0:hh':'mm':'ss'.'fff}}" Margin="0, 1"/>
+                                            </Grid>
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+
+                    <Border Grid.Column="1">
+                        <Grid>
+                            <ListBox x:Name="AssetListBox" ItemsSource="{Binding Path=CaptionItems}" SelectedItem="{Binding Path=SelectedCaptionAsset}" 
+                                     ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
+                                        <Border HorizontalAlignment="Stretch">
+                                            <Expander>
+                                                <!--<i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Loaded">
+                                                        <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>-->
+                                                <Expander.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Background="Black" Text="Caption" Foreground="White" />
+                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Kind}" />
+                                                            </Grid>
+                                                            <Grid Grid.Row="1">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Path=Name}"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"/>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </Expander.HeaderTemplate>
+                                                <ItemsControl ItemsSource="{Binding Path=Elements}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type itemVm:CaptionElementItemViewModel}">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <CheckBox Grid.Column="0" IsChecked="{Binding Path=IsSelected}"  />
+                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Label}"/>
+                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Language, StringFormat={}[{0}]}" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Expander>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                <Border Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                    <TextBlock 
+                                    Text="자막 Asset이 없습니다." 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Control Grid.Row="0" x:Name="LoadingProgressView" 
+                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                 Style="{StaticResource Style_IndeterminateControl}" />
+
+        <!--하단 버튼 영역-->
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
+                        Command="{Binding ConfirmCommand, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
+                        Click="CancelButtonBase_OnClick" />
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

@@ -21,6 +21,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
         AdjustTimeWay ShowAdjustTimeWindow();
         void ShowOpenVideoAddressWindow();
         void ShowApplicationInfoWindow();
-        void ShowOpenAssetListDialog();
+        void ShowOpenVideoListDialog();
     }
 }

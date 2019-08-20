@@ -85,6 +85,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public FileOpenedMessageParameter Param { get; }
         }
 
+        internal class McmCaptionAssetOpenedMessage : MessageBase
+        {
+            public McmCaptionAssetOpenedMessage(object sender, McmCaptionAssetOpenedMessageParameter param) : base(sender)
+            {
+                Param = param;
+            }
+
+            public McmCaptionAssetOpenedMessageParameter Param { get; }
+        }
+
         internal class SaveMessage : MessageBase
         {
             public SaveMessage(object sender) : base(sender)

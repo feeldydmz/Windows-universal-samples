@@ -1,12 +1,18 @@
-﻿using System;
-using Megazone.Cloud.Media.Domain;
+﻿using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
-    public class AssetItemViewModel : ViewModelBase
+    public class AssetItemViewModel<TAssetElement> : ViewModelBase
+        where TAssetElement : IAssetElement
     {
-        public AssetItemViewModel(Asset asset)
+        private IEnumerable<TAssetElement> _elements;
+        
+
+        public AssetItemViewModel(Asset<TAssetElement> asset)
         {
             Id = asset.Id;
             Name = asset.Name;
@@ -18,8 +24,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CreatedAt = string.IsNullOrEmpty(asset.CreatedAt)
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
+            Elements = asset.Elements;
+            Source = asset;
         }
 
+        public Asset<TAssetElement> Source { get; }
         public string Id { get; }
         public string Name { get; }
         public bool IsActive { get; }
@@ -28,24 +37,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public long Duration { get; }
         public int Version { get; }
         public DateTime CreatedAt { get; }
-    }
 
-    /// <summary>
-    ///     Caption asset's element view model.
-    /// </summary>
-    public class CaptionElementItemViewModel : ViewModelBase
-    {
-        private bool _isSelected;
-        public string Id { get; set; }
-        public string Label { get; set; }
-        public string Kind { get; set; }
-        public string Country { get; set; }
-        public string Language { get; set; }
-
-        public bool IsSelected
+        public IEnumerable<TAssetElement> Elements
         {
-            get => _isSelected;
-            set => Set(ref _isSelected, value);
+            get => _elements;
+            set => Set(ref _elements, value);
         }
     }
 }

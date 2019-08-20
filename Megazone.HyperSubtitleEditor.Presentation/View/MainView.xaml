@@ -207,7 +207,9 @@
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
                           Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
-                          Command="{StaticResource ShowJobMediaSelectorViewCommand}" />
+                          Command="{StaticResource ShowJobMediaSelectorViewCommand}" Visibility="Collapsed" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
+                          Command="{StaticResource OpenVideoListDialogCommand}" />
             </MenuItem>
             <MenuItem Header="{x:Static resources:Resource.CNT_SETTING}">
                 <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_SETTING}"
@@ -226,7 +228,7 @@
                     </StackPanel>
                 </Button>
                 <TextBlock Text="{Binding Path=LoginId}" Margin="10,0,0,0" />
-                <Button Content="로그아웃" Command="{Binding Path=LogoutCommand}" />
+                <Button Content="{x:Static resources:Resource.CNT_LOG_OUT}" Command="{Binding Path=LogoutCommand}" />
             </StackPanel>
 
             <Border Width="20" />

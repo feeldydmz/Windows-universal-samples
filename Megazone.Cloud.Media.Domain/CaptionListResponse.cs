@@ -4,13 +4,13 @@ namespace Megazone.Cloud.Media.Domain
 {
     public class CaptionListResponse
     {
-        public CaptionListResponse(int totalCount, List<Asset> assets)
+        public CaptionListResponse(int totalCount, IEnumerable<Asset<Caption>> assets)
         {
             TotalCount = totalCount;
             Assets = assets;
         }
 
         public int TotalCount { get; }
-        public List<Asset> Assets { get; }
+        public IEnumerable<Asset<Caption>> Assets { get; }
     }
 }

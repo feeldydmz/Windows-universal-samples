@@ -180,20 +180,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = true;
 
-            if (string.IsNullOrEmpty(LoginId))
-            {
-                MessageBox.Show("아이디를 입력하세요.");
-                return;
-            }
+            //if (string.IsNullOrEmpty(LoginId))
+            //{
+            //    MessageBox.Show("아이디를 입력하세요.");
+            //    return;
+            //}
 
-            if (string.IsNullOrEmpty(Password))
-            {
-                MessageBox.Show("비밀번호를 입력하세요.");
-                return;
-            }
+            //if (string.IsNullOrEmpty(Password))
+            //{
+            //    MessageBox.Show("비밀번호를 입력하세요.");
+            //    return;
+            //}
 
             try
             {
+                LoginId = "navan@mz.co.kr";
+                Password = "jin!410c!!";
+
                 CanSignIn = false;
                 _authorization = await _cloudMediaService.LoginAsync(LoginId, Password);
                 IsSignIn = !string.IsNullOrEmpty(_authorization?.AccessToken);

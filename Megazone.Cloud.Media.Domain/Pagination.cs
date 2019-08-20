@@ -1,6 +1,6 @@
-﻿namespace Megazone.Cloud.Media.ServiceInterface.Model
+﻿namespace Megazone.Cloud.Media.Domain
 {
-    public class Pagination
+    public struct Pagination
     {
         public Pagination(int offset = 0, int limitPerPage = 10)
         {

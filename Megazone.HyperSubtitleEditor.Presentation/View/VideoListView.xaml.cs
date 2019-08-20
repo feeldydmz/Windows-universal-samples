@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -23,6 +12,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public VideoListView()
         {
             InitializeComponent();
+            Loaded += (s, e) => {
+                if (DataContext is VideoListViewModel viewModel)
+                    viewModel.CloseAction = CloseWindow;
+            };
+            Unloaded += (s, e) => {
+                if (DataContext is VideoListViewModel viewModel)
+                    viewModel.CloseAction = null;
+            };
+        }
+
+        private void CancelButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseWindow();
+        }
+
+        private void CloseWindow()
+        {
+            var window = Window.GetWindow(this);
+            window?.Close();
         }
     }
 }

@@ -597,4 +597,10 @@ Are you going to load a project?</value>
   <data name="CNT_VIEW_LOG_FOLDERE" xml:space="preserve">
     <value>View log folder</value>
   </data>
+  <data name="CNT_LOG_OUT" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="CNT_OPEN_FROM_MCM" xml:space="preserve">
+    <value>Open from MCM</value>
+  </data>
 </root>

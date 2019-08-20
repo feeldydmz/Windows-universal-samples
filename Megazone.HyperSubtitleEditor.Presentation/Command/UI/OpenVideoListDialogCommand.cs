@@ -6,11 +6,11 @@ using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
-    public class OpenAssetListCommand : DependencyObject, ICommand
+    public class OpenVideoListDialogCommand : DependencyObject, ICommand
     {
         private readonly IBrowser _browser;
 
-        public OpenAssetListCommand()
+        public OpenVideoListDialogCommand()
         {
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
         }
@@ -22,7 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            _browser.Main.ShowOpenAssetListDialog();
+            _browser.Main.ShowOpenVideoListDialog();
         }
 
         public event EventHandler CanExecuteChanged

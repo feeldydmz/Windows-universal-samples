@@ -209,7 +209,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             RootViewContainer.Child = new SubtitleView();
         }
 
-        public void ShowOpenAssetListDialog()
+        public void ShowOpenVideoListDialog()
         {
             var wnd = new Window
             {
@@ -218,7 +218,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
                 Height = 450,
-                Content = new CaptionListView()
+                Content = new VideoListView()
             };
             wnd.ShowDialog();
         }

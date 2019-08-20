@@ -44,7 +44,6 @@
     <Compile Include="ICloudMediaService.cs" />
     <Compile Include="Model\Authorization.cs" />
     <Compile Include="Model\CaptionList.cs" />
-    <Compile Include="Model\Pagination.cs" />
     <Compile Include="Model\PagingResultModel.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />

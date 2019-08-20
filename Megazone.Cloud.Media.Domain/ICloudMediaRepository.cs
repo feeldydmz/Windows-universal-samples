@@ -5,7 +5,7 @@
         MeResponse GetMe(MeRequest request);
         CaptionListResponse GetCaptions(CaptionListRequest request);
         VideoListResponse GetVideos(VideoListRequest request);
-        Asset GetCaption(CaptionRequest request);
+        Asset<Caption> GetCaption(CaptionRequest request);
         Video GetVideo(VideoRequest request);
     }
 }

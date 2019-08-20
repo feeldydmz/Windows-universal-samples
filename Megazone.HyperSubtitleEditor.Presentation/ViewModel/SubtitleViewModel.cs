@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +31,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
@@ -403,6 +405,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
             MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Regist<Subtitle.McmCaptionAssetOpenedMessage>(OnMcmCaptionAssetOpened);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
             MessageCenter.Instance.Regist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
@@ -452,7 +455,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Unregist<JobFoundMessage>(OnJobFound);
             MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
-            MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
+            MessageCenter.Instance.Unregist<Subtitle.McmCaptionAssetOpenedMessage>(OnMcmCaptionAssetOpened);
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
@@ -1250,6 +1253,78 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return _fileManager.Save(filePath,
                 _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt),
                 Encoding.UTF8);
+        }
+
+        private async void OnMcmCaptionAssetOpened(Subtitle.McmCaptionAssetOpenedMessage message)
+        {
+            if (message.Param == null)
+                return;
+
+            // 게시에 필요한 정보.
+            var video = message.Param.Video;
+            var asset = message.Param.Asset;
+
+            if (!message.Param.Captions?.Any() ?? true)
+                return;
+
+            if (video != null)
+            {
+                // video영상을 가져온다.
+                
+            }
+
+            var paramList = new List<FileOpenedMessageParameter>();
+            _browser.Main.LoadingManager.Show();
+            await Task.Factory.StartNew(()=> {
+                try
+                {
+                    var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
+                    var trackKind = TrackKind.Caption;
+                    switch (kind)
+                    {
+                        case "SUBTITLE": trackKind = TrackKind.Subtitle; break;
+                        case "CAPTION": trackKind = TrackKind.Caption; break;
+                        case "CHAPTER": trackKind = TrackKind.Chapter; break;
+                        case "DESCRIPTIION": trackKind = TrackKind.Descriptiion; break;
+                        case "METADATA": trackKind = TrackKind.Metadata; break;
+                    }
+
+                    // 선택된 caption 파일이 있다면, 로드한다.
+                    using (var client = new WebClient())
+                    {
+                        foreach (var caption in message.Param.Captions)
+                        {
+                            string text = string.Empty;
+                            using (var stream = client.OpenRead(new Uri(caption.Url)))
+                            {
+                                using (var reader = new StreamReader(stream))
+                                {
+                                    text = reader.ReadToEnd();
+                                }
+                            }
+
+                            paramList.Add(new FileOpenedMessageParameter()
+                            {
+                                FilePath = "",
+                                Kind = trackKind,
+                                Label = caption.Label,
+                                LanguageCode = caption.Language,
+                                Text = text
+                            });
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            });
+
+            foreach(var param in paramList)
+            {
+                MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
+            }
+            _browser.Main.LoadingManager.Hide();
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)

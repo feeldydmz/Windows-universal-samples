@@ -47,8 +47,8 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   이 강력한 형식의 리소스 클래스를 사용하여 모든 리소스 조회에 대한 현재 스레드의 CurrentUICulture
-        ///   속성을 재정의합니다.
+        ///   이 강력한 형식의 리소스 클래스를 사용하여 모든 리소스 조회에 대해 현재 스레드의 CurrentUICulture 속성을
+        ///   재정의합니다.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Globalization.CultureInfo Culture {
@@ -57,6 +57,15 @@ namespace Megazone.SubtitleEditor.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Add track과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ADD_CAPTION {
+            get {
+                return ResourceManager.GetString("CNT_ADD_CAPTION", resourceCulture);
             }
         }
         
@@ -106,15 +115,6 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Add track과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_ADD_CAPTION {
-            get {
-                return ResourceManager.GetString("CNT_ADD_CAPTION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Adjust all time과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_ADJUST_ALL_TIME {
@@ -133,20 +133,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   All files과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_ALL_FILES {
-            get {
-                return ResourceManager.GetString("CNT_ALL_FILES", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   All subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_ALL_CAPTIONS {
             get {
                 return ResourceManager.GetString("CNT_ALL_CAPTIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   All files과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ALL_FILES {
+            get {
+                return ResourceManager.GetString("CNT_ALL_FILES", resourceCulture);
             }
         }
         
@@ -210,6 +210,24 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_CANCEL {
             get {
                 return ResourceManager.GetString("CNT_CANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Max length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CAPTION_MAX_LENGTH {
+            get {
+                return ResourceManager.GetString("CNT_CAPTION_MAX_LENGTH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Min length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CAPTION_MIN_LENGTH {
+            get {
+                return ResourceManager.GetString("CNT_CAPTION_MIN_LENGTH", resourceCulture);
             }
         }
         
@@ -313,20 +331,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Copy row과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_COPY_ROW {
-            get {
-                return ResourceManager.GetString("CNT_COPY_ROW", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Copy track과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_COPY_CAPTION {
             get {
                 return ResourceManager.GetString("CNT_COPY_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Copy row과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_COPY_ROW {
+            get {
+                return ResourceManager.GetString("CNT_COPY_ROW", resourceCulture);
             }
         }
         
@@ -565,20 +583,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Go to number과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_GO_TO_NUMBER {
-            get {
-                return ResourceManager.GetString("CNT_GO_TO_NUMBER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Go to subtitle number과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_GO_TO_CAPTION_NUMBER {
             get {
                 return ResourceManager.GetString("CNT_GO_TO_CAPTION_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Go to number과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_GO_TO_NUMBER {
+            get {
+                return ResourceManager.GetString("CNT_GO_TO_NUMBER", resourceCulture);
             }
         }
         
@@ -727,6 +745,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Log out과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_LOG_OUT {
+            get {
+                return ResourceManager.GetString("CNT_LOG_OUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Max length per row과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_MAX_LENGTH_PER_ROW {
@@ -826,20 +853,29 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Open from job과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_OPEN_IN_JOB {
-            get {
-                return ResourceManager.GetString("CNT_OPEN_IN_JOB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Open track file과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_OPEN_CAPTION_FILE {
             get {
                 return ResourceManager.GetString("CNT_OPEN_CAPTION_FILE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Open from MCM과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_OPEN_FROM_MCM {
+            get {
+                return ResourceManager.GetString("CNT_OPEN_FROM_MCM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Open from job과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_OPEN_IN_JOB {
+            get {
+                return ResourceManager.GetString("CNT_OPEN_IN_JOB", resourceCulture);
             }
         }
         
@@ -1051,6 +1087,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Please select a track file과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_SELECT_CAPTION_FILE {
+            get {
+                return ResourceManager.GetString("CNT_SELECT_CAPTION_FILE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Please select subtitle that you want copy과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_SELECT_CAPTION_TO_COPY {
@@ -1083,15 +1128,6 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_SELECT_NEXT_ROW {
             get {
                 return ResourceManager.GetString("CNT_SELECT_NEXT_ROW", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Please select a track file과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_SELECT_CAPTION_FILE {
-            get {
-                return ResourceManager.GetString("CNT_SELECT_CAPTION_FILE", resourceCulture);
             }
         }
         
@@ -1200,24 +1236,6 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_START_TIME {
             get {
                 return ResourceManager.GetString("CNT_START_TIME", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Max length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_CAPTION_MAX_LENGTH {
-            get {
-                return ResourceManager.GetString("CNT_CAPTION_MAX_LENGTH", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Min length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_CAPTION_MIN_LENGTH {
-            get {
-                return ResourceManager.GetString("CNT_CAPTION_MIN_LENGTH", resourceCulture);
             }
         }
         
@@ -1441,20 +1459,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   No displayable contents.과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string MSG_NO_PRINTABLE_CONTENTS {
-            get {
-                return ResourceManager.GetString("MSG_NO_PRINTABLE_CONTENTS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   No subtitle selected.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_NO_CAPTION_SELECTED {
             get {
                 return ResourceManager.GetString("MSG_NO_CAPTION_SELECTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No displayable contents.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_NO_PRINTABLE_CONTENTS {
+            get {
+                return ResourceManager.GetString("MSG_NO_PRINTABLE_CONTENTS", resourceCulture);
             }
         }
         

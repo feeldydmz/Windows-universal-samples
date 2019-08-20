@@ -482,6 +482,9 @@
                                                 Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
                                         <Button Content="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
                                                 Command="{StaticResource ShowJobMediaSelectorViewCommand}"
+                                                Focusable="True" Visibility="Collapsed" />
+                                        <Button Content="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
+                                                Command="{StaticResource OpenVideoListDialogCommand}"
                                                 Focusable="True" />
                                     </StackPanel>
                                 </Grid>
@@ -1254,8 +1257,7 @@
                                     </Style>
                                 </UniformGrid.Resources>
                                 <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenAssetListCommand}" />
-                                
+                                        Command="{StaticResource OpenVideoListDialogCommand}" />
                                 <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
                                         Command="{StaticResource OpenSubtitleCommand}" />
                                 <Button Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0"
