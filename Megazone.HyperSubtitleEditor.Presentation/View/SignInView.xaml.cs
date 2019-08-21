@@ -15,6 +15,66 @@ using System.Windows.Shapes;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
+    public class WebBrowserHelper
+    {
+        private const string CODE_PATTEN = "code=";
+
+        public static readonly DependencyProperty UriSourceProperty =
+            DependencyProperty.RegisterAttached("UriSource", typeof(string), typeof(WebBrowserHelper),
+                new PropertyMetadata(OnBodyChanged));
+
+        public static string GetUriSource(DependencyObject dependencyObject)
+        {
+            return (string)dependencyObject.GetValue(UriSourceProperty);
+        }
+
+        public static void SetUriSource(DependencyObject dependencyObject, string body)
+        {
+            dependencyObject.SetValue(UriSourceProperty, body);
+        }
+
+        private static void OnBodyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var webBrowser = (WebBrowser)d;
+            if (webBrowser != null)
+            {
+                var uri = (string)e.NewValue;
+
+                
+
+                webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : new Uri("http://www.google.com");
+            }
+        }
+
+        public static readonly DependencyProperty NavigatingCommandProperty =
+            DependencyProperty.RegisterAttached("NavigatingCommand", typeof(ICommand), typeof(WebBrowserHelper), new PropertyMetadata(null, (d, e) =>
+            {
+                var browser = d as WebBrowser;
+                if (browser != null)
+                    browser.Navigating += (s, a) =>
+                    {
+                        var command = (ICommand)e.NewValue;
+                        var absoluteUri = (string)a.Uri.AbsoluteUri;
+
+                        var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
+
+                        if (index == -1) return;
+
+                        
+                        a.Cancel = true;
+                        browser.Navigate("about:blank");
+
+                        var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
+
+                        if (command.CanExecute(code))
+                            command.Execute(code);
+                    };
+            }));
+
+        public static ICommand GetNavigatingCommand(DependencyObject obj) => (ICommand)obj.GetValue(NavigatingCommandProperty);
+        public static void SetNavigatingCommand(DependencyObject obj, ICommand value) => obj.SetValue(NavigatingCommandProperty, value);
+    }
+
     /// <summary>
     /// SignInView.xaml에 대한 상호 작용 논리
     /// </summary>

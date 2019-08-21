@@ -368,6 +368,10 @@
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Repository\Megazone.Cloud.Media.Repository.csproj">
+      <Project>{2782fd63-f8cc-46f0-bfe1-af25971290fb}</Project>
+      <Name>Megazone.Cloud.Media.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud.Media.ServiceInterface\Megazone.Cloud.Media.ServiceInterface.csproj">
       <Project>{df0d1eae-deb3-4518-bd64-4be12ec10d9b}</Project>
       <Name>Megazone.Cloud.Media.ServiceInterface</Name>

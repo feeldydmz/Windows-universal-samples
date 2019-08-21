@@ -16,7 +16,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Background="Azure">
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="200">
+        <!--<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="200">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -35,6 +35,9 @@
                 </i:Interaction.Behaviors>
             </PasswordBox>
             <Button Grid.Row="3" Content="로그인" Command="{Binding Path=SignInCommand}" />
-        </Grid>
+        </Grid>-->
+        <WebBrowser Name="WebBrowser" 
+                    view:WebBrowserHelper.UriSource="{Binding UriSource}" 
+                    view:WebBrowserHelper.NavigatingCommand="{Binding NavigatingCommand}"/>
     </Grid>
 </UserControl>

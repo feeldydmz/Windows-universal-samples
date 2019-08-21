@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
+using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Security.Extension;
 using Megazone.Core.Windows.Mvvm;
@@ -17,32 +22,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     public class SignInViewModel : ViewModelBase
     {
+        private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
+
         private readonly ICloudMediaService _cloudMediaService;
 
         private Authorization _authorization;
 
-        private bool _canSignIn = true;
+        private string _uriSource;
+        //private ICommand _enterPasswordCommand;
+        //private ICommand _signInCommand;
+        //private string _loginId;
+        //private ICommand _logoutCommand;
 
-        private ICommand _enterPasswordCommand;
         private bool _isProjectViewVisible = true;
         private bool _isSignIn;
-        private ICommand _loadedCommand;
-        private ICommand _signInCommand;
 
-        private string _loginId;
-
-        private ICommand _logoutCommand;
-
+        private ICommand _navigatingCommand;
         private ICommand _moveProjectStepCommand;
-        private string _password;
+        //private string _password;
 
         private ProjectItemViewModel _selectedProject;
 
         private StageItemViewModel _selectedStage;
         private ICommand _selectProjectCommand;
         private IEnumerable<StageItemViewModel> _stageItems;
-
         
+
         public Authorization GetAuthorization()
         {
             // 유효성 검사.
@@ -54,9 +59,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public SignInViewModel(ICloudMediaService cloudMediaService)
         {
             _cloudMediaService = cloudMediaService;
-        }
 
-        public Action PasswordClearAction { get; set; }
+            UriSource = "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+        }
 
         public IEnumerable<StageItemViewModel> StageItems
         {
@@ -82,43 +87,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isProjectViewVisible, value);
         }
 
-        public bool CanSignIn
-        {
-            get => _canSignIn;
-            set => Set(ref _canSignIn, value);
-        }
-
         public bool IsSignIn
         {
             get => _isSignIn;
             set => Set(ref _isSignIn, value);
         }
 
-        public string LoginId
+        public string UriSource
         {
-            get => _loginId;
-            set => Set(ref _loginId, value);
-        }
-
-        public string Password
-        {
-            get => _password;
-            set => Set(ref _password, value);
-        }
-
-        public ICommand LoadedCommand
-        {
-            get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
-        }
-
-        public ICommand SignInCommand
-        {
-            get { return _signInCommand = _signInCommand ?? new RelayCommand(SigninAsync, () => CanSignIn); }
-        }
-
-        public ICommand LogoutCommand
-        {
-            get { return _logoutCommand = _logoutCommand ?? new RelayCommand(Logout); }
+            get => _uriSource;
+            set => Set(ref _uriSource, value);
         }
 
         public ICommand MoveProjectStepCommand
@@ -126,12 +104,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _moveProjectStepCommand = _moveProjectStepCommand ?? new RelayCommand(MoveProjectStep); }
         }
 
-        public ICommand EnterPasswordCommand
+        public ICommand NavigatingCommand
         {
-            get
-            {
-                return _enterPasswordCommand = _enterPasswordCommand ?? new RelayCommand<SecureString>(OnEnterPassword);
-            }
+            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
         }
 
         public ICommand SelectProjectCommand
@@ -148,84 +123,86 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = true;
         }
 
-
         private void ClearAuthorization()
         {
             // 저장된 Authorization 정보를 삭제한다.
         }
 
-        private void OnEnterPassword(SecureString secureString)
-        {
-            var password = secureString?.ReadString(true);
-            Password = password;
-            //Config.Proxy.ProxyDetail.Password = _password?.EncryptWithRfc2898(_keyGenerator.Generate());
-        }
+        //private async void SigninAsync()
+        //{
+        //    IsProjectViewVisible = true;
 
-        private void OnLoaded()
-        {
-            ClearLoginInfo();
+        //    //if (string.IsNullOrEmpty(LoginId))
+        //    //{
+        //    //    MessageBox.Show("아이디를 입력하세요.");
+        //    //    return;
+        //    //}
 
-            // TODO: 자동 로그인.
-            // 로컬에 저장된 Authorization 정보가 유효한지 확인한다.
-        }
+        //    //if (string.IsNullOrEmpty(Password))
+        //    //{
+        //    //    MessageBox.Show("비밀번호를 입력하세요.");
+        //    //    return;
+        //    //}
 
-        private void ClearLoginInfo()
-        {
-            LoginId = string.Empty;
-            Password = string.Empty;
-            PasswordClearAction?.Invoke();
-        }
+        //    try
+        //    {
+        //        //LoginId = "navan@mz.co.kr";
+        //        //Password = "jin!410c!!";
 
-        private async void SigninAsync()
-        {
-            IsProjectViewVisible = true;
+        //        CanSignIn = false;
+        //        //_authorization = await _cloudMediaService.LoginAsync(LoginId, Password);
+        //        IsSignIn = !string.IsNullOrEmpty(_authorization?.AccessToken);
 
-            //if (string.IsNullOrEmpty(LoginId))
-            //{
-            //    MessageBox.Show("아이디를 입력하세요.");
-            //    return;
-            //}
-
-            //if (string.IsNullOrEmpty(Password))
-            //{
-            //    MessageBox.Show("비밀번호를 입력하세요.");
-            //    return;
-            //}
-
-            try
-            {
-                LoginId = "navan@mz.co.kr";
-                Password = "jin!410c!!";
-
-                CanSignIn = false;
-                _authorization = await _cloudMediaService.LoginAsync(LoginId, Password);
-                IsSignIn = !string.IsNullOrEmpty(_authorization?.AccessToken);
-
-                // 로그인 실패.
-                if (!IsSignIn)
-                    return;
+        //        // 로그인 실패.
+        //        if (!IsSignIn)
+        //            return;
                 
-                var user = await _cloudMediaService.GetUserAsync(_authorization);
+        //        var user = await _cloudMediaService.GetUserAsync(_authorization);
 
-                StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
-                             new List<StageItemViewModel>();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            finally
-            {
-                CanSignIn = true;
-            }
-        }
+        //        StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+        //                     new List<StageItemViewModel>();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //    }
+        //    finally
+        //    {
+        //        CanSignIn = true;
+        //    }
+        //}
 
         private void Logout()
         {
             IsProjectViewVisible = true;
             IsSignIn = false;
-            ClearLoginInfo();
             ClearAuthorization();
+        }
+
+        private async void LoginByAuthorizationCode(string code)
+        {
+            var authorizationRepository = new AuthorizationRepository();
+
+            var authResponse = authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_ENDPOINT, code));
+
+            try
+            {
+                if (authResponse.AccessToken.IsNullOrEmpty()) return;
+
+                _authorization = new Authorization(authResponse.AccessToken, null, null);
+                IsProjectViewVisible = true;
+                IsSignIn = true;
+
+                var user = await _cloudMediaService.GetUserAsync(_authorization);
+
+                StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                             new List<StageItemViewModel>();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void OnSelectProject(ProjectItemViewModel projectItemVm)
@@ -235,6 +212,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (!string.IsNullOrEmpty(SelectedProject?.ProjectId) && !string.IsNullOrEmpty(SelectedStage?.Id))
                 IsProjectViewVisible = false;
+        }
+
+        private void OnNavigating(string code)
+        {
+            if (code.IsNullOrEmpty()) return;
+
+            Task.Run(() => LoginByAuthorizationCode(code));
         }
     }
 }
