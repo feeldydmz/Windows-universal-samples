@@ -492,7 +492,8 @@
                         </Popup>
                     </Grid>
                     <Rectangle />
-                    <Button Command="{StaticResource DeployCommand}">
+                    <!--<Button Command="{StaticResource DeployCommand}">-->
+                    <Button Command="{StaticResource McmDeployCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />

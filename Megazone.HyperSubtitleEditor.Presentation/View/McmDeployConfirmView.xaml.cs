@@ -4,27 +4,24 @@ using System.Windows.Controls;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
-    /// <summary>
-    /// VideoListView.xaml에 대한 상호 작용 논리
-    /// </summary>
-    public partial class VideoListView : UserControl
+    public partial class McmDeployConfirmView : UserControl
     {
-        public VideoListView()
+        public McmDeployConfirmView()
         {
             InitializeComponent();
-            Loaded += VideoListView_Loaded;
-            Unloaded += VideoListView_Unloaded;
+            Loaded += McmDeployConfirmView_Loaded;
+            Unloaded += McmDeployConfirmView_Unloaded;
         }
 
-        private void VideoListView_Unloaded(object sender, RoutedEventArgs e)
+        private void McmDeployConfirmView_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext is VideoListViewModel viewModel)
+            if (DataContext is McmDeployConfirmViewModel viewModel)
                 viewModel.CloseAction = null;
         }
 
-        private void VideoListView_Loaded(object sender, RoutedEventArgs e)
+        private void McmDeployConfirmView_Loaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext is VideoListViewModel viewModel)
+            if (DataContext is McmDeployConfirmViewModel viewModel)
                 viewModel.CloseAction = CloseWindow;
         }
 

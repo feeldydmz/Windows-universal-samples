@@ -125,7 +125,8 @@
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
                           Command="{StaticResource ExportSelectedTabAsVttCommand}" />
                 <Separator />
-                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />
+                <!--<MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />-->
+                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource McmDeployCommand}" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
                           Command="{StaticResource OpenSubtitleCommand}" />
