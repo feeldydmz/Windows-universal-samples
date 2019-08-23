@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="900"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
@@ -117,10 +118,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" HorizontalAlignment="Center" Content="취소"
+            <Button Grid.Column="0" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_CANCEL}"
                     Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-            <Button Grid.Column="2" HorizontalAlignment="Center" Content="시작하기"
+            <Button Grid.Column="2" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_PROJECT_START}"
                     Command="{Binding Path=StartProjectCommand}"/>
         </Grid>
     </Grid>

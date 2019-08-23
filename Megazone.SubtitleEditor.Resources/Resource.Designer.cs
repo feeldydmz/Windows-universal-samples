@@ -979,6 +979,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Start과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PROJECT_START {
+            get {
+                return ResourceManager.GetString("CNT_PROJECT_START", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Publish과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_PUBLISH {
