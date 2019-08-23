@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Security;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Repository;
@@ -12,10 +10,15 @@ using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
+using Megazone.Core.Log;
 using Megazone.Core.Security.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
+using Newtonsoft.Json;
+using Unity;
+using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -23,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     public class SignInViewModel : ViewModelBase
     {
         private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
+        internal string ProfilePath { get; set; }
 
         private readonly ICloudMediaService _cloudMediaService;
         private Authorization _authorization;
@@ -30,7 +34,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _uriSource;
         private bool _isProjectViewVisible = true;
         private bool _isSignIn;
-        
+
+        private ICommand _loadedCommand;
         private ICommand _navigatingCommand;
         private ICommand _moveProjectStepCommand;
 
@@ -52,6 +57,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _closeWindowCommand;
         private ICommand _rightNavigateCommand;
         private ICommand _leftSlideNavigateCommand;
+        private ILogger _logger;
 
 
         public Authorization GetAuthorization()
@@ -64,9 +70,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public SignInViewModel(ICloudMediaService cloudMediaService)
         {
+            _logger = Bootstrapper.Container.Resolve<ILogger>();
+
             _cloudMediaService = cloudMediaService;
 
             UriSource = "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+
+            ProfilePath = $"{this.AppDataPath()}\\profile.json";
         }
 
         public List<StageItemViewModel> StageItems
@@ -160,6 +170,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _moveProjectStepCommand = _moveProjectStepCommand ?? new RelayCommand(MoveProjectStep); }
         }
 
+        public ICommand LoadedCommand
+        {
+            get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
+        }
+
+        
+
         public ICommand NavigatingCommand
         {
             get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
@@ -223,6 +240,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void ClearAuthorization()
         {
+            _authorization = null;
             // 저장된 Authorization 정보를 삭제한다.
         }
 
@@ -267,12 +285,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
        
         private void Logout()
         {
-            IsProjectViewVisible = true;
+            IsProjectViewVisible = false;
             IsSignIn = false;
             ClearAuthorization();
         }
 
-        private async void LoginByAuthorizationCode(string code)
+        private void LoginByAuthorizationCode(string code)
         {
             var authorizationRepository = new AuthorizationRepository();
 
@@ -283,47 +301,86 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (authResponse.AccessToken.IsNullOrEmpty()) return;
 
                 _authorization = new Authorization(authResponse.AccessToken, null, null);
-                IsProjectViewVisible = true;
-                IsSignIn = true;
 
-                var user = await _cloudMediaService.GetUserAsync(_authorization);
-
-                
-
-                StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
-                             new List<StageItemViewModel>();
-
-                //// --- Test Data 
-
-                //StageItemViewModel firstItem = StageItems.First();
-
-                //string originalName = firstItem.Name;
-                //for (int i = 1; i < 7; i++)
-                //{
-                //    StageItemViewModel newItem = new StageItemViewModel(firstItem)
-                //    {
-                //        Id = "D",
-                //        Name = $"{originalName}_{i}"
-                //    };
-                //    StageItems.Add(newItem);
-                //}
-                //// ----
-
-                StageTotal = StageItems.Count();
-
-                if (StageTotal == 0)
-                {
-                    IsNotExistContentVisible = true;
-                }
-                else
-                {
-                    CalculateStageSlidePosition();
-                }
+                LoadStageAndProject();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private async void LoadStageAndProject()
+        {
+            IsProjectViewVisible = true;
+            IsSignIn = true;
+
+            var user = await _cloudMediaService.GetUserAsync(_authorization);
+
+            StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                         new List<StageItemViewModel>();
+
+            //// --- Test Data 
+
+            //StageItemViewModel firstItem = StageItems.First();
+
+            //string originalName = firstItem.Name;
+            //for (int i = 1; i < 7; i++)
+            //{
+            //    StageItemViewModel newItem = new StageItemViewModel(firstItem)
+            //    {
+            //        Id = "D",
+            //        Name = $"{originalName}_{i}"
+            //    };
+            //    StageItems.Add(newItem);
+            //}
+            //// ----
+
+            StageTotal = StageItems.Count();
+
+            if (StageTotal == 0)
+            {
+                IsNotExistContentVisible = true;
+            }
+            else
+            {
+                CalculateStageSlidePosition();
+            }
+        }
+
+        private void SaveProfile()
+        {
+            var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898("Megazone@1");
+
+            File.WriteAllText(ProfilePath, profileData);
+        }
+
+        private bool LoadProfile()
+        {
+            try
+            {
+                string profileData = File.ReadAllText(ProfilePath);
+
+                _authorization =
+                    JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
+
+                return (_authorization != null && !_authorization.AccessToken.IsNullOrEmpty());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error.Write(ex.Message);
+
+                return false;
+            }
+        }
+
+        private void OnLoaded()
+        {
+            //TODO 로그인 체크 여부 셋팅이 추가되면 되면 주석 제거
+            //if (LoadProfile())
+            //{
+            //    LoadStageAndProject();
+            //}
         }
 
         private void OnStartProject()
@@ -333,7 +390,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedStage = StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectedProject.StageId));
 
             if (!string.IsNullOrEmpty(SelectedProject?.ProjectId) && !string.IsNullOrEmpty(SelectedStage?.Id))
+            {
+                SaveProfile();
                 IsProjectViewVisible = false;
+            }
         }
 
         private void OnCloseWindow()
