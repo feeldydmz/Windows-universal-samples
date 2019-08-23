@@ -13,7 +13,7 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter);
         Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter);
         Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter);
-        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter);
+        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter);
         Task<VideoList> GetVideosAsync(GetVideosParameter parameter);
         Task<Video> GetVideoAsync(GetVideoParameter parameter);
         Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter);

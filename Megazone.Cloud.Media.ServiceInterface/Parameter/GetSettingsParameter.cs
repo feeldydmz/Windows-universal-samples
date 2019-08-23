@@ -2,17 +2,11 @@
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
-    public class GetSettingsParameter
+    public class GetSettingsParameter : RequiredParameter
     {
-        public GetSettingsParameter(Authorization authorization, string stageId, string projectId)
+        public GetSettingsParameter(Authorization authorization, string stageId, string projectId) : base(authorization,
+            stageId, projectId)
         {
-            Authorization = authorization;
-            StageId = stageId;
-            ProjectId = projectId;
         }
-
-        public Authorization Authorization { get; }
-        public string StageId { get; }
-        public string ProjectId { get; }
     }
 }

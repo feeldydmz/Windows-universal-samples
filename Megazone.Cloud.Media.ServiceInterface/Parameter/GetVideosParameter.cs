@@ -4,21 +4,15 @@ using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
-    public class GetVideosParameter
+    public class GetVideosParameter : RequiredParameter
     {
         public GetVideosParameter(Authorization authorization, string stageId, string projectId, Pagination pagination,
-            Dictionary<string, string> searchConditions = null)
+            Dictionary<string, string> searchConditions = null) : base(authorization, stageId, projectId)
         {
-            Authorization = authorization;
-            StageId = stageId;
-            ProjectId = projectId;
             Pagination = pagination;
             SearchConditions = searchConditions;
         }
 
-        public Authorization Authorization { get; }
-        public string StageId { get; }
-        public string ProjectId { get; }
         public Pagination Pagination { get; }
         public Dictionary<string, string> SearchConditions { get; }
     }

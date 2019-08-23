@@ -48,12 +48,15 @@
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />
     <Compile Include="Parameter\CreateCaptionAssetParameter.cs" />
+    <Compile Include="Parameter\RequiredParameter.cs" />
+    <Compile Include="Parameter\CreateAssetParameter.cs" />
     <Compile Include="Parameter\GetAssetParameter.cs" />
     <Compile Include="Parameter\GetAssetsParameter.cs" />
     <Compile Include="Parameter\GetSettingsParameter.cs" />
     <Compile Include="Parameter\GetVideoParameter.cs" />
     <Compile Include="Parameter\GetVideosParameter.cs" />
-    <Compile Include="Parameter\UpdateCaptionParameter.cs" />
+    <Compile Include="Parameter\UpdateAssetParameter.cs" />
+    <Compile Include="Parameter\UpdateCaptionAssetParameter.cs" />
     <Compile Include="Parameter\UpdateVideoParameter.cs" />
     <Compile Include="Parameter\UploadCaptionFileParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

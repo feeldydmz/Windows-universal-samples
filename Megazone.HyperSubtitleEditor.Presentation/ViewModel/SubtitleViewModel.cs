@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
@@ -45,6 +46,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class SubtitleViewModel : ViewModelBase
     {
+        // ReSharper disable once InconsistentNaming
         private const decimal MIN_INTERVAL = (decimal) 0.25;
         private readonly IBrowser _browser;
         private readonly ExcelService _excelService;
@@ -69,7 +71,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _goToSelectedRowCommand;
 
-        private bool _hasRegisterdMessageHandlers;
+        private bool _hasRegisteredMessageHandlers;
         private bool _isCutRequest;
         private ICommand _loadedCommand;
         private decimal _previousPosition;
@@ -107,6 +109,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         public MediaPlayerViewModel MediaPlayer { get; }
+        // ReSharper disable once UnusedMember.Global
         public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current?.API);
 
         public ICommand DeleteSelectedItemsCommand
@@ -397,8 +400,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void RegisterMessageHandlers()
         {
-            if (_hasRegisterdMessageHandlers) return;
-            _hasRegisterdMessageHandlers = true;
+            if (_hasRegisteredMessageHandlers) return;
+            _hasRegisteredMessageHandlers = true;
             MessageCenter.Instance.Regist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Regist<JobFoundMessage>(OnJobFound);
@@ -433,7 +436,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
-                OnInsertNewRowBeforSelectedRowRequested);
+                OnInsertNewRowBeforeSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
             MessageCenter.Instance.Regist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
@@ -450,7 +453,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void UnregisterMessageHandlers()
         {
-            if (!_hasRegisterdMessageHandlers) return;
+            if (!_hasRegisteredMessageHandlers) return;
             MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Unregist<JobFoundMessage>(OnJobFound);
@@ -480,7 +483,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
-                OnInsertNewRowBeforSelectedRowRequested);
+                OnInsertNewRowBeforeSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
             MessageCenter.Instance.Unregist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
@@ -748,7 +751,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
         }
 
-        private void OnInsertNewRowBeforSelectedRowRequested(Subtitle.InsertNewRowBeforeSelectedRowMessage message)
+        private void OnInsertNewRowBeforeSelectedRowRequested(Subtitle.InsertNewRowBeforeSelectedRowMessage message)
         {
             var addedRow = SelectedTab?.AddNewRow(_minimumDuration,
                 SubtitleTabItemViewModel.InsertRowDirection.BeforeSelectedItem,
@@ -1263,7 +1266,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var asset = message.Param.Asset;
-            var captions = message.Param.Captions;
+            var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
             WorkContext.SetVideo(video);
             WorkContext.SetCaption(asset);
             WorkContext.SetCaptions(captions);
@@ -1290,7 +1293,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         case "SUBTITLE": trackKind = TrackKind.Subtitle; break;
                         case "CAPTION": trackKind = TrackKind.Caption; break;
                         case "CHAPTER": trackKind = TrackKind.Chapter; break;
-                        case "DESCRIPTIION": trackKind = TrackKind.Descriptiion; break;
+                        case "DESCRIPTION": trackKind = TrackKind.Description; break;
                         case "METADATA": trackKind = TrackKind.Metadata; break;
                     }
 
@@ -1321,12 +1324,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             }
                             catch(WebException e)
                             {
+                                Console.WriteLine(e);
                             }
                         }
                     }
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                 }
             });
 

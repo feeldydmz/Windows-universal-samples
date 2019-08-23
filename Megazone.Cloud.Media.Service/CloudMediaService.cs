@@ -28,32 +28,26 @@ namespace Megazone.Cloud.Media.Service
             _cloudMediaRepository = cloudMediaRepository;
         }
 
-        public async Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter)
+        public async Task<Authorization> LoginAsync(string userName, string password)
         {
+            const string authorizationEndpoint = "https://megaone.io";
             return await Task.Factory.StartNew(() =>
             {
-                var accessToken = parameter.Authorization.AccessToken;
-                var stageId = parameter.StageId;
-                var projectId = parameter.ProjectId;
+                var authorizationResponse =
+                    _authorizationRepository.Get(new AuthorizationRequest(authorizationEndpoint, userName, password));
+                var accessToken = authorizationResponse.AccessToken;
+                var refreshToken = authorizationResponse.RefreshToken;
+                var expires = authorizationResponse.Expires;
 
-
-                var asset = new CaptionAsset(null, parameter.AssetName, "ACTIVE", "CAPTION", "TEXT", 0, 1, null, null);
-
-                var response = _cloudMediaRepository.CreateCaption(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
-                    accessToken, stageId, projectId, null, asset));
-
-                return response;
+                return new Authorization(accessToken, refreshToken, expires);
             });
         }
 
-        public async Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter)
+        public async Task<UserProfile> GetUserAsync(Authorization authorization)
         {
             return await Task.Factory.StartNew(() =>
-            {
-                var response = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
-                return response;
-            });
+                new UserProfile(
+                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))));
         }
 
         public async Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter)
@@ -69,31 +63,49 @@ namespace Megazone.Cloud.Media.Service
             });
         }
 
-        public async Task<Settings> GetSettingsAsync(GetSettingsParameter parameter)
+        public async Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetSetting(new SettingRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
-                    parameter.StageId, parameter.ProjectId));
+                var response = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
                 return response;
             });
         }
 
-        public async Task<UserProfile> GetUserAsync(Authorization authorization)
-        {
-            return await Task.Factory.StartNew(() =>
-                new UserProfile(
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))));
-        }
-
-        public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
+        public async Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
+                var accessToken = parameter.Authorization.AccessToken;
+                var stageId = parameter.StageId;
+                var projectId = parameter.ProjectId;
+                var assetName = parameter.AssetName;
 
+                var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", 0, 1, null, null);
+
+                var response = _cloudMediaRepository.CreateCaption(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
+                    accessToken, stageId, projectId, null, asset));
+
+                return response;
+            });
+        }
+
+        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                var stageId = parameter.StageId;
+                var projectId = parameter.ProjectId;
+                var assetId = parameter.AssetId;
+                var version = parameter.Version;
+                var captions = parameter.Captions;
+
+                var asset = new CaptionAsset(assetId, null, null, null, null, 0, version, null, captions);
+
+                var response = _cloudMediaRepository.UpdateAsset(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
+                    accessToken, stageId, projectId, assetId, asset));
                 return response;
             });
         }
@@ -113,29 +125,38 @@ namespace Megazone.Cloud.Media.Service
             });
         }
 
-        public async Task<Authorization> LoginAsync(string userName, string password)
+        public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
         {
-            const string authorizationEndpoint = "https://megaone.io";
             return await Task.Factory.StartNew(() =>
             {
-                var authorizationResponse =
-                    _authorizationRepository.Get(new AuthorizationRequest(authorizationEndpoint, userName, password));
-                var accessToken = authorizationResponse.AccessToken;
-                var refreshToken = authorizationResponse.RefreshToken;
-                var expires = authorizationResponse.Expires;
+                var response = _cloudMediaRepository.GetVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
 
-                return new Authorization(accessToken, refreshToken, expires);
+                return response;
             });
         }
 
-        public Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter)
+        public async Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter)
         {
-            throw new NotImplementedException();
+            // 캡션 추가.
+            return await Task.Factory.StartNew(() =>
+            {
+                var response = _cloudMediaRepository.UpdateVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
+
+                return response;
+            });
         }
 
-        public Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter)
+        public async Task<Settings> GetSettingsAsync(GetSettingsParameter parameter)
         {
-            throw new NotImplementedException();
+            return await Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                var response = _cloudMediaRepository.GetSetting(new SettingRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                    parameter.StageId, parameter.ProjectId));
+                return response;
+            });
         }
 
         public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter)

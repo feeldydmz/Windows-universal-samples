@@ -2,19 +2,14 @@
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
-    public class GetAssetParameter
+    public class GetAssetParameter : RequiredParameter
     {
-        public GetAssetParameter(Authorization authorization, string stageId, string projectId, string assetId)
+        public GetAssetParameter(Authorization authorization, string stageId, string projectId, string assetId) : base(
+            authorization, stageId, projectId)
         {
-            Authorization = authorization;
-            StageId = stageId;
-            ProjectId = projectId;
             AssetId = assetId;
         }
 
-        public Authorization Authorization { get; }
-        public string StageId { get; }
-        public string ProjectId { get; }
         public string AssetId { get; }
     }
 }
