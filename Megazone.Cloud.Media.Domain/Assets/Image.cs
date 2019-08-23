@@ -22,7 +22,8 @@
 
     public class Thumbnail : Image
     {
-        public Thumbnail(string id, bool isPreferred, string url, long size, int height, int width, int time) : base(id, isPreferred, url, size, height, width)
+        public Thumbnail(string id, bool isPreferred, string url, long size, int height, int width, int time) : base(id,
+            isPreferred, url, size, height, width)
         {
             Time = time;
         }
@@ -32,10 +33,12 @@
 
     public class Poster : Image
     {
-        public Poster(string assetId, string id, bool isPreferred, string url, long size, int height, int width) : base(id, isPreferred, url, size, height, width)
+        public Poster(string assetId, string id, bool isPreferred, string url, long size, int height, int width) : base(
+            id, isPreferred, url, size, height, width)
         {
             AssetId = assetId;
         }
+
         public string AssetId { get; }
     }
 }

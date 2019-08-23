@@ -4,20 +4,20 @@ namespace Megazone.Cloud.Media.Domain
 {
     public class Project
     {
-        public Project(string id, 
-                       string name, 
-                       string description,
-                       bool usePlayout,
-                       bool isActive,
-                       DateTime expiredAt,
-                       DateTime createdAt,
-                       string createdById,
-                       string createdByName,
-                       string createdByUsername,
-                       DateTime updatedAt,
-                       string updatedById,
-                       string updatedByName,
-                       string updatedByUsername)
+        public Project(string id,
+            string name,
+            string description,
+            bool usePlayout,
+            bool isActive,
+            DateTime expiredAt,
+            DateTime createdAt,
+            string createdById,
+            string createdByName,
+            string createdByUsername,
+            DateTime updatedAt,
+            string updatedById,
+            string updatedByName,
+            string updatedByUsername)
         {
             Id = id;
             Name = name;

@@ -16,7 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
-        private IEnumerable<AssetItemViewModel<CaptionAsset>> _assetItems;
+        private IEnumerable<AssetItemViewModel<Cloud.Media.Domain.Assets.CaptionAsset>> _assetItems;
 
         private ICommand _loadCommand;
 
@@ -26,7 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel = signInViewModel;
         }
 
-        public IEnumerable<AssetItemViewModel<CaptionAsset>> AssetItems
+        public IEnumerable<AssetItemViewModel<Cloud.Media.Domain.Assets.CaptionAsset>> AssetItems
         {
             get => _assetItems;
             set => Set(ref _assetItems, value);
@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var projectId= _signInViewModel.SelectedProject.ProjectId;
 
             var result =
-                await _cloudMediaService.GetCaptionsAsync(new GetCaptionsParameter(authorization, stageId, projectId,
+                await _cloudMediaService.GetCaptionAssetsAsync(new GetAssetsParameter(authorization, stageId, projectId,
                     new Pagination(0, 10)));
 
             SelectedPageIndex = result.Offset;

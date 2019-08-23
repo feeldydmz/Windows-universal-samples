@@ -4,9 +4,9 @@ using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
-    public class GetCaptionsParameter
+    public class GetAssetsParameter
     {
-        public GetCaptionsParameter(Authorization authorization, string stageId, string projectId,
+        public GetAssetsParameter(Authorization authorization, string stageId, string projectId,
             Pagination pagination, Dictionary<string, string> searchConditions = null)
         {
             Authorization = authorization;

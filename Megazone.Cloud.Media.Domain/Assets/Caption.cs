@@ -2,7 +2,8 @@
 {
     public class Caption : IAssetElement
     {
-        public Caption(string id, bool isDraft, bool isPreferred, string language, string country, string kind, string label, string url)
+        public Caption(string id, bool isDraft, bool isPreferred, string language, string country, string kind,
+            string label, string url)
         {
             Id = id;
             IsDraft = isDraft;

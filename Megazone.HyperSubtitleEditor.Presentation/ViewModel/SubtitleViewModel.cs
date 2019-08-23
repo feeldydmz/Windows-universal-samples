@@ -1263,6 +1263,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var asset = message.Param.Asset;
+            var captions = message.Param.Captions;
+            WorkContext.SetVideo(video);
+            WorkContext.SetCaption(asset);
+            WorkContext.SetCaptions(captions);
 
             if (!message.Param.Captions?.Any() ?? true)
                 return;
@@ -1293,25 +1297,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     // 선택된 caption 파일이 있다면, 로드한다.
                     using (var client = new WebClient())
                     {
-                        foreach (var caption in message.Param.Captions)
+                        foreach (var caption in captions)
                         {
-                            string text = string.Empty;
-                            using (var stream = client.OpenRead(new Uri(caption.Url)))
+                            try
                             {
-                                using (var reader = new StreamReader(stream))
+                                var text = string.Empty;
+                                using (var stream = client.OpenRead(new Uri(caption.Url)))
                                 {
-                                    text = reader.ReadToEnd();
+                                    using (var reader = new StreamReader(stream))
+                                    {
+                                        text = reader.ReadToEnd();
+                                    }
                                 }
-                            }
 
-                            paramList.Add(new FileOpenedMessageParameter()
+                                paramList.Add(new FileOpenedMessageParameter()
+                                {
+                                    FilePath = "",
+                                    Kind = trackKind,
+                                    Label = caption.Label,
+                                    LanguageCode = caption.Language,
+                                    Text = text
+                                });
+                            }
+                            catch(WebException e)
                             {
-                                FilePath = "",
-                                Kind = trackKind,
-                                Label = caption.Label,
-                                LanguageCode = caption.Language,
-                                Text = text
-                            });
+                            }
                         }
                     }
                 }
@@ -1334,18 +1344,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 // video영상을 가져온다.
                 var mediaAsset = video.Sources.FirstOrDefault(rendition => rendition.Type.ToUpper().Equals("HLS"));
-                var url = string.Empty;
-                if (mediaAsset != null)
-                {
-                    url = mediaAsset.Urls?.FirstOrDefault();
-                }
-                else
-                {
+                if (mediaAsset == null)
                     mediaAsset = video.Sources.FirstOrDefault();
-                    url = mediaAsset.Urls?.FirstOrDefault();
-                }
+
+                var url = mediaAsset.Urls?.FirstOrDefault();
                 if (string.IsNullOrEmpty(url))
-                    url = mediaAsset.Elements.FirstOrDefault()?.Urls.FirstOrDefault();
+                    url = mediaAsset.Elements?.FirstOrDefault()?.Urls?.FirstOrDefault();
+
                 return url;
             }
         }

@@ -47,9 +47,10 @@
     <Compile Include="Model\PagingResultModel.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />
-    <Compile Include="Parameter\CreateCaptionParameter.cs" />
-    <Compile Include="Parameter\GetCaptionParameter.cs" />
-    <Compile Include="Parameter\GetCaptionsParameter.cs" />
+    <Compile Include="Parameter\CreateCaptionAssetParameter.cs" />
+    <Compile Include="Parameter\GetAssetParameter.cs" />
+    <Compile Include="Parameter\GetAssetsParameter.cs" />
+    <Compile Include="Parameter\GetSettingsParameter.cs" />
     <Compile Include="Parameter\GetVideoParameter.cs" />
     <Compile Include="Parameter\GetVideosParameter.cs" />
     <Compile Include="Parameter\UpdateCaptionParameter.cs" />

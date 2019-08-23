@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Web;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.IoC;
 using RestSharp;
@@ -22,7 +21,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Basic {clientAuthorization}")
                 .AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
 
-            var exResult = RestSharpExtension.CreateRestClient(request.Endpoint/*"https://api.media.megazone.io"*/).Execute(restRequest);
+            var exResult = RestSharpExtension.CreateRestClient(request.Endpoint /*"https://api.media.megazone.io"*/)
+                .Execute(restRequest);
 
 
             //// TODO 나중에 Get 방식으로 받는 코드로 교체

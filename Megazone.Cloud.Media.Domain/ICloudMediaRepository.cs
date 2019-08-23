@@ -17,5 +17,7 @@ namespace Megazone.Cloud.Media.Domain
         VideoListResponse GetVideos(VideoListRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);
+
+        Settings GetSetting(SettingRequest request);
     }
 }

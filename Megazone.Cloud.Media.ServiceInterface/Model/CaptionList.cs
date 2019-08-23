@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Model

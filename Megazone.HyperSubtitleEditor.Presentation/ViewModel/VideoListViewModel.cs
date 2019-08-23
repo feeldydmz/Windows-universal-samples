@@ -185,7 +185,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //        var stageId = _signInViewModel.SelectedStage?.Id;
         //        var projectId = _signInViewModel.SelectedStage?.Id;
 
-        //        var results = await _cloudMediaService.GetCaptionsAsync(new GetCaptionsParameter(authorization, stageId,
+        //        var results = await _cloudMediaService.GetCaptionAssetsAsync(new GetCaptionsParameter(authorization, stageId,
         //            projectId, new Pagination(SelectedPageIndex), new Dictionary<string, string> { { "videoId", videoId } }));
 
         //        var list = results.List?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();

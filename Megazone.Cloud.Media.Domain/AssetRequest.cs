@@ -20,10 +20,12 @@
 
     public class AssetRequest<TAsset> : AssetRequest
     {
-        public AssetRequest(string endpoint, string accessToken, string stageId, string projectId, string assetId, TAsset asset) : base(endpoint, accessToken, stageId, projectId, assetId)
+        public AssetRequest(string endpoint, string accessToken, string stageId, string projectId, string assetId,
+            TAsset asset) : base(endpoint, accessToken, stageId, projectId, assetId)
         {
             Asset = asset;
         }
+
         public TAsset Asset { get; }
     }
 }

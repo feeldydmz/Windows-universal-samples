@@ -4,7 +4,8 @@ namespace Megazone.Cloud.Media.Domain
 {
     public class AssetListRequest
     {
-        public AssetListRequest(string endpoint, string accessToken, string stageId, string projectId, Pagination pagination , Dictionary<string, string> searchConditions = null)
+        public AssetListRequest(string endpoint, string accessToken, string stageId, string projectId,
+            Pagination pagination, Dictionary<string, string> searchConditions = null)
         {
             Endpoint = endpoint;
             AccessToken = accessToken;

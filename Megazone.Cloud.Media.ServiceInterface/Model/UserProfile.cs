@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Megazone.Cloud.Media.Domain;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Model
@@ -19,7 +18,9 @@ namespace Megazone.Cloud.Media.ServiceInterface.Model
 
         public string Name { get; }
         public string Username { get; }
+
         public string Type { get; }
+
         //public DateTime LatestAccessedAt { get; set; }
         public IEnumerable<Stage> Stages { get; }
     }
