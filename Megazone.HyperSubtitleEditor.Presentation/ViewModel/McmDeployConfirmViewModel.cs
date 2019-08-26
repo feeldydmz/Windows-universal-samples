@@ -7,6 +7,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Input;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using System.Threading.Tasks;
@@ -104,7 +105,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var authorization = _signInViewModel.GetAuthorization();
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
-            var list = CaptionItems.Where(x => x.IsSelected).Select(x => x.Source).ToList();
+            var list = CaptionItems.Where(x => x.IsSelected).ToList();
 
             var uploadPath = GetUploadPathAsync();
 
@@ -117,15 +118,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     uploadUrl = $"{uploadPath}/{caption.Label}_{caption.Language}.vtt";
                 }
 
-                var uploadData = string.Empty;
-                await _cloudMediaService.UploadCaptionFileAsync(new UploadCaptionFileParameter(uploadUrl, uploadData));
+                var uploadData = caption.Text;
+                await _cloudMediaService.UploadCaptionFileAsync(
+                    new UploadCaptionFileParameter(authorization, stageId, projectId, uploadUrl, uploadData));
             }
 
             // update.
             CloseAction?.Invoke();
-
-
-            
         }
 
         async Task<string> GetUploadPathAsync()

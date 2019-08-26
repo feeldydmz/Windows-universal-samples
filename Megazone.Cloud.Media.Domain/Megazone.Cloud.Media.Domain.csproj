@@ -68,6 +68,7 @@
     <Compile Include="SettingRequest.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Stage.cs" />
+    <Compile Include="UploadCaptionRequest.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoListRequest.cs" />
     <Compile Include="VideoListResponse.cs" />

@@ -1,4 +1,7 @@
-﻿using Megazone.Cloud.Media.Domain;
+﻿using System;
+using System.IO;
+using System.Text;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using RestSharp;
@@ -99,6 +102,48 @@ namespace Megazone.Cloud.Media.Repository
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
                 .Execute(restRequest).Convert<Settings>();
+        }
+
+        public void UploadCaption(UploadCaptionRequest request)
+        {
+            var sha256 = GetSha256(request.Text);
+            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(request.Text));
+
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/upload", Method.POST)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddParameter("contentHash", sha256)
+                .AddParameter("file", stream);
+
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+
+            string GetSha256(string data)
+            {
+                var fileBytes = System.Text.Encoding.UTF8.GetBytes(data);
+                var contentHashBytes = System.Security.Cryptography.HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
+                return ToHexString(contentHashBytes);
+
+                string ToHexString(byte[] bytes)
+                {
+                    var result = "";
+                    foreach (var @byte in bytes)
+                        result += @byte.ToString("x2"); /* hex format */
+                    return result;
+                }
+            }
+        }
+
+        public string Read(Uri fileUri)
+        {
+            var endpoint = $"https://{fileUri.Host}";
+            var localPath = fileUri.LocalPath;
+            if (localPath.StartsWith("/"))
+                localPath = localPath.Substring(1, localPath.Length - 1);
+
+            var response = RestSharpExtension.CreateRestClient(endpoint)
+                .Execute(new RestRequest(localPath, Method.GET));
+
+            return response?.Content;
         }
 
         public Video GetVideo(VideoRequest request)

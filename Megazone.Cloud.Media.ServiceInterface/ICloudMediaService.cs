@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface.Model;
@@ -19,5 +20,6 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter);
         Task<Settings> GetSettingsAsync(GetSettingsParameter parameter);
         Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter);
+        Task<string> ReadAsync(Uri fileUri);
     }
 }

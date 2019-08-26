@@ -12,6 +12,7 @@ using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
@@ -52,6 +53,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
         private readonly IJobService _jobService;
+        private readonly ICloudMediaService _cloudMediaService;
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
@@ -92,7 +94,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IBrowser browser,
             IS3Service s3Service,
             ITrackService trackService,
-            IJobService jobService)
+            IJobService jobService,
+            ICloudMediaService cloudMediaService)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -101,6 +104,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser = browser;
             _trackService = trackService;
             _jobService = jobService;
+            _cloudMediaService = cloudMediaService;
             _subtitleListItemValidator = subtitleListItemValidator;
             _browser = browser;
             _s3Service = s3Service;
@@ -1269,7 +1273,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
             WorkContext.SetVideo(video);
             WorkContext.SetCaption(asset);
-            WorkContext.SetCaptions(captions);
+            WorkContext.SetCaptions(captions?.Select(caption => new WorkContext.CaptionContext(caption)).ToList());
 
             if (!message.Param.Captions?.Any() ?? true)
                 return;
@@ -1277,14 +1281,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var paramList = new List<FileOpenedMessageParameter>();
             _browser.Main.LoadingManager.Show();
 
-            await Task.Factory.StartNew(()=> {
+            await Task.Factory.StartNew(async () => {
                 try
                 {
                     // video영상을 가져온다.
                     var mediaUrl = GetMediaUrl();
                     if (!string.IsNullOrEmpty(mediaUrl))
+                    {
                         MediaPlayer.OpenMedia(mediaUrl, false);
-                    //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
+                        //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
+                    }
 
                     var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
                     var trackKind = TrackKind.Caption;
@@ -1298,49 +1304,39 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     }
 
                     // 선택된 caption 파일이 있다면, 로드한다.
-                    using (var client = new WebClient())
+                    foreach (var caption in WorkContext.Captions)
                     {
-                        foreach (var caption in captions)
+                        try
                         {
-                            try
+                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url));
+                            caption.Text = text;
+                            paramList.Add(new FileOpenedMessageParameter()
                             {
-                                var text = string.Empty;
-                                using (var stream = client.OpenRead(new Uri(caption.Url)))
-                                {
-                                    using (var reader = new StreamReader(stream))
-                                    {
-                                        text = reader.ReadToEnd();
-                                    }
-                                }
-
-                                paramList.Add(new FileOpenedMessageParameter()
-                                {
-                                    FilePath = "",
-                                    Kind = trackKind,
-                                    Label = caption.Label,
-                                    LanguageCode = caption.Language,
-                                    Text = text
-                                });
-                            }
-                            catch(WebException e)
-                            {
-                                Console.WriteLine(e);
-                            }
+                                FilePath = "",
+                                Kind = trackKind,
+                                Label = caption.Label,
+                                LanguageCode = caption.Language,
+                                Text = text
+                            });
+                        }
+                        catch (WebException e)
+                        {
+                            Console.WriteLine(e);
                         }
                     }
+
+                    foreach (var param in paramList)
+                    {
+                        MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
+                    }
+
+                    this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
             });
-
-            foreach (var param in paramList)
-            {
-                MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
-            }
-
-            this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
 
             string GetMediaUrl()
             {

@@ -13,6 +13,7 @@ namespace Megazone.Cloud.Media.Service
     [Inject(Source = typeof(ICloudMediaService), Scope = LifetimeScope.Singleton)]
     internal class CloudMediaService : ICloudMediaService
     {
+        // ReSharper disable once InconsistentNaming
         //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
         //private const string CLOUD_MEDIA_ENDPOINT =
@@ -161,7 +162,22 @@ namespace Megazone.Cloud.Media.Service
 
         public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter)
         {
-            throw new NotImplementedException();
+            //var uploadHostApiUrl = "https://upload.media.megazone.io";// production
+            //var uploadHostApiUrl = "https://upload.media.stg.continuum.co.kr"; // stage
+            var uploadHostApiUrl =
+                "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
+
+            return Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                _cloudMediaRepository.UploadCaption(new UploadCaptionRequest(uploadHostApiUrl, accessToken,
+                    parameter.StageId, parameter.ProjectId, parameter.UploadFullPath, parameter.UploadData));
+            });
+        }
+
+        public async Task<string> ReadAsync(Uri fileUri)
+        {
+            return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri));
         }
     }
 }
