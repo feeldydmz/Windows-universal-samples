@@ -606,4 +606,10 @@ Are you going to load a project?</value>
   <data name="CNT_PROJECT_START" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="CNT_VIDEO_ID" xml:space="preserve">
+    <value>Video Id</value>
+  </data>
+  <data name="CNT_TOTAL_COUNT" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
 </root>

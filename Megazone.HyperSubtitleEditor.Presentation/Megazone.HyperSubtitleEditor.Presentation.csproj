@@ -151,7 +151,7 @@
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
-    <Compile Include="Command\UI\McmDeployCommand.cs" />
+    <Compile Include="Command\UI\DeployToMcmCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
     <Compile Include="Command\UI\PlayBackByHalfSecondCommand.cs" />
@@ -448,6 +448,10 @@
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.VideoTrack\Megazone.Core.VideoTrack.csproj">
       <Project>{56c6050f-9daa-4352-8356-e897da32e4c9}</Project>
       <Name>Megazone.Core.VideoTrack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Buttons\Megazone.Core.Windows.Control.Buttons.csproj">
+      <Project>{e2babc8b-d0f1-42cb-b849-38848e31a0b8}</Project>
+      <Name>Megazone.Core.Windows.Control.Buttons</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.RichTextBox\Megazone.Core.Windows.Control.RichTextBox.csproj">
       <Project>{7A1522B8-EEC4-439E-A07A-DBEFC1BB58AE}</Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -29,7 +30,8 @@ namespace Megazone.Cloud.Media.Service
             _cloudMediaRepository = cloudMediaRepository;
         }
 
-        public async Task<Authorization> LoginAsync(string userName, string password)
+        public async Task<Authorization> LoginAsync(string userName, string password,
+            CancellationToken cancellationToken)
         {
             const string authorizationEndpoint = "https://megaone.io";
             return await Task.Factory.StartNew(() =>
@@ -41,17 +43,19 @@ namespace Megazone.Cloud.Media.Service
                 var expires = authorizationResponse.Expires;
 
                 return new Authorization(accessToken, refreshToken, expires);
-            });
+            }, cancellationToken);
         }
 
-        public async Task<UserProfile> GetUserAsync(Authorization authorization)
+        public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(() =>
-                new UserProfile(
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))));
+            return await Task.Factory.StartNew(
+                () => new UserProfile(
+                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))),
+                cancellationToken);
         }
 
-        public async Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter)
+        public async Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -61,20 +65,22 @@ namespace Megazone.Cloud.Media.Service
 
                 return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
                     response.TotalCount, response.Assets);
-            });
+            }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter)
+        public async Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
                 var response = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter)
+        public async Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -89,10 +95,11 @@ namespace Megazone.Cloud.Media.Service
                     accessToken, stageId, projectId, null, asset));
 
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter)
+        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -108,10 +115,10 @@ namespace Megazone.Cloud.Media.Service
                 var response = _cloudMediaRepository.UpdateAsset(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
                     accessToken, stageId, projectId, assetId, asset));
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<VideoList> GetVideosAsync(GetVideosParameter parameter)
+        public async Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -123,10 +130,10 @@ namespace Megazone.Cloud.Media.Service
                 var videos = response?.Videos ?? new List<Video>();
                 return new VideoList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage, totalCount,
                     videos);
-            });
+            }, cancellationToken);
         }
 
-        public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
+        public async Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -134,10 +141,10 @@ namespace Megazone.Cloud.Media.Service
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
 
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter)
+        public async Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter, CancellationToken cancellationToken)
         {
             // 캡션 추가.
             return await Task.Factory.StartNew(() =>
@@ -146,10 +153,11 @@ namespace Megazone.Cloud.Media.Service
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
 
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<Settings> GetSettingsAsync(GetSettingsParameter parameter)
+        public async Task<Settings> GetSettingsAsync(GetSettingsParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -157,10 +165,10 @@ namespace Megazone.Cloud.Media.Service
                 var response = _cloudMediaRepository.GetSetting(new SettingRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                     parameter.StageId, parameter.ProjectId));
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter)
+        public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken)
         {
             //var uploadHostApiUrl = "https://upload.media.megazone.io";// production
             //var uploadHostApiUrl = "https://upload.media.stg.continuum.co.kr"; // stage
@@ -170,14 +178,15 @@ namespace Megazone.Cloud.Media.Service
             return Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                _cloudMediaRepository.UploadCaption(new UploadCaptionRequest(uploadHostApiUrl, accessToken,
-                    parameter.StageId, parameter.ProjectId, parameter.UploadFullPath, parameter.UploadData));
-            });
+                _cloudMediaRepository.UploadCaptionFile(new UploadCaptionRequest(uploadHostApiUrl, accessToken,
+                    parameter.StageId, parameter.ProjectId, parameter.InputPath, parameter.FileName,
+                    parameter.UploadData));
+            }, cancellationToken);
         }
 
-        public async Task<string> ReadAsync(Uri fileUri)
+        public async Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri));
+            return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri), cancellationToken);
         }
     }
 }

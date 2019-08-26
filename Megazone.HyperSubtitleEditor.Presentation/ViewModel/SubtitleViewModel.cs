@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -1308,7 +1309,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         try
                         {
-                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url));
+                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
                             caption.Text = text;
                             paramList.Add(new FileOpenedMessageParameter()
                             {
@@ -1325,12 +1326,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         }
                     }
 
-                    foreach (var param in paramList)
+                    this.InvokeOnUi(() =>
                     {
-                        MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
-                    }
-
-                    this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
+                        foreach (var param in paramList)
+                        {
+                            MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
+                        }
+                        _browser.Main.LoadingManager.Hide();
+                    });
                 }
                 catch (Exception e)
                 {

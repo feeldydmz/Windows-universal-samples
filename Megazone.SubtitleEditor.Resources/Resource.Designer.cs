@@ -1267,6 +1267,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Total: {0}과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_TOTAL_COUNT {
+            get {
+                return ResourceManager.GetString("CNT_TOTAL_COUNT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Total length과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_TOTAL_LENGTH {
@@ -1290,6 +1299,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_VIDEO {
             get {
                 return ResourceManager.GetString("CNT_VIDEO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Video Id과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_ID {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_ID", resourceCulture);
             }
         }
         

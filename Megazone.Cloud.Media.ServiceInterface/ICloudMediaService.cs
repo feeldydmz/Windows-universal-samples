@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -9,17 +10,17 @@ namespace Megazone.Cloud.Media.ServiceInterface
 {
     public interface ICloudMediaService
     {
-        Task<Authorization> LoginAsync(string userName, string password);
-        Task<UserProfile> GetUserAsync(Authorization authorization);
-        Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter);
-        Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter);
-        Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter);
-        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter);
-        Task<VideoList> GetVideosAsync(GetVideosParameter parameter);
-        Task<Video> GetVideoAsync(GetVideoParameter parameter);
-        Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter);
-        Task<Settings> GetSettingsAsync(GetSettingsParameter parameter);
-        Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter);
-        Task<string> ReadAsync(Uri fileUri);
+        Task<Authorization> LoginAsync(string userName, string password, CancellationToken cancellationToken);
+        Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken);
+        Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken);
+        Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken);
+        Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter, CancellationToken cancellationToken);
+        Task<Settings> GetSettingsAsync(GetSettingsParameter parameter, CancellationToken cancellationToken);
+        Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
+        Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
     }
 }

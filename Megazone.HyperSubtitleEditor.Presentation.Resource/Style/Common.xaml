@@ -1287,4 +1287,37 @@
         <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
+    <Style x:Key="Style_BadgeBase" TargetType="ContentControl">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontFamily" Value="Malgun Gothic" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Width" Value="60" />
+        <Setter Property="Height" Value="17" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <Border x:Name="Border" VerticalAlignment="Center" HorizontalAlignment="Center" Width="60" Height="17">
+                            <Grid>
+                                <Rectangle Fill="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}}" RadiusX="2" RadiusY="2" />
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style_VideoBadge" TargetType="ContentControl" BasedOn="{StaticResource Style_BadgeBase}">
+        <Setter Property="Content" Value="VIDEO" />
+        <Setter Property="Background" Value="#405fff" />
+    </Style>
+
+    <Style x:Key="Style_CaptionBadge" TargetType="ContentControl" BasedOn="{StaticResource Style_BadgeBase}">
+        <Setter Property="Content" Value="CAPTION" />
+        <Setter Property="Background" Value="#5a4a3f" />
+    </Style>
+
 </ResourceDictionary>

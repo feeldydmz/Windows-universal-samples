@@ -28,35 +28,6 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
-
-            <Style x:Key="Stype_Badge" TargetType="ContentControl">
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="FontWeight" Value="Bold" />
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <Grid>
-                                <Border x:Name="Border" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Grid>
-                                        <Rectangle Fill="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}}" RadiusX="3" RadiusY="3" />
-                                        <TextBlock Text="{Binding}" Margin="2" />
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="Stype_VideoBadge" TargetType="ContentControl" BasedOn="{StaticResource Stype_Badge}">
-                <Setter Property="Content" Value="VIDEO" />
-                <Setter Property="Background" Value="Blue" />
-            </Style>
-
-            <Style x:Key="Stype_CaptionBadge" TargetType="ContentControl" BasedOn="{StaticResource Stype_Badge}">
-                <Setter Property="Content" Value="CAPTION" />
-                <Setter Property="Background" Value="Black" />
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -103,7 +74,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ContentControl Grid.Column="0" Style="{StaticResource Stype_VideoBadge}" />
+                        <ContentControl Grid.Column="0" Style="{StaticResource Style_VideoBadge}" />
                         <TextBlock Grid.Column="1" Text="{Binding Path=Name}" />
                         <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" />
                     </Grid>
@@ -121,7 +92,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <ContentControl Style="{StaticResource Stype_CaptionBadge}" />
+                    <ContentControl Style="{StaticResource Style_CaptionBadge}" />
 
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=CaptionAssetItem.Kind}" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
@@ -162,7 +133,7 @@
         </Border>
 
         <Control Grid.Row="1" x:Name="LoadingProgressView" 
-                 Visibility="Collapsed"
+                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                  Style="{StaticResource Style_IndeterminateControl}" />
 
         <!--하단 버튼 영역-->

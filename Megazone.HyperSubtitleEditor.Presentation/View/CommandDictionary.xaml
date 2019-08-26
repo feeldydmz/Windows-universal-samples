@@ -50,5 +50,5 @@
     <ui:ShowApplicatoinInfoCommand x:Key="ShowApplicatoinInfoCommand" />
     <ui:DownloadExcelTemplet x:Key="DownloadExcelTemplet" />
     <ui:AutoAdjustEndtimesCommand x:Key="AutoAdjustEndtimesCommand" />
-    <ui:McmDeployCommand x:Key="McmDeployCommand" />
+    <ui:DeployToMcmCommand x:Key="DeployToMcmCommand" />
 </ResourceDictionary>

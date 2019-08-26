@@ -493,7 +493,7 @@
                     </Grid>
                     <Rectangle />
                     <!--<Button Command="{StaticResource DeployCommand}">-->
-                    <Button Command="{StaticResource McmDeployCommand}">
+                    <Button Command="{StaticResource DeployToMcmCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />

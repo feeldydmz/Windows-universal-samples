@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -104,7 +105,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<Settings>();
         }
 
-        public void UploadCaption(UploadCaptionRequest request)
+        public void UploadCaptionFile(UploadCaptionRequest request)
         {
             var sha256 = GetSha256(request.Text);
             var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(request.Text));
@@ -113,9 +114,16 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddParameter("contentHash", sha256)
-                .AddParameter("file", stream);
+                .AddFileBytes("file", UTF8Encoding.UTF8.GetBytes(request.Text), request.FileName);
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            if (response != null)
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new Exception();
+                }
+            }
 
             string GetSha256(string data)
             {

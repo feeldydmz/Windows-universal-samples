@@ -31,7 +31,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             IsModified = true;
         }
 
-        public static void Save()
+        public static void Saved()
         {
             IsModified = false;
         }

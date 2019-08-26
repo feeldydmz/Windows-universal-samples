@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -45,7 +46,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var result =
                 await _cloudMediaService.GetCaptionAssetsAsync(new GetAssetsParameter(authorization, stageId, projectId,
-                    new Pagination(0, 10)));
+                    new Pagination(0, 10)), CancellationToken.None);
 
             SelectedPageIndex = result.Offset;
         }

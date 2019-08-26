@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
@@ -315,7 +316,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = true;
             IsSignIn = true;
 
-            var user = await _cloudMediaService.GetUserAsync(_authorization);
+            var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
 
             StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                          new List<StageItemViewModel>();
