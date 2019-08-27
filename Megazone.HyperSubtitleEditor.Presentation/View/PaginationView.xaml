@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.PaginationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mz="http://schemas.megazone.co.kr"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="Root">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <mz:ImageButton 
+            Grid.Column="0" x:Name="PreviousButton" Click="PreviousButton_OnClick" 
+            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_nor.png"
+            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_pres.png"
+            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_hov.png"
+            Style="{StaticResource Style_TransparentImageButton}" Width="10" Height="16" />
+
+        <ListBox Grid.Column="1" x:Name="PageListBox" SelectionMode="Single" ItemContainerStyle="{x:Null}" Margin="5,0" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ItemsSource="{Binding Path=PageItems, ElementName=Root}" SelectedItem="{Binding ElementName=Root, Path=Value, Mode=TwoWay}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!--<Button Content="{Binding}" Click="PageButton_OnClick" Width="Auto" Height="Auto" MinWidth="0" MinHeight="0" Foreground="Black"/>-->
+                        <TextBlock Text="{Binding}" Style="{x:Null}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <mz:ImageButton 
+            Grid.Column="2" x:Name="NextButton" Click="NextButton_OnClick"
+            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_nor.png"
+            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_pres.png"
+            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_hov.png"
+            Style="{StaticResource Style_TransparentImageButton}" Width="10" Height="16" />
+
+    </Grid>
+</UserControl>

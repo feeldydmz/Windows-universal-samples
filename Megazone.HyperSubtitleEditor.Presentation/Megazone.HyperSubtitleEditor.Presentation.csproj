@@ -344,6 +344,9 @@
     <Compile Include="View\OpenVideoAddressWindow.xaml.cs">
       <DependentUpon>OpenVideoAddressWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PaginationView.xaml.cs">
+      <DependentUpon>PaginationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProjectSelectView.xaml.cs">
       <DependentUpon>ProjectSelectView.xaml</DependentUpon>
     </Compile>
@@ -584,6 +587,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\OpenVideoAddressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PaginationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

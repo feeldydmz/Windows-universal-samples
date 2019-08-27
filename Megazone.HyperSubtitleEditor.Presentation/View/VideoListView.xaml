@@ -116,9 +116,22 @@
 
                         <!--페이징-->
                         <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Path=TotalCount, StringFormat='{x:Static resources:Resource.CNT_TOTAL_COUNT}'}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-                            <mz:ImageButton 
+                            <view:PaginationView x:Name="PaginationView" Grid.Column="1" CountPerPage="10" TotalCount="{Binding Path=TotalCount}" Value="{Binding Path=SelectedPageNo, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ValueChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=SelectedPageNoChangedCommand}" CommandParameter="{Binding Path=SelectedPageNo}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </view:PaginationView>
+                            
+                            <mz:ImageButton Grid.Column="2"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding Path=RefreshCommand}" 
                                 ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
                                 DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"

@@ -56,7 +56,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
         private KeywordType _selectedKeywordType;
-        private int _selectedPageIndex;
+
+        private ICommand _selectedPageNoChangedCommand;
+        private int _selectedPageNo;
         private VideoItemViewModel _selectedVideoItem;
 
         private int _totalCount;
@@ -77,10 +79,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand SelectedPageNoChangedCommand
+        {
+            get
+            {
+                return _selectedPageNoChangedCommand =
+                    _selectedPageNoChangedCommand ?? new RelayCommand<int>(OnSelectedPageNoChanged);
+            }
+        }
 
         public ICommand LoadCommand
         {
-            get { return _loadCommand = _loadCommand ?? new RelayCommand(LoadAsync); }
+            get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
         public ICommand ConfirmCommand
@@ -90,7 +100,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ICommand SearchCommand
         {
-            get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(SearchAsync); }
+            get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(Search); }
         }
 
         public ICommand LoadCaptionCommand
@@ -182,10 +192,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _totalCount, value);
         }
 
-        public int SelectedPageIndex
+        public int SelectedPageNo
         {
-            get => _selectedPageIndex;
-            set => Set(ref _selectedPageIndex, value);
+            get => _selectedPageNo;
+            set => Set(ref _selectedPageNo, value);
         }
 
         public IEnumerable<KeywordType> KeywordTypeItems
@@ -216,6 +226,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
+        private void OnSelectedPageNoChanged(int selectedPageNo)
+        {
+            SearchAsync(Keyword, selectedPageNo - 1, true);
+        }
+
         private void OnDurationEndTimeChanged()
         {
             if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
@@ -244,7 +259,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private async void LoadAsync()
+        private void Load()
         {
 #if STAGE
             KeywordTypeItems = new List<KeywordType>
@@ -262,7 +277,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
 
-            await SearchVideoAsync();
+            SearchAsync(Keyword, 0);
         }
 
         private bool CanLoadCaption(VideoItemViewModel videoItem)
@@ -308,7 +323,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Refresh()
         {
-            SearchAsync(Keyword);
+            SearchAsync(Keyword, 0);
         }
 
         private void Back()
@@ -322,54 +337,39 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Enter(string keyword)
         {
-            SearchAsync(keyword);
+            SearchAsync(keyword, 0);
         }
 
-        private async void SearchAsync(string keyword)
+        private void Search(string keyword)
         {
-            SelectedPageIndex = 0;
-            var conditions = new Dictionary<string, string>();
-            if (!string.IsNullOrEmpty(keyword))
-                conditions.Add(SelectedKeywordType.Key, keyword);
-
-#if STAGE
-            if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds > 0)
-            {
-                conditions.Add("beginDuration", $"{DurationStartTime.TotalMilliseconds}");
-
-                conditions.Add("endDuration",
-                    DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds
-                        ? $"{DurationEndTime.TotalMilliseconds}"
-                        : $"{DurationStartTime.TotalMilliseconds + 999}");
-            }
-#else
-            if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds>0)
-            {
-                var startTime = DurationStartTime.TotalMilliseconds;
-                var endTime =
- (DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds) ? DurationEndTime.TotalMilliseconds : (DurationStartTime.TotalMilliseconds + 999);
-                conditions.Add("duration", $"{startTime}~{endTime}");
-            }
-#endif
-            await SearchVideoAsync(conditions);
+            SearchAsync(keyword, 0);
         }
 
-        private async Task SearchVideoAsync(Dictionary<string, string> conditions = null)
+        private async void SearchAsync(string keyword, int pageOffset, bool isPaging = false)
+        {
+            var conditions = MakeSearchConditions(keyword, DurationStartTime, DurationEndTime);
+            await SearchVideoAsync(pageOffset, conditions, isPaging);
+        }
+
+        private async Task SearchVideoAsync(int pageOffset, Dictionary<string, string> conditions, bool isPaging)
         {
             ValidCancellationTokenSource();
             IsBusy = true;
             try
             {
-                TotalCount = 0;
+                if (!isPaging)
+                {
+                    TotalCount = 0;
+                    VideoItems?.Clear();
+                }
                 SelectedVideoItem = null;
-                VideoItems?.Clear();
 
                 var authorization = _signInViewModel.GetAuthorization();
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedStage?.Id;
 
                 var results = await _cloudMediaService.GetVideosAsync(
-                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(SelectedPageIndex),
+                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageOffset),
                         conditions), _cancellationTokenSource.Token);
 
                 TotalCount = results.TotalCount;
@@ -385,6 +385,37 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 IsBusy = false;
             }
+        }
+
+        private Dictionary<string, string> MakeSearchConditions(string keyword, TimeSpan startDuration, TimeSpan endDuration)
+        {
+            var conditions = new Dictionary<string, string>();
+            if (!string.IsNullOrEmpty(keyword))
+                conditions.Add(SelectedKeywordType.Key, keyword);
+
+#if STAGE
+            if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
+            {
+                var startValue = startDuration.TotalMilliseconds;
+                var endValue = endDuration.TotalSeconds > startDuration.TotalSeconds
+                    ? endDuration.TotalMilliseconds
+                    : startDuration.TotalMilliseconds + 999;
+
+                conditions.Add("beginDuration", $"{startValue}");
+                conditions.Add("endDuration", $"{endValue}");
+            }
+#else
+            if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
+            {
+                var startTime = startDuration.TotalMilliseconds;
+                var endTime =
+                    endDuration.TotalSeconds > startDuration.TotalSeconds
+                        ? endDuration.TotalMilliseconds
+                        : startDuration.TotalMilliseconds + 999;
+                conditions.Add("duration", $"{startTime}~{endTime}");
+            }
+#endif
+            return conditions;
         }
 
         private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
