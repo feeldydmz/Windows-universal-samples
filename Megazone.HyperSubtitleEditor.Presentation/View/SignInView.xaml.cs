@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using mshtml;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -21,26 +23,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public static readonly DependencyProperty UriSourceProperty =
             DependencyProperty.RegisterAttached("UriSource", typeof(string), typeof(WebBrowserHelper),
-                new PropertyMetadata(OnBodyChanged));
+                //new PropertyMetadata(OnUriChanged) 
+                new PropertyMetadata(OnUriChanged)
+                );
 
         public static string GetUriSource(DependencyObject dependencyObject)
         {
             return (string)dependencyObject.GetValue(UriSourceProperty);
         }
 
-        public static void SetUriSource(DependencyObject dependencyObject, string body)
+        public static void SetUriSource(DependencyObject dependencyObject, string uri)
         {
-            dependencyObject.SetValue(UriSourceProperty, body);
+            dependencyObject.SetValue(UriSourceProperty, uri);
         }
 
-        private static void OnBodyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnUriChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var webBrowser = (WebBrowser)d;
             if (webBrowser != null)
             {
                 var uri = (string)e.NewValue;
-
-                
 
                 webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : new Uri("http://www.google.com");
             }
@@ -60,9 +62,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
                         if (index == -1) return;
 
-                        
                         a.Cancel = true;
-                        browser.Navigate("about:blank");
+
+                        var viewmodel = browser.DataContext as SignInViewModel;
+
+                        if (viewmodel != null) viewmodel.UriSource = "about:blank";
+
+                        var document2 = browser.Document as IHTMLDocument2;
+                        document2?.execCommand("ClearAuthenticationCache", false, null);
 
                         var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
 

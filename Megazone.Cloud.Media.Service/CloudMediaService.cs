@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -60,8 +61,11 @@ namespace Megazone.Cloud.Media.Service
         public async Task<UserProfile> GetUserAsync(Authorization authorization)
         {
             return await Task.Factory.StartNew(() =>
-                new UserProfile(
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))));
+            {
+                var response = _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
+
+                return response == null ? null : new UserProfile(response);
+            });
         }
 
         public async Task<Video> GetVideoAsync(GetVideoParameter parameter)
