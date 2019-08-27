@@ -26,7 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
-        private ICommand _assetSectionChangedCommand;
+        private ICommand _captionAssetSectionChangedCommand;
 
         private ICommand _backCommand;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -64,12 +64,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel = signInViewModel;
         }
 
-        public ICommand AssetSectionChangedCommand
+        public ICommand CaptionAssetSectionChangedCommand
         {
             get
             {
-                return _assetSectionChangedCommand =
-                    _assetSectionChangedCommand ?? new RelayCommand(OnAssetSectionChanged);
+                return _captionAssetSectionChangedCommand =
+                    _captionAssetSectionChangedCommand ?? new RelayCommand<CaptionAssetItemViewModel>(OnCaptionAssetSectionChanged);
             }
         }
 
@@ -121,6 +121,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return _captionSelectionChangedCommand = _captionSelectionChangedCommand ??
                                                          new RelayCommand<CaptionElementItemViewModel>(
                                                              OnCaptionSelectionChanged, CanCaptionSelectionChanged);
+            }
+        }
+
+        private ICommand _durationStartTimeChangedCommand;
+        public ICommand DurationStartTimeChangedCommand
+        {
+            get { return _durationStartTimeChangedCommand = _durationStartTimeChangedCommand ?? new RelayCommand(OnDurationStartTimeChanged); }
+        }
+
+        private ICommand _durationEndTimeChangedCommand;
+        public ICommand DurationEndTimeChangedCommand
+        {
+            get { return _durationEndTimeChangedCommand = _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged); }
+        }
+
+        private void OnDurationEndTimeChanged()
+        {
+            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+            {
+                DurationStartTime = TimeSpan.FromSeconds(DurationEndTime.TotalSeconds);
+            }
+        }
+
+        private void OnDurationStartTimeChanged()
+        {
+            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+            {
+                DurationEndTime = TimeSpan.FromSeconds(DurationStartTime.TotalSeconds);
             }
         }
 
@@ -194,16 +222,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
-        private void OnAssetSectionChanged()
+        private void OnCaptionAssetSectionChanged(CaptionAssetItemViewModel selectedCaptionAssetItem)
         {
-            if (SelectedVideoItem != null)
-            {
-                SelectedVideoItem.SelectedCaptionAsset?.SelectAll();
-                if (SelectedVideoItem.CaptionItems != null)
-                    foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
-                        if (!captionAssetItem.Equals(SelectedVideoItem.SelectedCaptionAsset))
-                            captionAssetItem.Initialize();
-            }
+            selectedCaptionAssetItem.SelectAll();
+            if (SelectedVideoItem?.CaptionItems != null)
+                foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
+                    if (!captionAssetItem.Equals(selectedCaptionAssetItem))
+                        captionAssetItem.Initialize();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
@@ -213,17 +239,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void LoadAsync()
         {
-            //KeywordTypeItems = new List<KeywordType>
-            //{
-            //    new KeywordType(Resource.CNT_NAME, "name"),
-            //    new KeywordType(Resource.CNT_VIDEO_ID, "id")
-            //};
+#if STAGE
             KeywordTypeItems = new List<KeywordType>
             {
                 new KeywordType(Resource.CNT_NAME, "title"),
                 new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
             };
-
+#else
+            KeywordTypeItems = new List<KeywordType>
+            {
+                new KeywordType(Resource.CNT_NAME, "name"),
+                new KeywordType(Resource.CNT_VIDEO_ID, "id")
+            };
+#endif
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
 
@@ -297,6 +325,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!string.IsNullOrEmpty(keyword))
                 conditions.Add(SelectedKeywordType.Key, keyword);
 
+#if STAGE
+            if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds > 0)
+            {
+                conditions.Add("beginDuration", $"{DurationStartTime.TotalMilliseconds}");
+
+                conditions.Add("endDuration",
+                    DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds
+                        ? $"{DurationEndTime.TotalMilliseconds}"
+                        : $"{DurationStartTime.TotalMilliseconds + 999}");
+            }
+#else
+            if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds>0)
+            {
+                var startTime = DurationStartTime.TotalMilliseconds;
+                var endTime = (DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds) ? DurationEndTime.TotalMilliseconds : (DurationStartTime.TotalMilliseconds + 999);
+                conditions.Add("duration", $"{startTime}~{endTime}");
+            }
+#endif
             await SearchVideoAsync(conditions);
         }
 

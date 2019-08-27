@@ -81,9 +81,21 @@
                                 <TextBlock Text="Duration" VerticalAlignment="Center" TextAlignment="Center" />
                                 <Rectangle Fill="#a0a8b6" HorizontalAlignment="Right" Width="1" Height="20"></Rectangle>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0">
-                                    <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False" />
+                                    <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TimeChanged">
+                                                <i:InvokeCommandAction Command="{Binding Path=DurationStartTimeChangedCommand}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </mz:TimeSpinner>
                                     <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0" />
-                                    <mz:TimeSpinner Time="{Binding Path=DurationEndTime}" IsShowMilliseconds="False" />
+                                    <mz:TimeSpinner Time="{Binding Path=DurationEndTime}" IsShowMilliseconds="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TimeChanged">
+                                                <i:InvokeCommandAction Command="{Binding Path=DurationEndTimeChangedCommand}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </mz:TimeSpinner>
                                 </StackPanel>
                             </Grid>
                             <mz:ImageButton 
@@ -248,7 +260,7 @@
                                      ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
                                 <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding Path=AssetSectionChangedCommand}"/>
+                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" CommandParameter="{Binding ElementName=AssetListBox, Path=SelectedItem}"/>
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
