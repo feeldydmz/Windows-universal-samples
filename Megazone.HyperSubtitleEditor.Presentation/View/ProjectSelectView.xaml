@@ -8,20 +8,129 @@
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="900"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converter:StageIconTitleConverter x:Key="StageIconTitleConverter"/>
+
+        <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect" BasedOn="{StaticResource Style_ListBoxDefault}">
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="#282f37"/>
+
+        </Style>
+
         <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
-            <Setter Property="Height" Value="40" />
+            <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="200"/>
+            <Setter Property="Foreground" Value="#989CA7"/>
+
+            <Setter Property="Background" Value="#2E353F"/>
+            <Setter Property="BorderBrush" Value="#3C434D"/>
         </Style>
         <Style TargetType="{x:Type CheckBox}" x:Key="Style_CheckBox" BasedOn="{StaticResource Style_CheckBoxDefault}">
-            
             <Setter Property="FlowDirection" Value="RightToLeft"/>
         </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="Style_TextBlockNavi">
+            <!--<Setter Property="Margin" Value="4"/>-->
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="Foreground" Value="#5B626A"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="Style_Button_Right_Navi">
+            <!--<Setter Property="Margin" Value="4"/>-->
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="Foreground" Value="#F9FEFF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="PART_ContentArea"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"
+                                       Foreground="{TemplateBinding Foreground}" 
+                                       HorizontalAlignment="Center"/>
+                            <Image Grid.Column="2" 
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_NavForward.png"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3" TargetName="PART_ContentArea" />
+                            </Trigger>
+                            <!--<Trigger Property="IsMouseOver" Value="True">
+                                --><!--<Setter Property="Opacity" Value="0.5" TargetName="OverBPART_NaviTextorder" />--><!--
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>-->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="Style_Button_Left_Navi">
+            <!--<Setter Property="Margin" Value="4"/>-->
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="Foreground" Value="#F9FEFF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="PART_ContentArea"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_NavBackward.png"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"
+                                       Foreground="{TemplateBinding Foreground}" 
+                                       HorizontalAlignment="Center"/>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3" TargetName="PART_ContentArea" />
+                            </Trigger>
+                            <!--<Trigger Property="IsMouseOver" Value="True">
+                                -->
+                            <!--<Setter Property="Opacity" Value="0.5" TargetName="OverBPART_NaviTextorder" />-->
+                            <!--
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>-->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid Background="#282f37">
@@ -82,13 +191,37 @@
                     <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
                         <Grid Margin="0,0,20,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="52" />
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Foreground="White" Text="{Binding Path=Name}"/>
-                            <Border Grid.Row="1" Margin="2" BorderThickness="2" BorderBrush="Black">
+                            <Border IsEnabled="False" BorderThickness="1" BorderBrush="#60A5F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="52"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Ellipse Fill="#40485B" Height="40" Width="40" />
+                                        <TextBlock Text ="S" 
+                                                   Margin="1,0,0,1"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#848B9B"
+                                                   FontSize="22"/>
+                                    </Grid>
+                                    <TextBlock Grid.Column="1" 
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Stretch"
+                                               Margin="5"
+                                               FontSize="16"
+                                               Foreground="#F9FEFF" 
+                                               Text="{Binding Path=Name}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1" Margin="2" BorderThickness="0" BorderBrush="Transparent">
                                 <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single" 
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         Style="{StaticResource Style_ListBox_ProjectSelect}"
                                          ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
                                          SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectedProject}">
                                     <ListBox.ItemTemplate>
@@ -118,16 +251,25 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_CANCEL}"
+            <Button Grid.Column="0" HorizontalAlignment="Center" 
+                    Style="{StaticResource Style_Button_Left_Navi}"
+                    Content="{x:Static resources:Resource.CNT_CANCEL}"
                     Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding Path=CancelProjectSelectCommand}"/>
 
-            <Button Grid.Column="2" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_PROJECT_START}"
-                    Command="{Binding Path=StartProjectCommand}"/>
+            <!--<Button Grid.Column="2" HorizontalAlignment="Center" Style="{StaticResource Style_ButtonNavi}"
+                    Content="{x:Static resources:Resource.CNT_PROJECT_START}"
+                    Command="{Binding Path=StartProjectCommand}"
+                    />-->
+
+            <Button Grid.Column="2" HorizontalAlignment="Center" 
+                    Style="{StaticResource Style_Button_Right_Navi}"
+                    Command="{Binding Path=StartProjectCommand}"
+                    Content="{x:Static resources:Resource.CNT_PROJECT_START}"/>
         </Grid>
     </Grid>
 </UserControl>

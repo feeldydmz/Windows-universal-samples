@@ -206,6 +206,7 @@
     <Compile Include="Converter\OverLengthConverter.cs" />
     <Compile Include="Converter\OverMaxLineConverter.cs" />
     <Compile Include="Converter\PlayDurationTimeConverter.cs" />
+    <Compile Include="Converter\StageIconTitleConverter.cs" />
     <Compile Include="Converter\TimeSpanToDisplayDurationConverter.cs" />
     <Compile Include="Excel\ExcelService.cs" />
     <Compile Include="Excel\ExcelSheetInfo.cs" />

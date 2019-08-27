@@ -378,7 +378,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsBusy = false;
         }
 
-
         private void SaveAuthorization()
         {
             if (!ConfigHolder.Current.Subtitle.AutoLogin)
