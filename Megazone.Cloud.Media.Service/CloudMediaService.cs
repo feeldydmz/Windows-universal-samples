@@ -18,9 +18,8 @@ namespace Megazone.Cloud.Media.Service
 #if STAGE
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
 #elif DEBUG
-        //private const string CLOUD_MEDIA_ENDPOINT =
-        //    "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
+        private const string CLOUD_MEDIA_ENDPOINT =
+            "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
 #else
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
 #endif
