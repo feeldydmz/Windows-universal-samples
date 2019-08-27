@@ -65,6 +65,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _selectedCaptionCount, value);
         }
 
+        private bool _hasSelectedCaption;
+        public bool HasSelectedCaption
+        {
+            get => _hasSelectedCaption;
+            set => Set(ref _hasSelectedCaption, value);
+        }
+
         public bool HasCaptions { get; }
         public Video Source { get; private set; }
         public string Id { get; }
@@ -105,6 +112,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public void Update()
         {
             SelectedCaptionCount = this.SelectedCaptionAsset?.Elements.Count(element => element.IsSelected) ?? 0;
+            HasSelectedCaption = SelectedCaptionCount > 0;
         }
     }
 }

@@ -6,6 +6,8 @@
         <ResourceDictionary
             Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/Button.xaml" />
         <ResourceDictionary
+            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ImageButton.xaml" />
+        <ResourceDictionary
             Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/RadioButton.xaml" />
         <ResourceDictionary
             Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Style/ListView.xaml" />

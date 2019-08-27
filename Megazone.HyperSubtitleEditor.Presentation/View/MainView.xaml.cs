@@ -211,6 +211,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public void ShowVideoListDialog()
         {
+            var view = new VideoListView();
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
@@ -218,8 +219,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
                 Height = 450,
-                Content = new VideoListView()
+                Content = view,
+                Title = Resource.CNT_VIDEO
             };
+            if (view.DataContext is VideoListViewModel viewModel)
+            {
+                viewModel.SetTitleAction = (title) => { wnd.Title = title; };
+            }
             wnd.ShowDialog();
         }
 

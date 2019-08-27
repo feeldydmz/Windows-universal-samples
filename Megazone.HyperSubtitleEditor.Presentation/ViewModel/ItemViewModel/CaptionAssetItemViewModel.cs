@@ -59,5 +59,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _kind;
             set => Set(ref _kind, value);
         }
+
+        public void Initialize()
+        {
+            Elements?.ToList().ForEach(element => element.IsSelected = false);
+        }
+
+        public void SelectAll()
+        {
+            if (Elements != null)
+            {
+                foreach (var element in Elements)
+                {
+                    element.IsSelected = true;
+                }
+            }
+        }
     }
 }

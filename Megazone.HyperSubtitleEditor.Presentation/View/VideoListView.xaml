@@ -8,7 +8,6 @@
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             xmlns:convert="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Width="590" Height="545"
@@ -33,6 +32,7 @@
 
             <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
                 <Setter Property="Height" Value="Auto" />
+                <Setter Property="Padding" Value="10,0" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -44,7 +44,7 @@
 
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
             <Grid>
-                <Border>
+                <Border Background="{StaticResource Brush_CommonBackground}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -86,22 +86,32 @@
                                     <mz:TimeSpinner />
                                 </StackPanel>
                             </Grid>
-                            <Button Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}" Command="{Binding Path=SearchCommand}" CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" Width="25" Height="25" MinWidth="0">
-                                <Button.Content>
-                                    <Grid>
-                                        <TextBlock Text="○" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
+                            <mz:ImageButton 
+                                Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}" 
+                                Command="{Binding Path=SearchCommand}" 
+                                CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" 
+                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_act.png"
+                                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_hov.png"
+                                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_dis.png"
+                                Style="{StaticResource Style_TransparentImageButton}" Width="25" Height="25"/>
                         </Grid>
 
                         <!--구분선-->
                         <Rectangle Grid.Row="1" Fill="#d8dce2" Height="1" Margin="0, 18, 0, 15" />
 
                         <!--페이징-->
-                        <Grid Grid.Row="2" Height="25">
+                        <Grid Grid.Row="2">
                             <TextBlock Text="{Binding Path=TotalCount, StringFormat='{x:Static resources:Resource.CNT_TOTAL_COUNT}'}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <Button Content="refresh" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding Path=RefreshCommand}" />
+
+                            <mz:ImageButton 
+                                HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding Path=RefreshCommand}" 
+                                ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_act.png"
+                                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_hov.png"
+                                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_dis.png"
+                                Style="{StaticResource Style_TransparentImageButton}" Width="25" Height="25"/>
                         </Grid>
 
                         <!--비디오 검색 결과 목록-->
@@ -109,7 +119,7 @@
                             <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}" SelectedItem="{Binding Path=SelectedVideoItem}" 
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                                 <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type itemVm:VideoItemViewModel}">
+                                    <DataTemplate DataType="itemVm:VideoItemViewModel">
                                         <Border Width="515" Height="98">
                                             <Grid Margin="0, 15, 15, 15">
                                                 <Grid.ColumnDefinitions>
@@ -118,7 +128,7 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <RadioButton Grid.Column="0" IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" VerticalAlignment="Top" />
+                                                <RadioButton Grid.Column="0" IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" VerticalAlignment="Top" HorizontalAlignment="Center" />
 
                                                 <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
                                                     <Image Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
@@ -126,48 +136,57 @@
                                                 </Grid>
                                                 
                                                 <Grid Grid.Column="2" Margin="20, 0, 0 , 0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*" />
                                                         <RowDefinition Height="*" />
                                                         <RowDefinition Height="*" />
                                                     </Grid.RowDefinitions>
-                                                    <Grid Grid.Row="0" Margin="0, 1" VerticalAlignment="Center">
+
+                                                    <!--<ContentControl Style="{StaticResource Style_VideoBadge}" />-->
+                                                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_badge_video.png" Stretch="None" HorizontalAlignment="Left" />
+
+                                                    <!--캡션 이동 버튼-->
+                                                    <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0, 1">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="9" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="9" />
+                                                            <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <ContentControl Style="{StaticResource Style_VideoBadge}" />
-                                                        <Border Grid.Column="1">
-                                                            <!--캡션 이동 버튼-->
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*" />
-                                                                    <ColumnDefinition Width="9" />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                    <ColumnDefinition Width="9" />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Text="Caption" HorizontalAlignment="Right" />
-                                                                <!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />-->
-                                                                <TextBlock Grid.Column="2" HorizontalAlignment="Right">
-                                                                    <TextBlock.Text>
-                                                                        <MultiBinding StringFormat="{}{0}/{1}">
-                                                                            <Binding Path="SelectedCaptionCount"/>
-                                                                            <Binding Path="TotalCaptionCount"/>
-                                                                        </MultiBinding>
-                                                                    </TextBlock.Text>
-                                                                </TextBlock>
-                                                                <Button Grid.Column="4" Content="→" Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}" CommandParameter="{Binding}" Width="Auto" Height="Auto" MinWidth="0" />
-                                                            </Grid>
-                                                        </Border>
+                                                        <TextBlock Text="Caption" HorizontalAlignment="Right" />
+                                                        <!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />-->
+                                                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Visibility="{Binding Path=HasSelectedCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding StringFormat="{}{0}/{1}">
+                                                                    <Binding Path="SelectedCaptionCount"/>
+                                                                    <Binding Path="TotalCaptionCount"/>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                        <mz:ImageButton 
+                                                                    Grid.Column="4" ToolTip="자막 선택." Width="20" Height="20"
+                                                                    Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}" CommandParameter="{Binding}"
+                                                                    DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_nor.png"
+                                                                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_act.png"
+                                                                    MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_hov.png"
+                                                                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_dis.png"
+                                                                    Style="{StaticResource Style_TransparentImageButton}"
+                                                                    VerticalAlignment="Top"/>
                                                     </Grid>
+
+                                                    
                                                     <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" MaxWidth="255" />
+                                                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" TextTrimming="CharacterEllipsis" MaxWidth="255" />
                                                         <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat='{}({0})'}" Margin="3,0" />
                                                     </Grid>
                                                     <Grid Grid.Row="2" VerticalAlignment="Center">
@@ -194,8 +213,10 @@
 
 
                 <!--Caption 뷰-->
-                <Border Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Border.Style>
+                <Border 
+                    Background="{StaticResource Brush_CommonBackground}" 
+                    Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!--<Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background" Value="DarkBlue" />
                             <Style.Triggers>
@@ -204,7 +225,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Border.Style>
+                    </Border.Style>-->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -218,6 +239,10 @@
 
                         <ListBox Grid.Row="1" x:Name="AssetListBox" ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}" SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}" 
                                      ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                            <i:Interaction.Behaviors>
+                                <mz:ListBoxSelectionChangedCommandBehavior
+                                    Command="{Binding Path=AssetSectionChangedCommand}"/>
+                            </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
                                     <Border Width="528">
@@ -237,7 +262,8 @@
                                                     <RowDefinition />
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <ContentControl Style="{StaticResource Style_CaptionBadge}" />
+                                                    <!--<ContentControl Style="{StaticResource Style_CaptionBadge}" />-->
+                                                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_badge_caption.png" Stretch="None" />
                                                     <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
                                                 </StackPanel>
                                                 <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -246,12 +272,12 @@
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" MaxWidth="255" />
+                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" MaxWidth="255" TextTrimming="CharacterEllipsis" />
                                                     <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat='{}({0})'}" Margin="3,0" />
                                                 </Grid>
                                             </Grid>
-                                            <Grid Grid.Column="3" Background="Beige">
-                                                <ItemsControl ItemsSource="{Binding Path=Elements}">
+                                            <Grid Grid.Column="3">
+                                                <ItemsControl x:Name="CaptionItemsControl" ItemsSource="{Binding Path=Elements}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
                                                             <Grid>
@@ -279,6 +305,8 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
+                                                <TextBlock Text="Empty Caption List." Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                                                           VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
                                             </Grid>
                                         </Grid>
                                     </Border>

@@ -1287,7 +1287,7 @@
         <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
-    <Style x:Key="Style_BadgeBase" TargetType="ContentControl">
+    <!--<Style x:Key="Style_BadgeBase" TargetType="ContentControl">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontFamily" Value="Malgun Gothic" />
@@ -1313,11 +1313,12 @@
     <Style x:Key="Style_VideoBadge" TargetType="ContentControl" BasedOn="{StaticResource Style_BadgeBase}">
         <Setter Property="Content" Value="VIDEO" />
         <Setter Property="Background" Value="#405fff" />
+        
     </Style>
 
     <Style x:Key="Style_CaptionBadge" TargetType="ContentControl" BasedOn="{StaticResource Style_BadgeBase}">
         <Setter Property="Content" Value="CAPTION" />
         <Setter Property="Background" Value="#5a4a3f" />
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>

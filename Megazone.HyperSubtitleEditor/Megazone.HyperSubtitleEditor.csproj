@@ -206,6 +206,10 @@
       <Project>{f8fb1c75-6c4a-4145-ade0-9c48f698f0e2}</Project>
       <Name>Megazone.Core.Log.Log4Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Buttons\Megazone.Core.Windows.Control.Buttons.csproj">
+      <Project>{e2babc8b-d0f1-42cb-b849-38848e31a0b8}</Project>
+      <Name>Megazone.Core.Windows.Control.Buttons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Spinner\Megazone.Core.Windows.Control.Spinner.csproj">
       <Project>{758f49f9-16b6-44f8-ac09-5759528cbde9}</Project>
       <Name>Megazone.Core.Windows.Control.Spinner</Name>

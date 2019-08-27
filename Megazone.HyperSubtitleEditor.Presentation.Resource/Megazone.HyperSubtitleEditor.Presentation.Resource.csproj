@@ -63,6 +63,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Style\ImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Style\ListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,6 +104,10 @@
     <Resource Include="Image\img_Search.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Buttons\Megazone.Core.Windows.Control.Buttons.csproj">
+      <Project>{e2babc8b-d0f1-42cb-b849-38848e31a0b8}</Project>
+      <Name>Megazone.Core.Windows.Control.Buttons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Spinner\Megazone.Core.Windows.Control.Spinner.csproj">
       <Project>{758f49f9-16b6-44f8-ac09-5759528cbde9}</Project>
       <Name>Megazone.Core.Windows.Control.Spinner</Name>
@@ -225,6 +233,26 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\img_Subtitle_Submitted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_btn_refresh_act.png" />
+    <Resource Include="Image\img_btn_refresh_dis.png" />
+    <Resource Include="Image\img_btn_refresh_hov.png" />
+    <Resource Include="Image\img_btn_refresh_nor.png" />
+    <Resource Include="Image\img_btn_search_act.png" />
+    <Resource Include="Image\img_btn_search_dis.png" />
+    <Resource Include="Image\img_btn_search_hov.png" />
+    <Resource Include="Image\img_btn_search_nor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_btn_caption_act.png" />
+    <Resource Include="Image\img_btn_caption_dis.png" />
+    <Resource Include="Image\img_btn_caption_hov.png" />
+    <Resource Include="Image\img_btn_caption_nor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_badge_caption.png" />
+    <Resource Include="Image\img_badge_video.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

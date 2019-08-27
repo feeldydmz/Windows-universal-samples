@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Megazone.Core.Windows.Control;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
