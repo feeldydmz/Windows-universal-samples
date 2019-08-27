@@ -34,6 +34,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
 
+        private TimeSpan _durationEndTime;
+
+        private TimeSpan _durationStartTime;
+
         private ICommand _enterCommand;
         private bool _isBusy;
 
@@ -118,6 +122,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                                          new RelayCommand<CaptionElementItemViewModel>(
                                                              OnCaptionSelectionChanged, CanCaptionSelectionChanged);
             }
+        }
+
+        public TimeSpan DurationStartTime
+        {
+            get => _durationStartTime;
+            set => Set(ref _durationStartTime, value);
+        }
+
+        public TimeSpan DurationEndTime
+        {
+            get => _durationEndTime;
+            set => Set(ref _durationEndTime, value);
         }
 
         public bool IsBusy

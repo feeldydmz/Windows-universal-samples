@@ -15,11 +15,14 @@ namespace Megazone.Cloud.Media.Service
     internal class CloudMediaService : ICloudMediaService
     {
         // ReSharper disable once InconsistentNaming
-        //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
+#if STAGE
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
-        //private const string CLOUD_MEDIA_ENDPOINT =
-        //    "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
-
+#elif DEBUG
+        private const string CLOUD_MEDIA_ENDPOINT =
+            "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
+#else
+        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
+#endif
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
 
@@ -50,7 +53,8 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
+                var response =
+                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
 
                 return response == null ? null : new UserProfile(response);
             }, cancellationToken);
