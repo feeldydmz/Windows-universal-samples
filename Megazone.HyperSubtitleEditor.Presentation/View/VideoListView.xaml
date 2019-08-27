@@ -91,7 +91,7 @@
                                 Command="{Binding Path=SearchCommand}" 
                                 CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" 
                                 DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
-                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_act.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_hov.png"
                                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_dis.png"
                                 Style="{StaticResource Style_TransparentImageButton}" Width="25" Height="25"/>
@@ -108,7 +108,7 @@
                                 HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding Path=RefreshCommand}" 
                                 ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
                                 DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
-                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_act.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_hov.png"
                                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_dis.png"
                                 Style="{StaticResource Style_TransparentImageButton}" Width="25" Height="25"/>
@@ -117,7 +117,7 @@
                         <!--비디오 검색 결과 목록-->
                         <Grid Grid.Row="4">
                             <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}" SelectedItem="{Binding Path=SelectedVideoItem}" 
-                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
                                         <Border Width="515" Height="98">
@@ -172,7 +172,7 @@
                                                                     Grid.Column="4" ToolTip="자막 선택." Width="20" Height="20"
                                                                     Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}" CommandParameter="{Binding}"
                                                                     DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_nor.png"
-                                                                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_act.png"
+                                                                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_pres.png"
                                                                     MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_hov.png"
                                                                     DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_dis.png"
                                                                     Style="{StaticResource Style_TransparentImageButton}"
@@ -211,7 +211,6 @@
                     </Grid>
                 </Border>
 
-
                 <!--Caption 뷰-->
                 <Border 
                     Background="{StaticResource Brush_CommonBackground}" 
@@ -229,15 +228,24 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="14" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal">
-                            <Button Command="{Binding Path=BackCommand}" MinWidth="0" Width="25" Height="25" Content="←" Margin="0,0,6,0" />
+                            <mz:ImageButton 
+                                ToolTip="{x:Static resources:Resource.CNT_BACKWARD}" Width="18" Height="14" Margin="0,0,6,0" 
+                                Command="{Binding Path=BackCommand}"
+                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_nor.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_pres.png"
+                                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_hov.png"
+                                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_dis.png"
+                                Style="{StaticResource Style_TransparentImageButton}"
+                                />
                             <TextBlock Text="Video List" />
                         </StackPanel>
 
-                        <ListBox Grid.Row="1" x:Name="AssetListBox" ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}" SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}" 
+                        <ListBox Grid.Row="2" x:Name="AssetListBox" ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}" SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}" 
                                      ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
                                 <mz:ListBoxSelectionChangedCommandBehavior
