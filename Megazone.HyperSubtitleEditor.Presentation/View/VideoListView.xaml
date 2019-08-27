@@ -73,14 +73,15 @@
                                     <mz:KeyEventToRunCommandBehavior Command="{Binding Path=EnterCommand}" CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" Key="Enter" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
+
                             <Grid Grid.Column="2" Margin="8,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Duration" VerticalAlignment="Center" TextAlignment="Center" />
-                                <Rectangle Fill="#a0a8b6" HorizontalAlignment="Right" Width="1" Height="20"></Rectangle>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0">
+                                <TextBlock Text="Duration" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" />
+                                
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
                                     <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="TimeChanged">
@@ -97,6 +98,7 @@
                                         </i:Interaction.Triggers>
                                     </mz:TimeSpinner>
                                 </StackPanel>
+                                <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1" RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </Grid>
                             <mz:ImageButton 
                                 Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}" 
@@ -110,7 +112,7 @@
                         </Grid>
 
                         <!--구분선-->
-                        <Rectangle Grid.Row="1" Fill="#d8dce2" Height="1" Margin="0, 18, 0, 15" />
+                        <Rectangle Grid.Row="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}" Height="1" Margin="0, 18, 0, 15" />
 
                         <!--페이징-->
                         <Grid Grid.Row="2">
@@ -260,7 +262,7 @@
                                      ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
                                 <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" CommandParameter="{Binding ElementName=AssetListBox, Path=SelectedItem}"/>
+                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">

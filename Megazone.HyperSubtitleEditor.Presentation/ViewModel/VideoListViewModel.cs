@@ -26,17 +26,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
-        private ICommand _captionAssetSectionChangedCommand;
-
         private ICommand _backCommand;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        private ICommand _captionAssetSectionChangedCommand;
 
         private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
 
         private TimeSpan _durationEndTime;
 
+        private ICommand _durationEndTimeChangedCommand;
+
         private TimeSpan _durationStartTime;
+
+        private ICommand _durationStartTimeChangedCommand;
 
         private ICommand _enterCommand;
         private bool _isBusy;
@@ -69,7 +73,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand<CaptionAssetItemViewModel>(OnCaptionAssetSectionChanged);
+                    _captionAssetSectionChangedCommand ?? new RelayCommand(OnCaptionAssetSectionChanged);
             }
         }
 
@@ -124,31 +128,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private ICommand _durationStartTimeChangedCommand;
         public ICommand DurationStartTimeChangedCommand
         {
-            get { return _durationStartTimeChangedCommand = _durationStartTimeChangedCommand ?? new RelayCommand(OnDurationStartTimeChanged); }
-        }
-
-        private ICommand _durationEndTimeChangedCommand;
-        public ICommand DurationEndTimeChangedCommand
-        {
-            get { return _durationEndTimeChangedCommand = _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged); }
-        }
-
-        private void OnDurationEndTimeChanged()
-        {
-            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+            get
             {
-                DurationStartTime = TimeSpan.FromSeconds(DurationEndTime.TotalSeconds);
+                return _durationStartTimeChangedCommand =
+                    _durationStartTimeChangedCommand ?? new RelayCommand(OnDurationStartTimeChanged);
             }
         }
 
-        private void OnDurationStartTimeChanged()
+        public ICommand DurationEndTimeChangedCommand
         {
-            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+            get
             {
-                DurationEndTime = TimeSpan.FromSeconds(DurationStartTime.TotalSeconds);
+                return _durationEndTimeChangedCommand =
+                    _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged);
             }
         }
 
@@ -222,12 +216,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
-        private void OnCaptionAssetSectionChanged(CaptionAssetItemViewModel selectedCaptionAssetItem)
+        private void OnDurationEndTimeChanged()
         {
-            selectedCaptionAssetItem.SelectAll();
+            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+                DurationStartTime = TimeSpan.FromSeconds(DurationEndTime.TotalSeconds);
+        }
+
+        private void OnDurationStartTimeChanged()
+        {
+            if (DurationEndTime.TotalSeconds < DurationStartTime.TotalSeconds)
+                DurationEndTime = TimeSpan.FromSeconds(DurationStartTime.TotalSeconds);
+        }
+
+        private void OnCaptionAssetSectionChanged()
+        {
+            SelectedVideoItem?.SelectedCaptionAsset?.SelectAll();
+            SelectedVideoItem?.Update();
             if (SelectedVideoItem?.CaptionItems != null)
                 foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
-                    if (!captionAssetItem.Equals(selectedCaptionAssetItem))
+                    if (!captionAssetItem.Equals(SelectedVideoItem?.SelectedCaptionAsset))
                         captionAssetItem.Initialize();
             CommandManager.InvalidateRequerySuggested();
         }
@@ -339,7 +346,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds>0)
             {
                 var startTime = DurationStartTime.TotalMilliseconds;
-                var endTime = (DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds) ? DurationEndTime.TotalMilliseconds : (DurationStartTime.TotalMilliseconds + 999);
+                var endTime =
+ (DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds) ? DurationEndTime.TotalMilliseconds : (DurationStartTime.TotalMilliseconds + 999);
                 conditions.Add("duration", $"{startTime}~{endTime}");
             }
 #endif
@@ -403,8 +411,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool CanConfirm()
         {
             if (IsShowCaption)
-                return !IsBusy && SelectedVideoItem.SelectedCaptionAsset != null &&
-                       SelectedVideoItem.SelectedCaptionCount > 0;
+            {
+                if (IsBusy)
+                    return false;
+
+                if (SelectedVideoItem?.CaptionItems?.Any() ?? false)
+                {
+                    if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
+                        return SelectedVideoItem.SelectedCaptionCount > 0;
+                    return true;
+                }
+
+                return false;
+            }
+
             return !IsBusy && SelectedVideoItem != null;
         }
 

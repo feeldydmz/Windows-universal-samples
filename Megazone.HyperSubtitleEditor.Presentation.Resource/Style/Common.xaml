@@ -63,6 +63,9 @@
     <SolidColorBrush x:Key="Brush_BlackBorderBrush" Color="#FF1a1d24" />
     <SolidColorBrush x:Key="Brush_LighterBlackBorderBrush" Color="#FF45484f" />
 
+    <SolidColorBrush x:Key="Brush_GrayBoxBorderBrush" Color="#FFa0a8b6" />
+    <SolidColorBrush x:Key="Brush_LightGraySeparatorLineBrush" Color="#FFd8dce2" />
+
 
     <GridLength x:Key="GridLength_HeaderAreaHeight">40</GridLength>
 

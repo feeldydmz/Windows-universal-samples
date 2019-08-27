@@ -83,7 +83,7 @@
                                    Text="{Binding Path=FinishTime, Converter={StaticResource CurrentDateTimeBasedDateTimeConverter}}" />
 
                         <StackPanel Grid.Row="3" Margin="0,3">
-                            <Rectangle Height="1" Fill="#FFa0a8b6" />
+                            <Rectangle Height="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
                             <Rectangle Height="1" Fill="White" />
                         </StackPanel>
 

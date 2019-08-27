@@ -157,7 +157,7 @@
                                         Maximum="{markUps:TimeSpanMarkup Second=1}"
                                         SecondMaxLength="3" IsShowMilliseconds="True" />
 
-                        <Rectangle Grid.Row="8" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="#FFa0a8b6" />
+                        <Rectangle Grid.Row="8" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
 
                         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
                                    Text="{x:Static resources:Resource.CNT_SETTING_VIDEO_PLAYER}" FontWeight="Bold"
@@ -171,7 +171,7 @@
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
                         
                         <!--자동 로그인 설정-->
-                        <Rectangle Grid.Row="11" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="#FFa0a8b6" />
+                        <Rectangle Grid.Row="11" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
                         <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
                                    Text="{x:Static resources:Resource.CNT_SETTING_LOGIN}" FontWeight="Bold"
                                    Margin="0,0,0,10" />

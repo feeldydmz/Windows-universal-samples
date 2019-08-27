@@ -1268,6 +1268,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (message.Param == null)
                 return;
 
+            _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {message.Param.Video.Name}");
+
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var asset = message.Param.Asset;

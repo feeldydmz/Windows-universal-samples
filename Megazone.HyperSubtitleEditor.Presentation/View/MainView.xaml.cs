@@ -244,6 +244,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
+        public void SetWindowTitle(string title)
+        {
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Title = title;
+        }
+
         private class SubtitleViewImpl : ISubtitleView
         {
             public void ShowGoToLineDialog(int maximumNumber)

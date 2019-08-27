@@ -262,7 +262,7 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                    <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Background" Value="#10000000" />
@@ -443,11 +443,11 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                                        <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="True">
                                                         <Setter Property="Background" Value="#10000000" />
-                                                        <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                                        <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">
                                                         <Setter Property="Opacity" Value="0.3" />
@@ -1347,7 +1347,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <Border BorderThickness="0,0,1,0" BorderBrush="#FFa0a8b6">
+                        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource Brush_GrayBoxBorderBrush}">
                             <Button HorizontalAlignment="Center" VerticalAlignment="Center"
                                     Content="{Binding Number, Converter={StaticResource InsertSharpAtTheBeginningToStringConverter}}"
                                     Command="{Binding DataContext.GoToSelectedRowCommand, ElementName=RootGrid}">
