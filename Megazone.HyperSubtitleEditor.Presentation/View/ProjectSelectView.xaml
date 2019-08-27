@@ -111,6 +111,10 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <Control Grid.Row="1" Grid.Column="1" x:Name="LoadingProgressView" 
+                     Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Style="{StaticResource Style_IndeterminateControl}" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

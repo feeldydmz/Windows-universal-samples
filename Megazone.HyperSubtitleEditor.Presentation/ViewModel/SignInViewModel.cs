@@ -14,6 +14,7 @@ using Megazone.Core.Log;
 using Megazone.Core.Security.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
 using Unity;
@@ -36,6 +37,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _uriSource;
         private bool _isProjectViewVisible = true;
         private bool _isSignIn;
+        private bool _isBusy = false;
 
         private ICommand _loadedCommand;
         private ICommand _navigatingCommand;
@@ -62,6 +64,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _leftSlideNavigateCommand;
         private ICommand _logoutCommand;
         private ILogger _logger;
+        
 
 
         public Authorization GetAuthorization()
@@ -167,6 +170,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _slideNavigateBarPosition;
             set => Set(ref _slideNavigateBarPosition, value);
+        }
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => Set(ref _isBusy, value);
         }
 
         public ICommand MoveProjectStepCommand
@@ -292,7 +300,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = false;
             IsSignIn = false;
-            ClearAuthorization();
+            //ClearAuthorization();
 
             UriSource = LOGIN_URI;
         }
@@ -319,11 +327,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void LoadStageAndProject()
         {
+            IsBusy = true;
+
             var user = await _cloudMediaService.GetUserAsync(_authorization);
 
             // 유저 인증 실패 401
             if (user == null)
             {
+                IsBusy = false;
                 UriSource = LOGIN_URI;
                 return;
             }
@@ -362,6 +373,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 SaveAuthorization();
             }
+
+            IsBusy = false;
         }
 
 
@@ -391,17 +404,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void ClearAuthorization()
+        public void ClearAuthorization()
         {
             _authorization = null;
 
-            /*if (File.Exists(AuthorizationFilePath))
-                File.Delete(AuthorizationFilePath);*/
-            // 저장된 Authorization 정보를 삭제한다.
+            if (File.Exists(AuthorizationFilePath))
+                File.Delete(AuthorizationFilePath);
         }
 
         private void OnLoaded()
         {
+            if (!ConfigHolder.Current.Subtitle.AutoLogin)
+                return;
+
             if (CheckAuthorization())
             {
                 LoadStageAndProject();

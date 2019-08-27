@@ -14,6 +14,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
         private TimeSpan _minGap;
         private int _singleLineMaxBytes;
         private TimeSpan _startEndTimeTick;
+        private bool _autoLogin;
 
         public SubtitleConfigHolder(SubtitleJsonData jsonData)
         {
@@ -25,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
             MaxDuration = TimeSpan.FromMilliseconds(jsonData.MaxDurationMilliseconds);
             MinGap = TimeSpan.FromMilliseconds(jsonData.MinGapMilliseconds);
             MediaBufferingSeconds = jsonData.MediaBufferingSeconds;
+            AutoLogin = jsonData.AutoLogin; 
         }
 
         public int MediaBufferingSeconds
@@ -108,6 +110,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
             }
         }
 
+        public bool AutoLogin
+        {
+            get => _autoLogin;
+            set
+            {
+                Set(ref _autoLogin, value);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
         public bool IsDirty => ConfigHolder.Current.Subtitle.SingleLineMaxBytes != SingleLineMaxBytes ||
                                ConfigHolder.Current.Subtitle.MaxLines != MaxLines ||
                                ConfigHolder.Current.Subtitle.MaxCharactersPerSecond != MaxCharactersPerSecond ||
@@ -116,7 +128,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
                                ConfigHolder.Current.Subtitle.MinDuration != MinDuration ||
                                ConfigHolder.Current.Subtitle.MaxDuration != MaxDuration ||
                                ConfigHolder.Current.Subtitle.MediaBufferingSeconds != MediaBufferingSeconds ||
-                               ConfigHolder.Current.Subtitle.MinGap != MinGap;
+                               ConfigHolder.Current.Subtitle.MinGap != MinGap ||
+                               ConfigHolder.Current.Subtitle.AutoLogin != AutoLogin;
 
         public SubtitleJsonData GetJsonData()
         {
@@ -129,7 +142,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
                 MinDurationMilliseconds = MinDuration.TotalMilliseconds,
                 MaxDurationMilliseconds = MaxDuration.TotalMilliseconds,
                 MinGapMilliseconds = MinGap.TotalMilliseconds,
-                MediaBufferingSeconds = MediaBufferingSeconds
+                MediaBufferingSeconds = MediaBufferingSeconds,
+                AutoLogin = AutoLogin
             };
         }
 
@@ -142,7 +156,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
                    MaxDuration == config.MaxDuration &&
                    StartEndTimeTick == config.StartEndTimeTick &&
                    MediaBufferingSeconds == config.MediaBufferingSeconds &&
-                   MinGap == config.MinGap;
+                   MinGap == config.MinGap &&
+                   AutoLogin == config.AutoLogin;
+
         }
     }
 }

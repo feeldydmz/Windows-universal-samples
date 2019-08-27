@@ -169,6 +169,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Auto Login과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_AUTO_LOGIN {
+            get {
+                return ResourceManager.GetString("CNT_AUTO_LOGIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Auto adjust end times과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_AUTOADJUST_ENDTIMES {
@@ -1200,6 +1209,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_SETTING_CAPTION {
             get {
                 return ResourceManager.GetString("CNT_SETTING_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Login Setting과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_SETTING_LOGIN {
+            get {
+                return ResourceManager.GetString("CNT_SETTING_LOGIN", resourceCulture);
             }
         }
         
