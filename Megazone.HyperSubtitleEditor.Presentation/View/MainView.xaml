@@ -126,7 +126,7 @@
                           Command="{StaticResource ExportSelectedTabAsVttCommand}" />
                 <Separator />
                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />-->
-                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource McmDeployCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployToMcmCommand}" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
                           Command="{StaticResource OpenSubtitleCommand}" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Web;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.IoC;
 using RestSharp;

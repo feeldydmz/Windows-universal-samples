@@ -11,8 +11,9 @@
              xmlns:convert="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Width="600" Height="500"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}">
+             Width="590" Height="545"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
+             x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
@@ -43,157 +44,259 @@
 
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <!-- 검색 -->
-                </Grid>
-
-                <Grid Grid.Row="1">
-                    <TextBlock Text="{Binding Path=TotalCount, StringFormat='{}Total {0}'}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                    <Button Content="refresh" HorizontalAlignment="Right" VerticalAlignment="Center" />
-                </Grid>
-
-                <Grid Grid.Row="2">
-                    <Grid.Resources>
-                        <Style TargetType="Image">
-                            <Setter Property="MaxWidth" Value="50" />
-                            <Setter Property="MaxHeight" Value="50" />
-                            <Setter Property="Stretch" Value="Uniform" />
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Border>
-                        <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}" SelectedItem="{Binding Path=SelectedVideoItem}" 
-                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
-                            <i:Interaction.Behaviors>
-                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=VideoSelectionChangedCommand}" />
-                            </i:Interaction.Behaviors>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type itemVm:VideoItemViewModel}">
-                                    <!--Width="{Binding Path=ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}"-->
-                                    <Border HorizontalAlignment="Stretch">
-                                        <Grid HorizontalAlignment="Stretch">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Width="50" Height="50" VerticalAlignment="Center">
-                                                <Image Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
-                                                <Image Source="{Binding Path=PrimaryImageUrl}" />
-                                            </Grid>
-                                            <Grid Grid.Column="1" Margin="5, 1">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="0" Margin="0, 1">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Background="Purple" Text="Video" Foreground="White" Margin="0,0,10,0" />
-                                                    <TextBlock Grid.Column="1" Text="{Binding Path=Name}" />
-                                                </Grid>
-                                                <TextBlock Grid.Row="1" Text="{Binding Path=Id,StringFormat='{}{0}'}" Margin="0, 1" />
-                                                <TextBlock Grid.Row="2" Text="{Binding Path=Duration, StringFormat={}{0:hh':'mm':'ss'.'fff}}" Margin="0, 1"/>
-                                            </Grid>
-
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Border>
-
-                    <Border Grid.Column="1">
+                <Border>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="34" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="9" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <!--검색항목-->
                         <Grid>
-                            <ListBox x:Name="AssetListBox" ItemsSource="{Binding Path=CaptionItems}" SelectedItem="{Binding Path=SelectedCaptionAsset}" 
-                                     ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
-                                        <Border HorizontalAlignment="Stretch">
-                                            <Expander>
-                                                <!--<i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Loaded">
-                                                        <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>-->
-                                                <Expander.HeaderTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox ItemsSource="{Binding Path=KeywordTypeItems}" SelectedItem="{Binding Path=SelectedKeywordType}" MinWidth="94">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Display}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBox Grid.Column="1" x:Name="KeywordTextBox" Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <mz:KeyEventToRunCommandBehavior Command="{Binding Path=EnterCommand}" CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" Key="Enter" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <Grid Grid.Column="2" Margin="8,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Duration" />
+                                <Separator Grid.Column="1" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <mz:TimeSpinner />
+                                    <TextBlock Text="~" />
+                                    <mz:TimeSpinner />
+                                </StackPanel>
+                            </Grid>
+                            <Button Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}" Command="{Binding Path=SearchCommand}" CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}" Width="25" Height="25" MinWidth="0">
+                                <Button.Content>
+                                    <Grid>
+                                        <TextBlock Text="○" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
 
+                        <!--구분선-->
+                        <Rectangle Grid.Row="1" Fill="#d8dce2" Height="1" Margin="0, 18, 0, 15" />
+
+                        <!--페이징-->
+                        <Grid Grid.Row="2" Height="25">
+                            <TextBlock Text="{Binding Path=TotalCount, StringFormat='{x:Static resources:Resource.CNT_TOTAL_COUNT}'}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Button Content="refresh" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding Path=RefreshCommand}" />
+                        </Grid>
+
+                        <!--비디오 검색 결과 목록-->
+                        <Grid Grid.Row="4">
+                            <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}" SelectedItem="{Binding Path=SelectedVideoItem}" 
+                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type itemVm:VideoItemViewModel}">
+                                        <Border Width="515" Height="98">
+                                            <Grid Margin="0, 15, 15, 15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="44" />
+                                                    <ColumnDefinition Width="68" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <RadioButton Grid.Column="0" IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" VerticalAlignment="Top" />
+
+                                                <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
+                                                    <Image Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
+                                                    <Image Source="{Binding Path=PrimaryImageUrl}" />
+                                                </Grid>
+                                                
+                                                <Grid Grid.Column="2" Margin="20, 0, 0 , 0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid Grid.Row="0" Margin="0, 1" VerticalAlignment="Center">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <ContentControl Style="{StaticResource Style_VideoBadge}" />
+                                                        <Border Grid.Column="1">
+                                                            <!--캡션 이동 버튼-->
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition />
-                                                                    <ColumnDefinition />
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Background="Black" Text="Caption" Foreground="White" />
-                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Kind}" />
-                                                            </Grid>
-                                                            <Grid Grid.Row="1">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition />
-                                                                    <ColumnDefinition />
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Text="{Binding Path=Name}"/>
-                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"/>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </Expander.HeaderTemplate>
-                                                <ItemsControl ItemsSource="{Binding Path=Elements}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="{x:Type itemVm:CaptionElementItemViewModel}">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto" />
                                                                     <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="9" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="9" />
                                                                     <ColumnDefinition Width="Auto" />
                                                                 </Grid.ColumnDefinitions>
-                                                                <CheckBox Grid.Column="0" IsChecked="{Binding Path=IsSelected}"  />
-                                                                <TextBlock Grid.Column="1" Text="{Binding Path=Label}"/>
-                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Language, StringFormat={}[{0}]}" />
+                                                                <TextBlock Text="Caption" HorizontalAlignment="Right" />
+                                                                <!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />-->
+                                                                <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding StringFormat="{}{0}/{1}">
+                                                                            <Binding Path="SelectedCaptionCount"/>
+                                                                            <Binding Path="TotalCaptionCount"/>
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                                <Button Grid.Column="4" Content="→" Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}" CommandParameter="{Binding}" Width="Auto" Height="Auto" MinWidth="0" />
                                                             </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </Expander>
+                                                        </Border>
+                                                    </Grid>
+                                                    <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" MaxWidth="255" />
+                                                        <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat='{}({0})'}" Margin="3,0" />
+                                                    </Grid>
+                                                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Path=Duration, StringFormat={}Duration - {0:hh':'mm':'ss}}" 
+                                                                   TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                                    </Grid>
+                                                    
+                                                </Grid>
+                                            </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
 
-                            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                <Border Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                    <TextBlock 
+                            <Grid Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                <TextBlock Text="Empty Video List." VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
+                                <!--<TextBlock Text="Searching..." VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+
+                <!--Caption 뷰-->
+                <Border Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="DarkBlue" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsShowCaption}" Value="True">
+                                    <Setter Property="Background" Value="Yellow" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding Path=BackCommand}" MinWidth="0" Width="25" Height="25" Content="←" Margin="0,0,6,0" />
+                            <TextBlock Text="Video List" />
+                        </StackPanel>
+
+                        <ListBox Grid.Row="1" x:Name="AssetListBox" ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}" SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}" 
+                                     ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
+                                    <Border Width="528">
+                                        <Grid Margin="0, 15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="20" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="188" />
+                                                <ColumnDefinition Width="19" />
+                                            </Grid.ColumnDefinitions>
+                                            <RadioButton Grid.Column="0" IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" VerticalAlignment="Top" />
+                                            <Grid Grid.Column="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ContentControl Style="{StaticResource Style_CaptionBadge}" />
+                                                    <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
+                                                </StackPanel>
+                                                <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" MaxWidth="255" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat='{}({0})'}" Margin="3,0" />
+                                                </Grid>
+                                            </Grid>
+                                            <Grid Grid.Column="3" Background="Beige">
+                                                <ItemsControl ItemsSource="{Binding Path=Elements}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="13" />
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <CheckBox Grid.Column="0" IsChecked="{Binding Path=IsSelected}" Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}" CommandParameter="{Binding}" />
+                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
+                                                                <TextBlock Grid.Column="3" Text="{Binding Path=Language, StringFormat={}[{0}]}" />
+                                                                <!--<TextBlock Grid.Column="3">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding StringFormat="{}[{0}-{1}]">
+                                                                            <MultiBinding.Bindings>
+                                                                                <Binding Path="Language" />
+                                                                                <Binding Path="Country" />
+                                                                            </MultiBinding.Bindings>
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>-->
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                            <Border Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                <TextBlock 
                                     Text="자막 Asset이 없습니다." 
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
-                                </Border>
                             </Border>
-                        </Grid>
-                    </Border>
-                </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
 

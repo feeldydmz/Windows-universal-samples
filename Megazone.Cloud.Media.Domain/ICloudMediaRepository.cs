@@ -1,4 +1,5 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
+﻿using System;
+using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.Domain
 {
@@ -17,5 +18,9 @@ namespace Megazone.Cloud.Media.Domain
         VideoListResponse GetVideos(VideoListRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);
+
+        Settings GetSetting(SettingRequest request);
+        void UploadCaptionFile(UploadCaptionRequest request);
+        string Read(Uri fileUri);
     }
 }

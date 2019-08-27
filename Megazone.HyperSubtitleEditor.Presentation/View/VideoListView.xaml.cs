@@ -1,11 +1,11 @@
-﻿using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
     /// <summary>
-    /// VideoListView.xaml에 대한 상호 작용 논리
+    ///     VideoListView.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class VideoListView : UserControl
     {

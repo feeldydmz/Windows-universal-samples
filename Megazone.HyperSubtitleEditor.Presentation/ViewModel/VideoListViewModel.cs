@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
@@ -15,29 +16,41 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
+using Megazone.SubtitleEditor.Resources;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    [Inject(Scope = LifetimeScope.Singleton)]
+    [Inject(Scope = LifetimeScope.Transient)]
     public class VideoListViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
-        private ICommand _loadCommand;
+        private ICommand _backCommand;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
 
+        private ICommand _enterCommand;
+        private bool _isBusy;
+
+        private bool _isShowCaption;
+
+        private string _keyword;
+        private IEnumerable<KeywordType> _keywordTypeItems;
+
+        private ICommand _loadCaptionCommand;
+        private ICommand _loadCommand;
+
+        private ICommand _refreshCommand;
+        private ICommand _searchCommand;
+        private KeywordType _selectedKeywordType;
         private int _selectedPageIndex;
-        private bool _isLoading;
+        private VideoItemViewModel _selectedVideoItem;
 
         private int _totalCount;
-
         private IList<VideoItemViewModel> _videoItems;
-        private VideoItemViewModel _selectedVideoItem;
-        private CaptionAssetItemViewModel _selectedCaptionAsset;
-        private IList<CaptionAssetItemViewModel> _captionItems;
-        private ICommand _videoSelectionChangedCommand;
-        private bool _isBusy;
 
         public VideoListViewModel(ICloudMediaService cloudMediaService, SignInViewModel signInViewModel)
         {
@@ -55,27 +68,50 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _confirmCommand = _confirmCommand ?? new RelayCommand(Confirm, CanConfirm); }
         }
 
-        public ICommand VideoSelectionChangedCommand
+        public ICommand SearchCommand
         {
-            get { return _videoSelectionChangedCommand = _videoSelectionChangedCommand ?? new RelayCommand(OnVideoSelectionChanged); }
+            get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(SearchAsync); }
+        }
+
+        public ICommand LoadCaptionCommand
+        {
+            get
+            {
+                return _loadCaptionCommand =
+                    _loadCaptionCommand ?? new RelayCommand<VideoItemViewModel>(LoadCaptionAsync);
+            }
+        }
+
+        public ICommand RefreshCommand
+        {
+            get { return _refreshCommand = _refreshCommand ?? new RelayCommand(Refresh); }
+        }
+
+
+        public ICommand BackCommand
+        {
+            get { return _backCommand = _backCommand ?? new RelayCommand(Back); }
+        }
+
+        public ICommand EnterCommand
+        {
+            get { return _enterCommand = _enterCommand ?? new RelayCommand<string>(Enter); }
+        }
+
+        public ICommand CaptionSelectionChangedCommand
+        {
+            get
+            {
+                return _captionSelectionChangedCommand = _captionSelectionChangedCommand ??
+                                                         new RelayCommand<CaptionElementItemViewModel>(
+                                                             OnCaptionSelectionChanged);
+            }
         }
 
         public bool IsBusy
         {
             get => _isBusy;
             set => Set(ref _isBusy, value);
-        }
-
-        public CaptionAssetItemViewModel SelectedCaptionAsset
-        {
-            get => _selectedCaptionAsset;
-            set => Set(ref _selectedCaptionAsset, value);
-        }
-
-        public IList<CaptionAssetItemViewModel> CaptionItems
-        {
-            get => _captionItems;
-            set => Set(ref _captionItems, value);
         }
 
         public VideoItemViewModel SelectedVideoItem
@@ -102,60 +138,78 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedPageIndex, value);
         }
 
+        public IEnumerable<KeywordType> KeywordTypeItems
+        {
+            get => _keywordTypeItems;
+            set => Set(ref _keywordTypeItems, value);
+        }
+
+        public KeywordType SelectedKeywordType
+        {
+            get => _selectedKeywordType;
+            set => Set(ref _selectedKeywordType, value);
+        }
+
+        public string Keyword
+        {
+            get => _keyword;
+            set => Set(ref _keyword, value);
+        }
+
+        public bool IsShowCaption
+        {
+            get => _isShowCaption;
+            set => Set(ref _isShowCaption, value);
+        }
+
+
+        public Action CloseAction { get; set; }
+
         private async void LoadAsync()
         {
-            _isLoading = true;
-            IsBusy = true;
-            try
+            //KeywordTypeItems = new List<KeywordType>
+            //{
+            //    new KeywordType(Resource.CNT_NAME, "name"),
+            //    new KeywordType(Resource.CNT_VIDEO_ID, "id")
+            //};
+            KeywordTypeItems = new List<KeywordType>
             {
-                SelectedVideoItem = null;
-                SelectedCaptionAsset = null;
-                VideoItems?.Clear();
-                VideoItems = null;
-                CaptionItems?.Clear();
-                CaptionItems = null;
+                new KeywordType(Resource.CNT_NAME, "title"),
+                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
+            };
 
-                var authorization = _signInViewModel.GetAuthorization();
-                var stageId = _signInViewModel.SelectedStage?.Id;
-                var projectId = _signInViewModel.SelectedStage?.Id;
+            if (SelectedKeywordType == null)
+                SelectedKeywordType = KeywordTypeItems.First();
 
-                var results = await _cloudMediaService.GetVideosAsync(new GetVideosParameter(authorization, stageId,
-                    projectId, new Pagination(SelectedPageIndex)));
-                TotalCount = results.TotalCount;
-                var list = results.List?.Select(video => new VideoItemViewModel(video)).ToList();
-                VideoItems = new ObservableCollection<VideoItemViewModel>(list);
-            }
-            finally
-            {
-                IsBusy = false;
-                _isLoading = false;
-            }
+            await SearchVideoAsync();
         }
-        private async void OnVideoSelectionChanged()
+
+        private async void LoadCaptionAsync(VideoItemViewModel videoItem)
         {
-            if (_isLoading)
-            {
-                System.Diagnostics.Debug.WriteLine("isLoading");
-                return;
-            }
             // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
             IsBusy = true;
             try
             {
-                CaptionItems?.Clear();
-                CaptionItems = null;
-                var videoId = SelectedVideoItem?.Id;
+                IsShowCaption = true;
+                ValidCancellationTokenSource();
+                SelectedVideoItem = videoItem;
+                
+                var videoId = videoItem.Id;
                 if (string.IsNullOrEmpty(videoId))
                     return;
 
-                var authorization = _signInViewModel.GetAuthorization();
-                var stageId = _signInViewModel.SelectedStage?.Id;
-                var projectId = _signInViewModel.SelectedStage?.Id;
+                if (videoItem.CanUpdate)
+                {
+                    videoItem?.CaptionItems?.Clear();
+                    var authorization = _signInViewModel.GetAuthorization();
+                    var stageId = _signInViewModel.SelectedStage?.Id;
+                    var projectId = _signInViewModel.SelectedStage?.Id;
 
-                var result = await _cloudMediaService.GetVideoAsync(new GetVideoParameter(authorization, stageId, projectId, videoId));
-                var list = result.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
-                SelectedVideoItem.UpdateSource(result);
-                CaptionItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+                    var result = await _cloudMediaService.GetVideoAsync(
+                        new GetVideoParameter(authorization, stageId, projectId, videoId), _cancellationTokenSource.Token);
+
+                    videoItem.UpdateSource(result);
+                }
             }
             finally
             {
@@ -164,39 +218,79 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        //private async void OnVideoSelectionChanged()
-        //{
-        //    if (_isLoading)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("isLoading");
-        //        return;
-        //    }
-        //    // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
-        //    IsBusy = true;
-        //    try
-        //    {
-        //        CaptionItems?.Clear();
-        //        CaptionItems = null;
-        //        var videoId = SelectedVideoItem?.Id;
-        //        if (string.IsNullOrEmpty(videoId))
-        //            return;
+        private void Refresh()
+        {
+            SearchAsync(Keyword);
+        }
 
-        //        var authorization = _signInViewModel.GetAuthorization();
-        //        var stageId = _signInViewModel.SelectedStage?.Id;
-        //        var projectId = _signInViewModel.SelectedStage?.Id;
+        private void Back()
+        {
+            IsShowCaption = false;
+            if (IsBusy)
+                _cancellationTokenSource.Cancel();
+        }
 
-        //        var results = await _cloudMediaService.GetCaptionsAsync(new GetCaptionsParameter(authorization, stageId,
-        //            projectId, new Pagination(SelectedPageIndex), new Dictionary<string, string> { { "videoId", videoId } }));
+        private void Enter(string keyword)
+        {
+            SearchAsync(keyword);
+        }
 
-        //        var list = results.List?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList();
-        //        CaptionItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
-        //    }
-        //    finally
-        //    {
-        //        IsBusy = false;
-        //        CommandManager.InvalidateRequerySuggested();
-        //    }
-        //}
+        private async void SearchAsync(string keyword)
+        {
+            SelectedPageIndex = 0;
+            var conditions = new Dictionary<string, string>();
+            if (!string.IsNullOrEmpty(keyword))
+                conditions.Add(SelectedKeywordType.Key, keyword);
+
+            await SearchVideoAsync(conditions);
+        }
+
+        private async Task SearchVideoAsync(Dictionary<string, string> conditions = null)
+        {
+            ValidCancellationTokenSource();
+            IsBusy = true;
+            try
+            {
+                TotalCount = 0;
+                SelectedVideoItem = null;
+                VideoItems?.Clear();
+
+                var authorization = _signInViewModel.GetAuthorization();
+                var stageId = _signInViewModel.SelectedStage?.Id;
+                var projectId = _signInViewModel.SelectedStage?.Id;
+
+                var results = await _cloudMediaService.GetVideosAsync(
+                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(SelectedPageIndex),
+                        conditions), _cancellationTokenSource.Token);
+
+                TotalCount = results.TotalCount;
+                VideoItems = new ObservableCollection<VideoItemViewModel>(
+                    results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
+                    new List<VideoItemViewModel>());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
+        {
+            if (SelectedVideoItem == null)
+                return;
+
+            var captionAssetItem = SelectedVideoItem.CaptionItems.SingleOrDefault(assetItem =>
+                assetItem.Elements.Any(element => element.Equals(item)));
+
+            if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
+                SelectedVideoItem.SelectedCaptionAsset = captionAssetItem;
+
+            SelectedVideoItem.Update();
+        }
 
         private bool CanConfirm()
         {
@@ -207,12 +301,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             // 선택된 video 정보를 메인 
             var video = SelectedVideoItem?.Source;
-            var asset = SelectedCaptionAsset?.Source;
-            var captionList = SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected).Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
+            var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
+            var selectedCaptionList =
+                SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
+                    .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new Subtitle.McmCaptionAssetOpenedMessage(this, new McmCaptionAssetOpenedMessageParameter(video, asset, captionList)));
+            MessageCenter.Instance.Send(new Subtitle.McmCaptionAssetOpenedMessage(this,
+                new McmCaptionAssetOpenedMessageParameter(video, asset, selectedCaptionList)));
             CloseAction?.Invoke();
         }
-        public Action CloseAction { get; set; }
+
+        private void ValidCancellationTokenSource()
+        {
+            if (_cancellationTokenSource.IsCancellationRequested)
+                _cancellationTokenSource = new CancellationTokenSource();
+        }
+
+        public class KeywordType
+        {
+            public KeywordType(string display, string key)
+            {
+                Display = display;
+                Key = key;
+            }
+
+            public string Display { get; }
+            public string Key { get; }
+        }
     }
 }

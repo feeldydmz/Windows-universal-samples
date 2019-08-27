@@ -1,22 +1,20 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
-using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
+using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Cloud.Media.ServiceInterface;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     /// <summary>
-    ///  Caption asset view model.
+    ///     Caption asset view model.
     /// </summary>
     public class CaptionAssetItemViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
-        private ICommand _loadCommand;
         private IEnumerable<CaptionElementItemViewModel> _elements;
         private string _kind;
 

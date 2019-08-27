@@ -1,6 +1,6 @@
-﻿using Megazone.Cloud.Common.Domain;
+﻿using System.Reflection;
+using Megazone.Cloud.Common.Domain;
 using Megazone.Core.IoC.Unity;
-using System.Reflection;
 using Unity;
 
 namespace Megazone.Cloud.Media.Service

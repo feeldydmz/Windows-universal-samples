@@ -1,5 +1,5 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.Domain
 {
@@ -7,7 +7,8 @@ namespace Megazone.Cloud.Media.Domain
     {
         public Video(
             string id, string name, string description, string status, long duration, string createdAt, int version,
-            IEnumerable<RenditionAsset> origins, IEnumerable<RenditionAsset> sources, IEnumerable<CaptionAsset> captions,
+            IEnumerable<RenditionAsset> origins, IEnumerable<RenditionAsset> sources,
+            IEnumerable<CaptionAsset> captions,
             IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters)
         {
             Id = id;

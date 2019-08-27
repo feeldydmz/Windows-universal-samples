@@ -1,5 +1,8 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
+﻿using System;
+using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -23,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Label = caption.Label;
             Language = caption.Language;
             Url = caption.Url;
+            Text = (caption as WorkContext.CaptionContext)?.Text;
         }
         public Caption Source { get; }
 
@@ -47,6 +51,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _isSelected;
             set => Set(ref _isSelected, value);
+        }
+
+        public string Text { get; set; }
+
+        public string GetFileName()
+        {
+            var caption = Source;
+            var url = caption.Url;
+            if (string.IsNullOrEmpty(url))
+            {
+                return $"{caption.Label}_{caption.Language}_{DateTime.UtcNow.DateTimeToEpoch()}.vtt";
+            }
+
+            var lastSlashIndex = url.LastIndexOf('/');
+
+            var fileName = url.Substring(lastSlashIndex + 1, url.Length - lastSlashIndex - 1);
+            return fileName;
         }
     }
 }

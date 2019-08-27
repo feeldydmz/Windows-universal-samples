@@ -4,7 +4,8 @@ namespace Megazone.Cloud.Media.Domain.Assets
 {
     public class Rendition : IAssetElement
     {
-        public Rendition(IEnumerable<AudioSetting> audioSettings, VideoSetting videoSetting, IEnumerable<string> urls, long duration, long size)
+        public Rendition(IEnumerable<AudioSetting> audioSettings, VideoSetting videoSetting, IEnumerable<string> urls,
+            long duration, long size)
         {
             AudioSettings = audioSettings;
             VideoSetting = videoSetting;

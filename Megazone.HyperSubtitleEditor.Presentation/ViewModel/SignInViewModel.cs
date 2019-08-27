@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
@@ -329,7 +330,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsBusy = true;
 
-            var user = await _cloudMediaService.GetUserAsync(_authorization);
+            var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
 
             // 유저 인증 실패 401
             if (user == null)
@@ -380,6 +381,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void SaveAuthorization()
         {
+            if (!ConfigHolder.Current.Subtitle.AutoLogin)
+                return;
+
             var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898("Megazone@1");
 
             File.WriteAllText(AuthorizationFilePath, profileData);

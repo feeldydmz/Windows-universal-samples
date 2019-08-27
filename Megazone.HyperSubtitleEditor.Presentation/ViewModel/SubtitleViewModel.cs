@@ -5,12 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
@@ -45,11 +48,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class SubtitleViewModel : ViewModelBase
     {
+        // ReSharper disable once InconsistentNaming
         private const decimal MIN_INTERVAL = (decimal) 0.25;
         private readonly IBrowser _browser;
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
         private readonly IJobService _jobService;
+        private readonly ICloudMediaService _cloudMediaService;
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
@@ -69,7 +74,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _goToSelectedRowCommand;
 
-        private bool _hasRegisterdMessageHandlers;
+        private bool _hasRegisteredMessageHandlers;
         private bool _isCutRequest;
         private ICommand _loadedCommand;
         private decimal _previousPosition;
@@ -90,7 +95,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IBrowser browser,
             IS3Service s3Service,
             ITrackService trackService,
-            IJobService jobService)
+            IJobService jobService,
+            ICloudMediaService cloudMediaService)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -99,6 +105,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser = browser;
             _trackService = trackService;
             _jobService = jobService;
+            _cloudMediaService = cloudMediaService;
             _subtitleListItemValidator = subtitleListItemValidator;
             _browser = browser;
             _s3Service = s3Service;
@@ -107,6 +114,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         public MediaPlayerViewModel MediaPlayer { get; }
+        // ReSharper disable once UnusedMember.Global
         public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current?.API);
 
         public ICommand DeleteSelectedItemsCommand
@@ -397,8 +405,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void RegisterMessageHandlers()
         {
-            if (_hasRegisterdMessageHandlers) return;
-            _hasRegisterdMessageHandlers = true;
+            if (_hasRegisteredMessageHandlers) return;
+            _hasRegisteredMessageHandlers = true;
             MessageCenter.Instance.Regist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Regist<JobFoundMessage>(OnJobFound);
@@ -433,7 +441,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
-                OnInsertNewRowBeforSelectedRowRequested);
+                OnInsertNewRowBeforeSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
             MessageCenter.Instance.Regist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
             MessageCenter.Instance.Regist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
@@ -450,7 +458,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void UnregisterMessageHandlers()
         {
-            if (!_hasRegisterdMessageHandlers) return;
+            if (!_hasRegisteredMessageHandlers) return;
             MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Unregist<JobFoundMessage>(OnJobFound);
@@ -480,7 +488,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
-                OnInsertNewRowBeforSelectedRowRequested);
+                OnInsertNewRowBeforeSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
             MessageCenter.Instance.Unregist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
@@ -748,7 +756,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
         }
 
-        private void OnInsertNewRowBeforSelectedRowRequested(Subtitle.InsertNewRowBeforeSelectedRowMessage message)
+        private void OnInsertNewRowBeforeSelectedRowRequested(Subtitle.InsertNewRowBeforeSelectedRowMessage message)
         {
             var addedRow = SelectedTab?.AddNewRow(_minimumDuration,
                 SubtitleTabItemViewModel.InsertRowDirection.BeforeSelectedItem,
@@ -1263,6 +1271,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var asset = message.Param.Asset;
+            var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
+            WorkContext.SetVideo(video);
+            WorkContext.SetCaption(asset);
+            WorkContext.SetCaptions(captions?.Select(caption => new WorkContext.CaptionContext(caption)).ToList());
 
             if (!message.Param.Captions?.Any() ?? true)
                 return;
@@ -1270,14 +1282,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var paramList = new List<FileOpenedMessageParameter>();
             _browser.Main.LoadingManager.Show();
 
-            await Task.Factory.StartNew(()=> {
+            await Task.Factory.StartNew(async () => {
                 try
                 {
                     // video영상을 가져온다.
                     var mediaUrl = GetMediaUrl();
                     if (!string.IsNullOrEmpty(mediaUrl))
+                    {
                         MediaPlayer.OpenMedia(mediaUrl, false);
-                    //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
+                        //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
+                    }
 
                     var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
                     var trackKind = TrackKind.Caption;
@@ -1286,24 +1300,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         case "SUBTITLE": trackKind = TrackKind.Subtitle; break;
                         case "CAPTION": trackKind = TrackKind.Caption; break;
                         case "CHAPTER": trackKind = TrackKind.Chapter; break;
-                        case "DESCRIPTIION": trackKind = TrackKind.Descriptiion; break;
+                        case "DESCRIPTION": trackKind = TrackKind.Description; break;
                         case "METADATA": trackKind = TrackKind.Metadata; break;
                     }
 
                     // 선택된 caption 파일이 있다면, 로드한다.
-                    using (var client = new WebClient())
+                    foreach (var caption in WorkContext.Captions)
                     {
-                        foreach (var caption in message.Param.Captions)
+                        try
                         {
-                            string text = string.Empty;
-                            using (var stream = client.OpenRead(new Uri(caption.Url)))
-                            {
-                                using (var reader = new StreamReader(stream))
-                                {
-                                    text = reader.ReadToEnd();
-                                }
-                            }
-
+                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
+                            caption.Text = text;
                             paramList.Add(new FileOpenedMessageParameter()
                             {
                                 FilePath = "",
@@ -1313,19 +1320,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 Text = text
                             });
                         }
+                        catch (WebException e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
+
+                    this.InvokeOnUi(() =>
+                    {
+                        foreach (var param in paramList)
+                        {
+                            MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
+                        }
+                        _browser.Main.LoadingManager.Hide();
+                    });
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                 }
             });
-
-            foreach (var param in paramList)
-            {
-                MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
-            }
-
-            this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
 
             string GetMediaUrl()
             {
@@ -1334,18 +1348,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 // video영상을 가져온다.
                 var mediaAsset = video.Sources.FirstOrDefault(rendition => rendition.Type.ToUpper().Equals("HLS"));
-                var url = string.Empty;
-                if (mediaAsset != null)
-                {
-                    url = mediaAsset.Urls?.FirstOrDefault();
-                }
-                else
-                {
+                if (mediaAsset == null)
                     mediaAsset = video.Sources.FirstOrDefault();
-                    url = mediaAsset.Urls?.FirstOrDefault();
-                }
+
+                var url = mediaAsset.Urls?.FirstOrDefault();
                 if (string.IsNullOrEmpty(url))
-                    url = mediaAsset.Elements.FirstOrDefault()?.Urls.FirstOrDefault();
+                    url = mediaAsset.Elements?.FirstOrDefault()?.Urls?.FirstOrDefault();
+
                 return url;
             }
         }
