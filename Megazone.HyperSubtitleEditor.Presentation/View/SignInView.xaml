@@ -37,7 +37,7 @@
             <Button Grid.Row="3" Content="로그인" Command="{Binding Path=SignInCommand}" />
         </Grid>-->
         <WebBrowser Name="WebBrowser" 
-                    view:WebBrowserHelper.UriSource="{Binding UriSource}" 
+                    view:WebBrowserHelper.UriSource="{Binding UriSource, Mode=TwoWay}" 
                     view:WebBrowserHelper.NavigatingCommand="{Binding NavigatingCommand}"/>
     </Grid>
 </UserControl>

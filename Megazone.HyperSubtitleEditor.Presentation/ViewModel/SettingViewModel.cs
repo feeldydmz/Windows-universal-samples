@@ -6,6 +6,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Strategy;
+using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -100,6 +101,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             SettingSaveStrategyFactory.GetDefault()
                 .Save(config);
+
+            if (config.Subtitle.AutoLogin == false)
+            {
+                var signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
+                signInViewModel.ClearAuthorization();
+            }
+
             MessageCenter.Instance.Send(new Subtitle.SettingsSavedMessage(this));
         }
 

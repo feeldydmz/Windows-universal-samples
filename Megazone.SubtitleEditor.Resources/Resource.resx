@@ -612,4 +612,10 @@ Are you going to load a project?</value>
   <data name="CNT_TOTAL_COUNT" xml:space="preserve">
     <value>Total: {0}</value>
   </data>
+    <data name="CNT_AUTO_LOGIN" xml:space="preserve">
+    <value>Auto Login</value>
+  </data>
+  <data name="CNT_SETTING_LOGIN" xml:space="preserve">
+    <value>Login Setting</value>
+  </data>
 </root>

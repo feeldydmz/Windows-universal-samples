@@ -91,8 +91,10 @@ namespace Megazone.Cloud.Media.Repository
             var restRequest = new RestRequest("v1/me", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}");
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint)
-                .Execute(restRequest).Convert<MeResponse>();
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint)
+                .Execute(restRequest);
+
+            return response.StatusCode == HttpStatusCode.Unauthorized ? null : response.Convert<MeResponse>();
         }
 
         public Settings GetSetting(SettingRequest request)

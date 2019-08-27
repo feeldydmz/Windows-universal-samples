@@ -48,10 +48,12 @@ namespace Megazone.Cloud.Media.Service
 
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(
-                () => new UserProfile(
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken))),
-                cancellationToken);
+            return await Task.Factory.StartNew(() =>
+            {
+                var response = _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
+
+                return response == null ? null : new UserProfile(response);
+            }, cancellationToken);
         }
 
         public async Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter,

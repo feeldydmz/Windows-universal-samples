@@ -111,6 +111,10 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <Control Grid.Row="1" Grid.Column="1" x:Name="LoadingProgressView" 
+                     Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Style="{StaticResource Style_IndeterminateControl}" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -119,7 +123,8 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_CANCEL}"
-                    Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Command="{Binding Path=CancelProjectSelectCommand}"/>
 
             <Button Grid.Column="2" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_PROJECT_START}"
                     Command="{Binding Path=StartProjectCommand}"/>

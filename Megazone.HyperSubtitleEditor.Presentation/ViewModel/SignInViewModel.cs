@@ -15,7 +15,7 @@ using Megazone.Core.Log;
 using Megazone.Core.Security.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
 using Unity;
@@ -27,7 +27,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     public class SignInViewModel : ViewModelBase
     {
         private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
-        internal string ProfilePath { get; set; }
+
+        private const string LOGIN_URI =
+            "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+        internal string AuthorizationFilePath { get; set; }
 
         private readonly ICloudMediaService _cloudMediaService;
         private Authorization _authorization;
@@ -35,10 +38,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _uriSource;
         private bool _isProjectViewVisible = true;
         private bool _isSignIn;
+        private bool _isBusy = false;
 
         private ICommand _loadedCommand;
         private ICommand _navigatingCommand;
         private ICommand _moveProjectStepCommand;
+
 
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
@@ -55,10 +60,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<StageItemViewModel> _currentPageStageItems;
 
         private ICommand _startProjectCommand;
-        private ICommand _closeWindowCommand;
+        private ICommand _cancelProjectSelectCommand;
         private ICommand _rightNavigateCommand;
         private ICommand _leftSlideNavigateCommand;
+        private ICommand _logoutCommand;
         private ILogger _logger;
+        
 
 
         public Authorization GetAuthorization()
@@ -75,9 +82,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             _cloudMediaService = cloudMediaService;
 
-            UriSource = "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+            UriSource = LOGIN_URI;
 
-            ProfilePath = $"{this.AppDataPath()}\\profile.json";
+            AuthorizationFilePath = $"{Path.GetTempPath()}\\subtitleAuthorization.json";
         }
 
         public List<StageItemViewModel> StageItems
@@ -165,6 +172,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _slideNavigateBarPosition;
             set => Set(ref _slideNavigateBarPosition, value);
         }
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => Set(ref _isBusy, value);
+        }
 
         public ICommand MoveProjectStepCommand
         {
@@ -192,6 +204,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(OnRightSlideNavigate); }
         }
 
+        public ICommand LogoutCommand
+        {
+            get { return _logoutCommand = _logoutCommand ?? new RelayCommand(Logout); }
+        }
+
         private void OnRightSlideNavigate(string obj)
         {
             ++_slideNavigateBarPosition;
@@ -216,12 +233,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public ICommand CloseWindowCommand
+        public ICommand CancelProjectSelectCommand
         {
             get
             {
-                return _closeWindowCommand =
-                    _closeWindowCommand ?? new RelayCommand(OnCloseWindow);
+                return _cancelProjectSelectCommand =
+                    _cancelProjectSelectCommand ?? new RelayCommand(OnCancelProjectSelect);
             }
         }
 
@@ -237,14 +254,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void MoveProjectStep()
         {
             IsProjectViewVisible = true;
+            IsCancleButtonVisible = true;
         }
 
-        private void ClearAuthorization()
-        {
-            _authorization = null;
-            // 저장된 Authorization 정보를 삭제한다.
-        }
-
+        
         private void CalculateStageSlidePosition()
         {
             var startIndex = NavigateBarPosition * 3;
@@ -288,7 +301,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = false;
             IsSignIn = false;
-            ClearAuthorization();
+            //ClearAuthorization();
+
+            UriSource = LOGIN_URI;
         }
 
         private void LoginByAuthorizationCode(string code)
@@ -313,12 +328,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void LoadStageAndProject()
         {
-            IsProjectViewVisible = true;
-            IsSignIn = true;
+            IsBusy = true;
 
             var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
 
-            StageItems = user?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+            // 유저 인증 실패 401
+            if (user == null)
+            {
+                IsBusy = false;
+                UriSource = LOGIN_URI;
+                return;
+            }
+
+            IsProjectViewVisible = true;
+            IsSignIn = true;
+
+            StageItems = user.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                          new List<StageItemViewModel>();
 
             //// --- Test Data 
@@ -346,21 +371,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             else
             {
                 CalculateStageSlidePosition();
+
+                SaveAuthorization();
             }
+
+            IsBusy = false;
         }
 
-        private void SaveProfile()
+
+        private void SaveAuthorization()
         {
+            if (!ConfigHolder.Current.Subtitle.AutoLogin)
+                return;
+
             var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898("Megazone@1");
 
-            File.WriteAllText(ProfilePath, profileData);
+            File.WriteAllText(AuthorizationFilePath, profileData);
         }
 
-        private bool LoadProfile()
+        private bool CheckAuthorization()
         {
             try
             {
-                string profileData = File.ReadAllText(ProfilePath);
+                string profileData = File.ReadAllText(AuthorizationFilePath);
 
                 _authorization =
                     JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
@@ -375,13 +408,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public void ClearAuthorization()
+        {
+            _authorization = null;
+
+            if (File.Exists(AuthorizationFilePath))
+                File.Delete(AuthorizationFilePath);
+        }
+
         private void OnLoaded()
         {
-            //TODO 로그인 체크 여부 셋팅이 추가되면 되면 주석 제거
-            //if (LoadProfile())
-            //{
-            //    LoadStageAndProject();
-            //}
+            if (!ConfigHolder.Current.Subtitle.AutoLogin)
+                return;
+
+            if (CheckAuthorization())
+            {
+                LoadStageAndProject();
+            }
         }
 
         private void OnStartProject()
@@ -392,14 +435,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (!string.IsNullOrEmpty(SelectedProject?.ProjectId) && !string.IsNullOrEmpty(SelectedStage?.Id))
             {
-                SaveProfile();
+                //SaveAuthorization();
                 IsProjectViewVisible = false;
             }
         }
 
-        private void OnCloseWindow()
+        private void OnCancelProjectSelect()
         {
             IsProjectViewVisible = false;
+            IsCancleButtonVisible = false;
         }
 
         private void OnNavigating(string code)
