@@ -621,4 +621,14 @@ Are you going to load a project?</value>
   <data name="CNT_PROJECT_BACK" xml:space="preserve">
     <value>BACK</value>
   </data>
+  <data name="CNT_ASSET_NAME" xml:space="preserve">
+    <value>Asset name</value>
+  </data>
+  <data name="MSG_DEPLOY_CAPTION" xml:space="preserve">
+    <value>Do you want to publish the caption?
+(If it is published, it will not be possible to restore it to its previous state.)</value>
+  </data>
+  <data name="MSG_DEPLOY_COMPLETE" xml:space="preserve">
+    <value>Asset publishing is complete.</value>
+  </data>
 </root>

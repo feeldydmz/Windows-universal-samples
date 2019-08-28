@@ -169,6 +169,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Asset name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ASSET_NAME {
+            get {
+                return ResourceManager.GetString("CNT_ASSET_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Auto Login과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_AUTO_LOGIN {
@@ -1371,6 +1380,25 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY {
             get {
                 return ResourceManager.GetString("MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Do you want to publish the caption?
+        ///(If it is published, it will not be possible to restore it to its previous state.)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_DEPLOY_CAPTION {
+            get {
+                return ResourceManager.GetString("MSG_DEPLOY_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Asset publishing is complete.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_DEPLOY_COMPLETE {
+            get {
+                return ResourceManager.GetString("MSG_DEPLOY_COMPLETE", resourceCulture);
             }
         }
         

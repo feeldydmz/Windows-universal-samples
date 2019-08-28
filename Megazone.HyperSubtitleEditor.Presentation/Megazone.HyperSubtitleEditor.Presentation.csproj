@@ -255,6 +255,7 @@
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
+    <Compile Include="ViewModel\McmDeployViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
@@ -303,8 +304,17 @@
     <Compile Include="View\MainFrameView.xaml.cs">
       <DependentUpon>MainFrameView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\McmDeployAndAssetCreateView.xaml.cs">
+      <DependentUpon>McmDeployAndAssetCreateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\McmDeployConfirmView.xaml.cs">
       <DependentUpon>McmDeployConfirmView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\McmDeployView.xaml.cs">
+      <DependentUpon>McmDeployView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\OpenSubtitleView.xaml.cs">
       <DependentUpon>OpenSubtitleView.xaml</DependentUpon>
@@ -551,9 +561,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MainMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\McmDeployAndAssetCreateView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\McmDeployConfirmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\McmDeployView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\OpenSubtitleView.xaml">
       <SubType>Designer</SubType>

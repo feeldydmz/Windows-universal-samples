@@ -36,7 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 return;
             }
 
-            _browser.Main.ShowMcmDeployConfirmDialog();
+            _browser.Main.ShowMcmDeployDialog();
         }
 
         public event EventHandler CanExecuteChanged

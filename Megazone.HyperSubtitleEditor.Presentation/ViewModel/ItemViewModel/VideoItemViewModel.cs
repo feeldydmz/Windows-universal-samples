@@ -45,7 +45,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _captionItems, value);
         }
 
-
         public string PrimaryImageUrl
         {
             get => _primaryImageUrl;
@@ -84,12 +83,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private string GetPrimaryImage(Video video)
         {
-            var url = string.Empty;
-            if (video.Posters?.Any() ?? false)
-                url = video.Posters.First().Url;
+            var url = video.ImageUrl;
+            if (string.IsNullOrEmpty(url))
+            {
+                if (video.Posters?.Any() ?? false)
+                    url = video.Posters.First().Url;
 
-            if (video.Thumbnails?.Any() ?? false)
-                url = video.Thumbnails.First().Elements?.FirstOrDefault()?.Url;
+                if (video.Thumbnails?.Any() ?? false)
+                    url = video.Thumbnails.First().Elements?.FirstOrDefault()?.Url;
+            }
 
             return string.IsNullOrEmpty(url) ? null : url;
         }

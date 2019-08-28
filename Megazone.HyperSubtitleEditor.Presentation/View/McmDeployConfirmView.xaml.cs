@@ -1,5 +1,4 @@
-﻿using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
@@ -9,23 +8,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public McmDeployConfirmView()
         {
             InitializeComponent();
-            Loaded += McmDeployConfirmView_Loaded;
-            Unloaded += McmDeployConfirmView_Unloaded;
         }
 
-        private void McmDeployConfirmView_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is McmDeployConfirmViewModel viewModel)
-                viewModel.CloseAction = null;
-        }
-
-        private void McmDeployConfirmView_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is McmDeployConfirmViewModel viewModel)
-                viewModel.CloseAction = CloseWindow;
-        }
-
-        private void CancelButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ConfirmButton_OnClick(object sender, RoutedEventArgs e)
         {
             CloseWindow();
         }
