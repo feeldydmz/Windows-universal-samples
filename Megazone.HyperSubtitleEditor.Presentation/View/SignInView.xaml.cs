@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             {
                 var uri = (string)e.NewValue;
 
-                webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : new Uri("http://www.google.com");
+                webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : new Uri("about:blank");
             }
         }
 

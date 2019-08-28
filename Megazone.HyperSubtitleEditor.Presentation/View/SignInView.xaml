@@ -14,28 +14,9 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadedCommand}" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="clo"></i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid Background="Azure">
-        <!--<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="200">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="로그인" FontSize="19" />
-            <TextBox Grid.Row="1" Text="{Binding Path=LoginId}" />
-            <PasswordBox Grid.Row="2" PasswordChar="*"
-                         MinHeight="24"
-                         mz:PasswordBoxProperty.HasPassword="False">
-                <i:Interaction.Behaviors>
-                    <mz:PasswordBehavior 
-                        Command="{Binding Path=EnterPasswordCommand}" 
-                        ClearAction="{Binding Path=PasswordClearAction, Mode=OneWayToSource}"/>
-                </i:Interaction.Behaviors>
-            </PasswordBox>
-            <Button Grid.Row="3" Content="로그인" Command="{Binding Path=SignInCommand}" />
-        </Grid>-->
+    <Grid>
         <WebBrowser Name="WebBrowser" 
                     view:WebBrowserHelper.UriSource="{Binding UriSource, Mode=TwoWay}" 
                     view:WebBrowserHelper.NavigatingCommand="{Binding NavigatingCommand}"/>

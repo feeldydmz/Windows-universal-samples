@@ -217,6 +217,9 @@
                           Command="{StaticResource ShowSettingsViewCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_INFO}"
                           Command="{StaticResource ShowApplicatoinInfoCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_AUTO_LOGIN}"
+                          IsCheckable="True"
+                          IsChecked="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.IsAutoLogin}"/>
             </MenuItem>
         </Menu>
 

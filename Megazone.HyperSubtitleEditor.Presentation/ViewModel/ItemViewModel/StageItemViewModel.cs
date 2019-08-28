@@ -25,7 +25,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public string Id { get; set; }
         public string Name { get; set; }
-
         public bool IsSelectedStage { get; set; }
 
         public IEnumerable<ProjectItemViewModel> ProjectItems

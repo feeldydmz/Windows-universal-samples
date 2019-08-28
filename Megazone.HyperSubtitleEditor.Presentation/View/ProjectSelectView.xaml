@@ -14,43 +14,48 @@
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converter:StageIconTitleConverter x:Key="StageIconTitleConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="FontFamily" Value="Malgun Gothic" />
-        </Style>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converter:StageIconTitleConverter x:Key="StageIconTitleConverter"/>
 
-<Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect" BasedOn="{StaticResource Style_ListBoxDefault}">
-            <Setter Property="Background" Value="#282f37"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="BorderBrush" Value="#282f37"/>
+            <Style TargetType="{x:Type Window}">
+                <Setter Property="FontFamily" Value="Malgun Gothic" />
+            </Style>
 
-        </Style>
+            <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect" BasedOn="{StaticResource Style_ListBoxDefault}">
+                <Setter Property="Background" Value="#282f37"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="#282f37"/>
 
-        <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Width" Value="340"/>
-            <Setter Property="Foreground" Value="#989CA7"/>
+            </Style>
 
-            <Setter Property="Background" Value="#2E353F"/>
-            <!--<Setter Property="BorderThickness" Value="0,0,0,1"/>-->
-            <Setter Property="BorderBrush" Value="#3C434D"/>
-        </Style>
-        <Style TargetType="{x:Type CheckBox}" x:Key="Style_CheckBox" BasedOn="{StaticResource Style_CheckBoxDefault}">
-            <Setter Property="FlowDirection" Value="RightToLeft"/>
-        </Style>
-        <Style TargetType="{x:Type TextBlock}" x:Key="Style_TextBlockNavi">
-            <!--<Setter Property="Margin" Value="4"/>-->
-            <Setter Property="Background" Value="#282f37"/>
-            <Setter Property="Foreground" Value="#5B626A"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="FontSize" Value="19"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
+            <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
+                <Setter Property="Height" Value="38"/>
+                <Setter Property="Width" Value="340"/>
+                <Setter Property="Foreground" Value="#989CA7"/>
 
-        
-
+                <Setter Property="Background" Value="#2E353F"/>
+                <!--<Setter Property="BorderThickness" Value="0,0,0,1"/>-->
+                <Setter Property="BorderBrush" Value="#3C434D"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}" x:Key="Style_CheckBox" BasedOn="{StaticResource Style_CheckBoxDefault}">
+                <Setter Property="FlowDirection" Value="RightToLeft"/>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}" x:Key="Style_TextBlockNavi">
+                <!--<Setter Property="Margin" Value="4"/>-->
+                <Setter Property="Background" Value="#282f37"/>
+                <Setter Property="Foreground" Value="#5B626A"/>
+                <Setter Property="Height" Value="26"/>
+                <Setter Property="FontSize" Value="19"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="#282f37">

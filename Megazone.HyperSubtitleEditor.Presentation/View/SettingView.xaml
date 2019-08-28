@@ -9,7 +9,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              Background="{DynamicResource Brush_CommonBackground}"
              Foreground="{DynamicResource Brush_CommonForeground}"
-             Width="430" Height="575"
+             Width="430" Height="515"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Setting}">
 
@@ -64,9 +64,6 @@
                             <ColumnDefinition Width="Auto" MinWidth="150" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -170,16 +167,7 @@
                                     HorizontalAlignment="Stretch"
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
                         
-                        <!--자동 로그인 설정-->
-                        <Rectangle Grid.Row="11" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
-                        <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
-                                   Text="{x:Static resources:Resource.CNT_SETTING_LOGIN}" FontWeight="Bold"
-                                   Margin="0,0,0,10" />
-                        <TextBlock Grid.Row="13" Grid.Column="0"
-                                   Text="{Binding Source={x:Static resources:Resource.CNT_AUTO_LOGIN}, StringFormat='{}{0} : '}" />
-                        <CheckBox Grid.Row="13" Grid.Column="1" IsChecked="{Binding Config.Subtitle.AutoLogin}"/>
-
-                        <Border Grid.Row="14" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
+                        <Border Grid.Row="11" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
                                 CornerRadius="3" Padding="10,8" VerticalAlignment="Bottom">
                             <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap"
                                        Text="{x:Static resources:Resource.MSG_VIDEO_PLAY_CONDITION}" />
