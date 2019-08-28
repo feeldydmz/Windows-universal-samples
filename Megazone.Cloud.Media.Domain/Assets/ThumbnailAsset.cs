@@ -5,7 +5,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
     public class ThumbnailAsset : Asset<Thumbnail>
     {
         public ThumbnailAsset(string id, string name, string status, string type, string mediaType, long duration,
-            int version, string createdAt, IEnumerable<string> urls, IEnumerable<Thumbnail> elements)
+            int version, string createdAt, IEnumerable<Thumbnail> elements, IEnumerable<string> urls)
             : base(id, name, status, type, mediaType, duration, version, createdAt, elements)
         {
             Urls = urls;

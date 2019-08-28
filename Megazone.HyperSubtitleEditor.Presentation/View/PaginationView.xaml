@@ -32,7 +32,6 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <!--<Button Content="{Binding}" Click="PageButton_OnClick" Width="Auto" Height="Auto" MinWidth="0" MinHeight="0" Foreground="Black"/>-->
                         <TextBlock Text="{Binding}" Style="{x:Null}" />
                     </Grid>
                 </DataTemplate>
@@ -44,6 +43,5 @@
             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_pres.png"
             MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_hov.png"
             Style="{StaticResource Style_TransparentImageButton}" Width="10" Height="16" />
-
     </Grid>
 </UserControl>

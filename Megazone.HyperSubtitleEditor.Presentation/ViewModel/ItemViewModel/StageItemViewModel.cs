@@ -21,6 +21,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             Id = stage.Id;
             Name = stage.Name;
+            ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project)).ToList();
         }
 
         public string Id { get; set; }
