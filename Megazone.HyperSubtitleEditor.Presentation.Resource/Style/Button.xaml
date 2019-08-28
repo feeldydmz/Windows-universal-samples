@@ -610,7 +610,7 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             <Image Grid.Column="1" Width="26" Height="26" Margin="0,0,4,0"
-                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arrow_start.png"/>
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_start.png"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -658,7 +658,7 @@
                                 <ColumnDefinition Width="84" />
                             </Grid.ColumnDefinitions>
                             <Image Width="26" Height="26" Margin="4,0,0,0"
-                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arrow_back.png"/>
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_back.png"/>
                             <TextBlock Grid.Column="1"
                                        Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"
                                        Foreground="{TemplateBinding Foreground}" 
@@ -699,13 +699,13 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid Background="{TemplateBinding Background}">
                         <Image x:Name="NormalImage" Visibility="Visible"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_nor.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_nor.png"
                                Stretch="None" />
                         <Image x:Name="OverImage" Visibility="Collapsed"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_hov.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_hov.png"
                                Stretch="None" />
                         <Image x:Name="PressedImage" Visibility="Collapsed"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_act.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_pres.png"
                                Stretch="None" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -731,13 +731,13 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid Background="{TemplateBinding Background}">
                         <Image x:Name="NormalImage" Visibility="Visible"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_nor.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_nor.png"
                                Stretch="None" />
                         <Image x:Name="OverImage" Visibility="Collapsed"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_hov.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_hov.png"
                                Stretch="None" />
                         <Image x:Name="PressedImage" Visibility="Collapsed"
-                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_act.png"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_pres.png"
                                Stretch="None" />
                     </Grid>
                     <ControlTemplate.Triggers>
