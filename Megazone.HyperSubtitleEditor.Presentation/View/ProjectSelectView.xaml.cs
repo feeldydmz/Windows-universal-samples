@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -23,6 +25,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public ProjectSelectView()
         {
             InitializeComponent();
+        }
+
+        private void ProjectSelectView_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var view =  sender as ProjectSelectView;
+
+            int pageWidth = 92 * 2 - 38;
+
+            int stageItemWidth = 340 + 35;
+
+            int stageNumberPerPage =  (int)((view.ActualWidth - (pageWidth)) / stageItemWidth);
+
+            if (DataContext is SignInViewModel viewmodle) viewmodle.StageNumberPerPage = stageNumberPerPage;
+
+            Debug.WriteLine($@"StageItemControl.ActualWidth : {StageItemControl.ActualWidth} stageNumberPerPage : {stageNumberPerPage}");
         }
     }
 }

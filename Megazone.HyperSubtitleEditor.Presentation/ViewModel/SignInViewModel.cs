@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -68,6 +69,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _rightNavigateCommand;
         private ICommand _leftSlideNavigateCommand;
         private ICommand _logoutCommand;
+        private ICommand _stageNumberChangedCommand;
         private ILogger _logger;
 
         private ConfigHolder _config;
@@ -209,6 +211,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _stageTotal;
             set => Set(ref _stageTotal, value);
         }
+
+        public int StageNumberPerPage { get; set; }
+
         public int NavigateBarPosition
         {
             get => _slideNavigateBarPosition;
@@ -249,6 +254,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand LogoutCommand
         {
             get { return _logoutCommand = _logoutCommand ?? new RelayCommand(Logout); }
+        }
+
+        public ICommand StageNumberChangedCommand
+        {
+            get { return _stageNumberChangedCommand = _stageNumberChangedCommand ?? new RelayCommand<int>(OnStageNumberChanged); }
+        }
+
+        private void OnStageNumberChanged(int obj)
+        {
+            Debug.WriteLine($"obj {obj}");
+
+            StageNumberPerPage = obj;
+
+            CalculateStageSlidePosition();
         }
 
         private void OnRightSlideNavigate(string obj)
@@ -303,8 +322,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         
         private void CalculateStageSlidePosition()
         {
-            var startIndex = NavigateBarPosition * 3;
-            var endIndex = startIndex + 3;
+            if (StageItems == null) return;
+
+            var startIndex = NavigateBarPosition * StageNumberPerPage;
+            var endIndex = startIndex + StageNumberPerPage;
 
             var newStageList = new List<StageItemViewModel>();
             for (var i = startIndex; i < endIndex; i++)
@@ -317,7 +338,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CurrentPageStageItems = newStageList;
 
-            if (NavigateBarPosition == 0 && StageTotal > 3)
+            if (NavigateBarPosition == 0 && StageTotal > StageNumberPerPage)
             {
                 IsRightNavigateButtonVisible = true;
                 IsLeftNavigateButtonVisible = false;
@@ -328,7 +349,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = true;
             }
-            else if (NavigateBarPosition > 0 && StageTotal > 3)
+            else if (NavigateBarPosition > 0 && StageTotal > StageNumberPerPage)
             {
                 IsRightNavigateButtonVisible = true;
                 IsLeftNavigateButtonVisible = true;
@@ -394,6 +415,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 StageItems = user.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                              new List<StageItemViewModel>();
 
+
                 var emptyProjectStages = new List<StageItemViewModel>();
 
                 foreach (var stageItem in StageItems)
@@ -417,6 +439,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     StageItems.Remove(item);
                 }
+
+                // --- Test Data 
+
+                StageItemViewModel firstItem = StageItems.First();
+
+                string originalName = firstItem.Name;
+                for (int i = 1; i < 7; i++)
+                {
+                    StageItemViewModel newItem = new StageItemViewModel(firstItem)
+                    {
+                        Id = "D",
+                        Name = $"{originalName}_{i}"
+                    };
+                    StageItems.Add(newItem);
+                }
+                // ----
 
 
                 StageTotal = StageItems.Count();
@@ -506,7 +544,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnStartProject()
         {
-            Console.WriteLine(SelectedProject.Name);
+            Console.WriteLine($@"StageNumberPerPage : {StageNumberPerPage}");
 
             SelectedStage = StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectedProject.StageId));
 

@@ -9,10 +9,13 @@
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
+             xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
-
+    <i:Interaction.Behaviors>
+        <behavior:ProjectSelectBehavior Command="{Binding StageNumberChangedCommand}"/>
+    </i:Interaction.Behaviors>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -37,7 +40,7 @@
 
             <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
                 <Setter Property="Height" Value="38"/>
-                <Setter Property="Width" Value="340"/>
+                <Setter Property="Width" Value="338"/>
                 <Setter Property="Foreground" Value="#989CA7"/>
 
                 <Setter Property="Background" Value="#2E353F"/>
@@ -79,9 +82,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="88"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="88"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Label Foreground="White" HorizontalContentAlignment="Center">
@@ -109,7 +112,11 @@
                     />
             <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Visibility="{Binding IsNotExistContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}" >스테이지 없음</Label>
             
-            <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Path=CurrentPageStageItems}" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <ItemsControl x:Name="StageItemControl"
+                          Grid.Row="1" 
+                          Grid.Column="1" 
+                          ItemsSource="{Binding Path=CurrentPageStageItems}" 
+                          VerticalAlignment="Top" HorizontalAlignment="Center">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" MaxHeight="300" />
@@ -117,7 +124,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                        <Grid Margin="0,0,40,0">
+                        <Grid Margin="0,0,34,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="54" />
                                 <RowDefinition Height="*"/>
