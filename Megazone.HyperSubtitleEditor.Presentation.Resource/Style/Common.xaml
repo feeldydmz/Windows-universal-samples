@@ -67,6 +67,12 @@
     <SolidColorBrush x:Key="Brush_LightGraySeparatorLineBrush" Color="#FFd8dce2" />
 
 
+    <SolidColorBrush x:Key="Brush_Button_Background_Base_Color" Color="#282f39" />
+    <SolidColorBrush x:Key="Brush_Button_Foreground_Base_Color" Color="#b0b7d5" />
+    <SolidColorBrush x:Key="Brush_Button_MouseHover_Color" Color="#323a46" />
+    <SolidColorBrush x:Key="Brush_Button_Actvie_Border_Color" Color="#404d6c" />
+
+
     <GridLength x:Key="GridLength_HeaderAreaHeight">40</GridLength>
 
     <Thickness x:Key="Thickness_TabAreaTopPadding">0,4,0,0</Thickness>

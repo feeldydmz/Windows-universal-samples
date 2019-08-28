@@ -8,20 +8,49 @@
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="900"
+             d:DesignHeight="550" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converter:StageIconTitleConverter x:Key="StageIconTitleConverter"/>
+
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Malgun Gothic" />
+        </Style>
+
+<Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect" BasedOn="{StaticResource Style_ListBoxDefault}">
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="#282f37"/>
+
+        </Style>
+
         <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="340"/>
+            <Setter Property="Foreground" Value="#989CA7"/>
+
+            <Setter Property="Background" Value="#2E353F"/>
+            <!--<Setter Property="BorderThickness" Value="0,0,0,1"/>-->
+            <Setter Property="BorderBrush" Value="#3C434D"/>
         </Style>
         <Style TargetType="{x:Type CheckBox}" x:Key="Style_CheckBox" BasedOn="{StaticResource Style_CheckBoxDefault}">
-            
             <Setter Property="FlowDirection" Value="RightToLeft"/>
         </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="Style_TextBlockNavi">
+            <!--<Setter Property="Margin" Value="4"/>-->
+            <Setter Property="Background" Value="#282f37"/>
+            <Setter Property="Foreground" Value="#5B626A"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        
+
     </UserControl.Resources>
 
     <Grid Background="#282f37">
@@ -57,38 +86,79 @@
             </StackPanel>
             <Button Grid.Row="1" 
                     Grid.Column="0" 
-                    Background="Transparent" 
-                    Content="&lt;" 
-                    VerticalAlignment="Stretch" 
+                    Background="{DynamicResource Brush_Button_Background_Base_Color}"
+                    Style="{StaticResource Style_PagePrevButton}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
                     Visibility="{Binding Path=IsLeftNavigateButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding LeftSlideNavigateCommand}"
                     />
             <Button Grid.Row="1" 
                     Grid.Column="2" 
-                    Background="Transparent" 
-                    Content="&gt;" 
-                    VerticalAlignment="Stretch" 
+                    Background="{DynamicResource Brush_Button_Background_Base_Color}" 
+                    Style="{StaticResource Style_PageNextButton}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
                     Visibility="{Binding Path=IsRightNavigateButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding RightSlideNavigateCommand}"
                     />
             <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Visibility="{Binding IsNotExistContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}" >스테이지 없음</Label>
-            <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Path=CurrentPageStageItems}" VerticalAlignment="Center" HorizontalAlignment="Center">
+            
+            <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Path=CurrentPageStageItems}" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" MinHeight="300" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" MaxHeight="300" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                        <Grid Margin="0,0,20,0">
+                        <Grid Margin="0,0,40,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="54" />
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Foreground="White" Text="{Binding Path=Name}"/>
-                            <Border Grid.Row="1" Margin="2" BorderThickness="2" BorderBrush="Black">
+                            <Label BorderThickness="1" BorderBrush="#3C434D">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="54"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Ellipse Fill="#40485B" Height="40" Width="40" />
+                                        <TextBlock Text ="S" 
+                                                   Margin="1,0,0,1"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#848B9B"
+                                                   FontSize="22"/>
+                                    </Grid>
+                                    <TextBlock Grid.Column="1" 
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Stretch"
+                                               Margin="5"
+                                               FontSize="16"
+                                               Foreground="#F9FEFF" 
+                                               Text="{Binding Path=Name}"/>
+                                </Grid>
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelectedStage}" Value ="True">
+                                                <Setter Property="BorderBrush" Value="#60A5F0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    <!--<Trigger Property="{Binding IsSelectedStage}" Value="True">
+                                        <Setter Property="BorderBrush" Value="#60A5F0"/>
+                                    </Trigger>-->
+                                </Label.Style>
+                            </Label>
+
+
+                            <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0" BorderBrush="#3C434D">
                                 <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single" 
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         Style="{StaticResource Style_ListBox_ProjectSelect}"
                                          ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
                                          SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectedProject}">
                                     <ListBox.ItemTemplate>
@@ -118,16 +188,28 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_CANCEL}"
+            <Button Grid.Column="1" HorizontalAlignment="Center" 
+                    Style="{StaticResource Style_Button_Left_Navi}"
+                    Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                     Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding Path=CancelProjectSelectCommand}"/>
 
-            <Button Grid.Column="2" HorizontalAlignment="Center" Content="{x:Static resources:Resource.CNT_PROJECT_START}"
-                    Command="{Binding Path=StartProjectCommand}"/>
+            <!--<Button Grid.Column="2" HorizontalAlignment="Center" Style="{StaticResource Style_ButtonNavi}"
+                    Content="{x:Static resources:Resource.CNT_PROJECT_START}"
+                    Command="{Binding Path=StartProjectCommand}"
+                    />-->
+
+            <Button Grid.Column="3" HorizontalAlignment="Center" 
+                    Style="{StaticResource Style_Button_Right_Navi}"
+                    Command="{Binding Path=StartProjectCommand}"
+                    Visibility="{Binding IsStartButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Content="{x:Static resources:Resource.CNT_PROJECT_START}"/>
         </Grid>
     </Grid>
 </UserControl>
