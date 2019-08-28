@@ -19,33 +19,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public StageItemViewModel(Stage stage)
         {
-            ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project));
-
-            //List<ProjectItemViewModel> listTemp = new List<ProjectItemViewModel>();
-            //for (int j = 1; j < 20; j++)
-            //{
-            //    listTemp.Add(new ProjectItemViewModel(stage.Id,
-            //        new Project(j.ToString(),
-            //                    $"name{j}",
-            //                    $"desc{j}",
-            //                    true,
-            //            true,
-            //            DateTime.Now,
-            //            DateTime.Now,
-            //            "",
-            //            "",
-            //            "",
-            //            DateTime.Now,
-            //            "",
-            //            "",
-            //            ""
-            //            )
-            //        ));
-            //}
-            //ProjectItems = listTemp;
-
-            ////------------
-
             Id = stage.Id;
             Name = stage.Name;
         }

@@ -49,6 +49,17 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
+        public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                return _cloudMediaRepository.GetProjects(new ProjectListRequest(CLOUD_MEDIA_ENDPOINT,
+                                                                                parameter.Authorization.AccessToken, 
+                                                                                parameter.StageId, 
+                                                                                parameter.Name));
+            }, cancellationToken);
+        }
+
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>

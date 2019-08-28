@@ -12,6 +12,7 @@ namespace Megazone.Cloud.Media.ServiceInterface
     {
         Task<Authorization> LoginAsync(string userName, string password, CancellationToken cancellationToken);
         Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken);
+        Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter, CancellationToken cancellationToken);
         Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter, CancellationToken cancellationToken);

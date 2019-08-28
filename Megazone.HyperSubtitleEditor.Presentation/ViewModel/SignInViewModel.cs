@@ -9,6 +9,7 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
+using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
@@ -360,21 +361,50 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             StageItems = user.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                          new List<StageItemViewModel>();
 
-            //// --- Test Data 
+            List<Project> listTemp = new List<Project>();
+            for (int j = 1; j < 3; j++)
+            {
+                listTemp.Add(
+                    new Project(j.ToString(),
+                                $"name{j}",
+                                $"desc{j}",
+                                true,
+                        true,
+                        DateTime.Now,
+                        "",
+                        "",
+                        "",
+                        DateTime.Now,
+                        "",
+                        "",
+                        ""
+                        )
+                    );
+            }
 
-            //StageItemViewModel firstItem = StageItems.First();
+            List<StageItemViewModel> emptyProjectStages = new List<StageItemViewModel>();
 
-            //string originalName = firstItem.Name;
-            //for (int i = 1; i < 7; i++)
-            //{
-            //    StageItemViewModel newItem = new StageItemViewModel(firstItem)
-            //    {
-            //        Id = "D",
-            //        Name = $"{originalName}_{i}"
-            //    };
-            //    StageItems.Add(newItem);
-            //}
-            //// ----
+            foreach (var stageItem in StageItems)
+            {
+                var projects = await _cloudMediaService.GetProjects(
+                    new GetProjectsParameter(_authorization, stageItem.Id, stageItem.Name), 
+                    CancellationToken.None);
+
+                if (projects == null || projects.TotalCount == 0)
+                {
+                    emptyProjectStages.Add(stageItem);
+                    continue;
+                }
+
+                var projectItems= projects.Results.Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
+                stageItem.ProjectItems = projectItems;
+            }
+
+            foreach (var item in emptyProjectStages)
+            {
+                StageItems.Remove(item);
+            }
+
 
             StageTotal = StageItems.Count();
 
@@ -440,6 +470,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (CheckAuthorization())
             {
                 LoadStageAndProject();
+            }
+            else
+            {
+                IsProjectViewVisible = false;
+                IsSignIn = false;
             }
         }
 

@@ -9,7 +9,6 @@ namespace Megazone.Cloud.Media.Domain
             string description,
             bool usePlayout,
             bool isActive,
-            DateTime expiredAt,
             DateTime createdAt,
             string createdById,
             string createdByName,
@@ -32,7 +31,6 @@ namespace Megazone.Cloud.Media.Domain
             UpdatedById = updatedById;
             UpdatedByName = updatedByName;
             UpdatedByUsername = updatedByUsername;
-            ExpiredAt = expiredAt;
         }
 
         public string Id { get; }
@@ -49,6 +47,5 @@ namespace Megazone.Cloud.Media.Domain
         public string UpdatedById { get; }
         public string UpdatedByName { get; }
         public string UpdatedByUsername { get; }
-        public DateTime ExpiredAt { get; }
     }
 }

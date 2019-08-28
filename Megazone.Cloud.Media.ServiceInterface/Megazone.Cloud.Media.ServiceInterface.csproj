@@ -48,6 +48,7 @@
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />
     <Compile Include="Parameter\CreateCaptionAssetParameter.cs" />
+    <Compile Include="Parameter\GetProjectsParameter.cs" />
     <Compile Include="Parameter\RequiredParameter.cs" />
     <Compile Include="Parameter\CreateAssetParameter.cs" />
     <Compile Include="Parameter\GetAssetParameter.cs" />

@@ -269,9 +269,9 @@
     <Resource Include="Image\img_btn_arr_right_nor.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Image\img_arrow_back.png" />
-    <Content Include="Image\img_arrow_start.png" />
-    <Content Include="Image\img_ico_check.png" />
+    <Resource Include="Image\img_arrow_back.png" />
+    <Resource Include="Image\img_arrow_start.png" />
+    <Resource Include="Image\img_ico_check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
