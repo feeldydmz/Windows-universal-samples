@@ -988,6 +988,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   BACK과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PROJECT_BACK {
+            get {
+                return ResourceManager.GetString("CNT_PROJECT_BACK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Start과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_PROJECT_START {

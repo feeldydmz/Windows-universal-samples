@@ -584,4 +584,177 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Right_Navi">
+        <Setter Property="Background" Value="{DynamicResource Brush_Button_Background_Base_Color}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush_Button_Foreground_Base_Color}"/>
+        <Setter Property="Height" Value="47"/>
+        <Setter Property="Width" Value="146"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Bd" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#282f37" CornerRadius="2">
+                        <Grid x:Name="PART_ContentArea"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="84" />
+                                <ColumnDefinition Width="44"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"
+                                       Foreground="{TemplateBinding Foreground}" 
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <Image Grid.Column="1" Width="26" Height="26" Margin="0,0,4,0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arrow_start.png"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" TargetName="PART_Bd" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush_Button_MouseHover_Color}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush_Button_Actvie_Border_Color}" TargetName="PART_Bd" />
+                        </Trigger>
+
+                        <!--<Trigger Property="IsMouseOver" Value="True">
+                                -->
+                        <!--<Setter Property="Opacity" Value="0.5" TargetName="OverBPART_NaviTextorder" />-->
+                        <!--
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Left_Navi">
+        <Setter Property="Background" Value="{DynamicResource Brush_Button_Background_Base_Color}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush_Button_Foreground_Base_Color}"/>
+        <Setter Property="Height" Value="47"/>
+        <Setter Property="Width" Value="146"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Bd" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#282f37" CornerRadius="2">
+                        <Grid x:Name="PART_ContentArea"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="44"/>
+                                <ColumnDefinition Width="84" />
+                            </Grid.ColumnDefinitions>
+                            <Image Width="26" Height="26" Margin="4,0,0,0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arrow_back.png"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"
+                                       Foreground="{TemplateBinding Foreground}" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" TargetName="PART_Bd" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush_Button_MouseHover_Color}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush_Button_Actvie_Border_Color}" TargetName="PART_Bd" />
+                        </Trigger>
+
+                        <!--<Trigger Property="IsMouseOver" Value="True">
+                                -->
+                        <!--<Setter Property="Opacity" Value="0.5" TargetName="OverBPART_NaviTextorder" />-->
+                        <!--
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--프로젝트 선택 페이지 넘기기 버튼. 통이미지-->
+    <Style x:Key="Style_PagePrevButton" TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ImageButtonBase}">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Image x:Name="NormalImage" Visibility="Visible"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_nor.png"
+                               Stretch="None" />
+                        <Image x:Name="OverImage" Visibility="Collapsed"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_hov.png"
+                               Stretch="None" />
+                        <Image x:Name="PressedImage" Visibility="Collapsed"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_left_act.png"
+                               Stretch="None" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="NormalImage" />
+                            <Setter Property="Visibility" Value="Visible" TargetName="OverImage" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="NormalImage" />
+                            <Setter Property="Visibility" Value="Visible" TargetName="PressedImage" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Style_PageNextButton" TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ImageButtonBase}">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Image x:Name="NormalImage" Visibility="Visible"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_nor.png"
+                               Stretch="None" />
+                        <Image x:Name="OverImage" Visibility="Collapsed"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_hov.png"
+                               Stretch="None" />
+                        <Image x:Name="PressedImage" Visibility="Collapsed"
+                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/arr_right_act.png"
+                               Stretch="None" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="NormalImage" />
+                            <Setter Property="Visibility" Value="Visible" TargetName="OverImage" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="NormalImage" />
+                            <Setter Property="Visibility" Value="Visible" TargetName="PressedImage" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
 </ResourceDictionary>

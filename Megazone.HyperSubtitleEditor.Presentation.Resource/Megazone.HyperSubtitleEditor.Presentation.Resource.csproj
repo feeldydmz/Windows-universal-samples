@@ -226,6 +226,17 @@
   <ItemGroup>
     <Resource Include="Image\img_Subtitle_Submitted.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\arrow_back.png" />
+    <Resource Include="Image\arrow_start.png" />
+    <Resource Include="Image\arr_left_act.png" />
+    <Resource Include="Image\arr_left_hov.png" />
+    <Resource Include="Image\arr_left_nor.png" />
+    <Resource Include="Image\arr_right_act.png" />
+    <Resource Include="Image\arr_right_hov.png" />
+    <Resource Include="Image\arr_right_nor.png" />
+    <Resource Include="Image\ico_check.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

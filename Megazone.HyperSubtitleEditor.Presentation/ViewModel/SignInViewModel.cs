@@ -54,6 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isRightNavigateButtonVisible = false;
         private bool _isNotExistContentVisible = false;
         private bool _isCancleButtonVisible = false;
+        private bool _isStartButtonVisible = false;
 
         private int _stageTotal;
         private int _slideNavigateBarPosition = 0;
@@ -116,7 +117,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Set(ref _selectedProject, value);
 
                 if (_selectedProject != null)
+                {
                     _selectedProject.IsSelected = true;
+
+                    IsStartButtonVisible = true;
+                }
             } 
         }
 
@@ -154,6 +159,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _isCancleButtonVisible;
             set => Set(ref _isCancleButtonVisible, value);
+        }
+        public bool IsStartButtonVisible
+        {
+            get => _isStartButtonVisible;
+            set => Set(ref _isStartButtonVisible, value);
         }
 
         public string UriSource
@@ -255,6 +265,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = true;
             IsCancleButtonVisible = true;
+            IsStartButtonVisible = true;
         }
 
         
@@ -335,10 +346,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 유저 인증 실패 401
             if (user == null)
             {
+                IsSignIn= false;
                 IsBusy = false;
                 UriSource = LOGIN_URI;
                 return;
             }
+
+            await Task.Delay(TimeSpan.FromSeconds(3));
 
             IsProjectViewVisible = true;
             IsSignIn = true;
@@ -420,6 +434,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!ConfigHolder.Current.Subtitle.AutoLogin)
                 return;
 
+            IsProjectViewVisible = true;
+            IsSignIn = true;
+
             if (CheckAuthorization())
             {
                 LoadStageAndProject();
@@ -443,6 +460,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = false;
             IsCancleButtonVisible = false;
+            IsStartButtonVisible = false;
         }
 
         private void OnNavigating(string code)
