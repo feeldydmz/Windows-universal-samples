@@ -4,6 +4,7 @@ using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -11,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     /// <summary>
     ///     Caption asset view model.
     /// </summary>
-    public class CaptionAssetItemViewModel : ViewModelBase
+    internal class CaptionAssetItemViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
@@ -34,7 +35,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CreatedAt = string.IsNullOrEmpty(asset.CreatedAt)
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
-            Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(element)).ToList();
+            Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(new CaptionContext(element))).ToList();
             Kind = asset.Elements?.FirstOrDefault()?.Kind;
         }
 

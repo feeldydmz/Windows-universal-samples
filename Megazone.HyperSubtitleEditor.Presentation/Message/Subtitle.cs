@@ -75,6 +75,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
         }
 
+        internal class McmDeployRequestedMessage : MessageBase
+        {
+            public McmDeployRequestedMessage(object sender, McmDeployRequestedMessageParameter param) : base(sender)
+            {
+            }
+            public McmDeployRequestedMessageParameter Param { get; }
+        }
+
         internal class FileOpenedMessage : MessageBase
         {
             public FileOpenedMessage(object sender, FileOpenedMessageParameter param) : base(sender)

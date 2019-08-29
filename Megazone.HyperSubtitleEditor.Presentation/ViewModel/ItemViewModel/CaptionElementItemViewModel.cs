@@ -1,7 +1,4 @@
-﻿using System;
-using Megazone.Cloud.Media.Domain.Assets;
-using Megazone.Core.Extension;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -9,13 +6,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     /// <summary>
     ///     Caption asset's element view model.
     /// </summary>
-    public class CaptionElementItemViewModel : ViewModelBase
+    internal class CaptionElementItemViewModel : ViewModelBase
     {
-        private bool _isSelected;
         private bool _isDraft;
         private bool _isPreferred;
+        private bool _isSelected;
 
-        public CaptionElementItemViewModel(Caption caption)
+        public CaptionElementItemViewModel(CaptionContext caption)
         {
             Source = caption;
             Country = caption.Country;
@@ -26,9 +23,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Label = caption.Label;
             Language = caption.Language;
             Url = caption.Url;
-            Text = (caption as WorkContext.CaptionContext)?.Text;
+            Text = caption.Text;
         }
-        public Caption Source { get; }
+
+        public CaptionContext Source { get; }
 
         public string Id { get; }
         public string Label { get; }
@@ -42,11 +40,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isDraft;
             set => Set(ref _isDraft, value);
         }
+
         public bool IsPreferred
         {
             get => _isPreferred;
             set => Set(ref _isPreferred, value);
         }
+
         public bool IsSelected
         {
             get => _isSelected;
@@ -54,20 +54,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         }
 
         public string Text { get; set; }
-
-        public string GetFileName()
-        {
-            var caption = Source;
-            var url = caption.Url;
-            if (string.IsNullOrEmpty(url))
-            {
-                return $"{caption.Label}_{caption.Language}_{DateTime.UtcNow.DateTimeToEpoch()}.vtt";
-            }
-
-            var lastSlashIndex = url.LastIndexOf('/');
-
-            var fileName = url.Substring(lastSlashIndex + 1, url.Length - lastSlashIndex - 1);
-            return fileName;
-        }
     }
 }

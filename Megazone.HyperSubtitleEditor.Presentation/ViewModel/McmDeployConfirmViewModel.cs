@@ -4,7 +4,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    public class McmDeployConfirmViewModel : ViewModelBase
+    internal class McmDeployConfirmViewModel : ViewModelBase
     {
         private CaptionAssetItemViewModel _captionAssetItem;
         private string _url;

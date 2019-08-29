@@ -223,23 +223,47 @@
             </MenuItem>
         </Menu>
 
+        
+
         <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal" DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" TextBlock.Foreground="Azure" VerticalAlignment="Center">
-                <Button Style="{x:Null}" Command="{Binding Path=MoveProjectStepCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Path=SelectedStage.Name, StringFormat='{}Stage: {0}'}" Margin="2,0" />
-                        <TextBlock Text="{Binding Path=SelectedProject.Name, StringFormat='{}Project: {0}'}" Margin="2,0" />
-                    </StackPanel>
-                </Button>
-                <TextBlock Text="{Binding Path=LoginId}" Margin="10,0,0,0" />
-                <Button Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}">
-                    <Grid>
+                <StackPanel Orientation="Horizontal" Margin="0,0,11,0" VerticalAlignment="Center">
+                    <TextBlock Text="Stage" Margin="2,0" Foreground="#5fa5f0" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=SelectedStage.Name}" Margin="2,0,22,0" />
+                    <TextBlock Text="Project" Margin="2,0" Foreground="#5fa5f0" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=SelectedProject.Name}" Margin="2,0" />
+                </StackPanel>
 
-                    </Grid>
-                </Button>
+                <mz:ImageButton Command="{Binding Path=MoveProjectStepCommand}"
+                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_nor.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_pres.png"
+                                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_hov.png"
+                                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_dis.png"
+                                Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" VerticalAlignment="Center" />
+
+                <Rectangle Height="18" Width="1" Fill="#78828e" Margin="24,0" VerticalAlignment="Center" />
+
+                <!--<mz:ImageButton 
+                    Content="{Binding Path=LoginId}"
+                    DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png"
+                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_pres.png"
+                    MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_hov.png"
+                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_dis.png" Margin="0,0,14,0" 
+                    Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" />-->
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,14,0">
+                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
+                    <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center" TextAlignment="Center" Margin="7,0,0,0" />
+                </StackPanel>
+                
+                <mz:ImageButton 
+                    Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}" Background="#2e353f"
+                    DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
+                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
+                    MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_hov.png"
+                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_dis.png" 
+                    Style="{StaticResource Style_TransparentImageButton}" Width="16" Height="14" />
             </StackPanel>
-
-            <Border Width="20" />
 
             <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
                        Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" Visibility="Collapsed"/>

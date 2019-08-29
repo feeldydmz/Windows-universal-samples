@@ -7,7 +7,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
-    public class VideoItemViewModel : ViewModelBase
+    internal class VideoItemViewModel : ViewModelBase
     {
         private IList<CaptionAssetItemViewModel> _captionItems;
         private string _primaryImageUrl;

@@ -40,8 +40,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.5.5\lib\net45\CommonServiceLocator.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -230,6 +230,7 @@
     <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
     <Compile Include="Message\Parameter\McmCaptionAssetOpenedMessageParameter.cs" />
+    <Compile Include="Message\Parameter\McmDeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
@@ -244,7 +245,7 @@
     <Compile Include="ViewModel\CreateSubtitleViewModelBase.cs" />
     <Compile Include="ViewModel\Data\BytePerSecondMeasurer.cs" />
     <Compile Include="ViewModel\Data\MediaDataLoader.cs" />
-    <Compile Include="ViewModel\Data\WorkContext.cs" />
+    <Compile Include="ViewModel\Data\McmWorkContext.cs" />
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />

@@ -4,9 +4,9 @@ using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
-    public class McmCaptionAssetOpenedMessageParameter
+    public class McmDeployRequestedMessageParameter
     {
-        public McmCaptionAssetOpenedMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions)
+        public McmDeployRequestedMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions)
         {
             Video = video;
             Asset = asset;

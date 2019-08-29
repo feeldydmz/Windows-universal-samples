@@ -388,6 +388,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
+                LoginId = user.Username;
+
                 IsProjectViewVisible = true;
                 IsSignIn = true;
 

@@ -2,13 +2,15 @@
 {
     public struct Pagination
     {
-        public Pagination(int offset = 0, int limitPerPage = 10)
+        public Pagination(int index = 0, int limitPerPage = 10)
         {
-            Offset = offset;
+            Index = index;
             LimitPerPage = limitPerPage;
+            Offset = index * limitPerPage;
         }
 
         public int Offset { get; }
+        public int Index { get; }
         public int LimitPerPage { get; }
     }
 }

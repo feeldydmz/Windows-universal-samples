@@ -15,13 +15,14 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     [Inject(Scope = LifetimeScope.Transient)]
-    public class VideoListViewModel : ViewModelBase
+    internal class VideoListViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
@@ -345,13 +346,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SearchAsync(keyword, 0);
         }
 
-        private async void SearchAsync(string keyword, int pageOffset, bool isPaging = false)
+        private async void SearchAsync(string keyword, int pageIndex, bool isPaging = false)
         {
             var conditions = MakeSearchConditions(keyword, DurationStartTime, DurationEndTime);
-            await SearchVideoAsync(pageOffset, conditions, isPaging);
+            await SearchVideoAsync(pageIndex, conditions, isPaging);
         }
 
-        private async Task SearchVideoAsync(int pageOffset, Dictionary<string, string> conditions, bool isPaging)
+        private async Task SearchVideoAsync(int pageIndex, Dictionary<string, string> conditions, bool isPaging)
         {
             ValidCancellationTokenSource();
             IsBusy = true;
@@ -369,7 +370,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var projectId = _signInViewModel.SelectedStage?.Id;
 
                 var results = await _cloudMediaService.GetVideosAsync(
-                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageOffset),
+                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageIndex),
                         conditions), _cancellationTokenSource.Token);
 
                 TotalCount = results.TotalCount;
@@ -466,7 +467,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
             var selectedCaptionList =
                 SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
-                    .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
+                    .Select(itemVm => itemVm.Source).ToList() ?? new List<CaptionContext>();
 
             MessageCenter.Instance.Send(new Subtitle.McmCaptionAssetOpenedMessage(this,
                 new McmCaptionAssetOpenedMessageParameter(video, asset, selectedCaptionList)));

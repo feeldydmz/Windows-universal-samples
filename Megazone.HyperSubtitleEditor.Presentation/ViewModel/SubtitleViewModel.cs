@@ -12,7 +12,6 @@ using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
-using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
@@ -51,10 +50,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         // ReSharper disable once InconsistentNaming
         private const decimal MIN_INTERVAL = (decimal) 0.25;
         private readonly IBrowser _browser;
+        private readonly ICloudMediaService _cloudMediaService;
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
         private readonly IJobService _jobService;
-        private readonly ICloudMediaService _cloudMediaService;
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
@@ -113,7 +112,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
         }
 
+        public McmWorkContext WorkContext { get; private set; }
         public MediaPlayerViewModel MediaPlayer { get; }
+
         // ReSharper disable once UnusedMember.Global
         public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current?.API);
 
@@ -416,6 +417,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.McmCaptionAssetOpenedMessage>(OnMcmCaptionAssetOpened);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
+            MessageCenter.Instance.Regist<Subtitle.McmDeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Regist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
@@ -467,6 +469,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
+            MessageCenter.Instance.Unregist<Subtitle.McmDeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Unregist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
@@ -852,6 +855,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return job?.Payload?.UserMetadata?.Name;
         }
 
+        private void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
+        {
+        }
+
         private void OnDeployRequested(Subtitle.DeployRequestedMessage message)
         {
             _browser.Main.LoadingManager.Show();
@@ -864,7 +871,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     var topicArn = PipelineLoader.Instance.SelectedPipeline.Notifications.Completed;
                     var job = AppContext.Job;
-                    var credentialInfo = (CredentialInfo)PipelineLoader.Instance.OutputBucketCredentialInfo;
+                    var credentialInfo = (CredentialInfo) PipelineLoader.Instance.OutputBucketCredentialInfo;
                     var isExistRemovedTracks = _removedTracks.Any();
                     if (isExistRemovedTracks)
                         DeleteRemovedTracks(credentialInfo, job, topicArn, _removedTracks);
@@ -900,7 +907,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             });
         }
 
-        private void DeployDirtyTabs(List<ISubtitleTabItemViewModel> dirtyTabs, CredentialInfo credentialInfo, Job job, string topicArn)
+        private void DeployDirtyTabs(List<ISubtitleTabItemViewModel> dirtyTabs, CredentialInfo credentialInfo, Job job,
+            string topicArn)
         {
             var tempFolderPath = this.GetTempFolderPath();
             var userName = GetUsername(AppContext.Job);
@@ -942,7 +950,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void DeleteRemovedTracks(CredentialInfo credentialInfo, Job job, string topicArn, IEnumerable<Track> removedTracks)
+        private void DeleteRemovedTracks(CredentialInfo credentialInfo, Job job, string topicArn,
+            IEnumerable<Track> removedTracks)
         {
             var succeedList = new List<Track>();
             try
@@ -1079,7 +1088,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 //            }
 //#endif
 
-                foreach (var track in trackList.Tracks)
+            foreach (var track in trackList.Tracks)
                 try
                 {
                     var filePath = tempFolderPath + "\\" + Guid.NewGuid() + DateTime.UtcNow.DateTimeToEpoch() + ".vtt";
@@ -1263,20 +1272,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Encoding.UTF8);
         }
 
+
         private async void OnMcmCaptionAssetOpened(Subtitle.McmCaptionAssetOpenedMessage message)
         {
             if (message.Param == null)
                 return;
 
-            _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {message.Param.Video.Name}");
-
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var asset = message.Param.Asset;
-            var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
-            WorkContext.SetVideo(video);
-            WorkContext.SetCaption(asset);
-            WorkContext.SetCaptions(captions?.Select(caption => new WorkContext.CaptionContext(caption)).ToList());
+            var captions =
+                message.Param.Captions?.Select(caption => new CaptionContext(caption)).ToList() ??
+                new List<CaptionContext>();
+            WorkContext = new McmWorkContext(video, asset, captions);
+
+            _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
 
             if (!message.Param.Captions?.Any() ?? true)
                 return;
@@ -1284,36 +1294,44 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var paramList = new List<FileOpenedMessageParameter>();
             _browser.Main.LoadingManager.Show();
 
-            await Task.Factory.StartNew(async () => {
+            await Task.Factory.StartNew(async () =>
+            {
                 try
                 {
                     // video영상을 가져온다.
                     var mediaUrl = GetMediaUrl();
                     if (!string.IsNullOrEmpty(mediaUrl))
-                    {
                         MediaPlayer.OpenMedia(mediaUrl, false);
-                        //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
-                    }
+                    //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
 
                     var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
                     var trackKind = TrackKind.Caption;
                     switch (kind)
                     {
-                        case "SUBTITLE": trackKind = TrackKind.Subtitle; break;
-                        case "CAPTION": trackKind = TrackKind.Caption; break;
-                        case "CHAPTER": trackKind = TrackKind.Chapter; break;
-                        case "DESCRIPTION": trackKind = TrackKind.Description; break;
-                        case "METADATA": trackKind = TrackKind.Metadata; break;
+                        case "SUBTITLE":
+                            trackKind = TrackKind.Subtitle;
+                            break;
+                        case "CAPTION":
+                            trackKind = TrackKind.Caption;
+                            break;
+                        case "CHAPTER":
+                            trackKind = TrackKind.Chapter;
+                            break;
+                        case "DESCRIPTION":
+                            trackKind = TrackKind.Description;
+                            break;
+                        case "METADATA":
+                            trackKind = TrackKind.Metadata;
+                            break;
                     }
 
                     // 선택된 caption 파일이 있다면, 로드한다.
                     foreach (var caption in WorkContext.Captions)
-                    {
                         try
                         {
                             var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
                             caption.Text = text;
-                            paramList.Add(new FileOpenedMessageParameter()
+                            paramList.Add(new FileOpenedMessageParameter
                             {
                                 FilePath = "",
                                 Kind = trackKind,
@@ -1326,14 +1344,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         {
                             Console.WriteLine(e);
                         }
-                    }
 
                     this.InvokeOnUi(() =>
                     {
                         foreach (var param in paramList)
-                        {
                             MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
-                        }
                         _browser.Main.LoadingManager.Hide();
                     });
                 }
