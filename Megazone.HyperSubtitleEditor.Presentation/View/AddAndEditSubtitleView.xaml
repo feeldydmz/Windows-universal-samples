@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d" Width="430" Height="230"
@@ -18,7 +19,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -56,7 +61,7 @@
                                    VerticalAlignment="Center" FontWeight="Bold" />
 
                         <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=SubtitleKinds}"
-                                  SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}" />
+                                  SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=CanSelectSubtitleKind}" />
                         <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"
                                   SelectedItem="{Binding Path=SelectedLanguageItemViewModel, UpdateSourceTrigger=PropertyChanged}">
                             <ItemsControl.ItemTemplate>

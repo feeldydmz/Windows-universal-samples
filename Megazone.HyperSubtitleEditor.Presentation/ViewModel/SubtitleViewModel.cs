@@ -390,6 +390,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 lastTab.IsSelected = true;
             else
                 SelectedTab = null;
+
+            WorkContext.RemoveCaption(WorkContext.Captions.SingleOrDefault(caption=>caption.Label.Equals(tab.Name)));
         }
 
         private void SyncMediaPosition()
@@ -1299,46 +1301,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 try
                 {
                     // video영상을 가져온다.
-                    var mediaUrl = GetMediaUrl();
-                    if (!string.IsNullOrEmpty(mediaUrl))
-                        MediaPlayer.OpenMedia(mediaUrl, false);
-                    //this.InvokeOnUi(() => { MediaPlayer.OpenMedia(mediaUrl, false); });
-
-                    var kind = asset.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
-                    var trackKind = TrackKind.Caption;
-                    switch (kind)
-                    {
-                        case "SUBTITLE":
-                            trackKind = TrackKind.Subtitle;
-                            break;
-                        case "CAPTION":
-                            trackKind = TrackKind.Caption;
-                            break;
-                        case "CHAPTER":
-                            trackKind = TrackKind.Chapter;
-                            break;
-                        case "DESCRIPTION":
-                            trackKind = TrackKind.Description;
-                            break;
-                        case "METADATA":
-                            trackKind = TrackKind.Metadata;
-                            break;
-                    }
+                    if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
+                        MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
 
                     // 선택된 caption 파일이 있다면, 로드한다.
                     foreach (var caption in WorkContext.Captions)
                         try
                         {
-                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
-                            caption.Text = text;
+                            caption.Text =
+                                await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
                             paramList.Add(new FileOpenedMessageParameter
                             {
-                                FilePath = "",
-                                Kind = trackKind,
+                                FilePath = "", // local file path.
+                                Kind = WorkContext.CaptionKind,
                                 Label = caption.Label,
                                 LanguageCode = caption.Language,
-                                Text = text
+                                Text = caption.Text ?? string.Empty
                             });
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            break;
                         }
                         catch (WebException e)
                         {
@@ -1358,22 +1341,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
             });
 
-            string GetMediaUrl()
-            {
-                if (video == null)
-                    return string.Empty;
-
-                // video영상을 가져온다.
-                var mediaAsset = video.Sources.FirstOrDefault(rendition => rendition.Type.ToUpper().Equals("HLS"));
-                if (mediaAsset == null)
-                    mediaAsset = video.Sources.FirstOrDefault();
-
-                var url = mediaAsset.Urls?.FirstOrDefault();
-                if (string.IsNullOrEmpty(url))
-                    url = mediaAsset.Elements?.FirstOrDefault()?.Urls?.FirstOrDefault();
-
-                return url;
-            }
+            
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)

@@ -11,15 +11,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     public class AddTabCommand : DependencyObject, ICommand
     {
         private readonly IBrowser _browser;
+        private readonly ViewModel.SubtitleViewModel _subtitleViewModel;
 
         public AddTabCommand()
         {
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
+            _subtitleViewModel = Bootstrapper.Container.Resolve<ViewModel.SubtitleViewModel>();
         }
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _subtitleViewModel.WorkContext?.OpenedVideo != null;
         }
 
         public void Execute(object parameter)

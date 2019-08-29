@@ -1,24 +1,49 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
+using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
+using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     [Inject(Scope = LifetimeScope.Transient)]
     internal class AddAndEditSubtitleViewModel : CreateSubtitleViewModelBase
     {
+        private readonly SubtitleViewModel _subtitleViewModel;
+        private bool _canSelectSubtitleKind;
+        private ICommand _loadCommand;
+
         public AddAndEditSubtitleViewModel(ILogger logger) : base(logger)
         {
+            _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
         }
 
         public SubtitleDialogViewMode Mode { get; internal set; }
         public string TabId { get; set; }
+
+        public bool CanSelectSubtitleKind
+        {
+            get => _canSelectSubtitleKind;
+            set => Set(ref _canSelectSubtitleKind, value);
+        }
+
+        public ICommand LoadCommand
+        {
+            get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
+        }
+
+        private void Load()
+        {
+            CanSelectSubtitleKind = !(_subtitleViewModel.WorkContext.Captions?.Any() ?? false);
+            SelectedSubtitleKind = _subtitleViewModel.SelectedTab?.Kind ?? Api.Transcoder.Domain.TrackKind.Subtitle;
+        }
 
         public void SetSelectedTabInfo(ISubtitleTabItemViewModel tabItem)
         {
@@ -59,6 +84,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Logger.Error.Write(ex);
             }
+
             CloseAction?.Invoke();
         }
     }

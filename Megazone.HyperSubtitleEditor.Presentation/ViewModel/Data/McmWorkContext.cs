@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -16,32 +17,30 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
-        private bool _isModified;
+        private readonly IList<CaptionContext> _captionList;
 
         public McmWorkContext(Video openedVideo, CaptionAsset openedCaptionAsset, IEnumerable<CaptionContext> captions)
         {
-            OpenedVideo = openedVideo;
-            OpenedCaptionAsset = openedCaptionAsset;
-            Captions = captions;
-
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
             _cloudMediaService = Bootstrapper.Container.Resolve<ICloudMediaService>();
+
+            OpenedVideo = openedVideo;
+            OpenedCaptionAsset = openedCaptionAsset;
+            VideoMediaUrl = GetVideoMediaUrl(openedVideo);
+            CaptionKind = GetTrackKind(openedCaptionAsset);
+            _captionList = captions.ToList();
         }
 
         public Video OpenedVideo { get; }
         public CaptionAsset OpenedCaptionAsset { get; }
-        public IEnumerable<CaptionContext> Captions { get; }
-
+        public IEnumerable<CaptionContext> Captions => _captionList;
         public string UploadInputPath { get; private set; }
+        public string VideoMediaUrl { get; }
+        public TrackKind CaptionKind { get; }
 
         public bool CanDeploy()
         {
-            return OpenedVideo != null;
-        }
-
-        public bool IsModified()
-        {
-            return _isModified;
+            return OpenedVideo != null && (Captions?.Any() ?? false);
         }
 
         public async Task<string> GetUploadInputPathAsync()
@@ -100,6 +99,58 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         public void SetUploadInputPath(string uploadInputPath)
         {
             UploadInputPath = uploadInputPath;
+        }
+
+        public void RemoveCaption(CaptionContext caption)
+        {
+            if (caption != null)
+                _captionList.Remove(caption);
+        }
+
+        public void AddCaption(CaptionContext caption)
+        {
+            if (caption != null)
+                _captionList.Add(caption);
+        }
+
+        private string GetVideoMediaUrl(Video video)
+        {
+            // video영상을 가져온다.
+            var asset = video?.Sources?.FirstOrDefault(rendition => rendition.Type.ToUpper().Equals("HLS")) ??
+                             video?.Sources?.FirstOrDefault();
+
+            if (asset == null)
+                return string.Empty;
+
+            var url = asset.Urls?.FirstOrDefault();
+            if (string.IsNullOrEmpty(url))
+                url = asset.Elements?.FirstOrDefault()?.Urls?.FirstOrDefault();
+            return url;
+        }
+
+        private TrackKind GetTrackKind(CaptionAsset asset)
+        {
+            var kind = asset?.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
+            var trackKind = TrackKind.Subtitle;
+            switch (kind)
+            {
+                case "SUBTITLE":
+                    trackKind = TrackKind.Subtitle;
+                    break;
+                case "CAPTION":
+                    trackKind = TrackKind.Caption;
+                    break;
+                case "CHAPTER":
+                    trackKind = TrackKind.Chapter;
+                    break;
+                case "DESCRIPTION":
+                    trackKind = TrackKind.Description;
+                    break;
+                case "METADATA":
+                    trackKind = TrackKind.Metadata;
+                    break;
+            }
+            return trackKind;
         }
     }
 
