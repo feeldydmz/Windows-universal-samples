@@ -16,6 +16,7 @@
     <i:Interaction.Behaviors>
         <behavior:ProjectSelectBehavior Command="{Binding StageNumberChangedCommand}"/>
     </i:Interaction.Behaviors>
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -63,16 +64,16 @@
 
     <Grid Background="#282f37">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
+            <RowDefinition Height="130" />
             <RowDefinition Height="*" />
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         
-        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,15,0,0">
-            <Label Foreground="White" HorizontalContentAlignment="Center">
+        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,45,0,0">
+            <Label Foreground="White" HorizontalContentAlignment="Center" FontSize="24">
                 프로젝트를 선택해 주세요
             </Label>
-            <Label Foreground="White" HorizontalContentAlignment="Center">
+            <Label Foreground="#a0a3aa" HorizontalContentAlignment="Center" FontSize="12">
                 Please select Project of the Stage you want to access
             </Label>
         </StackPanel>
@@ -87,10 +88,10 @@
                 <ColumnDefinition Width="88"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Label Foreground="White" HorizontalContentAlignment="Center">
+                <Label Foreground="White" HorizontalContentAlignment="Center" FontWeight="Bold">
                     Stage Total
                 </Label>
-                <Label Foreground="LightSkyBlue" Content="{Binding StageTotal}" Margin="5,0,0,0"></Label>
+                <Label Foreground="#5fa5f0" Content="{Binding StageTotal}" Margin="5,0,0,0" FontWeight="Bold"></Label>
             </StackPanel>
             <Button Grid.Row="1" 
                     Grid.Column="0" 
@@ -116,15 +117,15 @@
                           Grid.Row="1" 
                           Grid.Column="1" 
                           ItemsSource="{Binding Path=CurrentPageStageItems}" 
-                          VerticalAlignment="Top" HorizontalAlignment="Center">
+                          VerticalAlignment="Top" HorizontalAlignment="Stretch" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" MaxHeight="300" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" MaxHeight="300" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                        <Grid Margin="0,0,34,0">
+                        <Grid Margin="17,0,17,0" HorizontalAlignment="Center">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="54" />
                                 <RowDefinition Height="*"/>
@@ -165,8 +166,6 @@
                                     </Trigger>-->
                                 </Label.Style>
                             </Label>
-
-
                             <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0" BorderBrush="#3C434D">
                                 <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single" 
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"

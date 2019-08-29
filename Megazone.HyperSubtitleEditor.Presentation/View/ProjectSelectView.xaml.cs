@@ -26,20 +26,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             InitializeComponent();
         }
-
-        private void ProjectSelectView_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var view =  sender as ProjectSelectView;
-
-            int pageWidth = 92 * 2 - 38;
-
-            int stageItemWidth = 340 + 35;
-
-            int stageNumberPerPage =  (int)((view.ActualWidth - (pageWidth)) / stageItemWidth);
-
-            if (DataContext is SignInViewModel viewmodle) viewmodle.StageNumberPerPage = stageNumberPerPage;
-
-            Debug.WriteLine($@"StageItemControl.ActualWidth : {StageItemControl.ActualWidth} stageNumberPerPage : {stageNumberPerPage}");
-        }
     }
 }
