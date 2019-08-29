@@ -11,7 +11,7 @@
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="1280"
+             d:DesignHeight="736" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
     <i:Interaction.Behaviors>
         <behavior:ProjectSelectBehavior Command="{Binding StageNumberChangedCommand}"/>
@@ -62,38 +62,95 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#282f37">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="130" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="70" />
-        </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,45,0,0">
-            <Label Foreground="White" HorizontalContentAlignment="Center" FontSize="24">
-                프로젝트를 선택해 주세요
-            </Label>
-            <Label Foreground="#a0a3aa" HorizontalContentAlignment="Center" FontSize="12">
-                Please select Project of the Stage you want to access
-            </Label>
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="88"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="88"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Label Foreground="White" HorizontalContentAlignment="Center" FontWeight="Bold">
-                    Stage Total
-                </Label>
-                <Label Foreground="#5fa5f0" Content="{Binding StageTotal}" Margin="5,0,0,0" FontWeight="Bold"></Label>
-            </StackPanel>
-            <Button Grid.Row="1" 
+    <Grid>
+        <Border Background="#282f37" Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Control Grid.Row="1" Grid.Column="1" x:Name="LoadingProgressView" 
+                     Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Style="{StaticResource Style_IndeterminateControl}" />
+        </Border>
+
+        <!--프로젝트 없을 때 화면-->
+        <Border Background="#282f37" Visibility="{Binding IsEmptyProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="620"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="1" Width="62" Height="62"
+                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_error_icon.png" VerticalAlignment="Top" Margin="0,154,0,0"/>
+
+                <Label Grid.Column="1" Foreground="White" FontSize="20" Content="접근 가능한 프로젝트가 존재하지 않습니다." VerticalAlignment="Top" HorizontalContentAlignment="Center" Margin="0,239,0,0"/>
+
+                <Border Height="254" Width="620" Grid.Column="1" 
+                        BorderThickness="1" BorderBrush="#444b56" Background="#2e353f" Margin="0,294,0,188.5">
+                    <Grid>
+                        <StackPanel Width="350" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="139,34,0,0">
+                            <Grid>
+                                <Label Foreground="#a0a3aa" Content="이용중인 계정에 문제가 있거나 클라우드 도입을 원하시는 경우" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                <Label Foreground="#a0a3aa" Content="영업팀으로 연락주시면 자세한 안내를 도와드리겠습니다." Margin="0,19,0,-19" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Height="124" Width="558" Margin="31,103,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#3d4450">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="56*"/>
+                                    <ColumnDefinition Width="37*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Foreground="White" FontWeight="Bold" FontSize="13" Content="클라우드 도입 문의" Margin="31,23,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Foreground="White" Content="ㆍ24시 운영 :" Margin="24,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Foreground="White" FontWeight="Bold" Content="1644-2243" Margin="101.76,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Foreground="White" Content="ㆍEmail :" Margin="24,72,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Foreground="#5fa5f0" Content="aws@magazone.com" Margin="77.76,72,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                                <Rectangle Fill="#585e67" HorizontalAlignment="Left" Height="77" Margin="279,23,0,0" Width="1" VerticalAlignment="Top"/>
+
+                                <Label Foreground="White" FontWeight="Bold" Content="미디어 서비스 이용 문의"  FontSize="13" Margin="310,23,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                                <Label Foreground="White" Content="ㆍEmail :" Margin="305,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Padding="5" ScrollViewer.CanContentScroll="True"/>
+                                <Label Foreground="#5fa5f0" Content="Media@magazone.com" Margin="23,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+
+        </Border>
+
+        <!--프로젝트 있을 때 화면-->
+        <Border Visibility="{Binding IsNormalProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Background="#282f37">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="130" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,45,0,0">
+                    <Label Foreground="White" HorizontalContentAlignment="Center" FontSize="24">
+                        프로젝트를 선택해 주세요
+                    </Label>
+                    <Label Foreground="#a0a3aa" HorizontalContentAlignment="Center" FontSize="12">
+                        Please select Project of the Stage you want to access
+                    </Label>
+                </StackPanel>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="88"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="88"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Label Foreground="White" HorizontalContentAlignment="Center" FontWeight="Bold">
+                            Stage Total
+                        </Label>
+                        <Label Foreground="#5fa5f0" Content="{Binding StageTotal}" Margin="5,0,0,0" FontWeight="Bold"></Label>
+                    </StackPanel>
+                    <Button Grid.Row="1" 
                     Grid.Column="0" 
                     Background="{DynamicResource Brush_Button_Background_Base_Color}"
                     Style="{StaticResource Style_PagePrevButton}"
@@ -102,7 +159,7 @@
                     Visibility="{Binding Path=IsLeftNavigateButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding LeftSlideNavigateCommand}"
                     />
-            <Button Grid.Row="1" 
+                    <Button Grid.Row="1" 
                     Grid.Column="2" 
                     Background="{DynamicResource Brush_Button_Background_Base_Color}" 
                     Style="{StaticResource Style_PageNextButton}"
@@ -111,116 +168,115 @@
                     Visibility="{Binding Path=IsRightNavigateButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding RightSlideNavigateCommand}"
                     />
-            <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Visibility="{Binding IsNotExistContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}" >스테이지 없음</Label>
-            
-            <ItemsControl x:Name="StageItemControl"
+                    
+                    <ItemsControl x:Name="StageItemControl"
                           Grid.Row="1" 
                           Grid.Column="1" 
                           ItemsSource="{Binding Path=CurrentPageStageItems}" 
                           VerticalAlignment="Top" HorizontalAlignment="Stretch" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" MaxHeight="300" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                        <Grid Margin="17,0,17,0" HorizontalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="54" />
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Label BorderThickness="1" BorderBrush="#3C434D">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="54"/>
-                                        <ColumnDefinition Width="1*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Ellipse Fill="#40485B" Height="40" Width="40" />
-                                        <TextBlock Text ="S" 
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" MaxHeight="300" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
+                                <Grid Margin="17,0,17,0" HorizontalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="54" />
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label BorderThickness="1" BorderBrush="#3C434D">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="54"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Ellipse Fill="#40485B" Height="40" Width="40" />
+                                                <TextBlock Text ="S" 
                                                    Margin="1,0,0,1"
                                                    HorizontalAlignment="Center" 
                                                    VerticalAlignment="Center"
                                                    Foreground="#848B9B"
                                                    FontSize="22"/>
-                                    </Grid>
-                                    <TextBlock Grid.Column="1" 
+                                            </Grid>
+                                            <TextBlock Grid.Column="1" 
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Stretch"
                                                Margin="5"
                                                FontSize="16"
                                                Foreground="#F9FEFF" 
                                                Text="{Binding Path=Name}"/>
-                                </Grid>
-                                <Label.Style>
-                                    <Style TargetType="Label">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelectedStage}" Value ="True">
-                                                <Setter Property="BorderBrush" Value="#60A5F0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                    <!--<Trigger Property="{Binding IsSelectedStage}" Value="True">
+                                        </Grid>
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelectedStage}" Value ="True">
+                                                        <Setter Property="BorderBrush" Value="#60A5F0"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                            <!--<Trigger Property="{Binding IsSelectedStage}" Value="True">
                                         <Setter Property="BorderBrush" Value="#60A5F0"/>
                                     </Trigger>-->
-                                </Label.Style>
-                            </Label>
-                            <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0" BorderBrush="#3C434D">
-                                <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single" 
+                                        </Label.Style>
+                                    </Label>
+                                    <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0" BorderBrush="#3C434D">
+                                        <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single" 
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
                                          Style="{StaticResource Style_ListBox_ProjectSelect}"
                                          ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
                                          SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectedProject}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
-                                            <Grid HorizontalAlignment="Stretch">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="150"/>
-                                                    <ColumnDefinition Width="30"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Path=DisplayTitle}"/>
-                                                <Image x:Name="PART_Check" Grid.Column="1" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" Stretch="None"
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
+                                                    <Grid HorizontalAlignment="Stretch">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="30"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding Path=DisplayTitle}"/>
+                                                        <Image x:Name="PART_Check" Grid.Column="1" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" Stretch="None"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_CheckInCheckBox.png" />
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-            <Control Grid.Row="1" Grid.Column="1" x:Name="LoadingProgressView" 
-                     Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
-                     Style="{StaticResource Style_IndeterminateControl}" />
-        </Grid>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" HorizontalAlignment="Center" 
+                 
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" HorizontalAlignment="Center" 
                     Style="{StaticResource Style_Button_Left_Navi}"
                     Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                     Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding Path=CancelProjectSelectCommand}"/>
 
-            <!--<Button Grid.Column="2" HorizontalAlignment="Center" Style="{StaticResource Style_ButtonNavi}"
+                    <!--<Button Grid.Column="2" HorizontalAlignment="Center" Style="{StaticResource Style_ButtonNavi}"
                     Content="{x:Static resources:Resource.CNT_PROJECT_START}"
                     Command="{Binding Path=StartProjectCommand}"
                     />-->
 
-            <Button Grid.Column="3" HorizontalAlignment="Center" 
+                    <Button Grid.Column="3" HorizontalAlignment="Center" 
                     Style="{StaticResource Style_Button_Right_Navi}"
                     Command="{Binding Path=StartProjectCommand}"
                     Visibility="{Binding IsStartButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Content="{x:Static resources:Resource.CNT_PROJECT_START}"/>
-        </Grid>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

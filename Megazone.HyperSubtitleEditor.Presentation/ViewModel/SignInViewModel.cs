@@ -41,7 +41,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _loginId;
         private bool _isProjectViewVisible = true;
         private bool _isSignIn;
-        private bool _isBusy = false;
+        private bool _isBusy;
 
         private ICommand _loadedCommand;
         private ICommand _navigatingCommand;
@@ -53,11 +53,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private List<StageItemViewModel> _stageItems;
 
         //PjectSelectView 전용
-        private bool _isLeftNavigateButtonVisible = false;
-        private bool _isRightNavigateButtonVisible = false;
-        private bool _isNotExistContentVisible = false;
-        private bool _isCancleButtonVisible = false;
-        private bool _isStartButtonVisible = false;
+        private bool _isLeftNavigateButtonVisible;
+        private bool _isRightNavigateButtonVisible;
+        private bool _isCancleButtonVisible;
+        private bool _isStartButtonVisible;
+        private bool _isEmptyProjectPage;
+        private bool _isLoadingProjectPage;
+        private bool _isNormalProjectPage;
         private bool _isAutoLogin;
 
         private int _stageTotal;
@@ -162,12 +164,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isRightNavigateButtonVisible, value);
         }
 
-        public bool IsNotExistContentVisible
-        {
-            get => _isNotExistContentVisible;
-            set => Set(ref _isNotExistContentVisible, value);
-        }
-
         public bool IsCancleButtonVisible
         {
             get => _isCancleButtonVisible;
@@ -177,6 +173,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _isStartButtonVisible;
             set => Set(ref _isStartButtonVisible, value);
+        }
+
+        public bool IsEmptyProjectPage
+        {
+            get => _isEmptyProjectPage;
+            set => Set(ref _isEmptyProjectPage, value);
+        }
+
+        public bool IsLoadingProjectPage
+        {
+            get => _isLoadingProjectPage;
+            set => Set(ref _isLoadingProjectPage, value);
+        }
+
+        public bool IsNormalProjectPage
+        {
+            get => _isNormalProjectPage;
+            set => Set(ref _isNormalProjectPage, value);
         }
 
         public bool IsAutoLogin
@@ -394,12 +408,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                IsLoadingProjectPage = true;
                 IsBusy = true;
 
                 var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
-
-                //await Task.Delay(TimeSpan.FromSeconds(3));
-
+                
                 // 유저 인증 실패 401
                 if (user == null)
                 {
@@ -418,6 +431,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var emptyProjectStages = new List<StageItemViewModel>();
 
+#if STAGE
+                emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
+#else
                 foreach (var stageItem in StageItems)
                 {
                     var projects = await _cloudMediaService.GetProjects(
@@ -435,36 +451,44 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     stageItem.ProjectItems = projectItems;
                 }
 
+#endif
+
                 foreach (var item in emptyProjectStages)
                 {
                     StageItems.Remove(item);
                 }
 
-                // --- Test Data 
+                //// --- Test Data 
 
-                StageItemViewModel firstItem = StageItems.First();
+                //StageItemViewModel firstItem = StageItems.First();
 
-                string originalName = firstItem.Name;
-                for (int i = 1; i < 7; i++)
-                {
-                    StageItemViewModel newItem = new StageItemViewModel(firstItem)
-                    {
-                        Id = "D",
-                        Name = $"{originalName}_{i}"
-                    };
-                    StageItems.Add(newItem);
-                }
-                // ----
+                //string originalName = firstItem.Name;
+                //for (int i = 1; i < 7; i++)
+                //{
+                //    StageItemViewModel newItem = new StageItemViewModel(firstItem)
+                //    {
+                //        Id = "D",
+                //        Name = $"{originalName}_{i}"
+                //    };
+                //    StageItems.Add(newItem);
+                //}
+                //// ----
 
 
                 StageTotal = StageItems.Count();
 
                 if (StageTotal == 0)
                 {
-                    IsNotExistContentVisible = true;
+                    IsLoadingProjectPage = false;
+                    IsEmptyProjectPage = true;
+                    IsNormalProjectPage = false;
                 }
                 else
                 {
+                    IsLoadingProjectPage = false;
+                    IsEmptyProjectPage = false;
+                    IsNormalProjectPage = true;
+
                     CalculateStageSlidePosition();
 
                     if (IsAutoLogin)
