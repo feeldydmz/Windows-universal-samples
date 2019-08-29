@@ -631,4 +631,26 @@ Are you going to load a project?</value>
   <data name="MSG_DEPLOY_COMPLETE" xml:space="preserve">
     <value>Asset publishing is complete.</value>
   </data>
+  <data name="MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL" xml:space="preserve">
+    <value>24 hour operation</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_CLOUD_INQUIRY_TITLE" xml:space="preserve">
+    <value>Cloud Inquiry</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_DESC1" xml:space="preserve">
+    <value>If you have a problem with your account, or would like to use the cloud
+platform, please contact our sales team. We'll assist you with more details.</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_EMAIL_SUB" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_MEDIA" xml:space="preserve">
+    <value>Media service inquiry</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_TITLE" xml:space="preserve">
+    <value>There is no project available to access.</value>
+  </data>
+  <data name="MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL_NUMBER" xml:space="preserve">
+    <value>1644-2243</value>
+  </data>
 </root>

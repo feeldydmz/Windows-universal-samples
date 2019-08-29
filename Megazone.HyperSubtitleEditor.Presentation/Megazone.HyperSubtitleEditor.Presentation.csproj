@@ -66,9 +66,11 @@
       <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
     </Reference>
@@ -512,6 +514,10 @@
     <ProjectReference Include="..\Megazone.HyperSubtitleEditor.Presentation.Infrastructure\Megazone.HyperSubtitleEditor.Presentation.Infrastructure.csproj">
       <Project>{1cde9457-cfe9-412f-a63a-4fc05906d6b9}</Project>
       <Name>Megazone.HyperSubtitleEditor.Presentation.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.HyperSubtitleEditor.Presentation.Resource\Megazone.HyperSubtitleEditor.Presentation.Resource.csproj">
+      <Project>{c489e69f-3cdc-460d-be55-7ddefea02170}</Project>
+      <Name>Megazone.HyperSubtitleEditor.Presentation.Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.SubtitleEditor.Resources\Megazone.SubtitleEditor.Resources.csproj">
       <Project>{e1baff66-a452-4d6a-b370-39d35948b3d5}</Project>
