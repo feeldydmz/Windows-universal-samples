@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Megazone.HyperSubtitleEditor.Presentation.View;
@@ -14,12 +15,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
     public class ProjectSelectBehavior : Behavior<ProjectSelectView>
     {
         private const int StageWidth = 340;
-        private const int stagePaddingWidth = 34;
-        private const int SidePageButtonWidth = 92;
-        private const int windowFramePadding= 16;
-
-
-        private int stagePerPage = 1;
+        private const int StagePaddingWidth = 30;
+        private int _stagePerPage = 1;
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand),
@@ -48,17 +45,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         {
             if (!(sender is ProjectSelectView view)) return;
 
-            var screenWidth = view.ActualWidth + windowFramePadding;
+            ItemsControl itemsControl = view.FindName("StageItemControl") as ItemsControl;
 
-            var pageWidth = (SidePageButtonWidth * 2) - stagePaddingWidth;
+            var itemsControlWidth = itemsControl?.ActualWidth + StagePaddingWidth;
 
-            var stageItemWidth = StageWidth + stagePaddingWidth;
+            var stageItemWidth = StageWidth + StagePaddingWidth;
+
+            var stageNumberPerPage = Convert.ToInt32(Math.Truncate(Convert.ToDecimal(itemsControlWidth / stageItemWidth)));
 
 
-            var stageNumberPerPage = Convert.ToInt32((screenWidth - (pageWidth)) / stageItemWidth);
-
-            if (stagePerPage != stageNumberPerPage)
+            if (_stagePerPage != stageNumberPerPage)
             {
+                _stagePerPage = stageNumberPerPage;
                 Command?.Execute(stageNumberPerPage);
             }
         }

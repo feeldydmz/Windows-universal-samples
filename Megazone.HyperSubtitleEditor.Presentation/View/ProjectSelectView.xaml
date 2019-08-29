@@ -270,7 +270,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                                <Grid Margin="17,0,17,0" HorizontalAlignment="Center">
+                                <Grid Margin="15,0,15,0" HorizontalAlignment="Center">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="54" />
                                         <RowDefinition Height="*" />

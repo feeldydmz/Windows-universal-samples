@@ -145,7 +145,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _selectingProject.IsSelected = true;
 
                     SelectedStage = CurrentPageStageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject.StageId));
-                    SelectedStage.IsSelectedStage = true;
+                    if (SelectedStage != null) SelectedStage.IsSelectedStage = true;
 
                     IsStartButtonVisible = true;
                 }
@@ -374,7 +374,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsLeftNavigateButtonVisible = false;
             }
             else if (NavigateBarPosition > 0 && 
-                     (NavigateBarPosition == (int)(StageTotal / NavigateBarPosition - 1)))
+                     ((double)NavigateBarPosition > (StageTotal / NavigateBarPosition - 1)))
             {
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = true;
@@ -477,21 +477,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     StageItems.Remove(item);
                 }
 
-                //// --- Test Data 
+                // --- Test Data 
 
-                //StageItemViewModel firstItem = StageItems.First();
+                StageItemViewModel firstItem = StageItems.First();
 
-                //string originalName = firstItem.Name;
-                //for (int i = 1; i < 7; i++)
-                //{
-                //    StageItemViewModel newItem = new StageItemViewModel(firstItem)
-                //    {
-                //        Id = "D",
-                //        Name = $"{originalName}_{i}"
-                //    };
-                //    StageItems.Add(newItem);
-                //}
-                //// ----
+                string originalName = firstItem.Name;
+                for (int i = 1; i < 7; i++)
+                {
+                    StageItemViewModel newItem = new StageItemViewModel(firstItem)
+                    {
+                        Id = "D",
+                        Name = $"{originalName}_{i}"
+                    };
+                    StageItems.Add(newItem);
+                }
+                // ----
 
 
                 StageTotal = StageItems.Count();
