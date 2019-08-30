@@ -191,7 +191,6 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Over" />-->
                             <Setter Property="Background" Value="#333a44"></Setter>
                         </MultiTrigger>
                         <!--아이템은 선택도 안되고 리스트는 언포커스-->
@@ -200,8 +199,7 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
-                            <!--<Setter Property="Foreground" Value="#FF9eaabb" />-->
+                            <Setter Property="Foreground" Value="#a0a3aa"></Setter>
                         </MultiTrigger>
                         <!--선택되고 리스트는 언포커스-->
                         <MultiTrigger>
@@ -211,8 +209,6 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="#5fa5f0"></Setter>
                             <Setter Property="Foreground" Value="White"></Setter>
-                            <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
-                            <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
                         </MultiTrigger>
                         <!--선택되고 리스트도 포커스드-->
                         <MultiTrigger>
@@ -220,7 +216,6 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
                             <Setter Property="Background" Value="#5fa5f0"></Setter>
                             <Setter Property="Foreground" Value="White"></Setter>
                         </MultiTrigger>

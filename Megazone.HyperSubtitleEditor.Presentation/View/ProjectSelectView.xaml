@@ -290,7 +290,7 @@
                                                          Height="40" 
                                                          Width="40" />
                                                 <TextBlock x:Name="PART_Stage_Symbol_Text" 
-                                                           Text="S"
+                                                           Text="{Binding Path=SymbolTitle}"
                                                            Margin="1,0,0,1"
                                                            HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
