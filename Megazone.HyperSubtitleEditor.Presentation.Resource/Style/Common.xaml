@@ -1307,4 +1307,32 @@
         <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_badge_caption.png" />
         <Setter Property="Stretch" Value="None" />
     </Style>
+
+
+    <!--하이퍼링크 기본스타일. 색상 지정과 언더라인 정도-->
+    <Style x:Key="Style_HyperlinkDefault" TargetType="{x:Type Hyperlink}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="Foreground" Value="#FF8ea7ce" />
+        <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="#FF9eb8df" />
+                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type Hyperlink}" BasedOn="{StaticResource Style_HyperlinkDefault}" />
+
+    <Style x:Key="Style_NoticeHyperlink" TargetType="{x:Type Hyperlink}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="Foreground" Value="#FF95b0d9" />
+        <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="#FF5fa5f0" />
+                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -1568,6 +1568,70 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   24 hour operation과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1644-2243과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL_NUMBER {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cloud Inquiry과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_CLOUD_INQUIRY_TITLE {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_CLOUD_INQUIRY_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   If you have a problem with your account, or would like to use the cloud
+        ///platform, please contact our sales team. We&apos;ll assist you with more details.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_DESC1 {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_DESC1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Email과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_EMAIL_SUB {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_EMAIL_SUB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Media service inquiry과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_MEDIA {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_MEDIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   There is no project available to access.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_EMPTY_TITLE {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_EMPTY_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Error occurred during save.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_SAVE_FAIL {

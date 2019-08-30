@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
+using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -21,12 +22,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             Id = stage.Id;
             Name = stage.Name;
+            SymbolTitle = Name.IsNullOrEmpty() ? "E" : Name.Substring(0, 1);
             ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project)).ToList();
         }
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public bool IsSelectedStage { get; set; }
+        public string SymbolTitle { get; set; }
+
+        private bool _isSelectedStage;
+        public bool IsSelectedStage
+        {
+            get => _isSelectedStage;
+            set => Set(ref _isSelectedStage, value);
+        }
 
         public IEnumerable<ProjectItemViewModel> ProjectItems
         {

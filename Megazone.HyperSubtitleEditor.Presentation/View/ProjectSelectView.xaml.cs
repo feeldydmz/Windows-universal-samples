@@ -26,5 +26,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             InitializeComponent();
         }
+
+        private void OnNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            try
+            {
+                Process.Start(e.Uri.AbsoluteUri);
+                e.Handled = true;
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 }

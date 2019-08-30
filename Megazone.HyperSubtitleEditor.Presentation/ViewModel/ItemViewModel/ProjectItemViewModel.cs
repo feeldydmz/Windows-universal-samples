@@ -14,11 +14,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             ProjectId = project.Id;
             Name = project.Name;
             DisplayTitle = $"{Name}/{ProjectId}";
+            IsActive = project.IsActive;
         }
         public string DisplayTitle { get; }
         public string StageId { get; }
         public string ProjectId { get; }
         public string Name { get; }
+        public bool IsActive { get; set; }
 
         public bool IsSelected
         {
