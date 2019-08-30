@@ -14,7 +14,7 @@
              d:DesignHeight="736" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
     <i:Interaction.Behaviors>
-        <behavior:ProjectSelectBehavior Command="{Binding StageNumberChangedCommand}" />
+        <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" />
     </i:Interaction.Behaviors>
 
     <UserControl.Resources>
@@ -26,20 +26,17 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <converter:StageIconTitleConverter x:Key="StageIconTitleConverter" />
-
+            
             <Style TargetType="{x:Type Window}">
                 <Setter Property="FontFamily" Value="Malgun Gothic" />
+
             </Style>
 
             <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect"
                    BasedOn="{StaticResource Style_ListBoxDefault}">
                 <Setter Property="Background" Value="#282f37" />
-                <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="BorderBrush" Value="#282f37" />
-
             </Style>
-
             <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize"
                    BasedOn="{StaticResource Style_ProjectSelect_ListBoxItem}">
                 <Setter Property="Height" Value="38" />
@@ -48,17 +45,6 @@
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
                 <Setter Property="Background" Value="#2E353F" />
                 <Setter Property="BorderBrush" Value="#3C434D" />
-            </Style>
-            <Style TargetType="{x:Type CheckBox}" x:Key="Style_CheckBox"
-                   BasedOn="{StaticResource Style_CheckBoxDefault}">
-                <Setter Property="FlowDirection" Value="RightToLeft" />
-            </Style>
-            <Style TargetType="{x:Type TextBlock}" x:Key="Style_TextBlockNavi">
-                <Setter Property="Background" Value="#282f37" />
-                <Setter Property="Foreground" Value="#5B626A" />
-                <Setter Property="Height" Value="26" />
-                <Setter Property="FontSize" Value="19" />
-                <Setter Property="FontWeight" Value="Bold" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -206,7 +192,7 @@
         </Border>
 
         <!--프로젝트 있을 때 화면-->
-        <Border Visibility="{Binding IsProjectViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="130" />
@@ -370,6 +356,18 @@
                             Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                             Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding Path=CancelProjectSelectCommand}" />
+                    <Slider Grid.Column="2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="130"
+                            Minimum="1"
+                            Maximum="{Binding PageNumber}"
+                            Value="{Binding CurrentPageNumber}"
+                            IsSnapToTickEnabled="True"
+                            Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Style="{StaticResource Style_Slider_ProjectSelect}"
+                            >
+                    </Slider>
                     <Button Grid.Column="3" HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Right_Navi}"
                             Command="{Binding Path=StartProjectCommand}"

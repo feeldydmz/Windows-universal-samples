@@ -43,6 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private readonly ICloudMediaService _cloudMediaService;
         private Authorization _authorization;
+        private UserProfile User { get; set; }
 
         private string _uriSource;
         private string _loginId;
@@ -64,13 +65,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isRightNavigateButtonVisible;
         private bool _isCancleButtonVisible;
         private bool _isStartButtonVisible;
+        private bool _isNavigationBarVisible;
         private bool _isEmptyProjectPage;
         private bool _isLoadingProjectPage;
         private bool _isNormalProjectPage;
         private bool _isAutoLogin;
 
         private int _stageTotal;
-        private int _slideNavigateBarPosition = 0;
+        private int _pageNumber;
+        private int _currentPageNumber;
         private IEnumerable<StageItemViewModel> _currentPageStageItems;
 
         private ICommand _startProjectCommand;
@@ -78,7 +81,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _rightNavigateCommand;
         private ICommand _leftSlideNavigateCommand;
         private ICommand _logoutCommand;
-        private ICommand _stageNumberChangedCommand;
+        private ICommand _stagePerPageNumberChangedCommand;
         private ILogger _logger;
 
         private ConfigHolder _config;
@@ -99,6 +102,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _cloudMediaService = cloudMediaService;
             
             _config = ConfigHolder.Current;
+
+            CurrentPageNumber = 1;
+
             UriSource = "about:blank";
 
             AuthorizationFilePath = $"{Path.GetTempPath()}\\subtitleAuthorization.json";
@@ -190,6 +196,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isStartButtonVisible;
             set => Set(ref _isStartButtonVisible, value);
         }
+        public bool IsNavigationBarVisible
+        {
+            get => _isNavigationBarVisible;
+            set => Set(ref _isNavigationBarVisible, value);
+        }
 
         public bool IsEmptyProjectPage
         {
@@ -242,12 +253,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _stageTotal, value);
         }
 
-        public int StageNumberPerPage { get; set; }
-
-        public int NavigateBarPosition
+        public int PageNumber
         {
-            get => _slideNavigateBarPosition;
-            set => Set(ref _slideNavigateBarPosition, value);
+            get => _pageNumber;
+            set => Set(ref _pageNumber, value);
+        }
+
+        public int StagePerPageNumber { get; set; }
+
+        public int CurrentPageNumber
+        {
+            get => _currentPageNumber;
+            set
+            {
+                Set(ref _currentPageNumber, value); 
+
+                CalculateStageSlidePosition();
+            }
         }
         public bool IsBusy
         {
@@ -286,31 +308,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _logoutCommand = _logoutCommand ?? new RelayCommand(Logout); }
         }
 
-        public ICommand StageNumberChangedCommand
+        public ICommand StagePerPageNumberChangedCommand
         {
-            get { return _stageNumberChangedCommand = _stageNumberChangedCommand ?? new RelayCommand<int>(OnStageNumberChanged); }
+            get { return _stagePerPageNumberChangedCommand = _stagePerPageNumberChangedCommand ?? new RelayCommand<int>(OnStagePerPageNumberChanged); }
         }
 
-        private void OnStageNumberChanged(int obj)
+        private void OnStagePerPageNumberChanged(int obj)
         {
             Debug.WriteLine($"obj {obj}");
 
-            StageNumberPerPage = obj;
+            StagePerPageNumber = obj;
+
+            CalculatePageNumber();
 
             CalculateStageSlidePosition();
         }
 
         private void OnRightSlideNavigate(string obj)
         {
-            ++_slideNavigateBarPosition;
+            ++CurrentPageNumber;
 
             CalculateStageSlidePosition();
         }
 
         private void OnLeftSlideNavigate(string obj)
         {
-            if (_slideNavigateBarPosition > 0)
-                --_slideNavigateBarPosition;
+            if (CurrentPageNumber > 0)
+                --CurrentPageNumber;
 
             CalculateStageSlidePosition();
         }
@@ -347,6 +371,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = true;
             IsCancleButtonVisible = true;
             IsStartButtonVisible = true;
+            CurrentPageNumber = 1;
+        }
+
+        private void CalculatePageNumber()
+        {
+            PageNumber = Convert.ToInt32(Math.Ceiling((decimal)StageTotal / (decimal)StagePerPageNumber));
+
+            IsNavigationBarVisible = PageNumber > 1;
         }
 
         
@@ -354,8 +386,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (StageItems == null) return;
 
-            var startIndex = NavigateBarPosition * StageNumberPerPage;
-            var endIndex = startIndex + StageNumberPerPage;
+            var startIndex = (CurrentPageNumber - 1) * StagePerPageNumber;
+            var endIndex = startIndex + StagePerPageNumber;
 
             var newStageList = new List<StageItemViewModel>();
             for (var i = startIndex; i < endIndex; i++)
@@ -368,27 +400,48 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CurrentPageStageItems = newStageList;
 
-            if (NavigateBarPosition == 0 && StageTotal > StageNumberPerPage)
-            {
-                IsRightNavigateButtonVisible = true;
-                IsLeftNavigateButtonVisible = false;
-            }
-            else if (NavigateBarPosition > 0 && 
-                     ((double)NavigateBarPosition > (StageTotal / NavigateBarPosition - 1)))
-            {
-                IsRightNavigateButtonVisible = false;
-                IsLeftNavigateButtonVisible = true;
-            }
-            else if (NavigateBarPosition > 0 && StageTotal > StageNumberPerPage)
-            {
-                IsRightNavigateButtonVisible = true;
-                IsLeftNavigateButtonVisible = true;
-            }
-            else
+            if (PageNumber == 1)
             {
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = false;
             }
+            else if (PageNumber > 1 && CurrentPageNumber == 1)
+            {
+                IsRightNavigateButtonVisible = true;
+                IsLeftNavigateButtonVisible = false;
+            }
+            else if (PageNumber > 1 && CurrentPageNumber > 1)
+            {
+                IsRightNavigateButtonVisible = true;
+                IsLeftNavigateButtonVisible = true;
+            }
+            else if ((PageNumber) == CurrentPageNumber)
+            {
+                IsRightNavigateButtonVisible = false;
+                IsLeftNavigateButtonVisible = true;
+            }
+
+            //if (CurrentPageNumber == 0 && StageTotal > StagePerPageNumber)
+            //{
+            //    IsRightNavigateButtonVisible = true;
+            //    IsLeftNavigateButtonVisible = false;
+            //}
+            //else if (CurrentPageNumber > 0 && 
+            //         (CurrentPageNumber == (PageNumber - 1)))
+            //{
+            //    IsRightNavigateButtonVisible = false;
+            //    IsLeftNavigateButtonVisible = true;
+            //}
+            //else if (CurrentPageNumber > 0 && StageTotal > StagePerPageNumber)
+            //{
+            //    IsRightNavigateButtonVisible = true;
+            //    IsLeftNavigateButtonVisible = true;
+            //}
+            //else
+            //{
+            //    IsRightNavigateButtonVisible = false;
+            //    IsLeftNavigateButtonVisible = false;
+            //}
         }
        
         private void Logout()
@@ -421,6 +474,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+
         private async void LoadStageAndProject()
         {
             try
@@ -428,10 +482,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsLoadingProjectPage = true;
                 IsBusy = true;
 
-                var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
+                User = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
                 
                 // 유저 인증 실패 401
-                if (user == null)
+                if (User == null)
                 {
                     IsSignIn = false;
                     IsBusy = false;
@@ -439,11 +493,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
-                LoginId = user.Username;
+                LoginId = User.Username;
 
                 IsSignIn = true;
 
-                StageItems = user.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                StageItems = User.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                              new List<StageItemViewModel>();
 
 
@@ -478,6 +532,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
 
                 StageTotal = StageItems.Count();
+
+                CalculatePageNumber();
 
                 IsProjectViewVisible = true;
 
@@ -572,7 +628,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnStartProject()
         {
-            Console.WriteLine($@"StageNumberPerPage : {StageNumberPerPage}");
+            Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
 
             if ((SelectedProject != null) && 
                 (SelectedProject != SelectingProject))
@@ -597,6 +653,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = false;
             IsCancleButtonVisible = false;
             IsStartButtonVisible = false;
+            CurrentPageNumber = 1;
         }
 
         private void OnNavigating(string code)
