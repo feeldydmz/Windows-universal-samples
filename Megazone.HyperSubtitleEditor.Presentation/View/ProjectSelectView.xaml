@@ -64,7 +64,8 @@
     </UserControl.Resources>
 
     <Grid Background="#282f37">
-        <Border Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Background="#282f37"
+                Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Control x:Name="LoadingProgressView"
                      Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Style="{StaticResource Style_IndeterminateControl}" />
@@ -205,8 +206,8 @@
         </Border>
 
         <!--프로젝트 있을 때 화면-->
-        <Border >
-            <Grid Background="#282f37">
+        <Border Visibility="{Binding IsProjectViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="130" />
                     <RowDefinition Height="*" />

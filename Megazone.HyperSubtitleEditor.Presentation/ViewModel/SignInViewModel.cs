@@ -441,7 +441,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 LoginId = user.Username;
 
-                IsProjectViewVisible = true;
                 IsSignIn = true;
 
                 StageItems = user.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
@@ -450,6 +449,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var emptyProjectStages = new List<StageItemViewModel>();
 
+                await Task.Delay(TimeSpan.FromSeconds(3));
 #if STAGE
                 emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
 #else
@@ -477,24 +477,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     StageItems.Remove(item);
                 }
 
-                // --- Test Data 
-
-                StageItemViewModel firstItem = StageItems.First();
-
-                string originalName = firstItem.Name;
-                for (int i = 1; i < 7; i++)
-                {
-                    StageItemViewModel newItem = new StageItemViewModel(firstItem)
-                    {
-                        Id = "D",
-                        Name = $"{originalName}_{i}"
-                    };
-                    StageItems.Add(newItem);
-                }
-                // ----
-
-
                 StageTotal = StageItems.Count();
+
+                IsProjectViewVisible = true;
 
                 if (StageTotal == 0)
                 {
@@ -504,9 +489,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
                 else
                 {
+                    IsNormalProjectPage = true;
                     IsLoadingProjectPage = false;
                     IsEmptyProjectPage = false;
-                    IsNormalProjectPage = true;
 
                     CalculateStageSlidePosition();
 
