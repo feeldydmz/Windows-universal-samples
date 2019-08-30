@@ -48,11 +48,11 @@
 
     public class SettingProperty
     {
-        public SettingProperty(string id, string value, bool isOverridable, int layer, string parentValue)
+        public SettingProperty(string id, string value, bool? isOverridable, int layer, string parentValue)
         {
             Id = id;
             Value = value;
-            IsOverridable = isOverridable;
+            IsOverridable = isOverridable ?? false;
             Layer = layer;
             ParentValue = parentValue;
         }

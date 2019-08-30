@@ -1,5 +1,4 @@
 ﻿using Megazone.Api.Transcoder.Domain;
-using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
@@ -10,5 +9,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
         public string Text { get; set; }
         public string LanguageCode { get; set; }
         public TrackKind Kind { get; set; }
+        public string CaptionId { get; set; }
     }
 }

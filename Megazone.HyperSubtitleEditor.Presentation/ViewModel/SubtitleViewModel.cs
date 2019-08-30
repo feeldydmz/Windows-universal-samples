@@ -1316,7 +1316,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 Kind = WorkContext.CaptionKind,
                                 Label = caption.Label,
                                 LanguageCode = caption.Language,
-                                Text = caption.Text ?? string.Empty
+                                Text = caption.Text ?? string.Empty,
+                                CaptionId = caption.Id
                             });
                         }
                         catch (TaskCanceledException)
@@ -1340,8 +1341,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     Console.WriteLine(e);
                 }
             });
-
-            
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)

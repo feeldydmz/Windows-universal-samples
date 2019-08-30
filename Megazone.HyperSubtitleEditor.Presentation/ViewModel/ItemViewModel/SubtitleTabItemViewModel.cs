@@ -48,7 +48,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             TrackKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
-            Track track = null)
+            Track track = null,
+            string captionId = null)
         {
             _originalData = new OriginalData(name, kind, languageCode);
 
@@ -64,6 +65,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             rows.CollectionChanged += Items_CollectionChanged;
             _rows = rows;
             Track = track;
+            CaptionId = captionId;
             _isAddedFromLocal = track == null;
         }
 
@@ -96,6 +98,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public bool IsDeployedOnce { get; private set; }
 
         public Track Track { get; }
+        public string CaptionId { get; set; }
 
         public string FilePath { get; set; }
 
