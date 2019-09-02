@@ -30,11 +30,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string Name { get; set; }
         public string SymbolTitle { get; set; }
 
-        private bool _isSelectedStage;
-        public bool IsSelectedStage
+        private bool _isSelected;
+        public bool IsSelected
         {
-            get => _isSelectedStage;
-            set => Set(ref _isSelectedStage, value);
+            get => _isSelected;
+            set => Set(ref _isSelected, value);
         }
 
         public IEnumerable<ProjectItemViewModel> ProjectItems
