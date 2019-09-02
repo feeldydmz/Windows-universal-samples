@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -110,6 +111,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _s3Service = s3Service;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
+            WorkContext = new McmWorkContext(this);
         }
 
         public McmWorkContext WorkContext { get; private set; }
@@ -589,43 +591,57 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             });
         }
 
-        private void OnGroupFileLoaded(Subtitle.LoadTabsMessage message)
+        private async void OnGroupFileLoaded(Subtitle.LoadTabsMessage message)
         {
-            var tabs = message.Tabs;
+            var tabs = message.Tabs?.ToList();
             if (tabs == null)
                 return;
 
-            _subtitleListItemValidator.IsEnabled = false;
+            _browser.Main.LoadingManager.Show();
 
-            Tabs.Clear();
-
-            foreach (var tab in tabs)
+            await Task.Factory.StartNew(async () =>
             {
-                var newTab = new SubtitleTabItemViewModel(tab.Name,
-                    OnRowCollectionChanged,
-                    OnValidateRequested,
-                    OnTabSelected,
-                    OnItemSelected,
-                    tab.Kind,
-                    OnDisplayTextChanged,
-                    tab.LanguageCode,
-                    tab.Track,
-                    tab.Caption)
+                var caption = await WorkContext.GetCaptionAssetAsync(tabs.FirstOrDefault()?.CaptionAssetId);
+                var video = await WorkContext.GetVideoAsync(tabs.FirstOrDefault()?.VideoId);
+                
+                this.InvokeOnUi(() =>
                 {
-                    IsSelected = tab.IsSelected,
-                    FilePath = tab.FilePath,
-                    VideoId = tab.VideoId,
-                    CaptionAssetId = tab.CaptionAssetId
-                };
+                    WorkContext.Initialize(video, caption);
 
-                if (tab.Rows != null)
-                    newTab.AddRows(tab.Rows.ToList());
-                Tabs.Add(newTab);
-            }
+                    _subtitleListItemValidator.IsEnabled = false;
+                    Tabs.Clear();
 
-            _subtitleListItemValidator.IsEnabled = true;
-            _subtitleListItemValidator.Validate(SelectedTab.Rows);
-            CommandManager.InvalidateRequerySuggested();
+                    foreach (var tab in tabs)
+                    {
+                        var newTab = new SubtitleTabItemViewModel(tab.Name,
+                            OnRowCollectionChanged,
+                            OnValidateRequested,
+                            OnTabSelected,
+                            OnItemSelected,
+                            tab.Kind,
+                            OnDisplayTextChanged,
+                            tab.LanguageCode,
+                            tab.Track,
+                            tab.Caption)
+                        {
+                            IsSelected = tab.IsSelected,
+                            FilePath = tab.FilePath,
+                            VideoId = tab.VideoId,
+                            CaptionAssetId = tab.CaptionAssetId
+                        };
+
+                        if (tab.Rows != null)
+                            newTab.AddRows(tab.Rows.ToList());
+                        Tabs.Add(newTab);
+                    }
+
+                    _browser.Main.LoadingManager.Hide();
+
+                    _subtitleListItemValidator.IsEnabled = true;
+                    _subtitleListItemValidator.Validate(SelectedTab.Rows);
+                    CommandManager.InvalidateRequerySuggested();
+                });
+            });
         }
 
         private void OnLoaded()
@@ -858,11 +874,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return job?.Payload?.UserMetadata?.Name;
         }
 
-        private void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
+        private async void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
         {
             // 현재 정보
-            //await WorkContext.DeployAsync(message.Param.Captions.ToList());
-            _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.Asset, message.Param.Captions, GetVideoUrl());
+            await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset, message.Param.Captions.ToList());
+            _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
+                message.Param.Captions, GetVideoUrl());
             return;
             
             string GetVideoUrl()

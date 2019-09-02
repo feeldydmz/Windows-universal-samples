@@ -6,15 +6,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
     public class McmDeployRequestedMessageParameter
     {
-        public McmDeployRequestedMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions)
+        public McmDeployRequestedMessageParameter(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions)
         {
             Video = video;
-            Asset = asset;
+            CaptionAsset = captionAsset;
             Captions = captions;
         }
 
         public Video Video { get; }
-        public CaptionAsset Asset { get; }
+        public CaptionAsset CaptionAsset { get; }
         public IEnumerable<Caption> Captions { get; }
     }
 }

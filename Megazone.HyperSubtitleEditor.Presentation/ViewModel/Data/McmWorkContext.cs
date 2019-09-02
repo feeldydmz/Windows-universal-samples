@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,6 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
-using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Unity;
 
@@ -18,16 +18,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     {
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
-        private readonly SubtitleViewModel _subtitleViewModel;
         private readonly SubtitleParserProxy _subtitleService;
+        private readonly SubtitleViewModel _subtitleViewModel;
 
-        public McmWorkContext(SubtitleViewModel subtitleViewModel, Video openedVideo, CaptionAsset openedCaptionAsset)
+        public McmWorkContext(SubtitleViewModel subtitleViewModel, Video openedVideo = null,
+            CaptionAsset openedCaptionAsset = null)
         {
             _subtitleViewModel = subtitleViewModel;
             _subtitleService = Bootstrapper.Container.Resolve<SubtitleParserProxy>();
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
             _cloudMediaService = Bootstrapper.Container.Resolve<ICloudMediaService>();
-            
 
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
@@ -35,15 +35,47 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             CaptionKind = GetTrackKind(openedCaptionAsset);
         }
 
-        public Video OpenedVideo { get; }
-        public CaptionAsset OpenedCaptionAsset { get; }
+        public Video OpenedVideo { get; private set; }
+        public CaptionAsset OpenedCaptionAsset { get; private set; }
         public string UploadInputPath { get; private set; }
-        public string VideoMediaUrl { get; }
-        public TrackKind CaptionKind { get; }
+        public string VideoMediaUrl { get; private set; }
+        public TrackKind CaptionKind { get; private set; }
+
+        public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
+        {
+            OpenedVideo = openedVideo;
+            OpenedCaptionAsset = openedCaptionAsset;
+            VideoMediaUrl = GetVideoMediaUrl(openedVideo);
+            CaptionKind = GetTrackKind(openedCaptionAsset);
+        }
+
+        public async Task<CaptionAsset> GetCaptionAssetAsync(string captionAssetId)
+        {
+            if (string.IsNullOrEmpty(captionAssetId))
+                return null;
+
+            var authorization = _signInViewModel.GetAuthorization();
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
+            return await _cloudMediaService.GetCaptionAssetAsync(
+                new GetAssetParameter(authorization, stageId, projectId, captionAssetId), CancellationToken.None);
+        }
+
+        public async Task<Video> GetVideoAsync(string videoId)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                return null;
+
+            var authorization = _signInViewModel.GetAuthorization();
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
+            return await _cloudMediaService.GetVideoAsync(
+                new GetVideoParameter(authorization, stageId, projectId, videoId), CancellationToken.None);
+        }
 
         public bool CanDeploy()
         {
-            return OpenedVideo != null;// && (Captions?.Any() ?? false);
+            return OpenedVideo != null; // && (Captions?.Any() ?? false);
         }
 
         public Task<Settings> GetMcmSettingAsync()
@@ -51,7 +83,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             var authorization = _signInViewModel.GetAuthorization();
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
-            return _cloudMediaService.GetSettingsAsync(new GetSettingsParameter(authorization, stageId, projectId), CancellationToken.None);
+            return _cloudMediaService.GetSettingsAsync(new GetSettingsParameter(authorization, stageId, projectId),
+                CancellationToken.None);
         }
 
         public async Task<string> GetUploadInputPathAsync()
@@ -84,20 +117,42 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return uploadTargetPath;
         }
 
-        public async Task DeployAsync(IEnumerable<Caption> captions)
+        public async Task DeployAsync(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions)
         {
+            var captionList = captions?.ToList() ?? new List<Caption>();
+            if (!captionList.Any())
+                return;
+
             var authorization = _signInViewModel.GetAuthorization();
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
             var uploadInputPath = await GetUploadInputPathAsync();
 
             // upload caption files.
-            foreach (var caption in captions)
+            foreach (var caption in captionList)
             {
                 var uploadData = GetTextBy(caption);
                 var fileName = GetFileName(caption);
                 await _cloudMediaService.UploadCaptionFileAsync(new UploadCaptionFileParameter(authorization,
                     stageId, projectId, uploadData, fileName, uploadInputPath, caption.Url), CancellationToken.None);
+            }
+
+            if (string.IsNullOrEmpty(captionAsset.Id))
+            {
+                // create
+                var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
+                    new CreateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Name, captionList),
+                    CancellationToken.None);
+
+                Debug.Assert(createAsset == null, "createAsset is null.");
+            }
+            else
+            {
+                var updatedCaption = await _cloudMediaService.UpdateCaptionAsync(
+                    new UpdateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
+                    CancellationToken.None);
+
+                Debug.Assert(updatedCaption == null, "updatedCaption is null.");
             }
         }
 
@@ -170,34 +225,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             }
 
             return trackKind;
-        }
-    }
-
-    [Obsolete("",true)]
-    internal class CaptionContext : Caption
-    {
-        private readonly Caption _source;
-
-        public CaptionContext(Caption source) : base(source.Id, source.IsDraft, source.IsPreferred, source.Language,
-            source.Country, source.Kind, source.Label, source.Url)
-        {
-            _source = source;
-        }
-
-        public bool IsSelected { get; set; }
-        public string Text { get; set; }
-
-        public string GetFileName()
-        {
-            var caption = _source;
-            var url = caption.Url;
-            if (string.IsNullOrEmpty(url))
-                return $"{caption.Label}_{caption.Language}_{DateTime.UtcNow.DateTimeToEpoch()}.vtt";
-
-            var lastSlashIndex = url.LastIndexOf('/');
-
-            var fileName = url.Substring(lastSlashIndex + 1, url.Length - lastSlashIndex - 1);
-            return fileName;
         }
     }
 }

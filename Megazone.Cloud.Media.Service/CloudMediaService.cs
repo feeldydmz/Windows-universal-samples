@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
@@ -49,15 +50,12 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter, CancellationToken cancellationToken)
+        public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter,
+            CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(() =>
-            {
-                return _cloudMediaRepository.GetProjects(new ProjectListRequest(CLOUD_MEDIA_ENDPOINT,
-                                                                                parameter.Authorization.AccessToken, 
-                                                                                parameter.StageId, 
-                                                                                parameter.Name));
-            }, cancellationToken);
+            return await Task.Factory.StartNew(
+                () => _cloudMediaRepository.GetProjects(new ProjectListRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.Name)), cancellationToken);
         }
 
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
@@ -124,13 +122,43 @@ namespace Megazone.Cloud.Media.Service
                 var stageId = parameter.StageId;
                 var projectId = parameter.ProjectId;
                 var assetId = parameter.AssetId;
-                var version = parameter.Version;
-                var captions = parameter.Captions;
+                var captionList = parameter.Captions.ToList();
 
-                var asset = new CaptionAsset(assetId, null, null, null, null, 0, version, null, captions);
+                var asset = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                    stageId, projectId, assetId));
+
+                if (asset == null)
+                    throw new Exception("asset is null");
+
+                var updatingCaptionList = asset.Elements?.ToList() ?? new List<Caption>();
+                if (captionList.Any())
+                {
+                    var addList = new List<Caption>();
+                    foreach (var newCaption in captionList)
+                    {
+                        var findCaption =
+                            updatingCaptionList.SingleOrDefault(caption => caption.Id.Equals(newCaption.Id));
+                        if (findCaption == null)
+                        {
+                            addList.Add(newCaption);
+                        }
+                        else
+                        {
+                            var index = updatingCaptionList.IndexOf(findCaption);
+                            updatingCaptionList.Remove(findCaption);
+                            updatingCaptionList.Insert(index, newCaption);
+                        }
+                    }
+
+                    if (addList.Any())
+                        updatingCaptionList.AddRange(addList);
+                }
+
+                var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
+                    asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
 
                 var response = _cloudMediaRepository.UpdateAsset(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
-                    accessToken, stageId, projectId, assetId, asset));
+                    accessToken, stageId, projectId, assetId, updateAsset));
                 return response;
             }, cancellationToken);
         }

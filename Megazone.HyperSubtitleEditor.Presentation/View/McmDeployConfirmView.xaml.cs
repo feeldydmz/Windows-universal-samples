@@ -20,5 +20,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = Window.GetWindow(this);
             window?.Close();
         }
+
+        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

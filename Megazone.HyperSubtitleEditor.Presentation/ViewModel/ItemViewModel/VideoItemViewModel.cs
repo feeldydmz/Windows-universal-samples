@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -86,17 +87,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private string GetPrimaryImage(Video video)
         {
             var url = video.ImageUrl;
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url)) url = video.Posters?.FirstOrDefault(poster => poster.IsPreferred)?.Url;
+
+            if (string.IsNullOrEmpty(url) && (video.Thumbnails?.Any() ?? false))
             {
-                url = video.Posters.FirstOrDefault()?.Url;
+                var thumbnail = video.Thumbnails.Count() > 1
+                    ? video.Thumbnails.ToList()[1]
+                    : video.Thumbnails.FirstOrDefault();
 
-                if (string.IsNullOrEmpty(url) && (video.Thumbnails?.Any() ?? false))
+                url = thumbnail?.Urls?.FirstOrDefault();
+                if (string.IsNullOrEmpty(url))
                 {
-                    var thumbnail = video.Thumbnails.Count() > 1
-                        ? video.Thumbnails.ToList()[1]
-                        : video.Thumbnails.FirstOrDefault();
-
-                    url = thumbnail?.Urls?.FirstOrDefault();
+                    var list = thumbnail?.Elements?.ToList() ?? new List<Thumbnail>();
+                    url = list.Count() > 2 ? list[1]?.Url : list.FirstOrDefault()?.Url;
                 }
             }
 
