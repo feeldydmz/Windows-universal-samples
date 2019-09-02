@@ -79,8 +79,15 @@
                             <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="1" Style="{StaticResource Style_VideoBadgeImage}" />
-                        <TextBlock Grid.Column="3" Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
-                        <TextBlock Grid.Column="3" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        <Grid Grid.Column="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Name}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        </Grid>
                     </Grid>
                 </Border>
 
@@ -99,11 +106,14 @@
                         <Image Grid.Column="1" Style="{StaticResource Style_CaptionBadgeImage}" />
                         <Grid Grid.Column="3">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Kind}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" />
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Name}" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Name}" Margin="0,0,3,0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                 </Border>
@@ -123,8 +133,14 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <CheckBox IsChecked="{Binding Path=IsSelected}" />
-                                            <TextBlock Grid.Column="1" Text="{Binding Path=Label}" HorizontalAlignment="Left" />
-                                            <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" />
+                                            <Grid Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Path=Label}" HorizontalAlignment="Left" ToolTip="{Binding Path=Label}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" />
+                                            </Grid>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

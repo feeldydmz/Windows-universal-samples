@@ -12,10 +12,10 @@ namespace Megazone.Cloud.Media.Domain
         TAsset UpdateAsset<TAsset>(AssetRequest<TAsset> request);
         TAsset CreateAsset<TAsset>(AssetRequest<TAsset> request);
 
-        AssetListResponse<CaptionAsset> GetCaptions(AssetListRequest request);
-        CaptionAsset GetCaption(AssetRequest request);
-        CaptionAsset UpdateCaption(AssetRequest<CaptionAsset> request);
-        CaptionAsset CreateCaption(AssetRequest<CaptionAsset> request);
+        AssetListResponse<CaptionAsset> GetCaptionAssets(AssetListRequest request);
+        CaptionAsset GetCaptionAsset(AssetRequest request);
+        CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request);
+        CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request);
         VideoListResponse GetVideos(VideoListRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);

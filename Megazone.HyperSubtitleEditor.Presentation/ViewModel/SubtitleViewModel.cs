@@ -1318,7 +1318,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 게시에 필요한 정보.
             var video = message.Param.Video;
             var captionAsset = message.Param.Asset;
-            var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
+            var captionList = message.Param.Captions?.ToList() ?? new List<Caption>();
 
             WorkContext = new McmWorkContext(this, video, captionAsset);
 
@@ -1340,8 +1340,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var texts = await LoadCaptionTextListAsync();
 
             _subtitleListItemValidator.IsEnabled = false;
-
-            foreach (var caption in captions)
+            var index = 0;
+            foreach (var caption in captionList)
             {
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
 
@@ -1356,7 +1356,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         null,
                         caption)
                 {
-                    IsSelected = true,
+                    IsSelected = (index == captionList.Count - 1),
                     VideoId = video?.Id,
                     CaptionAssetId = captionAsset.Id
                 };
@@ -1378,7 +1378,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             async Task<Dictionary<string, string>> LoadCaptionTextListAsync()
             {
                 var dic = new Dictionary<string, string>();
-                foreach (var caption in captions)
+                foreach (var caption in captionList)
                 {
                     try
                     {

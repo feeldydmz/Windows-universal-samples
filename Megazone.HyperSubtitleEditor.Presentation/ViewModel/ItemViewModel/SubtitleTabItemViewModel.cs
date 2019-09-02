@@ -246,7 +246,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CheckDirty();
         }
 
-        //TODO : 여기가 문제인거 같아...
         public void AddRows(IList<SubtitleItem> subtitles)
         {
             _ignoreCollectionChanged = true;

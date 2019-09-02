@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -23,7 +23,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<TAsset>();
         }
 
-        public CaptionAsset CreateCaption(AssetRequest<CaptionAsset> request)
+        public CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
@@ -59,7 +59,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<AssetListResponse<TAsset>>();
         }
 
-        public CaptionAsset GetCaption(AssetRequest request)
+        public CaptionAsset GetCaptionAsset(AssetRequest request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
@@ -69,7 +69,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<CaptionAsset>();
         }
 
-        public AssetListResponse<CaptionAsset> GetCaptions(AssetListRequest request)
+        public AssetListResponse<CaptionAsset> GetCaptionAssets(AssetListRequest request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/captions", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
@@ -84,7 +84,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<AssetListResponse<CaptionAsset>>();
         }
 
-       public MeResponse GetMe(MeRequest request)
+        public MeResponse GetMe(MeRequest request)
         {
             // API : https://api.media.megazone.io/v1/me
 
@@ -104,7 +104,7 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {listRequest.AccessToken}")
                 .AddHeader("stageId", listRequest.StageId);
 
-            var response =  RestSharpExtension.CreateRestClient(listRequest.Endpoint).Execute(restRequest);
+            var response = RestSharpExtension.CreateRestClient(listRequest.Endpoint).Execute(restRequest);
 
             return response.StatusCode != HttpStatusCode.OK ? null : response.Convert<ProjectListResponse>();
         }
@@ -122,27 +122,22 @@ namespace Megazone.Cloud.Media.Repository
         public void UploadCaptionFile(UploadCaptionRequest request)
         {
             var sha256 = GetSha256(request.Text);
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(request.Text));
-
+            
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/upload", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddParameter("contentHash", sha256)
-                .AddFileBytes("file", UTF8Encoding.UTF8.GetBytes(request.Text), request.FileName);
+                .AddFileBytes("file", Encoding.UTF8.GetBytes(request.Text), request.FileName);
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
             if (response != null)
-            {
                 if (response.StatusCode != HttpStatusCode.OK)
-                {
                     throw new Exception();
-                }
-            }
 
             string GetSha256(string data)
             {
-                var fileBytes = System.Text.Encoding.UTF8.GetBytes(data);
-                var contentHashBytes = System.Security.Cryptography.HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
+                var fileBytes = Encoding.UTF8.GetBytes(data);
+                var contentHashBytes = HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
                 return ToHexString(contentHashBytes);
 
                 string ToHexString(byte[] bytes)
@@ -204,7 +199,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<TAsset>();
         }
 
-        public CaptionAsset UpdateCaption(AssetRequest<CaptionAsset> request)
+        public CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.PUT)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")

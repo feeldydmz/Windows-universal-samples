@@ -75,7 +75,8 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetCaptions(new AssetListRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var response = _cloudMediaRepository.GetCaptionAssets(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
+                    accessToken,
                     parameter.StageId, parameter.ProjectId, parameter.Pagination, parameter.SearchConditions));
 
                 return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
@@ -88,7 +89,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
                 return response;
             }, cancellationToken);
@@ -106,7 +107,8 @@ namespace Megazone.Cloud.Media.Service
 
                 var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", 0, 1, null, null);
 
-                var response = _cloudMediaRepository.CreateCaption(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.CreateCaptionAsset(new AssetRequest<CaptionAsset>(
+                    CLOUD_MEDIA_ENDPOINT,
                     accessToken, stageId, projectId, null, asset));
 
                 return response;
@@ -124,7 +126,7 @@ namespace Megazone.Cloud.Media.Service
                 var assetId = parameter.AssetId;
                 var captionList = parameter.Captions.ToList();
 
-                var asset = _cloudMediaRepository.GetCaption(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                     stageId, projectId, assetId));
 
                 if (asset == null)
@@ -157,7 +159,8 @@ namespace Megazone.Cloud.Media.Service
                 var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
                     asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
 
-                var response = _cloudMediaRepository.UpdateAsset(new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.UpdateCaptionAsset(new AssetRequest<CaptionAsset>(
+                    CLOUD_MEDIA_ENDPOINT,
                     accessToken, stageId, projectId, assetId, updateAsset));
                 return response;
             }, cancellationToken);
