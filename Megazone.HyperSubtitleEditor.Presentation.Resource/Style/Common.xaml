@@ -1268,6 +1268,76 @@
     </Style>
     <Style TargetType="{x:Type Slider}" BasedOn="{StaticResource Style_SliderDefault}" />
 
+    <Style x:Key="Style_Slider_ProjectSelect" TargetType="{x:Type Slider}">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="#788296" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Slider}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Track x:Name="PART_Track" Grid.Row="1">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Focusable="False">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border Background="Transparent">
+                                                    <Border Background="#788296" Height="1" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Focusable="False">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border Background="Transparent">
+                                                    <Border Background="#788296" Height="1" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Focusable="False" Height="16" OverridesDefaultStyle="True"
+                                           VerticalAlignment="Center" Width="46" Margin="-4,0">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Rectangle Width="{Binding}" Height="4" Fill="#788296"/>
+                                                <!--<ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True" />
+                                                    <Trigger Property="IsDragging" Value="True" />
+                                                </ControlTemplate.Triggers>-->
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--팝업에서 컨텐츠 영역을 감싸는 보더의 스타일-->
     <Style x:Key="Style_PopupContentAreaBorder" TargetType="{x:Type Border}">
         <Setter Property="Padding" Value="20" />
