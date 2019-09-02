@@ -9,10 +9,9 @@
              xmlns:vm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             xmlns:convert="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Width="534" Height="328"
+             Width="534" Height="408"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -26,9 +25,6 @@
                     ProjectName="Megazone.HyperSubtitleEditor.Presentation"
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -38,7 +34,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Background="#f2f4f7">
+        <!--Header : Stage/Project Info-->
+        <Grid Background="{StaticResource Brush_ListItemBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="29" />
                 <ColumnDefinition />
@@ -50,7 +47,7 @@
                 <TextBlock Text="{Binding Path=StageName}" VerticalAlignment="Center" Margin="8,0,0,0" />
             </StackPanel>
 
-            <Rectangle Grid.Column="1" Fill="#FFd8dce2" HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1"/>
+            <Rectangle Grid.Column="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1"/>
 
             <StackPanel Grid.Column="3" Orientation="Horizontal">
                 <TextBlock Text="Project :" VerticalAlignment="Center" FontWeight="Bold" />
@@ -67,7 +64,7 @@
                 </Grid.RowDefinitions>
 
                 <!--Video-->
-                <Border Height="39" Background="#FFf4f6f8" BorderThickness="1" BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" DataContext="{Binding Path=VideoItem}">
+                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20" />
@@ -77,66 +74,80 @@
                             <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="1" Style="{StaticResource Style_VideoBadgeImage}" />
-                        <TextBlock Grid.Column="3" Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" />
-                        <TextBlock Grid.Column="3" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        <Grid Grid.Column="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Name}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        </Grid>
                     </Grid>
                 </Border>
 
-                <!--Caption-->
+                <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+
+                <!--CaptionAsset Info-->
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="18" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="18" />
                         <ColumnDefinition />
+                        <ColumnDefinition Width="20" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="14"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="14"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="14"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
 
-                    <Image Style="{StaticResource Style_CaptionBadgeImage}" />
+                    <Image Grid.Column="1" Grid.Row="1" Style="{StaticResource Style_CaptionBadgeImage}" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=CaptionAssetItem.Kind}" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
-                    <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                        <TextBlock Text="{Binding Path=CaptionAssetItem.Name}" Margin="3,0"/>
-                        <TextBlock Text="{Binding Path=CaptionAssetItem.Id, StringFormat={}({0})}" />
-                    </StackPanel>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="{x:Static resources:Resource.CNT_ASSET_NAME}" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="{x:Static resources:Resource.CNT_KIND}" VerticalAlignment="Center" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{x:Static resources:Resource.CNT_ASSET_NAME}" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{x:Static resources:Resource.CNT_KIND}" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding Path=AssetName}" />
-                    <ComboBox Grid.Column="2" Grid.Row="1" Visibility="{Binding Path=CaptionCreateMode, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ComboBoxItem Content="Caption" />
-                        <ComboBoxItem Content="Subtitle" />
-                        <ComboBoxItem Content="Chapter" />
-                    </ComboBox>
-                    <ListBox Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Path=CaptionItems}" >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox IsChecked="{Binding Path=IsSelected}" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Path=Label}" />
-                                    <TextBlock Grid.Column="2" Text="{Binding Path=Language, StringFormat={}[{0}]}" Foreground="{StaticResource Brush_PointColor}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <TextBox Grid.Column="5" Grid.Row="1" Text="{Binding Path=AssetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox Grid.Column="5" Grid.Row="3" ItemsSource="{Binding Path=SubtitleKinds}" SelectedItem="{Binding Path=SelectedSubtitleKind}" />
+                    <Border Grid.Column="5" Grid.Row="5" BorderThickness="1" BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Path=CaptionItems}" Margin="20, 10">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
+                                        <Border Height="25">
+                                            <Grid VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="30" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox IsChecked="{Binding Path=IsSelected}" />
+                                                <Grid Grid.Column="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Label}" HorizontalAlignment="Left" ToolTip="{Binding Path=Label}" TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" Foreground="{StaticResource Brush_PointColor}" />
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
                 </Grid>
                 <Rectangle Grid.Row="0"  Grid.RowSpan="2" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" />
-                <TextBlock Grid.Row="2" Text="{x:Static resources:Resource.MSG_DEPLOY_CAPTION}"/>
+                <TextBlock Grid.Row="2" Text="{x:Static resources:Resource.MSG_DEPLOY_AND_CREATE_ASSET_GUIDE}" Margin="0,10,0,0"/>
             </Grid>
         </Border>
-
-        <Control Grid.Row="1" x:Name="LoadingProgressView" 
-                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
-                 Style="{StaticResource Style_IndeterminateControl}" />
 
         <!--하단 버튼 영역-->
         <Border Grid.Row="2" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">

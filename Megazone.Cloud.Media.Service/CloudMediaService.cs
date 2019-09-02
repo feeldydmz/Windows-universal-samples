@@ -76,8 +76,8 @@ namespace Megazone.Cloud.Media.Service
             {
                 var accessToken = parameter.Authorization.AccessToken;
                 var response = _cloudMediaRepository.GetCaptionAssets(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
-                    accessToken,
-                    parameter.StageId, parameter.ProjectId, parameter.Pagination, parameter.SearchConditions));
+                    accessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,
+                    parameter.SearchConditions));
 
                 return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
                     response.TotalCount, response.Assets);
@@ -91,7 +91,8 @@ namespace Megazone.Cloud.Media.Service
             {
                 var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
-                return response;
+
+                return (!response.MediaType?.ToUpper().Equals("TEXT") ?? false) ? null : response;
             }, cancellationToken);
         }
 

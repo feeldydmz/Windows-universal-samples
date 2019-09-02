@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
 
         <!--Header : Stage/Project Info-->
-        <Grid Background="#f2f4f7">
+        <Grid Background="{StaticResource Brush_ListItemBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="29" />
                 <ColumnDefinition />
@@ -45,7 +45,7 @@
                 <TextBlock Text="{Binding Path=StageName}" VerticalAlignment="Center" Margin="8,0,0,0" />
             </StackPanel>
 
-            <Rectangle Grid.Column="1" Fill="#FFd8dce2" HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1"/>
+            <Rectangle Grid.Column="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1"/>
 
             <StackPanel Grid.Column="3" Orientation="Horizontal">
                 <TextBlock Text="Project :" VerticalAlignment="Center" FontWeight="Bold" />

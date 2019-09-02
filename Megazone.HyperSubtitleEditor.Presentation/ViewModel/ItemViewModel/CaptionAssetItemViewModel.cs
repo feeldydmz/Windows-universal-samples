@@ -4,7 +4,6 @@ using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -18,6 +17,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly SignInViewModel _signInViewModel;
         private IEnumerable<CaptionElementItemViewModel> _elements;
         private string _kind;
+
+        private string _name;
 
         public CaptionAssetItemViewModel(CaptionAsset asset)
         {
@@ -41,7 +42,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public CaptionAsset Source { get; }
         public string Id { get; }
-        public string Name { get; }
+
+        public string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+
         public bool IsActive { get; }
         public string Type { get; }
         public string MediaType { get; }
@@ -69,12 +76,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public void SelectAll()
         {
             if (Elements != null)
-            {
                 foreach (var element in Elements)
-                {
                     element.IsSelected = true;
-                }
-            }
         }
     }
 }

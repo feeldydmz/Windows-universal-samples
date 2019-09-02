@@ -233,6 +233,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
+        public void ShowMcmDeployAndAssetCreateDialog()
+        {
+            var wnd = new ChildWindow
+            {
+                Owner = Application.Current.MainWindow,
+                Title = Resource.CNT_PUBLISH, // TODO: 다국어
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize,
+                Width = 600,
+                Height = 450,
+                Content = new McmDeployAndAssetCreateView()
+            };
+            wnd.ShowDialog();
+        }
         public void ShowMcmDeployDialog()
         {
             var wnd = new ChildWindow

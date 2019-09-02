@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Megazone.Api.Transcoder.Domain;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -17,24 +16,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class McmDeployViewModel : ViewModelBase
     {
-        private readonly IBrowser _browser;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
+
+        private string _assetName;
         private CaptionAssetItemViewModel _captionAssetItem;
-        private bool _captionCreateMode;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
         private ICommand _confirmCommand;
         private ICommand _loadCommand;
         private string _projectName;
+        private TrackKind _selectedSubtitleKind;
         private string _stageName;
+        private IEnumerable<TrackKind> _subtitleKinds;
         private VideoItemViewModel _videoItem;
 
-        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
-            IBrowser browser)
+        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
-            _browser = browser;
         }
 
         public Action CloseAction { get; set; }
@@ -61,6 +60,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _projectName, value);
         }
 
+        public string AssetName
+        {
+            get => _assetName;
+            set => Set(ref _assetName, value);
+        }
+
+        public IEnumerable<TrackKind> SubtitleKinds
+        {
+            get => _subtitleKinds;
+            set => Set(ref _subtitleKinds, value);
+        }
+
+        public TrackKind SelectedSubtitleKind
+        {
+            get => _selectedSubtitleKind;
+            set => Set(ref _selectedSubtitleKind, value);
+        }
+
         public VideoItemViewModel VideoItem
         {
             get => _videoItem;
@@ -79,29 +96,47 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _captionItems, value);
         }
 
-        public bool CaptionCreateMode
-        {
-            get => _captionCreateMode;
-            set => Set(ref _captionCreateMode, value);
-        }
-
         private void Load()
         {
             try
             {
-                CaptionCreateMode = _subtitleViewModel.WorkContext.OpenedCaptionAsset == null;
                 StageName = _signInViewModel.SelectedStage.Name;
                 ProjectName = _signInViewModel.SelectedProject.Name;
                 VideoItem = new VideoItemViewModel(_subtitleViewModel.WorkContext.OpenedVideo);
-                CaptionAssetItem = _subtitleViewModel.WorkContext.OpenedCaptionAsset != null
-                    ? new CaptionAssetItemViewModel(_subtitleViewModel.WorkContext.OpenedCaptionAsset)
-                    : null;
+                if (_subtitleViewModel.WorkContext.OpenedCaptionAsset != null)
+                    CaptionAssetItem = new CaptionAssetItemViewModel(_subtitleViewModel.WorkContext.OpenedCaptionAsset);
                 CaptionItems = MakeList();
+
+                // 에셋 생성모드
+                if (_subtitleViewModel.WorkContext.OpenedCaptionAsset == null)
+                {
+                    SubtitleKinds = new List<TrackKind>
+                    {
+                        TrackKind.Subtitle,
+                        TrackKind.Caption,
+                        TrackKind.Chapter
+                    };
+                    SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
+            }
+
+            TrackKind Convert(string kind)
+            {
+                switch (kind?.ToUpper())
+                {
+                    case "CAPTION": return TrackKind.Caption;
+                    case "CHAPTER": return TrackKind.Chapter;
+                    case "DESCRIPTION": return TrackKind.Description;
+                    case "METADATA": return TrackKind.Metadata;
+                    case "SUBTITLE": return TrackKind.Subtitle;
+                }
+
+                return TrackKind.Subtitle;
             }
 
             IEnumerable<CaptionElementItemViewModel> MakeList()
@@ -117,6 +152,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool CanConfirm()
         {
+            if (_subtitleViewModel.WorkContext.OpenedCaptionAsset == null)
+                return !string.IsNullOrEmpty(AssetName) && (CaptionItems?.Where(x => x.IsSelected).Any() ?? false);
             return CaptionItems?.Where(x => x.IsSelected).Any() ?? false;
         }
 

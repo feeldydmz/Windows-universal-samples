@@ -19,7 +19,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
         }
 
-
         public bool CanExecute(object parameter)
         {
             return (_subtitleViewModel.WorkContext?.CanDeploy() ?? false) && _subtitleViewModel.HasTab;
@@ -42,7 +41,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 return;
             }
 
-            _browser.Main.ShowMcmDeployDialog();
+            if (_subtitleViewModel.WorkContext.OpenedCaptionAsset != null)
+            {
+                _browser.Main.ShowMcmDeployDialog();
+            }
+            else
+            {
+                _browser.Main.ShowMcmDeployAndAssetCreateDialog();
+            }
         }
 
         public event EventHandler CanExecuteChanged

@@ -874,10 +874,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return job?.Payload?.UserMetadata?.Name;
         }
 
-        private async void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
+        private void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
         {
             // 현재 정보
-            await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset, message.Param.Captions.ToList());
+            //await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset, message.Param.Captions.ToList());
             _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
                 message.Param.Captions, GetVideoUrl());
             return;

@@ -1393,6 +1393,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   에셋 이름/종류 기입 후 게시할 자막을 선택해주세요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_DEPLOY_AND_CREATE_ASSET_GUIDE {
+            get {
+                return ResourceManager.GetString("MSG_DEPLOY_AND_CREATE_ASSET_GUIDE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Do you want to publish the caption?
         ///(If it is published, it will not be possible to restore it to its previous state.)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>

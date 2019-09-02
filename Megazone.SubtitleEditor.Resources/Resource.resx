@@ -656,4 +656,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="CNT_PUBLISH_CONFIRM" xml:space="preserve">
     <value>Publish completed.</value>
   </data>
+  <data name="MSG_DEPLOY_AND_CREATE_ASSET_GUIDE" xml:space="preserve">
+    <value>에셋 이름/종류 기입 후 게시할 자막을 선택해주세요.</value>
+  </data>
 </root>
