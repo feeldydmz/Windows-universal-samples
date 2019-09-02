@@ -35,7 +35,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border BorderBrush="#FFc4cbd5" BorderThickness="1" Padding="20">
+                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1" Padding="20">
 
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>

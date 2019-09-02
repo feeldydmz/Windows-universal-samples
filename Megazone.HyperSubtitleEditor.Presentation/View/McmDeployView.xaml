@@ -5,11 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
-             xmlns:vm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             xmlns:convert="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Width="534" Height="328"
@@ -26,9 +23,6 @@
                     ProjectName="Megazone.HyperSubtitleEditor.Presentation"
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -91,7 +85,7 @@
                     </Grid>
                 </Border>
 
-                <Rectangle Grid.Row="0" Stroke="#FFc4cbd5" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
 
                 <!--CaptionAsset Info-->
                 <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -118,7 +112,7 @@
                     </Grid>
                 </Border>
 
-                <Rectangle Grid.Row="1" Stroke="#FFc4cbd5" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                <Rectangle Grid.Row="1" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
 
                 <!--Caption Info-->
                 <Border Grid.Row="2">
@@ -139,7 +133,7 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Path=Label}" HorizontalAlignment="Left" ToolTip="{Binding Path=Label}" TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" Foreground="{StaticResource Brush_PointColor}" />
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -149,7 +143,7 @@
                     </ScrollViewer>
                 </Border>
 
-                <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="#FFc4cbd5" StrokeThickness="1" />
+                <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" />
                 <TextBlock Grid.Row="3" Text="{x:Static resources:Resource.MSG_DEPLOY_CAPTION}" FontWeight="Bold" Margin="0,10,0,0"/>
             </Grid>
         </Border>

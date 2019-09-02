@@ -356,7 +356,7 @@
 
                                                                 <CheckBox Grid.Column="0" IsChecked="{Binding Path=IsSelected}" Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}" CommandParameter="{Binding}" />
                                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3" Text="{Binding Path=Language, StringFormat={}[{0}]}" />
+                                                                <TextBlock Grid.Column="3" Text="{Binding Path=Language, StringFormat={}[{0}]}" Foreground="{StaticResource Brush_PointColor}"/>
                                                                 <!--<TextBlock Grid.Column="3">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}[{0}-{1}]">

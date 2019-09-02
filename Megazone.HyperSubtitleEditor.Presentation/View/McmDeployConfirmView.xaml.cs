@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -21,8 +23,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             window?.Close();
         }
 
-        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        private void OnNavigate(object sender, RequestNavigateEventArgs e)
         {
+            Process.Start(e.Uri.AbsoluteUri);
+            e.Handled = true;
         }
     }
 }

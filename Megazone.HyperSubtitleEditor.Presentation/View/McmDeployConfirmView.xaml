@@ -34,13 +34,15 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
                     <RowDefinition />
+                    <RowDefinition Height="14"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="자막 게시가 완료되었습니다." />
 
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -71,7 +73,7 @@
                         </Grid>
                     </Border>
 
-                    <Rectangle Grid.Row="0" Stroke="#FFc4cbd5" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                    <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
 
                     <!--CaptionAsset Info-->
                     <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -98,7 +100,7 @@
                         </Grid>
                     </Border>
 
-                    <Rectangle Grid.Row="1" Stroke="#FFc4cbd5" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                    <Rectangle Grid.Row="1" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
 
                     <!--Caption Info-->
                     <Border Grid.Row="2">
@@ -113,7 +115,7 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Path=Label}" HorizontalAlignment="Left" ToolTip="{Binding Path=Label}" TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" Foreground="{StaticResource Brush_PointColor}" />
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -122,17 +124,30 @@
                         </ScrollViewer>
                     </Border>
 
-                    <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="#FFc4cbd5" StrokeThickness="1" />
+                    <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" />
                 </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Text="URL:" />
-                    <TextBlock>
-                        <Hyperlink Click="Hyperlink_OnClick">
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="URL:" Margin="0,0,6,0"/>
+                    <!--<TextBlock Grid.Column="1" TextWrapping="Wrap">
+                        <Hyperlink NavigateUri="http://www.daum.net">
                             <Run Text="{Binding Path=Url}" />
                         </Hyperlink>
-                    </TextBlock>
-                </StackPanel>
+                    </TextBlock>-->
+                    <RichTextBox Grid.Column="1" Style="{StaticResource Style_RichTextBoxDefault}" IsReadOnly="True" IsDocumentEnabled="True">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Hyperlink NavigateUri="{Binding Path=Url}" RequestNavigate="OnNavigate">
+                                    <Run Text="{Binding Path=Url}" />
+                                </Hyperlink>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                </Grid>
             </Grid>
             
         </Border>

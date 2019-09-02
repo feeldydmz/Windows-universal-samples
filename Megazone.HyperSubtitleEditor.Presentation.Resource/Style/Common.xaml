@@ -77,6 +77,9 @@
     <SolidColorBrush x:Key="Brush_Badge_Video_Color" Color="#405fff" />
     <SolidColorBrush x:Key="Brush_Badge_Caption_Color" Color="#5a4a3f" />
 
+    <!--구분선/Border 외곽선 컬러-->
+    <SolidColorBrush x:Key="Brush_Border_Outer_Line_Color" Color="#FFc4cbd5" />
+
     <GridLength x:Key="GridLength_HeaderAreaHeight">40</GridLength>
 
     <Thickness x:Key="Thickness_TabAreaTopPadding">0,4,0,0</Thickness>

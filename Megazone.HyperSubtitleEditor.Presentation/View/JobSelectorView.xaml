@@ -97,7 +97,7 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border BorderBrush="#FFc4cbd5" BorderThickness="1">
+                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -159,7 +159,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <Border Grid.Row="1" Height="46" BorderThickness="0,1,0,0" BorderBrush="#FFc4cbd5">
+                        <Border Grid.Row="1" Height="46" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}">
                             <Grid Margin="20,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
