@@ -18,10 +18,11 @@
         </Border>
         <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" 
                 Visibility="{Binding Path=IsProjectViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Margin="0,30,0,0">
+                >
             <view:ProjectSelectView />
         </Border>
-        <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" Visibility="{Binding Path=IsSignIn, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+        <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" 
+                Visibility="{Binding Path=IsSignIn, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
             <view:SignInView />
         </Border>
     </Grid>

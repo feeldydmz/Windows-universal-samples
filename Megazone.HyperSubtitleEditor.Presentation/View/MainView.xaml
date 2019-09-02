@@ -20,7 +20,10 @@
                 <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <mz:StringNullOrEmptyToParameterValueConverter x:Key="StringNullOrEmptyToParameterValueConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
         </ResourceDictionary>
+
+        
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddNewRowCommand}"
