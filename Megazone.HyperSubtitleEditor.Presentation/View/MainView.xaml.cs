@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
@@ -243,17 +247,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             };
             wnd.ShowDialog();
         }
-        public void ShowMcmDeployConfirmDialog()
+        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
         {
+            var captionItems = captions?.Select(caption => new CaptionElementItemViewModel(caption)).ToList();
+            var view = new McmDeployConfirmView
+            {
+                DataContext = new McmDeployConfirmViewModel()
+                {
+                    VideoItem = new VideoItemViewModel(video),
+                    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset),
+                    CaptionItems = captionItems,
+                    Url = linkUrl
+                }
+            };
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_PUBLISH, // TODO: 다국어
+                Title = Resource.CNT_PUBLISH_CONFIRM, // TODO: 다국어
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
-                Width = 600,
-                Height = 450,
-                Content = new McmDeployConfirmView()
+                Width = 514,
+                Height = 354,
+                Content = view
             };
             wnd.ShowDialog();
         }

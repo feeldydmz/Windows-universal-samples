@@ -653,4 +653,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL_NUMBER" xml:space="preserve">
     <value>1644-2243</value>
   </data>
+  <data name="CNT_PUBLISH_CONFIRM" xml:space="preserve">
+    <value>Publish completed.</value>
+  </data>
 </root>

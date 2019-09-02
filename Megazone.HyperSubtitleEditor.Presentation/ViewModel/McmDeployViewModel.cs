@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     [Inject(Scope = LifetimeScope.Transient)]
-    internal class McmDeployViewModel: ViewModelBase
+    internal class McmDeployViewModel : ViewModelBase
     {
+        private readonly IBrowser _browser;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
-        private readonly IBrowser _browser;
         private CaptionAssetItemViewModel _captionAssetItem;
         private bool _captionCreateMode;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
@@ -33,7 +29,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _stageName;
         private VideoItemViewModel _videoItem;
 
-        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel, IBrowser browser)
+        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
+            IBrowser browser)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
@@ -99,14 +96,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionAssetItem = _subtitleViewModel.WorkContext.OpenedCaptionAsset != null
                     ? new CaptionAssetItemViewModel(_subtitleViewModel.WorkContext.OpenedCaptionAsset)
                     : null;
-                CaptionItems = _subtitleViewModel.WorkContext.Captions.Select(caption => new CaptionElementItemViewModel(caption)).ToList();
-                foreach (var item in CaptionItems)
-                    item.IsSelected = true;
+                CaptionItems = MakeList();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
+            }
+
+            IEnumerable<CaptionElementItemViewModel> MakeList()
+            {
+                var captionList = _subtitleViewModel.Tabs.Select(tab => new CaptionElementItemViewModel(tab.Caption))
+                    .ToList();
+                foreach (var item in captionList)
+                    item.IsSelected = true;
+
+                return captionList;
             }
         }
 
@@ -119,22 +124,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                //var authorization = _signInViewModel.GetAuthorization();
-                //var stageId = _signInViewModel.SelectedStage.Id;
-                //var projectId = _signInViewModel.SelectedProject.ProjectId;
-                var list = CaptionItems.Where(x => x.IsSelected).ToList();
-
-                // upload caption files.
-                //foreach (var caption in list)
-                //{
-                //    var uploadData = caption.Text;
-                //    var fileName = caption.GetFileName();
-                //    await _cloudMediaService.UploadCaptionFileAsync(new UploadCaptionFileParameter(authorization,
-                //        stageId, projectId, uploadData, fileName, _uploadInputPath, caption.Url), CancellationToken.None);
-                //}
-
-                // update.
                 CloseAction?.Invoke();
+
+                var video = VideoItem?.Source;
+                var captionAsset = CaptionAssetItem?.Source;
+                var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
+
+                MessageCenter.Instance.Send(new Subtitle.McmDeployRequestedMessage(this,
+                    new McmDeployRequestedMessageParameter(video, captionAsset, selectedCaptionList)));
             }
             catch (Exception e)
             {

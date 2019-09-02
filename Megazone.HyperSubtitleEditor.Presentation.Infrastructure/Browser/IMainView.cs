@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
@@ -23,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
         void ShowApplicationInfoWindow();
         void ShowVideoListDialog();
         void ShowMcmDeployDialog();
-        void ShowMcmDeployConfirmDialog();
+        void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl);
         void SetWindowTitle(string title);
     }
 }

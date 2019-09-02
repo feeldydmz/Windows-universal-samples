@@ -11,14 +11,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Serializable
             IList<SubtitleTabItem> tabItems = new List<SubtitleTabItem>();
             foreach (var tab in tabItemViewModels)
             {
-                var tabItem = new SubtitleTabItem
+                var tabItem = new SubtitleTabItem(tab.Caption)
                 {
                     Name = tab.Name,
                     LanguageCode = tab.LanguageCode,
                     Kind = tab.Kind,
                     IsSelected = tab.IsSelected,
                     Track = tab.Track,
-                    FilePath = tab.FilePath
+                    FilePath = tab.FilePath,
+                    VideoId = tab.VideoId,
+                    CaptionAssetId = tab.CaptionAssetId
                 };
 
                 IList<SubtitleItem> rows = new List<SubtitleItem>();

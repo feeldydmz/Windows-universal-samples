@@ -118,6 +118,10 @@
       <Project>{BBC0BB54-4768-43ED-AFA3-F90C4D5F943B}</Project>
       <Name>Megazone.Api.Transcoder.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
+      <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
+      <Name>Megazone.Cloud.Media.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Debug\Megazone.Core.Debug.csproj">
       <Project>{3951711f-e61d-4d2c-b2ce-289971431767}</Project>
       <Name>Megazone.Core.Debug</Name>

@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
 using Megazone.Core.VideoTrack.Model;
 using Megazone.Core.Windows.Mvvm;
@@ -49,7 +50,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
             Track track = null,
-            string captionId = null)
+            Caption caption = null)
         {
             _originalData = new OriginalData(name, kind, languageCode);
 
@@ -65,7 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             rows.CollectionChanged += Items_CollectionChanged;
             _rows = rows;
             Track = track;
-            CaptionId = captionId;
+            Caption = caption;
             _isAddedFromLocal = track == null;
         }
 
@@ -98,8 +99,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public bool IsDeployedOnce { get; private set; }
 
         public Track Track { get; }
-        public string CaptionId { get; set; }
-
+        public Caption Caption { get; }
+        public string VideoId { get; set; }
+        public string CaptionAssetId { get; set; }
         public string FilePath { get; set; }
 
         public string Id { get; } = Guid.NewGuid()
@@ -161,6 +163,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isDirty;
             set => Set(ref _isDirty, value);
         }
+        
 
         public void SetAsDeployed()
         {
@@ -243,6 +246,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CheckDirty();
         }
 
+        //TODO : 여기가 문제인거 같아...
         public void AddRows(IList<SubtitleItem> subtitles)
         {
             _ignoreCollectionChanged = true;

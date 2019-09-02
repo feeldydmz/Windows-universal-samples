@@ -79,6 +79,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
         {
             public McmDeployRequestedMessage(object sender, McmDeployRequestedMessageParameter param) : base(sender)
             {
+                Param = param;
             }
             public McmDeployRequestedMessageParameter Param { get; }
         }

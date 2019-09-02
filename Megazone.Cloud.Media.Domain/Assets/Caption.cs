@@ -1,5 +1,8 @@
-﻿namespace Megazone.Cloud.Media.Domain.Assets
+﻿using System;
+
+namespace Megazone.Cloud.Media.Domain.Assets
 {
+    [Serializable]
     public class Caption : IAssetElement
     {
         public Caption(string id, bool isDraft, bool isPreferred, string language, string country, string kind,

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Cloud.Aws.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
@@ -33,7 +34,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
-using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
@@ -390,8 +390,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 lastTab.IsSelected = true;
             else
                 SelectedTab = null;
-
-            WorkContext.RemoveCaption(WorkContext.Captions.SingleOrDefault(caption=>caption.Label.Equals(tab.Name)));
         }
 
         private void SyncMediaPosition()
@@ -611,10 +609,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     tab.Kind,
                     OnDisplayTextChanged,
                     tab.LanguageCode,
-                    tab.Track)
+                    tab.Track,
+                    tab.Caption)
                 {
                     IsSelected = tab.IsSelected,
-                    FilePath = tab.FilePath
+                    FilePath = tab.FilePath,
+                    VideoId = tab.VideoId,
+                    CaptionAssetId = tab.CaptionAssetId
                 };
 
                 if (tab.Rows != null)
@@ -859,6 +860,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
         {
+            // 현재 정보
+            //await WorkContext.DeployAsync(message.Param.Captions.ToList());
+            _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.Asset, message.Param.Captions, GetVideoUrl());
+            return;
+            
+            string GetVideoUrl()
+            {
+#if STAGE
+                var hostUrl = "https://console.media.stg.continuum.co.kr"; // stage
+#elif DEBUG
+                var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop
+#else
+                var hostUrl = "https://console.media.megazone.io";  // Production
+#endif
+                return $"{hostUrl}/contents/videos/{message.Param.Video.Id}";
+            }
         }
 
         private void OnDeployRequested(Subtitle.DeployRequestedMessage message)
@@ -1118,7 +1135,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                     track.Kind,
                                     OnDisplayTextChanged,
                                     track.Language,
-                                    track);
+                                    track,
+                                    caption:null);
                                 newTab.AddDatasheet(subtitles.ToList());
                                 Tabs.Add(newTab);
                             });
@@ -1263,7 +1281,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MessageBoxButton.OK));
         }
 
-        private bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
+        internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
         {
             //var encoding = SelectedEncoding?.GetEncoding() ?? Encoding.UTF8;
             var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
@@ -1282,65 +1300,81 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // 게시에 필요한 정보.
             var video = message.Param.Video;
-            var asset = message.Param.Asset;
-            var captions =
-                message.Param.Captions?.Select(caption => new CaptionContext(caption)).ToList() ??
-                new List<CaptionContext>();
-            WorkContext = new McmWorkContext(video, asset, captions);
+            var captionAsset = message.Param.Asset;
+            var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
 
-            _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
+            WorkContext = new McmWorkContext(this, video, captionAsset);
+
+            if (!string.IsNullOrEmpty(video?.Name))
+                _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
 
             if (!message.Param.Captions?.Any() ?? true)
                 return;
 
-            var paramList = new List<FileOpenedMessageParameter>();
             _browser.Main.LoadingManager.Show();
 
-            await Task.Factory.StartNew(async () =>
+            if (MediaPlayer.MediaSource != null)
+                MediaPlayer.RemoveMediaItem();
+
+            // video영상을 가져온다.
+            if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
+                MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
+
+            var texts = await LoadCaptionTextListAsync();
+
+            _subtitleListItemValidator.IsEnabled = false;
+
+            foreach (var caption in captions)
             {
-                try
+                var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
+
+                var newTab = new SubtitleTabItemViewModel(caption.Label,
+                        OnRowCollectionChanged,
+                        OnValidateRequested,
+                        OnTabSelected,
+                        OnItemSelected,
+                        WorkContext.CaptionKind,
+                        OnDisplayTextChanged,
+                        caption.Language,
+                        null,
+                        caption)
                 {
-                    // video영상을 가져온다.
-                    if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
-                        MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
+                    IsSelected = true,
+                    VideoId = video?.Id,
+                    CaptionAssetId = captionAsset.Id
+                };
 
-                    // 선택된 caption 파일이 있다면, 로드한다.
-                    foreach (var caption in WorkContext.Captions)
-                        try
-                        {
-                            caption.Text =
-                                await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
-                            paramList.Add(new FileOpenedMessageParameter
-                            {
-                                FilePath = "", // local file path.
-                                Kind = WorkContext.CaptionKind,
-                                Label = caption.Label,
-                                LanguageCode = caption.Language,
-                                Text = caption.Text ?? string.Empty,
-                                CaptionId = caption.Id
-                            });
-                        }
-                        catch (TaskCanceledException)
-                        {
-                            break;
-                        }
-                        catch (WebException e)
-                        {
-                            Console.WriteLine(e);
-                        }
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var rows = _subtitleService.Load(text, TrackFormat.WebVtt)?.ToList();
+                    if (rows != null)
+                        newTab.AddRows(rows);
+                }
+                Tabs.Add(newTab);
+            }
 
-                    this.InvokeOnUi(() =>
+            _browser.Main.LoadingManager.Hide();
+            _subtitleListItemValidator.IsEnabled = true;
+            _subtitleListItemValidator.Validate(SelectedTab?.Rows);
+            CommandManager.InvalidateRequerySuggested();
+
+            async Task<Dictionary<string, string>> LoadCaptionTextListAsync()
+            {
+                var dic = new Dictionary<string, string>();
+                foreach (var caption in captions)
+                {
+                    try
                     {
-                        foreach (var param in paramList)
-                            MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, param));
-                        _browser.Main.LoadingManager.Hide();
-                    });
+                        var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
+                        dic.Add(caption.Id, text);
+                    }
+                    catch (WebException e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            });
+                return dic;
+            }
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)
@@ -1363,7 +1397,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 param.LanguageCode)
             {
                 IsSelected = true,
-                FilePath = param.FilePath
+                FilePath = param.FilePath,
+                VideoId = WorkContext?.OpenedVideo?.Id,
+                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
             };
             if (subtitles != null)
                 newTab.AddRows(subtitles.ToList());
@@ -1429,7 +1465,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             OnItemSelected,
                             subtitle.Kind,
                             OnDisplayTextChanged,
-                            subtitle.LanguageCode);
+                            subtitle.LanguageCode)
+                        {
+                            VideoId = WorkContext?.OpenedVideo?.Id,
+                            CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
+                        };
                         newTab.AddDatasheet(subtitle.Datasets);
                         if (firstTab == null)
                             firstTab = newTab;
@@ -1477,7 +1517,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnDisplayTextChanged,
                 param.LanguageCode)
             {
-                IsSelected = true
+                IsSelected = true,
+                VideoId = WorkContext?.OpenedVideo?.Id,
+                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
             };
             if (subtitles.Any())
                 newTab.AddRows(subtitles);

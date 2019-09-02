@@ -1,5 +1,5 @@
-﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
+﻿using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -12,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isPreferred;
         private bool _isSelected;
 
-        public CaptionElementItemViewModel(CaptionContext caption)
+        public CaptionElementItemViewModel(Caption caption)
         {
             Source = caption;
             Country = caption.Country;
@@ -22,18 +22,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Kind = caption.Kind;
             Label = caption.Label;
             Language = caption.Language;
-            Url = caption.Url;
-            Text = caption.Text;
+            FileUrl = caption.Url;
         }
 
-        public CaptionContext Source { get; }
+        public Caption Source { get; }
 
         public string Id { get; }
         public string Label { get; }
         public string Kind { get; }
         public string Country { get; }
         public string Language { get; }
-        public string Url { get; }
+        public string FileUrl { get; }
 
         public bool IsDraft
         {
@@ -52,7 +51,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isSelected;
             set => Set(ref _isSelected, value);
         }
-
-        public string Text { get; set; }
     }
 }

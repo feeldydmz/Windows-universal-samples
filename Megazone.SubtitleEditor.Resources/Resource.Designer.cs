@@ -1024,6 +1024,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Publish completed.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PUBLISH_CONFIRM {
+            get {
+                return ResourceManager.GetString("CNT_PUBLISH_CONFIRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Refresh과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_REFRESH {

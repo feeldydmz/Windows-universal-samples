@@ -10,8 +10,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     internal class VideoItemViewModel : ViewModelBase
     {
         private IList<CaptionAssetItemViewModel> _captionItems;
+
+        private bool _hasSelectedCaption;
         private string _primaryImageUrl;
         private CaptionAssetItemViewModel _selectedCaptionAsset;
+
+        private int _selectedCaptionCount;
 
         private int _totalCaptionCount;
 
@@ -57,14 +61,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _totalCaptionCount, value);
         }
 
-        private int _selectedCaptionCount;
         public int SelectedCaptionCount
         {
             get => _selectedCaptionCount;
             set => Set(ref _selectedCaptionCount, value);
         }
 
-        private bool _hasSelectedCaption;
         public bool HasSelectedCaption
         {
             get => _hasSelectedCaption;
@@ -86,11 +88,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             var url = video.ImageUrl;
             if (string.IsNullOrEmpty(url))
             {
-                if (video.Posters?.Any() ?? false)
-                    url = video.Posters.First().Url;
+                url = video.Posters.FirstOrDefault()?.Url;
 
-                if (video.Thumbnails?.Any() ?? false)
-                    url = video.Thumbnails.First().Elements?.FirstOrDefault()?.Url;
+                if (string.IsNullOrEmpty(url) && (video.Thumbnails?.Any() ?? false))
+                {
+                    var thumbnail = video.Thumbnails.Count() > 1
+                        ? video.Thumbnails.ToList()[1]
+                        : video.Thumbnails.FirstOrDefault();
+
+                    url = thumbnail?.Urls?.FirstOrDefault();
+                }
             }
 
             return string.IsNullOrEmpty(url) ? null : url;
@@ -113,7 +120,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public void Update()
         {
-            SelectedCaptionCount = this.SelectedCaptionAsset?.Elements.Count(element => element.IsSelected) ?? 0;
+            SelectedCaptionCount = SelectedCaptionAsset?.Elements.Count(element => element.IsSelected) ?? 0;
             HasSelectedCaption = SelectedCaptionCount > 0;
         }
     }

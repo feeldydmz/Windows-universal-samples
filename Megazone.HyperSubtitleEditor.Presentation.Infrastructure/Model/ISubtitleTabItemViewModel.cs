@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
 {
@@ -16,7 +17,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         bool IsDeployedOnce { get; }
 
         Track Track { get; }
-
+        Caption Caption { get; }
+        string VideoId { get; }
+        string CaptionAssetId { get; }
         string FilePath { get; set; }
 
         void SetAsDeployed();

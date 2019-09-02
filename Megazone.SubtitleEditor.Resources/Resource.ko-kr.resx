@@ -660,4 +660,7 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   <data name="MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL_NUMBER" xml:space="preserve">
     <value>1644-2243</value>
   </data>
+  <data name="CNT_PUBLISH_CONFIRM" xml:space="preserve">
+    <value>게시완료</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
@@ -17,7 +18,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
@@ -61,15 +61,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
         private KeywordType _selectedKeywordType;
+        private int _selectedPageNo;
 
         private ICommand _selectedPageNoChangedCommand;
-        private int _selectedPageNo;
         private VideoItemViewModel _selectedVideoItem;
 
         private int _totalCount;
         private IList<VideoItemViewModel> _videoItems;
 
-        public VideoListViewModel(IBrowser browser, ICloudMediaService cloudMediaService, SignInViewModel signInViewModel)
+        public VideoListViewModel(IBrowser browser, ICloudMediaService cloudMediaService,
+            SignInViewModel signInViewModel)
         {
             _browser = browser;
             _cloudMediaService = cloudMediaService;
@@ -368,6 +369,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     TotalCount = 0;
                     VideoItems?.Clear();
                 }
+
                 SelectedVideoItem = null;
 
                 var authorization = _signInViewModel.GetAuthorization();
@@ -393,7 +395,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private Dictionary<string, string> MakeSearchConditions(string keyword, TimeSpan startDuration, TimeSpan endDuration)
+        private Dictionary<string, string> MakeSearchConditions(string keyword, TimeSpan startDuration,
+            TimeSpan endDuration)
         {
             var conditions = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(keyword))
@@ -471,21 +474,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (subtitleVm.Tabs?.Any() ?? false)
             {
                 if (subtitleVm.Tabs.Any(tab => tab.IsDirty))
-                {
                     // [resource]
                     if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
-                            "편집 내용이 있습니다. 열려진 탭을 모두 닫고, 선택된 자막으로 오픈됩니다.\n계속 진행하시겠습니까?", MessageBoxButton.OKCancel)) != MessageBoxResult.OK)
-                    {
+                            "편집 내용이 있습니다. 열려진 탭을 모두 닫고, 선택된 자막으로 오픈됩니다.\n계속 진행하시겠습니까?", MessageBoxButton.OKCancel)) !=
+                        MessageBoxResult.OK)
                         return;
-                    }
-                }
 
                 var removeTabs = subtitleVm.Tabs.ToList();
                 foreach (var tab in removeTabs)
-                {
                     MessageCenter.Instance.Send(
                         new Subtitle.DeleteTabMessage(this, tab as SubtitleTabItemViewModel));
-                }
             }
 
             // 선택된 video 정보를 메인 
@@ -493,7 +491,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
             var selectedCaptionList =
                 SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
-                    .Select(itemVm => itemVm.Source).ToList() ?? new List<CaptionContext>();
+                    .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new Subtitle.McmCaptionAssetOpenedMessage(this,
                 new McmCaptionAssetOpenedMessageParameter(video, asset, selectedCaptionList)));

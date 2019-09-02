@@ -38,7 +38,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 var subtitleTabItems = SubtitleTabItemParser.Convert(_subtitleViewModel.Tabs);
 
                 var subtitleGroup = new SubtitleGroup(AppContext.Config.ProfileId, AppContext.Config.PipelineId,
-                    _mainViewModel.JobId, AppContext.Config.Region, subtitleTabItems);
+                    _mainViewModel.JobId, AppContext.Config.Region, subtitleTabItems,
+                    _subtitleViewModel.WorkContext.OpenedVideo?.Id,
+                    _subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id);
 
                 var now = DateTime.Now.ToString("yyyyMMddHHmmss");
 

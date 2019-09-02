@@ -41,7 +41,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Load()
         {
-            CanSelectSubtitleKind = !(_subtitleViewModel.WorkContext.Captions?.Any() ?? false);
+            CanSelectSubtitleKind = !_subtitleViewModel.Tabs.Any();
             SelectedSubtitleKind = _subtitleViewModel.SelectedTab?.Kind ?? Api.Transcoder.Domain.TrackKind.Subtitle;
         }
 
