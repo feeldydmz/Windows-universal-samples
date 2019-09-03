@@ -32,7 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             try
             {
                 var savePath =
-                    _fileManager.OpenSaveFileDialog(this.MyDocuments() + "\\HyperSubtitleEditor_Caption_Format.xlsx",
+                    _fileManager.OpenSaveFileDialog($@"{this.MyDocuments()}\HyperSubtitleEditor_Caption_Format.xlsx",
                         "Excel files (*.xlsx)|*.xlsx");
 
                 var assembly = Assembly.GetExecutingAssembly();

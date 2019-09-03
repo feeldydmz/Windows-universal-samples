@@ -27,46 +27,46 @@
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddNewRowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=R, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=R, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource GoToSubtitleNumberCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=G, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=G, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource PlayOrPauseVideoCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=P, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=P, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AdjustTimeCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Contorl=True, Shift=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Control=True, Shift=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AutoAdjustEndtimesCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=E, Contorl=True, Shift=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=E, Control=True, Shift=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowBeforeSelectedRowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Contorl=True, Shift=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Control=True, Shift=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowAfterSelectedRowCommand}"
                                      KeyGesture="{cui:KeyGestureMarkup Key=Insert, Alt=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource CutRowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=X, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=X, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource CopyRowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=C, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=C, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource PasteRowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=V, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=V, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource SelectAllRowsCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=A, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource ExportSelectedTabAsVttCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource ExportAllTabsAsVttCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Contorl=True, Shift=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=S, Control=True, Shift=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddTabCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=N, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=N, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource DeleteRowsCommand}"
                                      KeyGesture="{cui:KeyGestureMarkup Key=Delete}" />
 
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource OpenFindWindowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=F, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F, Control=True}" />
 
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource OpenFindAndReplaceWindowCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=H, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=H, Control=True}" />
 
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource SyncStartTimeToCurrentMediaPositionCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=F1, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F1, Control=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource SyncEndTimeToCurrentMediaPositionCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=F2, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=F2, Control=True}" />
 
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource FindTextCommand}"
                                      KeyGesture="{cui:KeyGestureMarkup Key=F3}" />
@@ -76,17 +76,17 @@
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource PlayForwardByHalfSecondCommand}"
                                      KeyGesture="{cui:KeyGestureMarkup Key=Right, Alt=True}" />
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource InsertRowAtCurrentMediaPositionCommand}"
-                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Contorl=True}" />
+                                     KeyGesture="{cui:KeyGestureMarkup Key=Insert, Control=True}" />
         <!--<cui:DirectKeyCommandBinding RealCommand="{StaticResource ReplaceTextCommand}"
-                                    KeyGesture="{cui:KeyGestureMarkup Key=H, Contorl=True}" />-->
+                                    KeyGesture="{cui:KeyGestureMarkup Key=H, Control=True}" />-->
     </UserControl.CommandBindings>
     <!--<UserControl.CommandBindings>
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource SelectAllCommand}"
-                                          KeyGesture="{ui:KeyGestureMarkup Key=A, Contorl=True}" />
+                                          KeyGesture="{ui:KeyGestureMarkup Key=A, Control=True}" />
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource ClearSelectionCommand}"
                                           KeyGesture="{ui:KeyGestureMarkup Key=Escape}" />
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource SearchCommand}"
-                                          KeyGesture="{ui:KeyGestureMarkup Key=F, Contorl=True}" />
+                                          KeyGesture="{ui:KeyGestureMarkup Key=F, Control=True}" />
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource BackCommand}"
                                           KeyGesture="{ui:KeyGestureMarkup Key=Back}" />
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource RefreshCommand}"

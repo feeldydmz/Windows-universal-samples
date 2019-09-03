@@ -17,14 +17,12 @@ namespace Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension
 
         public static string HyperTranscoderAppDataPath()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                   "\\Megazone\\Hyper Media Transcoder\\";
+            return $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Megazone\Hyper Media Transcoder\";
         }
 
         public static string HyperSubtitleEditorAppDataPath()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                   "\\Megazone\\HyperSubtitleEditor\\";
+            return $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Megazone\Hyper Subtitle Editor\";
         }
 
         public static string MyDocuments(this object obj)

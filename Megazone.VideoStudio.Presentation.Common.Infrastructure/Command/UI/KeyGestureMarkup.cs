@@ -8,7 +8,7 @@ namespace Megazone.VideoStudio.Presentation.Common.Infrastructure.Command.UI
     {
         public Key Key { get; set; }
 
-        public bool Contorl { get; set; }
+        public bool Control { get; set; }
 
         public bool Shift { get; set; }
 
@@ -17,7 +17,7 @@ namespace Megazone.VideoStudio.Presentation.Common.Infrastructure.Command.UI
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var modifierKeys = ModifierKeys.None;
-            if (Contorl)
+            if (Control)
                 modifierKeys |= ModifierKeys.Control;
             if (Shift)
                 modifierKeys |= ModifierKeys.Shift;
