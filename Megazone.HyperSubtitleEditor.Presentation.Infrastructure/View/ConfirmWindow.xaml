@@ -33,7 +33,7 @@
             <TextBlock
                 Text="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type view:ConfirmWindow}}}"
                 Margin="40,20" FontSize="13px" TextWrapping="Wrap" VerticalAlignment="Center"
-                TextAlignment="Center" />
+                TextAlignment="{Binding TextAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type view:ConfirmWindow}}}" />
         </Border>
 
         <Border Style="{StaticResource Style_PopupBottomButtonAreaBorder}">

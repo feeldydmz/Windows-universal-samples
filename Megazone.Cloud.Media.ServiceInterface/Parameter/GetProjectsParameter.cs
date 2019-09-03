@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Megazone.Cloud.Media.ServiceInterface.Model;
+﻿using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {

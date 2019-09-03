@@ -10,6 +10,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public ProjectItemViewModel(string stageId, Project project)
         {
+            Source = project;
             StageId = stageId;
             ProjectId = project.Id;
             Name = project.Name;
@@ -17,6 +18,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             IsActive = project.IsActive;
         }
 
+        public Project Source { get; set; }
         public string DisplayTitle { get; }
         public string StageId { get; }
         public string ProjectId { get; }

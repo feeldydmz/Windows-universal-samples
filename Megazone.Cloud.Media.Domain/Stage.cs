@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Megazone.Cloud.Media.Domain
 {
+    [Serializable]
     public class Stage
     {
         public Stage(string id, string name, string endpoint, bool isActive, IEnumerable<Project> projects)

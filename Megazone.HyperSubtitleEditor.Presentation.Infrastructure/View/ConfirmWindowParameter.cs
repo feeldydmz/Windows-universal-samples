@@ -5,11 +5,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
 {
     public class ConfirmWindowParameter
     {
-        public ConfirmWindowParameter(string windowTitle, string message, MessageBoxButton buttonType)
+        public ConfirmWindowParameter(string windowTitle, string message, MessageBoxButton buttonType,
+            TextAlignment textAlignment = TextAlignment.Center)
         {
             Message = message;
             WindowTitle = windowTitle;
             ButtonType = buttonType;
+            TextAlignment = textAlignment;
         }
 
         public string Message { get; }
@@ -22,5 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
         public Window WindowOwner { get; set; }
 
         public IList<CustomButtonSetting> ButtonContents { get; set; }
+
+        public TextAlignment TextAlignment { get; set; }
     }
 }

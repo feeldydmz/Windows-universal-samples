@@ -4,11 +4,6 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
     public class UploadCaptionFileParameter : RequiredParameter
     {
-        public string UploadData { get; }
-        public string FileName { get; }
-        public string InputPath { get; }
-        public string FullPath { get; }
-
         public UploadCaptionFileParameter(Authorization authorization, string stageId, string projectId,
             string uploadData, string fileName, string inputPath, string fullPath) : base(authorization, stageId,
             projectId)
@@ -18,5 +13,10 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
             InputPath = inputPath;
             FullPath = fullPath;
         }
+
+        public string UploadData { get; }
+        public string FileName { get; }
+        public string InputPath { get; }
+        public string FullPath { get; }
     }
 }

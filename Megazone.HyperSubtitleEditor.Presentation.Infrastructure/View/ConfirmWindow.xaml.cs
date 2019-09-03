@@ -35,6 +35,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
             typeof(string),
             typeof(ConfirmWindow));
 
+        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment",
+            typeof(TextAlignment),
+            typeof(ConfirmWindow));
+
         private readonly IList<CustomButtonSetting> _buttonContents = new List
             <CustomButtonSetting>
             {
@@ -77,6 +81,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
         {
             get => (string) GetValue(TextProperty);
             set => SetValue(TextProperty, value);
+        }
+
+        public TextAlignment TextAlignment
+        {
+            get => (TextAlignment) GetValue(TextAlignmentProperty);
+            set => SetValue(TextAlignmentProperty, value);
         }
 
         public MessageBoxResult Result { get; private set; }
@@ -188,6 +198,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
                 confirmWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
             confirmWindow.Text = parameter.Message;
+            confirmWindow.TextAlignment = parameter.TextAlignment;
             confirmWindow.Initialize(parameter.Message, parameter.ButtonType, parameter.ButtonContents,
                 parameter.ConfirmWindowCheckBoxParameter?.CheckBoxContent,
                 parameter.ConfirmWindowCheckBoxParameter?.DefaultCheckedValue ?? false);

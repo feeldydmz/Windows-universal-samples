@@ -2,6 +2,7 @@
 
 namespace Megazone.Cloud.Media.Domain
 {
+    [Serializable]
     public class Project
     {
         public Project(string id,

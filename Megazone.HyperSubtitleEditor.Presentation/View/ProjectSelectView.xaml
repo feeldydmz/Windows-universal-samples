@@ -25,7 +25,6 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <mz:StringNullOrEmptyToParameterValueConverter x:Key="StringNullOrEmptyToParameterValueConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
             <Style TargetType="{x:Type Window}">
@@ -396,7 +395,7 @@
                     <Button Grid.Column="1" HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Left_Navi}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
-                            Visibility="{Binding IsCancleButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Visibility="{Binding IsCancelButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding Path=CancelProjectSelectCommand}" />
                     <Slider Grid.Column="2"
                             VerticalAlignment="Center"

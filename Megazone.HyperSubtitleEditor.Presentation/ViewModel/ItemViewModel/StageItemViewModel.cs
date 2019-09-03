@@ -11,21 +11,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isSelected;
         private IEnumerable<ProjectItemViewModel> _projectItems;
 
-        public StageItemViewModel(StageItemViewModel model)
-        {
-            Id = model.Id;
-            Name = model.Name;
-            ProjectItems = model.ProjectItems;
-        }
-
         public StageItemViewModel(Stage stage)
         {
+            Source = stage;
             Id = stage.Id;
             Name = stage.Name;
             SymbolTitle = Name.IsNullOrEmpty() ? "E" : Name.Substring(0, 1);
             ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project)).ToList();
         }
 
+        public Stage Source { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string SymbolTitle { get; set; }

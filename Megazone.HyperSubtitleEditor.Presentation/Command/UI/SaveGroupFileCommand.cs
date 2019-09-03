@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         private readonly ILogger _logger;
         private readonly MainViewModel _mainViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly SignInViewModel _signInViewModel;
 
         public SaveGroupFileCommand()
         {
@@ -24,6 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             _fileManager = Bootstrapper.Container.Resolve<FileManager>();
             _mainViewModel = Bootstrapper.Container.Resolve<MainViewModel>();
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }
 
         public bool CanExecute(object parameter)
@@ -40,7 +42,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 var subtitleGroup = new SubtitleGroup(AppContext.Config.ProfileId, AppContext.Config.PipelineId,
                     _mainViewModel.JobId, AppContext.Config.Region, subtitleTabItems,
                     _subtitleViewModel.WorkContext.OpenedVideo?.Id,
-                    _subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id);
+                    _subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id,
+                    _signInViewModel.SelectedStage.Source,
+                    _signInViewModel.SelectedProject.Source);
 
                 var now = DateTime.Now.ToString("yyyyMMddHHmmss");
 

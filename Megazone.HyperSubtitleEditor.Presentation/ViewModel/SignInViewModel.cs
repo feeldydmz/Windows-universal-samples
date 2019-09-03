@@ -27,6 +27,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Newtonsoft.Json;
 using Unity;
+// ReSharper disable InconsistentNaming
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -41,18 +42,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly IBrowser _browser;
 
         private readonly ICloudMediaService _cloudMediaService;
-        private Authorization _authorization;
-        private ICommand _cancelProjectSelectCommand;
 
         private readonly ConfigHolder _config;
+        private readonly ILogger _logger;
+        private Authorization _authorization;
+        private ICommand _cancelProjectSelectCommand;
         private int _currentPageNumber;
         private IEnumerable<StageItemViewModel> _currentPageStageItems;
         private bool _isAutoLogin;
         private bool _isBusy;
-        private bool _isCancleButtonVisible;
+        private bool _isCancelButtonVisible;
         private bool _isEmptyProjectPage;
 
-        //PjectSelectView 전용
+        //ProjectSelectView 전용
         private bool _isLeftNavigateButtonVisible;
         private bool _isLoadingProjectPage;
         private bool _isNavigationBarVisible;
@@ -63,7 +65,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _leftSlideNavigateCommand;
 
         private ICommand _loadedCommand;
-        private readonly ILogger _logger;
         private string _loginId;
         private ICommand _logoutCommand;
         private ICommand _moveProjectStepCommand;
@@ -194,10 +195,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isRightNavigateButtonVisible, value);
         }
 
-        public bool IsCancleButtonVisible
+        public bool IsCancelButtonVisible
         {
-            get => _isCancleButtonVisible;
-            set => Set(ref _isCancleButtonVisible, value);
+            get => _isCancelButtonVisible;
+            set => Set(ref _isCancelButtonVisible, value);
         }
 
         public bool IsStartButtonVisible
@@ -406,7 +407,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnMoveProjectStep()
         {
             IsProjectViewVisible = true;
-            IsCancleButtonVisible = true;
+            IsCancelButtonVisible = true;
             IsStartButtonVisible = true;
             CurrentPageNumber = 1;
 
@@ -639,8 +640,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _logger.Error.Write(ex.Message);
                 _authorization = null;
-                return false;
             }
+            return false;
         }
 
         public void ClearAuthorization()
@@ -690,10 +691,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         "프로젝트가 변경됩니다.\r\n이 작업으로 인해 기존 양식의 데이터를 손실 할 수 있습니다.\r\n\r\n계속하시겠습니까?",
                         MessageBoxButton.OKCancel));
 
-                    if (result == MessageBoxResult.Cancel)
-                    {
-                        return;
-                    }
+                    if (result == MessageBoxResult.Cancel) return;
 
                     var removeTabs = subtilteViewModel.Tabs.ToList();
 
@@ -715,7 +713,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnCancelProjectSelect()
         {
             IsProjectViewVisible = false;
-            IsCancleButtonVisible = false;
+            IsCancelButtonVisible = false;
             IsStartButtonVisible = false;
             CurrentPageNumber = 1;
         }
