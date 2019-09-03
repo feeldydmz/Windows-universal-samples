@@ -1282,10 +1282,11 @@
                     <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
                 </i:Interaction.Behaviors>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
+                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <local:MediaPlayerView Grid.RowSpan="2"
+                <local:MediaPlayerView Grid.Row="1"
+                                       Grid.RowSpan="2"
                                        HasAudioOnly="{Binding HasAudioOnly}"
                                        MediaSource="{Binding MediaSource}"
                                        NaturalDuration="{Binding NaturalDuration}"

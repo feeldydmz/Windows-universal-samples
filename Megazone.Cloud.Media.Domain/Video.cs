@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.Domain
@@ -17,7 +19,6 @@ namespace Megazone.Cloud.Media.Domain
             CreatedAt = createdAt;
             Version = version;
             ImageUrl = assetsFirstImageUrl;
-
             Origins = origins;
             Sources = sources;
             Captions = captions;

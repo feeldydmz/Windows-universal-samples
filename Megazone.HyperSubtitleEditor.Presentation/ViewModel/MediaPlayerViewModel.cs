@@ -118,6 +118,30 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        private int _currentResolution;
+
+        public int CurrentResolution
+        {
+            get => _currentResolution;
+            set
+            {
+                Set(ref _currentResolution, value);
+
+                var url = WorkContext?.VideoUrlByResolutions[_currentResolution];
+                OpenMedia(url, false);
+            }
+        }
+
+        private IEnumerable<int> _resolutions;
+
+        public IEnumerable<int> Resolutions
+        {
+            get => _resolutions;
+            set => Set(ref _resolutions, value);
+        }
+
+        private McmWorkContext WorkContext { get; set; }
+
         /// <summary>
         ///     Binding Mode: One way to source
         /// </summary>
@@ -145,6 +169,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (File.Exists(firstFilePath))
                     OpenMedia(firstFilePath, true);
             }
+        }
+
+        public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
+        {
+            WorkContext = mcmWorkContext;
+            Resolutions = WorkContext.VideoUrlByResolutions.Keys;
+            MediaSource = mcmWorkContext.VideoMediaUrl;
+            CurrentResolution = WorkContext.VideoUrlByResolutions.Keys.First();
         }
 
         public void OpenMedia(string firstFilePath, bool isLocalFile)
