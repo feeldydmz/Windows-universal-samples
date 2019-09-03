@@ -226,10 +226,22 @@
 
             <Border BorderThickness="0,0,0,1" Background="Black" VerticalAlignment="Top"
                     ToolTip="{Binding ElementName=MediaPlayer, Path=MediaSource}">
-                <!--이 영역에는 경로를 표시하는 텍스트가 보여지거나 '영상이 없다'는 메시지가 표시될 수 있음-->
-                <TextBlock Foreground="White" TextOptions.TextFormattingMode="Ideal"
-                           Text="{Binding ElementName=MediaPlayer, Path=MediaSource}" TextTrimming="CharacterEllipsis"
-                           Margin="10,8" />
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <ComboBox Width="Auto" 
+                              Background="Transparent"
+                              Foreground="White"
+                              BorderThickness="0"
+                              BorderBrush="Transparent"
+                              ItemsSource="{Binding Path=HlsResolution}"
+                              SelectedItem="{Binding Path=CurrentResolution}"/>
+
+                    <!--이 영역에는 경로를 표시하는 텍스트가 보여지거나 '영상이 없다'는 메시지가 표시될 수 있음-->
+                    <TextBlock Foreground="White" TextOptions.TextFormattingMode="Ideal"
+                               Text="{Binding ElementName=MediaPlayer, Path=MediaSource}" TextTrimming="CharacterEllipsis"
+                               Margin="10,8" />
+                </StackPanel>
+                
             </Border>
         </Grid>
 

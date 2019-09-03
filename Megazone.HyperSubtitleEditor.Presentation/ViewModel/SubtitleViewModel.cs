@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1292,7 +1293,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Encoding.UTF8);
         }
 
-
         private async void OnMcmCaptionAssetOpened(Subtitle.McmCaptionAssetOpenedMessage message)
         {
             if (message.Param == null)
@@ -1303,13 +1303,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var captionAsset = message.Param.Asset;
             var captions = message.Param.Captions?.ToList() ?? new List<Caption>();
 
+
             WorkContext = new McmWorkContext(this, video, captionAsset);
 
             if (!string.IsNullOrEmpty(video?.Name))
                 _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
 
-            if (!message.Param.Captions?.Any() ?? true)
-                return;
+            //if (!message.Param.Captions?.Any() ?? true)
+            //    return;
 
             _browser.Main.LoadingManager.Show();
 
@@ -1318,8 +1319,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // video영상을 가져온다.
             if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
-                MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
-
+            {
+                MediaPlayer.InitMedia(WorkContext, false);
+                //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
+            }
+            
             var texts = await LoadCaptionTextListAsync();
 
             _subtitleListItemValidator.IsEnabled = false;
