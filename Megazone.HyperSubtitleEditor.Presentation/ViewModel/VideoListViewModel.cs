@@ -268,7 +268,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Load()
         {
-#if STAGE
+#if STAGING
             KeywordTypeItems = new List<KeywordType>
             {
                 new KeywordType(Resource.CNT_NAME, "title"),
@@ -402,7 +402,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!string.IsNullOrEmpty(keyword))
                 conditions.Add(SelectedKeywordType.Key, keyword);
 
-#if STAGE
+#if STAGING
             if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
             {
                 var startValue = startDuration.TotalMilliseconds;

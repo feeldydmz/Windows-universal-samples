@@ -555,7 +555,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var emptyProjectStages = new List<StageItemViewModel>();
 
                 await Task.Delay(TimeSpan.FromSeconds(3));
-#if STAGE
+#if STAGING
                 emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
 #else
                 foreach (var stageItem in StageItems)

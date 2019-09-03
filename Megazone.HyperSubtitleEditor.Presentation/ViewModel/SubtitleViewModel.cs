@@ -883,7 +883,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             string GetVideoUrl()
             {
-#if STAGE
+#if STAGING
                 var hostUrl = "https://console.media.stg.continuum.co.kr"; // stage
 #elif DEBUG
                 var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop

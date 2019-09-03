@@ -16,7 +16,7 @@ namespace Megazone.Cloud.Media.Service
     internal class CloudMediaService : ICloudMediaService
     {
         // ReSharper disable once InconsistentNaming
-#if STAGE
+#if STAGING
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
