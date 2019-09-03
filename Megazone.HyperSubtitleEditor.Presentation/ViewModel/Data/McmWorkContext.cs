@@ -31,7 +31,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
-            VideoMediaUrl = GetVideoMediaUrl(openedVideo);
+            VideoUrlByResolutions = GetVideoUrlDictionary(openedVideo);
+            VideoMediaUrl = VideoUrlByResolutions?.FirstOrDefault().Value ?? "";
             CaptionKind = GetTrackKind(openedCaptionAsset);
         }
 
@@ -39,6 +40,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         public CaptionAsset OpenedCaptionAsset { get; private set; }
         public string UploadInputPath { get; private set; }
         public string VideoMediaUrl { get; private set; }
+		public Dictionary<int, string> VideoUrlByResolutions { get; private set; }
         public TrackKind CaptionKind { get; private set; }
 
         public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
@@ -184,6 +186,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             var fileName = url.Substring(lastSlashIndex + 1, url.Length - lastSlashIndex - 1);
             return fileName;
+        }
+
+        private Dictionary<int, string> GetVideoUrlDictionary(Video video)
+        {
+            return video?.Sources?.SelectMany(renditionAsset => renditionAsset.Elements).ToDictionary(item => item.VideoSetting.Height, item => item.Urls.First() ?? "");
         }
 
         private string GetVideoMediaUrl(Video video)
