@@ -56,6 +56,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CueSettingData = subtitleItem.CueSettingData;
 
             _isInitializing = false;
+
+            AnalyzeText(Duration, Texts);
         }
 
         public string CueSettingData
@@ -95,7 +97,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _textCharsPerSecond;
             private set => Set(ref _textCharsPerSecond, value);
         }
-
 
         public bool IsStartTimeValid
         {
@@ -215,6 +216,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private void AnalyzeText(TimeSpan duration, IList<IText> texts)
         {
+            if (_isInitializing)
+                return;
+
             var normalText = new WebVttParser().GetNormalTexts(texts);
 
             if (string.IsNullOrEmpty(normalText))
@@ -225,9 +229,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 return;
             }
 
-            TextTotalLength = normalText.Replace("<br/>", "")
-                .Length;
-
+            TextTotalLength = normalText.Replace("<br/>", "").Length;
             var splitedText = normalText.Split(new[]
             {
                 "<br/>"

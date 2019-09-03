@@ -1342,7 +1342,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var texts = await LoadCaptionTextListAsync();
 
             _subtitleListItemValidator.IsEnabled = false;
-            var index = 0;
+
             foreach (var caption in captionList)
             {
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
@@ -1358,7 +1358,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     null,
                     caption)
                 {
-                    IsSelected = index == captionList.Count - 1,
+                    IsSelected = false,
                     VideoId = video?.Id,
                     CaptionAssetId = captionAsset.Id
                 };
@@ -1372,6 +1372,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 Tabs.Add(newTab);
             }
+
+            if (captionList.Any())
+                Tabs.First().IsSelected = true;
 
             _browser.Main.LoadingManager.Hide();
             _subtitleListItemValidator.IsEnabled = true;
