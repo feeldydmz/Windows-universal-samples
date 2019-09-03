@@ -11,8 +11,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension
 
         public static string AppDataPath()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                   "\\Megazone\\HyperSubtitleEditor\\";
+            return $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Megazone\\Hyper Subtitle Editor\";
         }
     }
 }
