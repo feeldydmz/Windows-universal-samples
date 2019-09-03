@@ -443,11 +443,13 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
+                                                        <Setter Property="BorderBrush"
+                                                                Value="{StaticResource Brush_GrayBoxBorderBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="True">
                                                         <Setter Property="Background" Value="#10000000" />
-                                                        <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
+                                                        <Setter Property="BorderBrush"
+                                                                Value="{StaticResource Brush_GrayBoxBorderBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">
                                                         <Setter Property="Opacity" Value="0.3" />

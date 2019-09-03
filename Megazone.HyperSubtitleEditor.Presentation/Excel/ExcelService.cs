@@ -66,6 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 
                             result.Add(excelFileInfo);
                         }
+
                         return result;
                     }
                 }
@@ -129,7 +130,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                     {
                                         switch (columCount)
                                         {
-                                            case 0: 
+                                            case 0:
                                                 subtitleItem.StartTime = TimeSpan.Parse(RefineTime(text));
                                                 break;
                                             case 1:
@@ -138,8 +139,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                             case 2:
                                                 subtitleItem.Texts = _webVttInterpreter.ParseLine(text)
                                                     .ToList();
-                                                break;
-                                            default:
                                                 break;
                                         }
                                     }
@@ -155,6 +154,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 
                                 subtitle.Datasets.Add(subtitleItem);
                             }
+
                             subtitles.Add(subtitle);
                         }
                     }
@@ -164,6 +164,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
             {
                 _logger.Error.Write(ex.Message);
             }
+
             return subtitles;
         }
 
@@ -212,6 +213,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                 _logger.Error.Write(ex.Message);
                 return false;
             }
+
             return true;
         }
 
@@ -272,6 +274,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                 if (calChainPart.CalculationChain.Count() == 0)
                     workbookPart.DeletePart(calChainPart);
             }
+
             workbookPart.Workbook.Save();
         }
 

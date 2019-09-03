@@ -164,6 +164,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (!fi.Exists) return null;
                 return folderPath + "\\" + fileHeader + "_" + fi.Name.Replace(fi.Extension, string.Empty) + ".jpg";
             }
+
             var lastIndexOfSlash = fullPath.LastIndexOf("/", StringComparison.Ordinal);
             if (lastIndexOfSlash == -1) return null;
             var fileName = fullPath.Substring(lastIndexOfSlash + 1);
@@ -251,6 +252,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                              FileTypeDistributer.IsAudioFormat(fileExtension));
                 });
             }
+
             return false;
         }
 

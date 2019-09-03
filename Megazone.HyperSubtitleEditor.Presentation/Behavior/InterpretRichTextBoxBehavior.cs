@@ -106,6 +106,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
                         if (XamlReader.Load(xamlMemoryStream, parser) is Section section)
                             blocks.Add(section);
                     }
+
                     AssociatedObject.Document.Blocks.AddRange(blocks);
                 }
             }

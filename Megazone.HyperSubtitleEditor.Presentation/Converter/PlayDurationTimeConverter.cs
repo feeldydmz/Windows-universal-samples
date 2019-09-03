@@ -12,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Converter
                 return string.Empty;
             try
             {
-                var totalPlaySeconds = decimal.ToInt32((decimal)value);
+                var totalPlaySeconds = decimal.ToInt32((decimal) value);
                 if (totalPlaySeconds <= 0)
                     totalPlaySeconds = 0;
                 int hour = totalPlaySeconds / (60 * 60),

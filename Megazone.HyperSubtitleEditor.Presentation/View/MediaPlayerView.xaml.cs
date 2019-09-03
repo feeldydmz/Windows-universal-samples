@@ -254,6 +254,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
+
             MediaPlaybackButton.Checked += MediaPlaybackButton_Checked;
             MediaPlaybackButton.Unchecked += MediaPlaybackButton_Unchecked;
             PlayStateChanged?.Invoke(state);

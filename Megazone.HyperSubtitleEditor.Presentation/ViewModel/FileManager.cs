@@ -41,6 +41,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         FilePath = fileName
                     }));
             }
+
             return true;
         }
 
@@ -63,6 +64,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 dlg.FileName = fileInfo.Name;
                 dlg.DefaultExt = fileInfo.Extension;
             }
+
             if (!string.IsNullOrEmpty(defaultFileName))
                 dlg.FileName = defaultFileName;
             if (!string.IsNullOrEmpty(filter))
@@ -82,6 +84,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _logger.Error.Write(ex);
             }
+
             return false;
         }
 

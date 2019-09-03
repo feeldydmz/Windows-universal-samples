@@ -44,6 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                         Thread.Sleep(1000);
                         continue;
                     }
+
                     var item = _queue.Dequeue();
                     Load(item);
                 }
@@ -64,7 +65,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     var indexOfFirstDot = fileName.IndexOf(".", StringComparison.Ordinal);
                     if (indexOfFirstDot == -1) return;
                     fileName = fileName.Substring(0, indexOfFirstDot) + ".jpg";
-                    var folderPath = ObjectExtension.TempFolder() + "\\" + Guid.NewGuid() + DateTime.UtcNow.DateTimeToEpoch();
+                    var folderPath = ObjectExtension.TempFolder() + "\\" + Guid.NewGuid() +
+                                     DateTime.UtcNow.DateTimeToEpoch();
                     if (!Directory.Exists(folderPath))
                         try
                         {
@@ -75,6 +77,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                             _logger.Error.Write(ex);
                             return;
                         }
+
                     var filePath = folderPath + "\\" + fileName;
                     fullPath = fullPath.EscapeDataStringSharpOnly();
                     var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters

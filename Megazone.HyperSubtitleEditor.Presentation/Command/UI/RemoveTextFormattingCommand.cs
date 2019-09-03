@@ -54,6 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     foreach (var item in children.ToList())
                         result.Add(item);
                 }
+
             return result;
         }
     }

@@ -42,13 +42,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             }
 
             if (_subtitleViewModel.WorkContext.OpenedCaptionAsset != null)
-            {
                 _browser.Main.ShowMcmDeployDialog();
-            }
             else
-            {
                 _browser.Main.ShowMcmDeployAndAssetCreateDialog();
-            }
         }
 
         public event EventHandler CanExecuteChanged

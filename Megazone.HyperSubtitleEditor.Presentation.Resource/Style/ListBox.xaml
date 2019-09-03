@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mz="http://schemas.megazone.co.kr">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Common.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="Style_ListBoxDefault" TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource Brush_ListItemBackground}" />
@@ -230,5 +233,11 @@
 
     <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource Style_ListBoxDefault}" />
     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource Style_ListBoxItemDefault}" />
+
+    <!--mcm video list-->
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Background" Value="{StaticResource Brush_CommonBackground}" />
+    </Style>
 
 </ResourceDictionary>

@@ -81,6 +81,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             {
                 Param = param;
             }
+
             public McmDeployRequestedMessageParameter Param { get; }
         }
 
@@ -96,7 +97,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class McmCaptionAssetOpenedMessage : MessageBase
         {
-            public McmCaptionAssetOpenedMessage(object sender, McmCaptionAssetOpenedMessageParameter param) : base(sender)
+            public McmCaptionAssetOpenedMessage(object sender, McmCaptionAssetOpenedMessageParameter param) :
+                base(sender)
             {
                 Param = param;
             }

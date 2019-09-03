@@ -40,7 +40,8 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1" Padding="20,17,20,20">
+                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
+                        Padding="20,17,20,20">
                     <Grid>
                         <Grid.Resources>
                             <Style TargetType="{x:Type TextBlock}">
@@ -154,7 +155,8 @@
                                         Maximum="{markUps:TimeSpanMarkup Second=1}"
                                         SecondMaxLength="3" IsShowMilliseconds="True" />
 
-                        <Rectangle Grid.Row="8" Grid.ColumnSpan="2" Margin="0,13" Height="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
+                        <Rectangle Grid.Row="8" Grid.ColumnSpan="2" Margin="0,13" Height="1"
+                                   Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
 
                         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
                                    Text="{x:Static resources:Resource.CNT_SETTING_VIDEO_PLAYER}" FontWeight="Bold"
@@ -166,7 +168,7 @@
                         <mz:Spinner Grid.Row="10" Grid.Column="1" Minimum="1" Maximum="10" Width="Auto"
                                     HorizontalAlignment="Stretch"
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
-                        
+
                         <Border Grid.Row="11" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
                                 CornerRadius="3" Padding="10,8" VerticalAlignment="Bottom">
                             <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap"

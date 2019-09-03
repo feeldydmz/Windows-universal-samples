@@ -1,7 +1,7 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using System;
+﻿using System;
 using System.Collections;
+using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {

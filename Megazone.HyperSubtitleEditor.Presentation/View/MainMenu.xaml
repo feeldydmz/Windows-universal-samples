@@ -53,7 +53,7 @@
         <MenuItem Header="자막 파일 열기" Command="{StaticResource OpenSubtitleFileCommand}" />
         <MenuItem Header="Excel 파일 열기" Command="{StaticResource OpenExcelFileCommand}" />
         <MenuItem Header="Excel 파일 내보내기" Command="{StaticResource ExportExcelFileCommand}" />
-        
+
         <!--<MenuItem Header="프로필 가져오기" Command="{StaticResource ImportProfilesCommand}" />
         <MenuItem Header="프로필 내보내기" Command="{StaticResource ExportProfilesCommand}"/>
         <Separator />

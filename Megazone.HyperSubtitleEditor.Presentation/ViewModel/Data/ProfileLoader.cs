@@ -58,6 +58,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 _logger.Error.Write(ex);
                 _clientProfiles = new ClientProfiles(new List<ClientProfile>());
             }
+
             return _clientProfiles;
         }
 

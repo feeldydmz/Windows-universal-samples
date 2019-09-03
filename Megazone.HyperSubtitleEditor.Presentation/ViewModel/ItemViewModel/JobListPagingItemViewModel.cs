@@ -12,7 +12,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Next
         }
 
-        private readonly Dictionary<int, LastEvaluatedKey> _pageIndexAndContinuationParameter = new Dictionary<int, LastEvaluatedKey>();
+        private readonly Dictionary<int, LastEvaluatedKey> _pageIndexAndContinuationParameter =
+            new Dictionary<int, LastEvaluatedKey>();
 
         public int LastViewedPageIndex { get; set; }
 

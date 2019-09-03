@@ -16,6 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             DisplayTitle = $"{Name}/{ProjectId}";
             IsActive = project.IsActive;
         }
+
         public string DisplayTitle { get; }
         public string StageId { get; }
         public string ProjectId { get; }

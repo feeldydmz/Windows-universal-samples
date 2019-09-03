@@ -61,7 +61,8 @@
                                    VerticalAlignment="Center" FontWeight="Bold" />
 
                         <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=SubtitleKinds}"
-                                  SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=CanSelectSubtitleKind}" />
+                                  SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="{Binding Path=CanSelectSubtitleKind}" />
                         <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"
                                   SelectedItem="{Binding Path=SelectedLanguageItemViewModel, UpdateSourceTrigger=PropertyChanged}">
                             <ItemsControl.ItemTemplate>

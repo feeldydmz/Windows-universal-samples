@@ -158,7 +158,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                     list.Add(index + 1);
 
                 PageItems = new ObservableCollection<int>(list);
-                if(value==0)
+                if (value == 0)
                     Value = 1;
             }
         }

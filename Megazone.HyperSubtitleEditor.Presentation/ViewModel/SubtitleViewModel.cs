@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -603,7 +602,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 var caption = await WorkContext.GetCaptionAssetAsync(tabs.FirstOrDefault()?.CaptionAssetId);
                 var video = await WorkContext.GetVideoAsync(tabs.FirstOrDefault()?.VideoId);
-                
+
                 this.InvokeOnUi(() =>
                 {
                     WorkContext.Initialize(video, caption);
@@ -881,7 +880,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
                 message.Param.Captions, GetVideoUrl());
             return;
-            
+
             string GetVideoUrl()
             {
 #if STAGE
@@ -1152,8 +1151,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                     track.Kind,
                                     OnDisplayTextChanged,
                                     track.Language,
-                                    track,
-                                    caption:null);
+                                    track);
                                 newTab.AddDatasheet(subtitles.ToList());
                                 Tabs.Add(newTab);
                             });
@@ -1346,17 +1344,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
 
                 var newTab = new SubtitleTabItemViewModel(caption.Label,
-                        OnRowCollectionChanged,
-                        OnValidateRequested,
-                        OnTabSelected,
-                        OnItemSelected,
-                        WorkContext.CaptionKind,
-                        OnDisplayTextChanged,
-                        caption.Language,
-                        null,
-                        caption)
+                    OnRowCollectionChanged,
+                    OnValidateRequested,
+                    OnTabSelected,
+                    OnItemSelected,
+                    WorkContext.CaptionKind,
+                    OnDisplayTextChanged,
+                    caption.Language,
+                    null,
+                    caption)
                 {
-                    IsSelected = (index == captionList.Count - 1),
+                    IsSelected = index == captionList.Count - 1,
                     VideoId = video?.Id,
                     CaptionAssetId = captionAsset.Id
                 };
@@ -1367,6 +1365,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     if (rows != null)
                         newTab.AddRows(rows);
                 }
+
                 Tabs.Add(newTab);
             }
 
@@ -1379,7 +1378,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 var dic = new Dictionary<string, string>();
                 foreach (var caption in captionList)
-                {
                     try
                     {
                         var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
@@ -1389,7 +1387,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         Console.WriteLine(e);
                     }
-                }
+
                 return dic;
             }
         }
@@ -1416,7 +1414,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsSelected = true,
                 FilePath = param.FilePath,
                 VideoId = WorkContext?.OpenedVideo?.Id,
-                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
+                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id
             };
             if (subtitles != null)
                 newTab.AddRows(subtitles.ToList());
@@ -1485,7 +1483,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             subtitle.LanguageCode)
                         {
                             VideoId = WorkContext?.OpenedVideo?.Id,
-                            CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
+                            CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id
                         };
                         newTab.AddDatasheet(subtitle.Datasets);
                         if (firstTab == null)
@@ -1536,7 +1534,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 IsSelected = true,
                 VideoId = WorkContext?.OpenedVideo?.Id,
-                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id,
+                CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id
             };
             if (subtitles.Any())
                 newTab.AddRows(subtitles);

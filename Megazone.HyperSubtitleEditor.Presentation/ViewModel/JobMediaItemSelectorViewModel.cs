@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Control.VideoPlayer;

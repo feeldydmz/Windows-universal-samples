@@ -163,7 +163,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isDirty;
             set => Set(ref _isDirty, value);
         }
-        
+
 
         public void SetAsDeployed()
         {
@@ -258,6 +258,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 };
                 Rows.Add(item);
             }
+
             _ignoreCollectionChanged = false;
         }
 
@@ -278,6 +279,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 foreach (var row in rows)
                     Rows.Add(row);
             }
+
             ResetNumbers();
             _ignoreCollectionChanged = false;
         }
@@ -324,6 +326,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+
                     if (targetIndex < 0)
                         targetIndex = 0;
                     else if (targetIndex >= Rows.Count)
@@ -333,6 +336,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                     subtitleItem.EndTime = subtitleItem.StartTime + minDuration;
                 }
             }
+
             return subtitleItem;
         }
 
@@ -364,6 +368,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                     return row;
                 }
             }
+
             {
                 var row = new SubtitleListItemViewModel(subtitleItem, OnValidateRequested, OnDisplayTextChanged)
                 {

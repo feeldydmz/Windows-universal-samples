@@ -1,13 +1,13 @@
 ﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.McmDeployView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              Width="534" Height="328"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy}">
@@ -45,7 +45,8 @@
                 <TextBlock Text="{Binding Path=StageName}" VerticalAlignment="Center" Margin="8,0,0,0" />
             </StackPanel>
 
-            <Rectangle Grid.Column="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1"/>
+            <Rectangle Grid.Column="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}"
+                       HorizontalAlignment="Right" VerticalAlignment="Center" Height="13" Width="1" />
 
             <StackPanel Grid.Column="3" Orientation="Horizontal">
                 <TextBlock Text="Project :" VerticalAlignment="Center" FontWeight="Bold" />
@@ -78,14 +79,17 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Path=Name}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Name}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                 </Border>
 
-                <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
+                           Height="1" VerticalAlignment="Bottom" />
 
                 <!--CaptionAsset Info-->
                 <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -104,15 +108,19 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Path=Kind}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" />
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Name}" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Path=Name}" Margin="0,0,3,0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat={}({0})}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="0" Text="{Binding Path=Kind}" HorizontalAlignment="Left"
+                                       VerticalAlignment="Center" FontWeight="Bold" />
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Name}" HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Name}" Margin="0,0,3,0" />
+                            <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat={}({0})}"
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                 </Border>
 
-                <Rectangle Grid.Row="1" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" Height="1" VerticalAlignment="Bottom" />
+                <Rectangle Grid.Row="1" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
+                           Height="1" VerticalAlignment="Bottom" />
 
                 <!--Caption Info-->
                 <Border Grid.Row="2">
@@ -132,8 +140,13 @@
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding Path=Label}" HorizontalAlignment="Left" ToolTip="{Binding Path=Label}" TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="1" Text="{Binding Path=Language, StringFormat={}[{0}]}" HorizontalAlignment="Right" Foreground="{StaticResource Brush_PointColor}" />
+                                                <TextBlock Grid.Column="0" Text="{Binding Path=Label}"
+                                                           HorizontalAlignment="Left" ToolTip="{Binding Path=Label}"
+                                                           TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Path=Language, StringFormat={}[{0}]}"
+                                                           HorizontalAlignment="Right"
+                                                           Foreground="{StaticResource Brush_PointColor}" />
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -143,8 +156,10 @@
                     </ScrollViewer>
                 </Border>
 
-                <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" />
-                <TextBlock Grid.Row="3" Text="{x:Static resources:Resource.MSG_DEPLOY_CAPTION}" FontWeight="Bold" Margin="0,10,0,0"/>
+                <Rectangle Grid.Row="0" Grid.RowSpan="3" Stroke="{StaticResource Brush_Border_Outer_Line_Color}"
+                           StrokeThickness="1" />
+                <TextBlock Grid.Row="3" Text="{x:Static resources:Resource.MSG_DEPLOY_CAPTION}" FontWeight="Bold"
+                           Margin="0,10,0,0" />
             </Grid>
         </Border>
 

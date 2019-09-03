@@ -73,6 +73,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Logger.Error.Write(ex);
             }
+
             CloseAction?.Invoke();
         }
 

@@ -1,68 +1,68 @@
 ﻿[
-    {
-        "Name": "English",
-        "NativeName": "English",
-        "Alpha2": "en",
-        "Alpha3": "eng"
-    },
-    {
-        "Name": "Japanese",
-        "NativeName": "日本語 (にほんご)",
-        "Alpha2": "ja",
-        "Alpha3": "jpn"
-    },
-    {
-        "Name": "Chinese",
-        "NativeName": "中文 (Zhōngwén)",
-        "Alpha2": "zh",
-        "Alpha3": "zho"
-    },
-    {
-        "Name": "Spanish",
-        "NativeName": "Español",
-        "Alpha2": "es",
-        "Alpha3": "spa"
-    },
-    {
-        "Name": "Khmer",
-        "NativeName": "ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ",
-        "Alpha2": "km",
-        "Alpha3": "khm"
-    },
-    {
-        "Name": "Thai",
-        "NativeName": "ไทย",
-        "Alpha2": "th",
-        "Alpha3": "tha"
-    },
-    {
-        "Name": "Malay",
-        "NativeName": "bahasa Melayu, بهاس ملايو",
-        "Alpha2": "ms",
-        "Alpha3": "msa"
-    },
-    {
-        "Name": "Vietnamese",
-        "NativeName": "Tiếng Việt",
-        "Alpha2": "vi",
-        "Alpha3": "vie"
-    },
-    {
-        "Name": "Korean",
-        "NativeName": "한국어",
-        "Alpha2": "ko",
-        "Alpha3": "kor"
-    },
-    {
-        "Name": "Indonesian",
-        "NativeName": "Bahasa Indonesia",
-        "Alpha2": "id",
-        "Alpha3": "ind"
-    },
-    {
-        "Name": "Russian",
-        "NativeName": "Русский",
-        "Alpha2": "ru",
-        "Alpha3": "rus"
-    }
+  {
+    "Name": "English",
+    "NativeName": "English",
+    "Alpha2": "en",
+    "Alpha3": "eng"
+  },
+  {
+    "Name": "Japanese",
+    "NativeName": "日本語 (にほんご)",
+    "Alpha2": "ja",
+    "Alpha3": "jpn"
+  },
+  {
+    "Name": "Chinese",
+    "NativeName": "中文 (Zhōngwén)",
+    "Alpha2": "zh",
+    "Alpha3": "zho"
+  },
+  {
+    "Name": "Spanish",
+    "NativeName": "Español",
+    "Alpha2": "es",
+    "Alpha3": "spa"
+  },
+  {
+    "Name": "Khmer",
+    "NativeName": "ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ",
+    "Alpha2": "km",
+    "Alpha3": "khm"
+  },
+  {
+    "Name": "Thai",
+    "NativeName": "ไทย",
+    "Alpha2": "th",
+    "Alpha3": "tha"
+  },
+  {
+    "Name": "Malay",
+    "NativeName": "bahasa Melayu, بهاس ملايو",
+    "Alpha2": "ms",
+    "Alpha3": "msa"
+  },
+  {
+    "Name": "Vietnamese",
+    "NativeName": "Tiếng Việt",
+    "Alpha2": "vi",
+    "Alpha3": "vie"
+  },
+  {
+    "Name": "Korean",
+    "NativeName": "한국어",
+    "Alpha2": "ko",
+    "Alpha3": "kor"
+  },
+  {
+    "Name": "Indonesian",
+    "NativeName": "Bahasa Indonesia",
+    "Alpha2": "id",
+    "Alpha3": "ind"
+  },
+  {
+    "Name": "Russian",
+    "NativeName": "Русский",
+    "Alpha2": "ru",
+    "Alpha3": "rus"
+  }
 ]

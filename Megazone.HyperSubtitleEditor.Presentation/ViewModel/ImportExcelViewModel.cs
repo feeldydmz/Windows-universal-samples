@@ -95,6 +95,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     TrackFormat = TrackFormat.WebVtt
                 });
             }
+
             CloseAction?.Invoke();
 
             MessageCenter.Instance.Send(new Message.Excel.FileImportMessage(this, ExcelFilePath, sheetInfos));

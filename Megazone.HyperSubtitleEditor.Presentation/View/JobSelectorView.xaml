@@ -21,7 +21,7 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-            <mz:EqualStringToTrueNFalseConverter x:Key="EqualStringToTrueNFalseConverter"/>
+            <mz:EqualStringToTrueNFalseConverter x:Key="EqualStringToTrueNFalseConverter" />
             <mz:CurrentDateTimeBasedDateTimeConverter x:Key="CurrentDateTimeBasedDateTimeConverter"
                                                       CntConverterBefore="{x:Static resources:Resource.CNT_CONVERTER_BEFORE}"
                                                       CntConverterBeforeMinutes="{x:Static resources:Resource.CNT_CONVERTER_BEFORE_MINUTES}"
@@ -159,7 +159,8 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <Border Grid.Row="1" Height="46" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}">
+                        <Border Grid.Row="1" Height="46" BorderThickness="0,1,0,0"
+                                BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}">
                             <Grid Margin="20,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />

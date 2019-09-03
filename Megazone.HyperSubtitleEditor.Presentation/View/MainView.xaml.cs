@@ -121,7 +121,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_COPY_CAPTION, 
+                Title = Resource.CNT_COPY_CAPTION,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -208,11 +208,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
-        private void MainView_Loaded(object sender, RoutedEventArgs e)
-        {
-            RootViewContainer.Child = new SubtitleView();
-        }
-
         public void ShowVideoListDialog()
         {
             var view = new VideoListView();
@@ -227,9 +222,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Title = Resource.CNT_VIDEO
             };
             if (view.DataContext is VideoListViewModel viewModel)
-            {
-                viewModel.SetTitleAction = (title) => { wnd.Title = title; };
-            }
+                viewModel.SetTitleAction = title => { wnd.Title = title; };
             wnd.ShowDialog();
         }
 
@@ -247,6 +240,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             };
             wnd.ShowDialog();
         }
+
         public void ShowMcmDeployDialog()
         {
             var wnd = new ChildWindow
@@ -261,12 +255,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             };
             wnd.ShowDialog();
         }
-        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
+
+        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions,
+            string linkUrl)
         {
             var captionItems = captions?.Select(caption => new CaptionElementItemViewModel(caption)).ToList();
             var view = new McmDeployConfirmView
             {
-                DataContext = new McmDeployConfirmViewModel()
+                DataContext = new McmDeployConfirmViewModel
                 {
                     VideoItem = new VideoItemViewModel(video),
                     CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset),
@@ -291,6 +287,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             if (Application.Current.MainWindow != null)
                 Application.Current.MainWindow.Title = title;
+        }
+
+        private void MainView_Loaded(object sender, RoutedEventArgs e)
+        {
+            RootViewContainer.Child = new SubtitleView();
         }
 
         private class SubtitleViewImpl : ISubtitleView

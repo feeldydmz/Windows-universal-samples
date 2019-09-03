@@ -12,6 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Strategy
                 ConfigHolder.Save(config);
                 return;
             }
+
             ConfigHolder.Save(config);
         }
 

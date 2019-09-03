@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
+using Megazone.Api.Transcoder.Domain;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
@@ -42,7 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Load()
         {
             CanSelectSubtitleKind = !_subtitleViewModel.Tabs.Any();
-            SelectedSubtitleKind = _subtitleViewModel.SelectedTab?.Kind ?? Api.Transcoder.Domain.TrackKind.Subtitle;
+            SelectedSubtitleKind = _subtitleViewModel.SelectedTab?.Kind ?? TrackKind.Subtitle;
         }
 
         public void SetSelectedTabInfo(ISubtitleTabItemViewModel tabItem)

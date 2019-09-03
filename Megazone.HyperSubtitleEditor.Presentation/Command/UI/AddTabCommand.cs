@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
 
@@ -11,12 +12,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     public class AddTabCommand : DependencyObject, ICommand
     {
         private readonly IBrowser _browser;
-        private readonly ViewModel.SubtitleViewModel _subtitleViewModel;
+        private readonly SubtitleViewModel _subtitleViewModel;
 
         public AddTabCommand()
         {
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
-            _subtitleViewModel = Bootstrapper.Container.Resolve<ViewModel.SubtitleViewModel>();
+            _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
         }
 
         public bool CanExecute(object parameter)

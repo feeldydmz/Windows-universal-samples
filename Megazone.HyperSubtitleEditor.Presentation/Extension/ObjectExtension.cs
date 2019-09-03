@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Extension
             {
                 // ignored
             }
+
             return null;
         }
     }

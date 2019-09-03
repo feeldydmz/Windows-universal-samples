@@ -217,7 +217,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 .Completed;
 
             var jobList = _jobService.Get(new GetJobsParameter(RegionManager.Instance.Current.API,
-                ParameterProvider.GetTopicNameFrom(topicArn), 
+                ParameterProvider.GetTopicNameFrom(topicArn),
                 pagingItem.GetContinuationParameter(pageIndexType)));
 
             //var jobList = _jobService.Get(RegionManager.Instance.Current.API, topicArn,

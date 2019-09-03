@@ -33,6 +33,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     isMinGapValid = currentItem.StartTime - previousItem.EndTime >= minGap;
                     previousItem.IsEndTimeValid = isStartTimeValid && isMinGapValid;
                 }
+
                 currentItem.IsStartTimeValid = isStartTimeValid && isMinGapValid;
             }
         }

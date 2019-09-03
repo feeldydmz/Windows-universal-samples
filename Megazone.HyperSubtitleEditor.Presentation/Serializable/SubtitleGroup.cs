@@ -1,6 +1,4 @@
-﻿using Megazone.Cloud.Media.Domain;
-using Megazone.Cloud.Media.Domain.Assets;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Serializable

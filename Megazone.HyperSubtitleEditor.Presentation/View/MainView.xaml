@@ -23,7 +23,7 @@
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
         </ResourceDictionary>
 
-        
+
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddNewRowCommand}"
@@ -129,7 +129,8 @@
                           Command="{StaticResource ExportSelectedTabAsVttCommand}" />
                 <Separator />
                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />-->
-                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployToMcmCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}"
+                          Command="{StaticResource DeployToMcmCommand}" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
                           Command="{StaticResource OpenSubtitleCommand}" />
@@ -222,14 +223,15 @@
                           Command="{StaticResource ShowApplicatoinInfoCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_AUTO_LOGIN}"
                           IsCheckable="True"
-                          IsChecked="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.IsAutoLogin}"/>
+                          IsChecked="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.IsAutoLogin}" />
             </MenuItem>
         </Menu>
 
-        
 
         <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <StackPanel Orientation="Horizontal" DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}" TextBlock.Foreground="Azure" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal"
+                        DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
+                        TextBlock.Foreground="Azure" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,0,11,0" VerticalAlignment="Center">
                     <TextBlock Text="Stage" Margin="2,0" Foreground="#5fa5f0" FontWeight="Bold" />
                     <TextBlock Text="{Binding Path=SelectedStage.Name}" Margin="2,0,22,0" />
@@ -242,7 +244,8 @@
                                 PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_hov.png"
                                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_dis.png"
-                                Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" VerticalAlignment="Center" />
+                                Background="#2e353f" Foreground="White"
+                                Style="{StaticResource Style_TransparentImageButton}" VerticalAlignment="Center" />
 
                 <Rectangle Height="18" Width="1" Fill="#78828e" Margin="24,0" VerticalAlignment="Center" />
 
@@ -255,21 +258,25 @@
                     Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" />-->
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,14,0">
-                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
-                    <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center" TextAlignment="Center" Margin="7,0,0,0" />
+                    <Image
+                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
+                    <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center"
+                               TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>
-                
-                <mz:ImageButton 
-                    Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}" Background="#2e353f"
+
+                <mz:ImageButton
+                    Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                    Background="#2e353f"
                     DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
                     MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_hov.png"
-                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_dis.png" 
+                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_dis.png"
                     Style="{StaticResource Style_TransparentImageButton}" Width="16" Height="14" />
             </StackPanel>
 
             <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
-                       Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center" Visibility="Collapsed"/>
+                       Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"
+                       Visibility="Collapsed" />
             <Button Margin="0,1,0,-1"
                     Content="{Binding JobId, Converter={StaticResource StringNullOrEmptyToParameterValueConverter}, ConverterParameter={x:Static resources:Resource.CNT_NOT_CONNECTED}}"
                     Command="{StaticResource SelectJobCommand}" VerticalAlignment="Center"

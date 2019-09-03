@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Extension;
@@ -9,13 +8,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     public class StageItemViewModel : ViewModelBase
     {
+        private bool _isSelected;
         private IEnumerable<ProjectItemViewModel> _projectItems;
 
         public StageItemViewModel(StageItemViewModel model)
         {
-            this.Id = model.Id;
-            this.Name = model.Name;
-            this.ProjectItems = model.ProjectItems;
+            Id = model.Id;
+            Name = model.Name;
+            ProjectItems = model.ProjectItems;
         }
 
         public StageItemViewModel(Stage stage)
@@ -30,7 +30,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string Name { get; set; }
         public string SymbolTitle { get; set; }
 
-        private bool _isSelected;
         public bool IsSelected
         {
             get => _isSelected;

@@ -35,6 +35,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Serializable
                 tabItem.Rows = rows;
                 tabItems.Add(tabItem);
             }
+
             return tabItems;
         }
     }

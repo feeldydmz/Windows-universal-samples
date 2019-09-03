@@ -70,6 +70,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     if (forceReload == false)
                         return;
                 }
+
                 _isLoading = true;
                 try
                 {
@@ -119,6 +120,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                         return;
                     }
                 }
+
                 _isLoading = true;
                 try
                 {
@@ -128,6 +130,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                             callbackAction.Execute(Presets);
                         return;
                     }
+
                     var parameter =
                         new ParameterBuilder(AppContext.CredentialInfo).Build();
                     Presets = new List<Preset>();
