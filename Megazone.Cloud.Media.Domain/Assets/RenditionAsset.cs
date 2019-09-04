@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Megazone.Cloud.Media.Domain.Assets
 {
@@ -8,6 +12,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
             int version, string createdAt, object urls, IEnumerable<Rendition> elements)
             : base(id, name, status, type, mediaType, duration, version, createdAt, elements)
         {
+
             if (urls is string url)
             {
                 Urls = new List<string>() { url };
@@ -15,6 +20,10 @@ namespace Megazone.Cloud.Media.Domain.Assets
             else if (urls is IEnumerable<string> list)
             {
                 Urls = list;
+            }
+            else if (urls is JArray jarray)
+            {
+                Urls = jarray.ToObject<IEnumerable<string>>();
             }
         }
 

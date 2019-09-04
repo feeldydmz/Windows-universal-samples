@@ -29,7 +29,6 @@
 
             <Style TargetType="{x:Type Window}">
                 <Setter Property="FontFamily" Value="Malgun Gothic" />
-
             </Style>
 
             <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect"
@@ -40,7 +39,6 @@
             <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize"
                    BasedOn="{StaticResource Style_ProjectSelect_ListBoxItem}">
                 <Setter Property="Height" Value="38" />
-                <Setter Property="Width" Value="338" />
                 <Setter Property="Foreground" Value="#989CA7" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 <Setter Property="Background" Value="#2E353F" />
@@ -340,7 +338,8 @@
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Style="{StaticResource Style_ListBox_ProjectSelect}"
                                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
-                                                 SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject}">
+                                                 SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject}"
+                                                 Width="340">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                                     <DockPanel HorizontalAlignment="Stretch">
@@ -402,7 +401,7 @@
                             HorizontalAlignment="Center"
                             Width="130"
                             Minimum="1"
-                            Maximum="{Binding PageNumber}"
+                            Maximum="{Binding TotalPage}"
                             Value="{Binding CurrentPageNumber}"
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"

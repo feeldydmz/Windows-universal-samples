@@ -26,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly Action<MediaPlayStates> _onMediaPlayStateChanged;
         private readonly Action<decimal> _onMediaPositionChanged;
         private CancellationTokenSource _cancellationTokenSource;
+
         private IList<IText> _currentPositionText;
         private ICommand _dropToSetMediaCommand;
         private bool _hasAudioOnly;
@@ -35,6 +36,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _playStateChangedCommand;
 
         private ICommand _positionChangedCommand;
+
+        private IEnumerable<string> _videoTypes;
+        private IEnumerable<int> _resolutions;
+        private int _currentResolution;
+        private string _currentVideoType;
+
         private int _seekCount;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
@@ -118,7 +125,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private int _currentResolution;
+        public string CurrentVideoType
+        {
+            get => _currentVideoType;
+            set
+            {
+                Set(ref _currentVideoType, value);
+
+                /*var url = WorkContext?.VideoUrlOfResolutions[_currentVideoType];
+                OpenMedia(url, false);*/
+            }
+        }
 
         public int CurrentResolution
         {
@@ -127,12 +144,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Set(ref _currentResolution, value);
 
-                var url = WorkContext?.VideoUrlByResolutions[_currentResolution];
+                var url = WorkContext?.VideoUrlOfResolutions[_currentResolution];
                 OpenMedia(url, false);
             }
         }
 
-        private IEnumerable<int> _resolutions;
+        public IEnumerable<string> VideoTypes
+        {
+            get => _videoTypes;
+            set => Set(ref _videoTypes, value);
+        }
 
         public IEnumerable<int> Resolutions
         {
@@ -174,9 +195,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
-            Resolutions = WorkContext.VideoUrlByResolutions.Keys;
+            VideoTypes = WorkContext.VideoResolutionsByType.Keys;
+            Resolutions = WorkContext.VideoResolutionsByType.First().Value?.Keys;
+            //Resolutions = WorkContext.VideoUrlOfResolutions.Keys;
+            CurrentVideoType = VideoTypes.First();
+            if (Resolutions != null) CurrentResolution = Resolutions.First();
+
             MediaSource = mcmWorkContext.VideoMediaUrl;
-            CurrentResolution = WorkContext.VideoUrlByResolutions.Keys.First();
         }
 
         public void OpenMedia(string firstFilePath, bool isLocalFile)
