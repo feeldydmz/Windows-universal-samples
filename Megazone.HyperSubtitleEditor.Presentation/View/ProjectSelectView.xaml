@@ -401,7 +401,7 @@
                             HorizontalAlignment="Center"
                             Width="130"
                             Minimum="1"
-                            Maximum="{Binding PageNumber}"
+                            Maximum="{Binding TotalPage}"
                             Value="{Binding CurrentPageNumber}"
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"

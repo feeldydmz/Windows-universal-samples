@@ -27,6 +27,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly Action<decimal> _onMediaPositionChanged;
         private CancellationTokenSource _cancellationTokenSource;
         private IList<IText> _currentPositionText;
+
+        private int _currentResolution;
         private ICommand _dropToSetMediaCommand;
         private bool _hasAudioOnly;
         private string _mediaSource;
@@ -35,6 +37,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _playStateChangedCommand;
 
         private ICommand _positionChangedCommand;
+
+        private IEnumerable<int> _resolutions;
         private int _seekCount;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
@@ -118,8 +122,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private int _currentResolution;
-
         public int CurrentResolution
         {
             get => _currentResolution;
@@ -131,8 +133,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OpenMedia(url, false);
             }
         }
-
-        private IEnumerable<int> _resolutions;
 
         public IEnumerable<int> Resolutions
         {

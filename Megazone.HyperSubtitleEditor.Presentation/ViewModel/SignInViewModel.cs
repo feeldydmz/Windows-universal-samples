@@ -69,7 +69,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _logoutCommand;
         private ICommand _moveProjectStepCommand;
         private ICommand _navigatingCommand;
-        private int _pageNumber;
+        private int _totalPage;
         private ICommand _rightNavigateCommand;
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
@@ -258,10 +258,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _stageTotal, value);
         }
 
-        public int PageNumber
+        public int TotalPage
         {
-            get => _pageNumber;
-            set => Set(ref _pageNumber, value);
+            get => _totalPage;
+            set => Set(ref _totalPage, value);
         }
 
         public int StagePerPageNumber { get; set; }
@@ -364,11 +364,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnStagePerPageNumberChanged(int obj)
         {
-            Debug.WriteLine($"obj {obj}");
-
             StagePerPageNumber = obj;
 
-            CalculatePageNumber();
+            CalculateTotalPage();
 
             CalculateStageSlidePosition();
         }
@@ -414,14 +412,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectingProject = SelectedProject;
         }
 
-        private void CalculatePageNumber()
+        private void CalculateTotalPage()
         {
             if (StageTotal == 0 || StagePerPageNumber == 0)
                 return;
 
-            PageNumber = Convert.ToInt32(Math.Ceiling(StageTotal / (decimal) StagePerPageNumber));
+            TotalPage = Convert.ToInt32(Math.Ceiling(StageTotal / (decimal) StagePerPageNumber));
 
-            IsNavigationBarVisible = PageNumber > 1;
+            IsNavigationBarVisible = TotalPage > 1;
         }
 
 
@@ -441,24 +439,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 newStageList.Add(StageItems[i]);
             }
 
+            var selectingProjectTemp = SelectingProject;
+
             CurrentPageStageItems = newStageList;
 
-            if (PageNumber == 1)
+            SelectingProject = selectingProjectTemp;
+
+            if (TotalPage == 1)
             {
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = false;
             }
-            else if (PageNumber > 1 && CurrentPageNumber == 1)
+            else if (TotalPage > 1 && CurrentPageNumber == 1)
             {
                 IsRightNavigateButtonVisible = true;
                 IsLeftNavigateButtonVisible = false;
             }
-            else if (PageNumber > 1 && CurrentPageNumber > 1)
+            else if (TotalPage > 1 && CurrentPageNumber > 1)
             {
                 IsRightNavigateButtonVisible = true;
                 IsLeftNavigateButtonVisible = true;
             }
-            else if (PageNumber == CurrentPageNumber)
+            else if (TotalPage == CurrentPageNumber)
             {
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = true;
@@ -470,7 +472,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //    IsLeftNavigateButtonVisible = false;
             //}
             //else if (CurrentPageNumber > 0 && 
-            //         (CurrentPageNumber == (PageNumber - 1)))
+            //         (CurrentPageNumber == (TotalPage - 1)))
             //{
             //    IsRightNavigateButtonVisible = false;
             //    IsLeftNavigateButtonVisible = true;
@@ -580,9 +582,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 foreach (var item in emptyProjectStages) StageItems.Remove(item);
 
+                //// --- Test Data 
+
+                //StageItemViewModel firstItem = StageItems.First();
+
+                //string originalName = firstItem.Name;
+                //for (int i = 1; i < 7; i++)
+                //{
+                //    StageItemViewModel newItem = new StageItemViewModel(firstItem.Source)
+                //    {
+                //        Id = "D",
+                //        Name = $"{originalName}_{i}",
+                //        ProjectItems = firstItem.ProjectItems
+                //    };
+                //    StageItems.Add(newItem);
+                //}
+                //// ----
+
                 StageTotal = StageItems.Count();
 
-                CalculatePageNumber();
+                CalculateTotalPage();
 
 
                 if (StageTotal == 0)
