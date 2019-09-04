@@ -233,6 +233,14 @@
                               Foreground="White"
                               BorderThickness="0"
                               BorderBrush="Transparent"
+                              ItemsSource="{Binding Path=VideoTypes}"
+                              SelectedItem="{Binding Path=CurrentVideoType}"/>
+
+                    <ComboBox Width="Auto" 
+                              Background="Transparent"
+                              Foreground="White"
+                              BorderThickness="0"
+                              BorderBrush="Transparent"
                               ItemsSource="{Binding Path=Resolutions}"
                               SelectedItem="{Binding Path=CurrentResolution}"/>
 
