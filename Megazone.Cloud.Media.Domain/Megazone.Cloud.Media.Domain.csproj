@@ -63,6 +63,7 @@
     <Compile Include="IAuthorizationRepository.cs" />
     <Compile Include="ICloudMediaRepository.cs" />
     <Compile Include="Megaone.cs" />
+    <Compile Include="Mpd.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectListResponse.cs" />

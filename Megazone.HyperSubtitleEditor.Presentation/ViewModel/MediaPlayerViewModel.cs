@@ -131,9 +131,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set
             {
                 Set(ref _currentVideoType, value);
-
-                /*var url = WorkContext?.VideoUrlOfResolutions[_currentVideoType];
-                OpenMedia(url, false);*/
             }
         }
 
@@ -197,7 +194,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             WorkContext = mcmWorkContext;
             VideoTypes = WorkContext.VideoResolutionsByType.Keys;
             Resolutions = WorkContext.VideoResolutionsByType.First().Value?.Keys;
-            //Resolutions = WorkContext.VideoUrlOfResolutions.Keys;
             CurrentVideoType = VideoTypes.First();
             if (Resolutions != null) CurrentResolution = Resolutions.First();
 

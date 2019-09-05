@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
+using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Unity;
 
@@ -31,12 +37,52 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
-            VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
-            VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
-            VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
+            //VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
+            //VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
+            //VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
             CaptionKind = GetTrackKind(openedCaptionAsset);
         }
 
+        public async Task<Mpd> ParseMpdAsync(string url)
+        {
+            //string url = renditionAsset.Urls?.FirstOrDefault();
+
+            //if (url.IsNullOrEmpty())
+            //    return renditionAsset;
+
+            string xmlString = await Task.Run(() => GetMpdContentAsync(url));
+
+            var serializer = new XmlSerializer(typeof(Mpd));
+          
+            using (TextReader reader = new StringReader(xmlString))
+            {
+                var obj = serializer.Deserialize(reader);
+
+                Mpd mpdObj = obj as Mpd;
+
+                //renditionAsset.Duration = Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration).TotalSeconds;
+
+
+
+                //Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration);
+                return mpdObj;
+            }
+        }
+
+        private async Task<string> GetMpdContentAsync(string url)
+        {
+            string xmlStr = "";
+
+            using (var wc = new WebClient())
+            {
+                xmlStr = wc.DownloadString(url);
+            }
+            Debug.WriteLine(xmlStr);
+
+
+            return xmlStr;
+        }
+        
         public Video OpenedVideo { get; private set; }
         public CaptionAsset OpenedCaptionAsset { get; private set; }
         public string UploadInputPath { get; private set; }
@@ -47,11 +93,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public TrackKind CaptionKind { get; private set; }
 
+        //public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
+        //{
+        //    OpenedVideo = openedVideo;
+        //    OpenedCaptionAsset = openedCaptionAsset;
+        //    VideoMediaUrl = GetVideoMediaUrl(openedVideo);
+        //    CaptionKind = GetTrackKind(openedCaptionAsset);
+        //}
         public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
         {
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
-            VideoMediaUrl = GetVideoMediaUrl(openedVideo);
+            VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
+            VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
+            VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
             CaptionKind = GetTrackKind(openedCaptionAsset);
         }
 
@@ -59,7 +114,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         {
             if (string.IsNullOrEmpty(captionAssetId))
                 return null;
-
+             
             var authorization = _signInViewModel.GetAuthorization();
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
@@ -192,19 +247,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return fileName;
         }
 
-        private Dictionary<string, Dictionary<int, string>> GetVideoUrlDictionary(Video video)
+        private async Task<Dictionary<string, Dictionary<int, string>>> GetVideoUrlDictionary(Video video)
         {
             if (video == null) return null;
+
+            var dashRenditionAsset =
+                video.Sources.FirstOrDefault(renditionAsset => renditionAsset.Type.ToUpper().Equals("DASH"));
+
+            if (dashRenditionAsset != null)
+            {
+                dashRenditionAsset = await ParseMpdAsync(dashRenditionAsset);
+            }
+
 
             var resultDictionary = new Dictionary<string, Dictionary<int, string>>();
 
             foreach (var renditionAsset in video.Sources)
             {
                 if (renditionAsset.Elements == null) continue;
-
+                
                 var typeDictionaryic = new Dictionary<int, string>();
 
-                foreach (var element in renditionAsset.Elements)
+                foreach (Rendition element in renditionAsset.Elements)
                 {
                     if (element.VideoSetting == null) continue;
 

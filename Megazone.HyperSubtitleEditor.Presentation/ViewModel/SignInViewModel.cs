@@ -23,6 +23,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Newtonsoft.Json;
@@ -532,6 +533,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                //McmWorkContext.ParseMPD("https://s3.ap-northeast-2.amazonaws.com/mz-cm-stg-transcoding-output/mz-cm/dash-mp4-drm/애터미슬림바디쉐이크&보이차_000529/1566193769928/애터미슬림바디쉐이크&보이차_000529.mpd");
+
                 IsLoadingProjectPage = true;
                 IsBusy = true;
 
