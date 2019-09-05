@@ -877,10 +877,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
         {
             // 현재 정보
-            await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset,
+            var isSuccess = await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset,
                 message.Param.Captions.ToList());
-            _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
-                message.Param.Captions.ToList(), GetVideoUrl());
+
+            if (isSuccess)
+            {
+                _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
+                    message.Param.Captions.ToList(), GetVideoUrl());
+            }
+            else
+            {
+                // [resource]
+                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "게시를 실패하였습니다.\n관리자에게 문의하십시오.", MessageBoxButton.OK,
+                    TextAlignment.Center));
+            }
 
             return;
 

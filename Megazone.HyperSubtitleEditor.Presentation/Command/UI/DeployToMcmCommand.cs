@@ -36,7 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 // 게시할수 없음.
                 // [resource]
                 _browser.ShowConfirmWindow(
-                    new ConfirmWindowParameter("오류", "업로드 설정 정보 조회를 실패하였습니다.\nMedia Cloud 관리자에게 문의하십시오.",
+                    new ConfirmWindowParameter("오류", "업로드 설정 정보 조회를 실패하였습니다.\n관리자에게 문의하십시오.",
                         MessageBoxButton.OK));
                 return;
             }

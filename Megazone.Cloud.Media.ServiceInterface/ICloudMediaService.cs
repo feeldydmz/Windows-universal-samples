@@ -28,5 +28,6 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<Settings> GetSettingsAsync(GetSettingsParameter parameter, CancellationToken cancellationToken);
         Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
+        Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken);
     }
 }

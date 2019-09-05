@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -216,6 +217,42 @@ namespace Megazone.Cloud.Media.Repository
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
                 .Execute(restRequest).Convert<Video>();
+        }
+
+        public bool UpdateVideoCaptions(VideoRequest request)
+        {
+            var captionAssetList = request.Video.Captions.Select(asset => new VideoAsset(asset.Id)).ToList();
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk", Method.PATCH)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Video.Version.ToString())
+                .AddJsonString(captionAssetList);
+
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return !response.Content.Contains("errorCode");
+            }
+            return false;
+        }
+
+        public bool DeleteCaptionAsset(DeleteAssetRequest request)
+        {
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.DELETE)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Version.ToString());
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public class VideoAsset
+        {
+            public VideoAsset(string assetId)
+            {
+                AssetId = assetId;
+            }
+            public string AssetId { get; }
         }
     }
 }

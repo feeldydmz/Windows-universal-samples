@@ -171,7 +171,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                             new UpdateVideoParameter(authorization, stageId, projectId, video.Id, updateVideo),
                             CancellationToken.None);
 
-                        return !string.IsNullOrEmpty(updatedVideo?.Id);
+                        if (string.IsNullOrEmpty(updatedVideo?.Id))
+                        {
+                            // 등록된 asset 삭제.
+                            await _cloudMediaService.DeleteCaptionAssetAsync(
+                                new DeleteCaptionAssetParameter(authorization, stageId, projectId, createAsset.Id, createAsset.Version),
+                                CancellationToken.None);
+                            return false;
+                        }
+                        return true;
                     }
                     return false;
                 }

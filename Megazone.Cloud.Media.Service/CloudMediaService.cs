@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace Megazone.Cloud.Media.Service
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
             "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
-        private const string UPLOAD_HOST_ENDPOINT = "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
+
+        private const string UPLOAD_HOST_ENDPOINT =
+            "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
 #else
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
@@ -95,7 +98,7 @@ namespace Megazone.Cloud.Media.Service
                 var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
 
-                return (!response.MediaType?.ToUpper().Equals("TEXT") ?? false) ? null : response;
+                return !response.MediaType?.ToUpper().Equals("TEXT") ?? false ? null : response;
             }, cancellationToken);
         }
 
@@ -110,7 +113,8 @@ namespace Megazone.Cloud.Media.Service
                 var assetName = parameter.AssetName;
                 var captions = parameter.Captions;
 
-                var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", "DIRECT", 0, 1, null, captions);
+                var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", "DIRECT", 0, 1, null,
+                    captions);
 
                 var response = _cloudMediaRepository.CreateCaptionAsset(new AssetRequest<CaptionAsset>(
                     CLOUD_MEDIA_ENDPOINT,
@@ -202,11 +206,17 @@ namespace Megazone.Cloud.Media.Service
             // 캡션 추가.
             return await Task.Factory.StartNew(() =>
             {
+#if DEBUG
+                var result = _cloudMediaRepository.UpdateVideoCaptions(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
+                    parameter.Video));
+                return result ? parameter.Video : null;
+#else
                 var response = _cloudMediaRepository.UpdateVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
                     parameter.Video));
-
                 return response;
+#endif
             }, cancellationToken);
         }
 
@@ -222,7 +232,8 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken)
+        public async Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -237,6 +248,22 @@ namespace Megazone.Cloud.Media.Service
         public async Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri), cancellationToken);
+        }
+
+        public Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                var stageId = parameter.StageId;
+                var projectId = parameter.ProjectId;
+                var assetId = parameter.CaptionAssetId;
+                var version = parameter.Version;
+
+                var result = _cloudMediaRepository.DeleteCaptionAsset(new DeleteAssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                    stageId, projectId, assetId, version));
+                Debug.Assert(!result, "Asset 삭제 실패.");
+            }, cancellationToken);
         }
     }
 }

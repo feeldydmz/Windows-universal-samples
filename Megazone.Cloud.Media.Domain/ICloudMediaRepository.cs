@@ -14,11 +14,13 @@ namespace Megazone.Cloud.Media.Domain
 
         AssetListResponse<CaptionAsset> GetCaptionAssets(AssetListRequest request);
         CaptionAsset GetCaptionAsset(AssetRequest request);
+        bool DeleteCaptionAsset(DeleteAssetRequest request);
         CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request);
         CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request);
         VideoListResponse GetVideos(VideoListRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);
+        bool UpdateVideoCaptions(VideoRequest request);
 
         Settings GetSetting(SettingRequest request);
         UploadResult UploadCaptionFile(UploadCaptionRequest request);
