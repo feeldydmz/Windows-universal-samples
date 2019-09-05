@@ -209,7 +209,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public Video UpdateVideo(VideoRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos", Method.PUT)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}", Method.PUT)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Video);

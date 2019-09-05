@@ -123,42 +123,70 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return uploadTargetPath;
         }
 
-        public async Task DeployAsync(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions)
+        public async Task<bool> DeployAsync(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions)
         {
             var captionList = captions?.ToList() ?? new List<Caption>();
             if (!captionList.Any())
-                return;
+                return false;
 
-            var authorization = _signInViewModel.GetAuthorization();
-            var stageId = _signInViewModel.SelectedStage.Id;
-            var projectId = _signInViewModel.SelectedProject.ProjectId;
-            var uploadInputPath = await GetUploadInputPathAsync();
+            try
+            {
+                var authorization = _signInViewModel.GetAuthorization();
+                var stageId = _signInViewModel.SelectedStage.Id;
+                var projectId = _signInViewModel.SelectedProject.ProjectId;
+                var uploadInputPath = await GetUploadInputPathAsync();
 
-            // upload caption files.
-            foreach (var caption in captionList)
-            {
-                var uploadData = GetTextBy(caption);
-                var fileName = GetFileName(caption);
-                var uploadedPath = await _cloudMediaService.UploadCaptionFileAsync(
-                    new UploadCaptionFileParameter(authorization, stageId, projectId, uploadData, fileName,
-                        uploadInputPath, caption.Url), CancellationToken.None);
-                caption.Url = uploadedPath;
-            }
+                // upload caption files.
+                foreach (var caption in captionList)
+                {
+                    var uploadData = GetTextBy(caption);
+                    var fileName = GetFileName(caption);
+                    var uploadedPath = await _cloudMediaService.UploadCaptionFileAsync(
+                        new UploadCaptionFileParameter(authorization, stageId, projectId, uploadData, fileName,
+                            uploadInputPath, caption.Url), CancellationToken.None);
+                    caption.Url = uploadedPath;
+                }
 
-            if (string.IsNullOrEmpty(captionAsset.Id))
-            {
-                var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
-                    new CreateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Name, captionList),
-                    CancellationToken.None);
-                Debug.Assert(!string.IsNullOrEmpty(createAsset?.Id), "createAsset is null.");
-            }
-            else
-            {
+                if (string.IsNullOrEmpty(captionAsset.Id))
+                {
+                    var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
+                        new CreateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Name, captionList),
+                        CancellationToken.None);
+                    Debug.Assert(!string.IsNullOrEmpty(createAsset?.Id), "createAsset is null.");
+
+                    var originalVideo = await _cloudMediaService.GetVideoAsync(
+                        new GetVideoParameter(authorization, stageId, projectId, video.Id), CancellationToken.None);
+
+                    if (originalVideo != null)
+                    {
+                        var captionAssetList = originalVideo.Captions.ToList();
+                        captionAssetList.Add(createAsset);
+                    
+                        var updateVideo = new Video(originalVideo.Id, originalVideo.Name, originalVideo.Description,
+                            originalVideo.Status, originalVideo.Duration, originalVideo.CreatedAt, originalVideo.Version,
+                            originalVideo.ImageUrl, originalVideo.Origins, originalVideo.Sources, captionAssetList,
+                            originalVideo.Thumbnails, originalVideo.Posters);
+
+                        var updatedVideo = await _cloudMediaService.UpdateVideoAsync(
+                            new UpdateVideoParameter(authorization, stageId, projectId, video.Id, updateVideo),
+                            CancellationToken.None);
+
+                        return !string.IsNullOrEmpty(updatedVideo?.Id);
+                    }
+                    return false;
+                }
+
                 var updatedCaption = await _cloudMediaService.UpdateCaptionAsync(
                     new UpdateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
                     CancellationToken.None);
                 Debug.Assert(updatedCaption != null, "updatedCaption is null.");
+                return !string.IsNullOrEmpty(updatedCaption?.Id);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
         }
 
         private string GetTextBy(Caption caption)

@@ -203,7 +203,8 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var response = _cloudMediaRepository.UpdateVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
+                    parameter.Video));
 
                 return response;
             }, cancellationToken);
