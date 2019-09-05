@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -27,6 +26,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Newtonsoft.Json;
 using Unity;
+
 // ReSharper disable InconsistentNaming
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -69,7 +69,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _logoutCommand;
         private ICommand _moveProjectStepCommand;
         private ICommand _navigatingCommand;
-        private int _totalPage;
+
+        private ICommand _projectSelectionChangedCommand;
         private ICommand _rightNavigateCommand;
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
@@ -82,13 +83,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private int _stageTotal;
 
         private ICommand _startProjectCommand;
+        private int _totalPage;
 
         private string _uriSource;
 
-        public SignInViewModel(ICloudMediaService cloudMediaService)
+        public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger, IBrowser browser)
         {
-            _logger = Bootstrapper.Container.Resolve<ILogger>();
-            _browser = Bootstrapper.Container.Resolve<IBrowser>();
+            _logger = logger;
+            _browser = browser;
             _cloudMediaService = cloudMediaService;
 
             _config = ConfigHolder.Current;
@@ -228,16 +230,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public bool IsAutoLogin
         {
             get => _config.Subtitle.AutoLogin;
-            set
-            {
-                Set(ref _isAutoLogin, value);
-
-                _config.Subtitle.AutoLogin = _isAutoLogin;
-                ConfigHolder.Save(_config);
-
-                if (_isAutoLogin)
-                    SaveAuthorization();
-            }
+            set => Set(ref _isAutoLogin, value);
         }
 
         public string UriSource
@@ -340,7 +333,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _startProjectCommand =
-                    _startProjectCommand ?? new RelayCommand(OnStartProject, CanExcuteStartProject);
+                    _startProjectCommand ?? new RelayCommand(OnStartProject, CanStartProject);
             }
         }
 
@@ -353,6 +346,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand ProjectSelectionChangedCommand
+        {
+            get
+            {
+                return _projectSelectionChangedCommand =
+                    _projectSelectionChangedCommand ??
+                    new RelayCommand<ProjectItemViewModel>(OnProjectSelectionChanged);
+            }
+        }
+
+        public void Save()
+        {
+            _config.Subtitle.AutoLogin = _isAutoLogin;
+            ConfigHolder.Save(_config);
+
+            if (_isAutoLogin)
+                SaveAuthorization();
+        }
+
+        private void OnProjectSelectionChanged(ProjectItemViewModel item)
+        {
+        }
 
         public Authorization GetAuthorization()
         {
@@ -386,7 +401,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CalculateStageSlidePosition();
         }
 
-        private bool CanExcuteStartProject()
+        private bool CanStartProject()
         {
             if (StageTotal == 0)
                 return false;
@@ -509,6 +524,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void LoginByAuthorizationCode(string code)
         {
+            // TODO: 로그인 처리 로직은 서비스 단에서.
             var authorizationRepository = new AuthorizationRepository();
 
             var authResponse = authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_ENDPOINT, code));
@@ -660,6 +676,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _logger.Error.Write(ex.Message);
                 _authorization = null;
             }
+
             return false;
         }
 
@@ -698,13 +715,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedProject != null &&
                 SelectedProject != SelectingProject)
             {
-                var subtilteViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
-                var dirtyTabs = subtilteViewModel?.Tabs.Where(tab => tab.CheckDirty()).ToList();
+                var dirtyTabs = subtitleViewModel?.Tabs.Where(tab => tab.CheckDirty()).ToList();
 
                 var isDirty = dirtyTabs != null && dirtyTabs.Any();
                 if (isDirty)
                 {
+                    // [resource].
                     var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(
                         Resource.CNT_WARNING,
                         "프로젝트가 변경됩니다.\r\n이 작업으로 인해 기존 양식의 데이터를 손실 할 수 있습니다.\r\n\r\n계속하시겠습니까?",
@@ -712,7 +730,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     if (result == MessageBoxResult.Cancel) return;
 
-                    var removeTabs = subtilteViewModel.Tabs.ToList();
+                    var removeTabs = subtitleViewModel.Tabs.ToList();
 
                     foreach (var tab in removeTabs)
                         MessageCenter.Instance.Send(

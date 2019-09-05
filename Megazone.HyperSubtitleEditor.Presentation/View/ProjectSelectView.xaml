@@ -12,7 +12,8 @@
              xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              mc:Ignorable="d"
              d:DesignHeight="736" d:DesignWidth="1280"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
+             x:Name="Root">
     <i:Interaction.Behaviors>
         <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" />
     </i:Interaction.Behaviors>
@@ -27,11 +28,7 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-            <Style TargetType="{x:Type Window}">
-                <Setter Property="FontFamily" Value="Malgun Gothic" />
-            </Style>
-
-            <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBox_ProjectSelect"
+            <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBoxProjectSelect"
                    BasedOn="{StaticResource Style_ListBoxDefault}">
                 <Setter Property="Background" Value="#282f37" />
                 <Setter Property="BorderBrush" Value="#282f37" />
@@ -58,9 +55,9 @@
                         DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
                         TextBlock.Foreground="Azure" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,0,11,0" VerticalAlignment="Center">
-                    <TextBlock Text="Stage" Margin="2,0" Foreground="#5fa5f0" FontWeight="Bold" />
+                    <TextBlock Text="Stage" Margin="2,0" Foreground="{StaticResource Brush_HeaderTextForeground}" FontWeight="Bold" />
                     <TextBlock Text="{Binding Path=SelectedStage.Name}" Margin="2,0,22,0" />
-                    <TextBlock Text="Project" Margin="2,0" Foreground="#5fa5f0" FontWeight="Bold" />
+                    <TextBlock Text="Project" Margin="2,0" Foreground="{StaticResource Brush_HeaderTextForeground}" FontWeight="Bold" />
                     <TextBlock Text="{Binding Path=SelectedProject.Name}" Margin="2,0" />
                 </StackPanel>
                 <Rectangle Height="18" Width="1" Fill="#78828e" Margin="24,0" VerticalAlignment="Center" />
@@ -218,7 +215,7 @@
                                         <Hyperlink
                                             NavigateUri="mailto:Media@megazone.com"
                                             RequestNavigate="OnNavigate"
-                                            Style="{DynamicResource Style_NoticeHyperlink}">
+                                            Style="{StaticResource Style_NoticeHyperlink}">
                                             Media@megazone.com
                                         </Hyperlink>
                                     </TextBlock>
@@ -240,12 +237,12 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="0,45,0,0">
-                    <Label Foreground="White" HorizontalContentAlignment="Center" FontSize="24">
+                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="24">
                         프로젝트를 선택해 주세요
-                    </Label>
-                    <Label Foreground="#a0a3aa" HorizontalContentAlignment="Center" FontSize="12">
+                    </TextBlock>
+                    <TextBlock Foreground="#a0a3aa" HorizontalAlignment="Center" FontSize="12">
                         Please select Project of the Stage you want to access
-                    </Label>
+                    </TextBlock>
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -333,13 +330,18 @@
                                     </Border>
                                     <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
                                             BorderBrush="#3C434D">
-                                        <ListBox ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
+                                        <ListBox
+                                            x:Name="ProjectListBox"
+                                            ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Style="{StaticResource Style_ListBox_ProjectSelect}"
+                                                 Style="{StaticResource Style_ListBoxProjectSelect}"
                                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
                                                  SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject}"
                                                  Width="340">
+                                            <i:Interaction.Behaviors>
+                                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding DataContext.ProjectSelectionChangedCommand, ElementName=Root}" CommandParameter="{Binding ElementName=ProjectListBox, Path=SelectedItem}" />
+                                            </i:Interaction.Behaviors>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                                     <DockPanel HorizontalAlignment="Stretch">

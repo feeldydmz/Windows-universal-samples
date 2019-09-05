@@ -198,6 +198,7 @@
     <Compile Include="Command\UI\ReplaceTextCommand.cs" />
     <Compile Include="Command\UI\SaveGroupFileCommand.cs" />
     <Compile Include="Command\UI\SelectJobCommand.cs" />
+    <Compile Include="Command\UI\SetAutoLoginCommand.cs" />
     <Compile Include="Command\UI\ShowApplicatoinInfoCommand.cs" />
     <Compile Include="Command\UI\ShowJobMediaSelectorViewCommand.cs" />
     <Compile Include="Command\UI\PasteRowCommand.cs" />

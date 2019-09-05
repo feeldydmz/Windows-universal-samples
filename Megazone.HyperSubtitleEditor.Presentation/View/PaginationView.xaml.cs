@@ -35,6 +35,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     (s, e) => { ((PaginationView) s).OnValueChanged((int) e.OldValue, (int) e.NewValue); }));
 
+        public static readonly DependencyProperty IsPreviousDotVisibleProperty =
+            DependencyProperty.Register("IsPreviousDotVisible", typeof(bool), typeof(PaginationView),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty IsNextDotVisibleProperty =
+            DependencyProperty.Register("IsNextDotVisible", typeof(bool), typeof(PaginationView),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
         public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged",
             RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(PaginationView));
 
@@ -78,6 +86,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             get => (int) GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
+        }
+
+        public bool IsPreviousDotVisible
+        {
+            get => (bool)GetValue(IsPreviousDotVisibleProperty);
+            set => SetValue(IsPreviousDotVisibleProperty, value);
+        }
+
+        public bool IsNextDotVisible
+        {
+            get => (bool)GetValue(IsNextDotVisibleProperty);
+            set => SetValue(IsNextDotVisibleProperty, value);
         }
 
         public event RoutedPropertyChangedEventHandler<int> ValueChanged
@@ -160,6 +180,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 PageItems = new ObservableCollection<int>(list);
                 if (value == 0)
                     Value = 1;
+
+                IsPreviousDotVisible = start > 1;
+                IsNextDotVisible = pageCount - end > DisplayCount;
             }
         }
     }

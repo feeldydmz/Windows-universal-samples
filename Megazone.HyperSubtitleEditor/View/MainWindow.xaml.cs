@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.View
 
             InitializeComponent();
 
+#if DEBUG
             ConsoleBuilder.Create()
                 .View(
                     RootPanel,
@@ -41,6 +42,7 @@ namespace Megazone.HyperSubtitleEditor.View
 
             //var obj = this.New(() => new Object());
             this.Watch();
+#endif
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
