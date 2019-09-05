@@ -9,6 +9,8 @@ namespace Megazone.Cloud.Media.Repository
     [Inject(Source = typeof(IAuthorizationRepository), Scope = LifetimeScope.Transient)]
     public class AuthorizationRepository : IAuthorizationRepository
     {
+        public const string LOGIN_URI = "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+
         public AuthorizationResponse Get(AuthorizationRequest request)
         {
             // 사용자 인증.

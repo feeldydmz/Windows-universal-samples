@@ -36,9 +36,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
 
-        private const string LOGIN_URI =
-            "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
-
         private readonly IBrowser _browser;
 
         private readonly ICloudMediaService _cloudMediaService;
@@ -519,7 +516,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectingProject = null;
             SelectingStage = null;
 
-            UriSource = LOGIN_URI;
+            UriSource = AuthorizationRepository.LOGIN_URI;
         }
 
         private void LoginByAuthorizationCode(string code)
@@ -558,7 +555,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     IsSignIn = false;
                     IsBusy = false;
-                    UriSource = LOGIN_URI;
+                    UriSource = AuthorizationRepository.LOGIN_URI;
                     return;
                 }
 
@@ -692,7 +689,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (!_config.Subtitle.AutoLogin)
             {
-                UriSource = LOGIN_URI;
+                UriSource = AuthorizationRepository.LOGIN_URI;
                 return;
             }
 
@@ -702,7 +699,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             else
             {
-                UriSource = LOGIN_URI;
+                UriSource = AuthorizationRepository.LOGIN_URI;
                 IsProjectViewVisible = false;
                 IsSignIn = false;
             }
