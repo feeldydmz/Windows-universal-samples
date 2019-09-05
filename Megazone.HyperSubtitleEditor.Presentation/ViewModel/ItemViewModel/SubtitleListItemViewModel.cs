@@ -16,7 +16,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly Action _onDisplayTextChangedAction;
         private readonly Action _validateAction;
 
-        private readonly WebVttParser _webVttParser = new WebVttParser();
+        private static WebVttParser WebVttParser { get; } = new WebVttParser();
+
         private string _cueSettingData;
         private string _displayText;
         private TimeSpan _duration;
@@ -54,9 +55,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Texts = subtitleItem.Texts;
             _originalDisplayText = _displayText;
             CueSettingData = subtitleItem.CueSettingData;
-
             _isInitializing = false;
-
             AnalyzeText(Duration, Texts);
         }
 
@@ -154,7 +153,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set
             {
                 Set(ref _texts, value);
-                DisplayText = _webVttParser.ToTextLine(value);
+                DisplayText = WebVttParser.ToTextLine(value);
                 AnalyzeText(Duration, value);
             }
         }
@@ -219,7 +218,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             if (_isInitializing)
                 return;
 
-            var normalText = new WebVttParser().GetNormalTexts(texts);
+            var normalText = WebVttParser.GetNormalTexts(texts);
 
             if (string.IsNullOrEmpty(normalText))
             {
@@ -266,7 +265,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public override string ToString()
         {
             return
-                $"{Number}\r\n{StartTime:hh\\:mm\\:ss\\.fff} --> {EndTime:hh\\:mm\\:ss\\.fff}\r\n{_webVttParser.ToTextLine(Texts)}";
+                $"{Number}\r\n{StartTime:hh\\:mm\\:ss\\.fff} --> {EndTime:hh\\:mm\\:ss\\.fff}\r\n{WebVttParser.ToTextLine(Texts)}";
         }
 
         internal SubtitleListItemViewModel Copy()
