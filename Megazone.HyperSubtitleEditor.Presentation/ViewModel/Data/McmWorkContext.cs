@@ -161,11 +161,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     {
                         var captionAssetList = originalVideo.Captions.ToList();
                         captionAssetList.Add(createAsset);
-                    
+
                         var updateVideo = new Video(originalVideo.Id, originalVideo.Name, originalVideo.Description,
-                            originalVideo.Status, originalVideo.Duration, originalVideo.CreatedAt, originalVideo.Version,
-                            originalVideo.ImageUrl, originalVideo.Origins, originalVideo.Sources, captionAssetList,
-                            originalVideo.Thumbnails, originalVideo.Posters);
+                            originalVideo.Status, originalVideo.Duration, originalVideo.CreatedAt,
+                            originalVideo.Version, originalVideo.ImageUrl, originalVideo.PrimaryPoster,
+                            originalVideo.Origins, originalVideo.Sources, captionAssetList, originalVideo.Thumbnails,
+                            originalVideo.Posters);
 
                         var updatedVideo = await _cloudMediaService.UpdateVideoAsync(
                             new UpdateVideoParameter(authorization, stageId, projectId, video.Id, updateVideo),
@@ -229,7 +230,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         private Dictionary<string, Dictionary<int, string>> GetVideoUrlDictionary(Video video)
         {
-            if (video == null) return null;
+            if (video?.Sources == null) return null;
 
             var resultDictionary = new Dictionary<string, Dictionary<int, string>>();
 

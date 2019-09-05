@@ -68,6 +68,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private int _totalCount;
         private IList<VideoItemViewModel> _videoItems;
+        private bool _isLoading = false;
 
         public VideoListViewModel(IBrowser browser, ICloudMediaService cloudMediaService,
             SignInViewModel signInViewModel)
@@ -233,9 +234,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
-        private void OnSelectedPageNoChanged(int selectedPageNo)
+        private async void OnSelectedPageNoChanged(int selectedPageNo)
         {
-            SearchAsync(Keyword, selectedPageNo - 1, true);
+            if (_isLoading)
+                return;
+            await SearchAsync(Keyword, selectedPageNo - 1, true);
         }
 
         private void OnDurationEndTimeChanged()
@@ -266,7 +269,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private void Load()
+        private async void Load()
         {
 #if STAGING
             KeywordTypeItems = new List<KeywordType>
@@ -284,7 +287,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
 
-            SearchAsync(Keyword, 0);
+            _isLoading = true;
+            await SearchAsync(Keyword, 0);
+            _isLoading = false;
         }
 
         private bool CanLoadCaption(VideoItemViewModel videoItem)
@@ -328,9 +333,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
-            SearchAsync(Keyword, 0);
+            await SearchAsync(Keyword, 0);
         }
 
         private void Back()
@@ -342,17 +347,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _cancellationTokenSource.Cancel();
         }
 
-        private void Enter(string keyword)
+        private async void Enter(string keyword)
         {
-            SearchAsync(keyword, 0);
+            await SearchAsync(keyword, 0);
         }
 
-        private void Search(string keyword)
+        private async void Search(string keyword)
         {
-            SearchAsync(keyword, 0);
+            await SearchAsync(keyword, 0);
         }
 
-        private async void SearchAsync(string keyword, int pageIndex, bool isPaging = false)
+        private async Task SearchAsync(string keyword, int pageIndex, bool isPaging = false)
         {
             var conditions = MakeSearchConditions(keyword, DurationStartTime, DurationEndTime);
             await SearchVideoAsync(pageIndex, conditions, isPaging);

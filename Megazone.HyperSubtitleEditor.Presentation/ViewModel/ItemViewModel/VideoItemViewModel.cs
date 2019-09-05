@@ -86,7 +86,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private string GetPrimaryImage(Video video)
         {
-            var url = video.ImageUrl;
+            var url = video.PrimaryPoster?.Url ?? video.ImageUrl;
             if (string.IsNullOrEmpty(url)) url = video.Posters?.FirstOrDefault(poster => poster.IsPreferred)?.Url;
 
             if (string.IsNullOrEmpty(url) && (video.Thumbnails?.Any() ?? false))

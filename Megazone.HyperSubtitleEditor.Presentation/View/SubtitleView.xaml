@@ -1259,8 +1259,8 @@
                                         </Style.Triggers>
                                     </Style>
                                 </UniformGrid.Resources>
-                                <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenVideoListDialogCommand}" />
+                                <!--<Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
+                                        Command="{StaticResource OpenVideoListDialogCommand}" />-->
                                 <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
                                         Command="{StaticResource OpenSubtitleCommand}" />
                                 <Button Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0"
