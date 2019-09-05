@@ -3,66 +3,99 @@
     "Name": "English",
     "NativeName": "English",
     "Alpha2": "en",
-    "Alpha3": "eng"
+    "Alpha3": "eng",
+    "Country": {
+      "Alpha2": "US"
+    } 
   },
   {
     "Name": "Japanese",
     "NativeName": "日本語 (にほんご)",
     "Alpha2": "ja",
-    "Alpha3": "jpn"
+    "Alpha3": "jpn",
+    "Country": {
+      "Alpha2": "JP"
+    }
   },
   {
     "Name": "Chinese",
     "NativeName": "中文 (Zhōngwén)",
     "Alpha2": "zh",
-    "Alpha3": "zho"
+    "Alpha3": "zho",
+    "Country": {
+      "Alpha2": "CN"
+    }
   },
   {
     "Name": "Spanish",
     "NativeName": "Español",
     "Alpha2": "es",
-    "Alpha3": "spa"
+    "Alpha3": "spa",
+    "Country": {
+      "Alpha2": "ES"
+    }
   },
   {
     "Name": "Khmer",
     "NativeName": "ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ",
     "Alpha2": "km",
-    "Alpha3": "khm"
+    "Alpha3": "khm",
+    "Country": {
+      "Alpha2": "km"
+    }
   },
   {
     "Name": "Thai",
     "NativeName": "ไทย",
     "Alpha2": "th",
-    "Alpha3": "tha"
+    "Alpha3": "tha",
+    "Country": {
+      "Alpha2": "TH"
+    }
   },
   {
     "Name": "Malay",
     "NativeName": "bahasa Melayu, بهاس ملايو",
     "Alpha2": "ms",
-    "Alpha3": "msa"
+    "Alpha3": "msa",
+    "Country": {
+      "Alpha2": "MY"
+    }
   },
   {
     "Name": "Vietnamese",
     "NativeName": "Tiếng Việt",
     "Alpha2": "vi",
-    "Alpha3": "vie"
+    "Alpha3": "vie",
+    "Country": {
+      "Alpha2": "VN"
+    }
   },
   {
     "Name": "Korean",
     "NativeName": "한국어",
     "Alpha2": "ko",
-    "Alpha3": "kor"
+    "Alpha3": "kor",
+    "Country": {
+      "Alpha2": "KR"
+    }
   },
   {
     "Name": "Indonesian",
     "NativeName": "Bahasa Indonesia",
     "Alpha2": "id",
-    "Alpha3": "ind"
+    "Alpha3": "ind",
+    "Country": {
+      "Alpha2": "ID"
+    }
   },
   {
     "Name": "Russian",
     "NativeName": "Русский",
     "Alpha2": "ru",
-    "Alpha3": "rus"
+    "Alpha3": "rus",
+    "Country": {
+      "Alpha2": "RU"
+    }
   }
 ]

@@ -119,7 +119,7 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<Settings>();
         }
 
-        public void UploadCaptionFile(UploadCaptionRequest request)
+        public UploadResult UploadCaptionFile(UploadCaptionRequest request)
         {
             var sha256 = GetSha256(request.Text);
             
@@ -129,10 +129,7 @@ namespace Megazone.Cloud.Media.Repository
                 .AddParameter("contentHash", sha256)
                 .AddFileBytes("file", Encoding.UTF8.GetBytes(request.Text), request.FileName);
 
-            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
-            if (response != null)
-                if (response.StatusCode != HttpStatusCode.OK)
-                    throw new Exception();
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<UploadResult>();
 
             string GetSha256(string data)
             {

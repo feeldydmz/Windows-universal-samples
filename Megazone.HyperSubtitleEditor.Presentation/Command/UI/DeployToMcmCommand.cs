@@ -41,10 +41,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 return;
             }
 
-            if (_subtitleViewModel.WorkContext.OpenedCaptionAsset != null)
-                _browser.Main.ShowMcmDeployDialog();
-            else
+            if (string.IsNullOrEmpty(_subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id))
                 _browser.Main.ShowMcmDeployAndAssetCreateDialog();
+            else
+                _browser.Main.ShowMcmDeployDialog();
         }
 
         public event EventHandler CanExecuteChanged

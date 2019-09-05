@@ -18,11 +18,14 @@ namespace Megazone.Cloud.Media.Service
         // ReSharper disable once InconsistentNaming
 #if STAGING
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
+        private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.stg.continuum.co.kr"; // stage
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
             "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
+        private const string UPLOAD_HOST_ENDPOINT = "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
 #else
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
+        private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
 #endif
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
@@ -105,8 +108,9 @@ namespace Megazone.Cloud.Media.Service
                 var stageId = parameter.StageId;
                 var projectId = parameter.ProjectId;
                 var assetName = parameter.AssetName;
+                var captions = parameter.Captions;
 
-                var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", 0, 1, null, null);
+                var asset = new CaptionAsset(null, assetName, "ACTIVE", "CAPTION", "TEXT", "DIRECT", 0, 1, null, captions);
 
                 var response = _cloudMediaRepository.CreateCaptionAsset(new AssetRequest<CaptionAsset>(
                     CLOUD_MEDIA_ENDPOINT,
@@ -158,7 +162,7 @@ namespace Megazone.Cloud.Media.Service
                 }
 
                 var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
-                    asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
+                    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
 
                 var response = _cloudMediaRepository.UpdateCaptionAsset(new AssetRequest<CaptionAsset>(
                     CLOUD_MEDIA_ENDPOINT,
@@ -217,19 +221,15 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public Task UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken)
+        public async Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken)
         {
-            //var uploadHostApiUrl = "https://upload.media.megazone.io";// production
-            //var uploadHostApiUrl = "https://upload.media.stg.continuum.co.kr"; // stage
-            var uploadHostApiUrl =
-                "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
-
-            return Task.Factory.StartNew(() =>
+            return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                _cloudMediaRepository.UploadCaptionFile(new UploadCaptionRequest(uploadHostApiUrl, accessToken,
-                    parameter.StageId, parameter.ProjectId, parameter.InputPath, parameter.FileName,
+                var response = _cloudMediaRepository.UploadCaptionFile(new UploadCaptionRequest(UPLOAD_HOST_ENDPOINT,
+                    accessToken, parameter.StageId, parameter.ProjectId, parameter.InputPath, parameter.FileName,
                     parameter.UploadData));
+                return response.UploadedPath;
             }, cancellationToken);
         }
 

@@ -25,6 +25,6 @@ namespace Megazone.Cloud.Media.Domain.Assets
         public string Country { get; }
         public string Kind { get; }
         public string Label { get; }
-        public string Url { get; }
+        public string Url { get; set; }
     }
 }

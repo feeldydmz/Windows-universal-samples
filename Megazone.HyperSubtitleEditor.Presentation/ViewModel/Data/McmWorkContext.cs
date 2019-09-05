@@ -139,32 +139,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             {
                 var uploadData = GetTextBy(caption);
                 var fileName = GetFileName(caption);
-                await _cloudMediaService.UploadCaptionFileAsync(new UploadCaptionFileParameter(authorization,
-                    stageId, projectId, uploadData, fileName, uploadInputPath, caption.Url), CancellationToken.None);
+                var uploadedPath = await _cloudMediaService.UploadCaptionFileAsync(
+                    new UploadCaptionFileParameter(authorization, stageId, projectId, uploadData, fileName,
+                        uploadInputPath, caption.Url), CancellationToken.None);
+                caption.Url = uploadedPath;
             }
 
             if (string.IsNullOrEmpty(captionAsset.Id))
             {
-                // create
                 var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
                     new CreateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Name, captionList),
                     CancellationToken.None);
-
-                Debug.Assert(createAsset == null, "createAsset is null.");
+                Debug.Assert(!string.IsNullOrEmpty(createAsset?.Id), "createAsset is null.");
             }
             else
             {
                 var updatedCaption = await _cloudMediaService.UpdateCaptionAsync(
                     new UpdateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
                     CancellationToken.None);
-
-                Debug.Assert(updatedCaption == null, "updatedCaption is null.");
+                Debug.Assert(updatedCaption != null, "updatedCaption is null.");
             }
         }
 
         private string GetTextBy(Caption caption)
         {
-            var tabItem = _subtitleViewModel.Tabs.Single(tab => tab.Caption.Equals(caption));
+            var tabItem = _subtitleViewModel.Tabs.Single(tab => tab.Name.Equals(caption.Label));
             var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -141,12 +142,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             IEnumerable<CaptionElementItemViewModel> MakeList()
             {
-                var captionList = _subtitleViewModel.Tabs.Select(tab => new CaptionElementItemViewModel(tab.Caption))
-                    .ToList();
+                var captionList = _subtitleViewModel.Tabs.Select(tab =>
+                    new CaptionElementItemViewModel(tab.Caption ?? new Caption(null, false, false, tab.LanguageCode,
+                                                        CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(),
+                                                        tab.Name, null))).ToList();
                 foreach (var item in captionList)
                     item.IsSelected = true;
 
                 return captionList;
+            }
+
+            string CountryCode(string languageCode)
+            {
+                switch (languageCode)
+                {
+                    case "en": return "US";
+                    case "ja": return "JP";
+                    case "zh": return "CN";
+                    case "es": return "ES";
+                    case "km": return "KH";
+                    case "th": return "TH";
+                    case "ms": return "MY";
+                    case "vi": return "VN";
+                    case "ko": return "KR";
+                    case "id": return "ID";
+                    case "ru": return "RU";
+                }
+
+                return string.Empty;
             }
         }
 
@@ -162,9 +185,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 CloseAction?.Invoke();
-
                 var video = VideoItem?.Source;
-                var captionAsset = CaptionAssetItem?.Source;
+                var captionAsset = CaptionAssetItem?.Source ?? CreateCaptionAsset();
                 var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
 
                 MessageCenter.Instance.Send(new Subtitle.McmDeployRequestedMessage(this,
@@ -175,6 +197,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        private CaptionAsset CreateCaptionAsset()
+        {
+            var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
+            return new CaptionAsset(null, AssetName, "ACTIVE", "CAPTION", "TEXT", "DIRECT", 0, 1, null,
+                selectedCaptionList);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Megazone.Cloud.Media.Domain
         Video UpdateVideo(VideoRequest request);
 
         Settings GetSetting(SettingRequest request);
-        void UploadCaptionFile(UploadCaptionRequest request);
+        UploadResult UploadCaptionFile(UploadCaptionRequest request);
         string Read(Uri fileUri);
     }
 }
