@@ -327,13 +327,27 @@ Function GetWindowLocalLanguageCode
 FunctionEnd
 
 ;----------------------------------------------------------------------
-
+/*
+[Root Key]
+HKCR or HKEY_CLASSES_ROOT
+HKLM or HKEY_LOCAL_MACHINE
+HKCU or HKEY_CURRENT_USER
+HKU or HKEY_USERS
+HKCC or HKEY_CURRENT_CONFIG
+HKDD or HKEY_DYN_DATA
+HKPD or HKEY_PERFORMANCE_DATA
+SHCTX or SHELL_CONTEXT
+*/
+  
 ; Registry SubKey
 !define PRODUCT_REGISTRY_SUBKEY "SOFTWARE\${COMPANY_NAME}\${PRODUCT_NAME}"
 
 !define REGISTRY_REGKEY_Culture "Culture"                  #언어 Language
 !define REGISTRY_REGKEY_InstallPath "InstallPath"          #설치 경로
 !define REGISTRY_REGKEY_InstalledVersion "Version"         #설치버전 정보
+
+; Custom Url Scheme
+!define CUSTOM_URL_SCHEME_REGISTRY_SUBKEY "Megazone.HyperSubtitleEditor.v1"
 
 ; 레지스트리 등록.
 Function WriteRegistry
@@ -344,11 +358,16 @@ Function WriteRegistry
   # default value setting.
   StrCpy $RegValue_Culture $R0
 
-  # 기본정보.
+  # install default infomation.
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_Culture}" "$RegValue_Culture"
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstallPath}" $INSTDIR
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstalledVersion}" "${PRODUCT_VERSION}"
-
+  
+  # register custom url scheme.
+  WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}" "URL protocol" ""
+  WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell" "" "open"
+  WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell\open" "" "command"
+  WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell\open\command" "" '"$INSTDIR\${PROCESS_NAME}" "%1"'
 FunctionEnd
 
 ;----------------------------------------------------------------------
@@ -708,7 +727,7 @@ Section Uninstall
   ${ProfilePathAllUsers} $0
   Delete "$0\Public\Desktop\${PRODUCT_NAME}.lnk"
 
-  #설치 파일 제거.
+  #Delete install files.
   Delete "$INSTDIR\Megazone Media Cloud.url"
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
@@ -795,12 +814,13 @@ Section Uninstall
   RMDir "$INSTDIR\ko-kr"
   RMDir /r "$INSTDIR"
 
-  #레지스트리 삭제.
+  #Delete registry.
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey "HKLM" "${PRODUCT_DIR_REGKEY}"
   DeleteRegKey "HKLM" "${PRODUCT_REGISTRY_SUBKEY}"
+  DeleteRegKey "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}"
 
-  #사용자 정보 삭제.
+  # Delete user file.
   ${If} $CheckState <> 0
     Delete "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}\*.*"
     RMDir /r "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}"
