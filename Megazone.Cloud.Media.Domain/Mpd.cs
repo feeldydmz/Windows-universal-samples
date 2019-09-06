@@ -8,6 +8,12 @@ using System.Xml.Serialization;
 
 namespace Megazone.Cloud.Media.Domain
 {
+    public class MpdParser
+    {
+        
+    }
+
+
     [XmlRoot("MPD", Namespace = "urn:mpeg:dash:schema:mpd:2011")]
     public class Mpd
     {
@@ -23,7 +29,7 @@ namespace Megazone.Cloud.Media.Domain
 
         //private string _minBufferTimeNode;
         [XmlAttribute("minBufferTime")]
-        public TimeSpan MinBufferTime { get; set; }
+        public string MinBufferTime { get; set; }
 
         [XmlAttribute("profiles")]
         public string profiles { get; set; }
@@ -55,7 +61,30 @@ namespace Megazone.Cloud.Media.Domain
 
             public struct AdaptationSetNode
             {
-                
+                [XmlAttribute("mimeType")]
+                public string MimeType { get; set; }
+
+                [XmlAttribute("frameRate")]
+                public string FrameRate { get; set; }
+
+                [XmlAttribute("segmentAlignment")]
+                public bool SegmentAlignment { get; set; }
+
+                [XmlAttribute("subsegmentAlignment")]
+                public bool SubsegmentAlignment { get; set; }
+
+                [XmlAttribute("startWithSAP")]
+                public int StartWithSap { get; set; }
+
+                [XmlAttribute("subsegmentStartsWithSAP")]
+                public int SubsegmentStartsWithSap { get; set; }
+
+                [XmlAttribute("bitstreamSwitching")]
+                public bool BitstreamSwitching { get; set; }
+
+
+
+
                 [XmlElement("ContentProtection")]
                 public List<ContentProtectionNode> ContentProtections { get; set; }
 
@@ -68,13 +97,13 @@ namespace Megazone.Cloud.Media.Domain
                     public string Id { get; set; }
 
                     [XmlAttribute("width")]
-                    public string Width { get; set; }
+                    public int Width { get; set; }
 
                     [XmlAttribute("height")]
-                    public string Height { get; set; }
+                    public int Height { get; set; }
 
                     [XmlAttribute("bandwidth")]
-                    public string Bandwidth { get; set; }
+                    public int Bandwidth { get; set; }
 
                     [XmlAttribute("codecs")]
                     public string Codecs { get; set; }

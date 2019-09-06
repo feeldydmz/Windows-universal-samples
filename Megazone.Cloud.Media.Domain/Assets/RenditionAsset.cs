@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 
 namespace Megazone.Cloud.Media.Domain.Assets
@@ -25,8 +29,10 @@ namespace Megazone.Cloud.Media.Domain.Assets
             {
                 Urls = jarray.ToObject<IEnumerable<string>>();
             }
-        }
 
+
+        }
+        
         public IEnumerable<string> Urls { get; }
     }
 }

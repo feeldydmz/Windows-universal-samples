@@ -37,51 +37,51 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
-            //VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
-            //VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
-            //VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
+            VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
+            VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
+            VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
             CaptionKind = GetTrackKind(openedCaptionAsset);
         }
 
-        public async Task<Mpd> ParseMpdAsync(string url)
-        {
-            //string url = renditionAsset.Urls?.FirstOrDefault();
+        //public async Task<Mpd> ParseMpdAsync(string url)
+        //{
+        //    //string url = renditionAsset.Urls?.FirstOrDefault();
 
-            //if (url.IsNullOrEmpty())
-            //    return renditionAsset;
+        //    //if (url.IsNullOrEmpty())
+        //    //    return renditionAsset;
 
-            string xmlString = await Task.Run(() => GetMpdContentAsync(url));
+        //    string xmlString = await Task.Run(() => GetMpdContentAsync(url));
 
-            var serializer = new XmlSerializer(typeof(Mpd));
+        //    var serializer = new XmlSerializer(typeof(Mpd));
           
-            using (TextReader reader = new StringReader(xmlString))
-            {
-                var obj = serializer.Deserialize(reader);
+        //    using (TextReader reader = new StringReader(xmlString))
+        //    {
+        //        var obj = serializer.Deserialize(reader);
 
-                Mpd mpdObj = obj as Mpd;
+        //        Mpd mpdObj = obj as Mpd;
 
-                //renditionAsset.Duration = Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration).TotalSeconds;
-
-
-
-                //Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration);
-                return mpdObj;
-            }
-        }
-
-        private async Task<string> GetMpdContentAsync(string url)
-        {
-            string xmlStr = "";
-
-            using (var wc = new WebClient())
-            {
-                xmlStr = wc.DownloadString(url);
-            }
-            Debug.WriteLine(xmlStr);
+        //        //renditionAsset.Duration = Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration).TotalSeconds;
 
 
-            return xmlStr;
-        }
+
+        //        //Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration);
+        //        return mpdObj;
+        //    }
+        //}
+
+        //private async Task<string> GetMpdContentAsync(string url)
+        //{
+        //    string xmlStr = "";
+
+        //    using (var wc = new WebClient())
+        //    {
+        //        xmlStr = wc.DownloadString(url);
+        //    }
+        //    Debug.WriteLine(xmlStr);
+
+
+        //    return xmlStr;
+        //}
         
         public Video OpenedVideo { get; private set; }
         public CaptionAsset OpenedCaptionAsset { get; private set; }
@@ -247,17 +247,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return fileName;
         }
 
-        private async Task<Dictionary<string, Dictionary<int, string>>> GetVideoUrlDictionary(Video video)
+        private Dictionary<string, Dictionary<int, string>> GetVideoUrlDictionary(Video video)
         {
             if (video == null) return null;
 
-            var dashRenditionAsset =
-                video.Sources.FirstOrDefault(renditionAsset => renditionAsset.Type.ToUpper().Equals("DASH"));
+            //var dashRenditionAsset =
+            //    video.Sources.FirstOrDefault(renditionAsset => renditionAsset.Type.ToUpper().Equals("DASH"));
 
-            if (dashRenditionAsset != null)
-            {
-                dashRenditionAsset = await ParseMpdAsync(dashRenditionAsset);
-            }
+            //if (dashRenditionAsset != null)
+            //{
+            //    string url = dashRenditionAsset.Urls?.FirstOrDefault();
+            //    var mpd = await ParseMpdAsync(url);
+
+            //    //dashRenditionAsset.Duration =  Mpd.ToTimeSpan(mpd.MediaPresentationDuration).TotalMilliseconds;
+            //}
 
 
             var resultDictionary = new Dictionary<string, Dictionary<int, string>>();
@@ -270,7 +273,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
                 foreach (Rendition element in renditionAsset.Elements)
                 {
-                    if (element.VideoSetting == null) continue;
+                    if (element.VideoSetting == null || element.Urls == null) continue;
 
                     typeDictionaryic.Add(element.VideoSetting.Height, element.Urls?.FirstOrDefault() ?? "");
                 }
