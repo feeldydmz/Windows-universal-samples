@@ -9,7 +9,6 @@ using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
-using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Security.Extension;
@@ -32,12 +31,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     public class SignInViewModel : ViewModelBase
     {
-        private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
-
         private readonly IBrowser _browser;
-
         private readonly ICloudMediaService _cloudMediaService;
-
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
         private Authorization _authorization;
@@ -407,9 +402,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 newStageList.Add(StageItems[i]);
             }
 
-
-            var SelectingProject = GetSelectedProject();
-
             DeselectProject();
             if (SelectingStage != null)
             {
@@ -417,18 +409,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectingStage = null;
             }
 
-
-            if (SelectingProject != null)
-            {
-                CurrentPageStageItems = newStageList;
-
-                var stageItemViewModel =
-                    StageItems.FirstOrDefault(item => item.Id == SelectingProject.StageId);
-            }
-            else
-            {
-                CurrentPageStageItems = newStageList;
-            }
+            CurrentPageStageItems = newStageList;
 
             if (TotalPage == 1)
             {
@@ -755,8 +736,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var SelectingProject = GetSelectedProject();
 
             if (SelectingProject != null)
-                SelectingStage =
-                    StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject?.StageId));
+                SelectingStage = StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject.StageId));
 
             if (SelectingStage != null)
                 SelectingStage.IsSelected = true;
