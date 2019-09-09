@@ -51,4 +51,5 @@
     <ui:DownloadExcelTemplet x:Key="DownloadExcelTemplet" />
     <ui:AutoAdjustEndtimesCommand x:Key="AutoAdjustEndtimesCommand" />
     <ui:DeployToMcmCommand x:Key="DeployToMcmCommand" />
+    <ui:SetAutoLoginCommand x:Key="SetAutoLoginCommand"/>
 </ResourceDictionary>

@@ -463,6 +463,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void DeselectProject()
         {
+            if (StageItems == null) return;
+
             foreach (var stageItem in StageItems)
                 if (stageItem.SelectingProjectInStage != null)
                     stageItem.SelectingProjectInStage = null;
@@ -470,6 +472,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ProjectItemViewModel GetSelectedProject()
         {
+            if (StageItems == null) return null;
+
             foreach (var stageItem in StageItems)
                 if (stageItem.SelectingProjectInStage != null)
                     return stageItem.SelectingProjectInStage;
