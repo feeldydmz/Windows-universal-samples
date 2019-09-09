@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
     <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
+    <Compile Include="Behavior\ListBoxSelectionChangedBehaivor.cs" />
     <Compile Include="Behavior\ListViewItemDoubleClickBehavior.cs" />
     <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPlayStateChangedToCommandBehavior.cs" />

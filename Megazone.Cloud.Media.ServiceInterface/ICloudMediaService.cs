@@ -11,6 +11,7 @@ namespace Megazone.Cloud.Media.ServiceInterface
     public interface ICloudMediaService
     {
         Task<Authorization> LoginAsync(string userName, string password, CancellationToken cancellationToken);
+        Task<Authorization> LoginByAuthorizationCodeAsync(string code, CancellationToken cancellationToken);
         Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken);
         Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter, CancellationToken cancellationToken);
         Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);

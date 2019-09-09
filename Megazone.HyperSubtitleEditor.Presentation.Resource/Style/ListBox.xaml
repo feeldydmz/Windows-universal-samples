@@ -190,6 +190,9 @@
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="Visibility" Value="Visible" TargetName="KeyboardFocusedObject" />
                         </Trigger>
+                        <!--<Trigger Property="IsFocused" Value="False">
+                            <Setter Property="IsSelected" Value="False"/>
+                        </Trigger>-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
@@ -210,6 +213,7 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
+                            <!--<Setter Property="Foreground" Value="#a0a3aa"></Setter>-->
                             <Setter Property="Background" Value="#5fa5f0"></Setter>
                             <Setter Property="Foreground" Value="White"></Setter>
                         </MultiTrigger>
@@ -238,6 +242,22 @@
     <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize" BasedOn="{StaticResource Style_ListBoxItemDefault}">
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Background" Value="{StaticResource Brush_CommonBackground}" />
+    </Style>
+
+    <!--Project list-->
+    <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBoxProjectSelect"
+           BasedOn="{StaticResource Style_ListBoxDefault}">
+        <Setter Property="Background" Value="{StaticResource Brush_ProjectSelect_Background_Color}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush_ProjectSelect_Background_Color}" />
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemProjectSelect"
+           BasedOn="{StaticResource Style_ProjectSelect_ListBoxItem}">
+        <Setter Property="Height" Value="42" />
+        <Setter Property="Foreground" Value="{StaticResource Brush_ListBoxItem_Foreground_Color}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="{StaticResource Brush_ImageButton_Background_Color}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Brush_ProjectSelect_Border_Brush_Color}" />
     </Style>
 
 </ResourceDictionary>

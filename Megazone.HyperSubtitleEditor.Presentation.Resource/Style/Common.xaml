@@ -66,12 +66,27 @@
     <SolidColorBrush x:Key="Brush_GrayBoxBorderBrush" Color="#FFa0a8b6" />
     <SolidColorBrush x:Key="Brush_LightGraySeparatorLineBrush" Color="#FFd8dce2" />
 
+    <!--프로젝트 선택 화면 -->
+    <SolidColorBrush x:Key="Brush_Normal_Background_Brush_Color" Color="#FF3d4450" />
+    <SolidColorBrush x:Key="Brush_ProjectSelect_Background_Color" Color="#282f37" />
+    <SolidColorBrush x:Key="Brush_ProjectSelect_Border_Brush_Color" Color="#2E353F" />
+    <SolidColorBrush x:Key="Brush_ProjectSelect_Title_Brush_Color" Color="#a0a3aa" />
 
-    <SolidColorBrush x:Key="Brush_ProejctSelect_Background_Color" Color="#282f37" />
+    <SolidColorBrush x:Key="Brush_ListBoxItem_Foreground_Color" Color="#989CA7" />
+    <SolidColorBrush x:Key="Brush_ListBoxItem_Stage_Symbol_Color" Color="#40485B" />
+    <SolidColorBrush x:Key="Brush_ListBoxItem_Stage_Symbol_Text_Color" Color="#848B9B" />
+    <SolidColorBrush x:Key="Brush_ListBoxItem_Stage_Title_Color" Color="#F9FEFF" />
+
+    <SolidColorBrush x:Key="Brush_Stage_Title_Selected_Color" Color="#60A5F0" />
+    
+
+
     <SolidColorBrush x:Key="Brush_Button_Background_Base_Color" Color="#282f39" />
     <SolidColorBrush x:Key="Brush_Button_Foreground_Base_Color" Color="#b0b7d5" />
     <SolidColorBrush x:Key="Brush_Button_MouseHover_Color" Color="#323a46" />
-    <SolidColorBrush x:Key="Brush_Button_Actvie_Border_Color" Color="#404d6c" />
+    <SolidColorBrush x:Key="Brush_Button_Active_Border_Color" Color="#404d6c" />
+    <SolidColorBrush x:Key="Brush_ImageButton_Background_Color" Color="#2E353F" />
+    
 
     <!--배지 컬러-->
     <SolidColorBrush x:Key="Brush_Badge_Video_Color" Color="#405fff" />

@@ -30,6 +30,8 @@ namespace Megazone.Cloud.Media.Service
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
 #endif
+        private const string AUTHORIZATION_END_POINT = "https://megaone.io";
+
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
 
@@ -43,11 +45,10 @@ namespace Megazone.Cloud.Media.Service
         public async Task<Authorization> LoginAsync(string userName, string password,
             CancellationToken cancellationToken)
         {
-            const string authorizationEndpoint = "https://megaone.io";
             return await Task.Factory.StartNew(() =>
             {
                 var authorizationResponse =
-                    _authorizationRepository.Get(new AuthorizationRequest(authorizationEndpoint, userName, password));
+                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_END_POINT, userName, password));
                 var accessToken = authorizationResponse.AccessToken;
                 var refreshToken = authorizationResponse.RefreshToken;
                 var expires = authorizationResponse.Expires;
@@ -55,6 +56,18 @@ namespace Megazone.Cloud.Media.Service
                 return new Authorization(accessToken, refreshToken, expires);
             }, cancellationToken);
         }
+
+        public async Task<Authorization> LoginByAuthorizationCodeAsync(string code, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var authorizationResponse =
+                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_END_POINT, code));
+
+                return new Authorization(authorizationResponse.AccessToken, null, null);
+            }, cancellationToken);
+        }
+
 
         public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter,
             CancellationToken cancellationToken)

@@ -584,7 +584,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Right_Navi">
+    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Right_Arrow">
         <Setter Property="Background" Value="{DynamicResource Brush_Button_Background_Base_Color}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush_Button_Foreground_Base_Color}"/>
         <Setter Property="Height" Value="47"/>
@@ -621,7 +621,7 @@
                             <Setter Property="Background" Value="{DynamicResource Brush_Button_MouseHover_Color}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="BorderBrush" Value="{DynamicResource Brush_Button_Actvie_Border_Color}" TargetName="PART_Bd" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush_Button_Active_Border_Color}" TargetName="PART_Bd" />
                         </Trigger>
 
                         <!--<Trigger Property="IsMouseOver" Value="True">
@@ -636,7 +636,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Left_Navi">
+    <Style TargetType="{x:Type Button}" x:Key="Style_Button_Left_Arrow">
         <Setter Property="Background" Value="{DynamicResource Brush_Button_Background_Base_Color}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush_Button_Foreground_Base_Color}"/>
         <Setter Property="Height" Value="47"/>
