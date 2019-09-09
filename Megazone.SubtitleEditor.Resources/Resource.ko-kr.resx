@@ -666,4 +666,13 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   <data name="MSG_DEPLOY_AND_CREATE_ASSET_GUIDE" xml:space="preserve">
     <value>에셋 이름/종류 기입 후 게시할 자막을 선택해주세요.</value>
   </data>
+  <data name="MSG_PROJECT_SELECT_PAGE_KR" xml:space="preserve">
+    <value>프로젝트를 선택해 주세요</value>
+  </data>
+  <data name="CNT_PROJECT_SELECT_SAGE_TOTAL" xml:space="preserve">
+    <value>Stage Total</value>
+  </data>
+  <data name="MSG_PROJECT_SELECT_PAGE_EN" xml:space="preserve">
+    <value>Please select Project of the Stage you want to access</value>
+  </data>
 </root>

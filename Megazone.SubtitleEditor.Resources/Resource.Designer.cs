@@ -19,7 +19,7 @@ namespace Megazone.SubtitleEditor.Resources {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resource {
@@ -1006,6 +1006,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Stage Total과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PROJECT_SELECT_SAGE_TOTAL {
+            get {
+                return ResourceManager.GetString("CNT_PROJECT_SELECT_SAGE_TOTAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Start과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_PROJECT_START {
@@ -1646,6 +1655,24 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_PROJECT_EMPTY_TITLE {
             get {
                 return ResourceManager.GetString("MSG_PROJECT_EMPTY_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Please select Project of the Stage you want to access과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_SELECT_PAGE_EN {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_SELECT_PAGE_EN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   프로젝트를 선택해 주세요과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PROJECT_SELECT_PAGE_KR {
+            get {
+                return ResourceManager.GetString("MSG_PROJECT_SELECT_PAGE_KR", resourceCulture);
             }
         }
         

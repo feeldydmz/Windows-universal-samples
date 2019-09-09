@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -76,6 +77,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private StageItemViewModel _selectingStage;
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
+        private ICommand _stageSelectionChangedCommand;
 
         private int _stageTotal;
 
@@ -125,16 +127,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public StageItemViewModel SelectingStage
         {
             get => _selectingStage;
-            set
-            {
-                if (_selectingStage != null)
-                    _selectingStage.IsSelected = false;
-
-                Set(ref _selectingStage, value);
-
-                if (_selectingStage != null)
-                    _selectingStage.IsSelected = true;
-            }
+            set => Set(ref _selectingStage, value);
         }
 
         public ProjectItemViewModel SelectedProject
@@ -148,25 +141,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _selectingProject;
             set
             {
-                if (_selectingProject != null)
-                    _selectingProject.IsSelected = false;
+                Debug.WriteLine($"old : {_selectingProject?.ProjectId} new : {value?.ProjectId}");
 
                 Set(ref _selectingProject, value);
-
-                if (_selectingProject != null)
-                {
-                    _selectingProject.IsSelected = true;
-
-                    SelectingStage =
-                        CurrentPageStageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject.StageId));
-                    //if (SelectingStage != null) SelectingStage.IsSelected = true;
-
-                    IsStartButtonVisible = true;
-                }
-                else
-                {
-                    IsStartButtonVisible = false;
-                }
             }
         }
 
@@ -181,6 +158,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isSignIn;
             set => Set(ref _isSignIn, value);
         }
+
+        public bool IsPageChanged { get; set; }
 
         public bool IsLeftNavigateButtonVisible
         {
@@ -259,12 +238,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public int CurrentPageNumber
         {
             get => _currentPageNumber;
-            set
-            {
-                Set(ref _currentPageNumber, value);
-
-                CalculateStageSlidePosition();
-            }
+            set => Set(ref _currentPageNumber, value);
         }
 
         public bool IsBusy
@@ -343,14 +317,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand StageSelectionChangedCommand
+        {
+            get
+            {
+                return _stageSelectionChangedCommand =
+                    _stageSelectionChangedCommand ??
+                    new RelayCommand(OnStageSelectionChanged);
+            }
+        }
+
         public ICommand ProjectSelectionChangedCommand
         {
             get
             {
                 return _projectSelectionChangedCommand =
                     _projectSelectionChangedCommand ??
-                    new RelayCommand<ProjectItemViewModel>(OnProjectSelectionChanged);
+                    new RelayCommand(OnProjectSelectionChanged);
             }
+        }
+
+        private void OnStageSelectionChanged()
+        {
         }
 
         public void Save()
@@ -362,9 +350,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SaveAuthorization();
         }
 
-        private void OnProjectSelectionChanged(ProjectItemViewModel item)
-        {
-        }
 
         public Authorization GetAuthorization()
         {
@@ -451,11 +436,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 newStageList.Add(StageItems[i]);
             }
 
-            var selectingProjectTemp = SelectingProject;
 
-            CurrentPageStageItems = newStageList;
+            if (SelectingProject != null)
+            {
+                //IsPageChanged = true;
+                var selectingProjectTemp = SelectingProject;
 
-            SelectingProject = selectingProjectTemp;
+                CurrentPageStageItems = newStageList;
+
+                var stageItemViewModel =
+                    StageItems.FirstOrDefault(item => item.Id == selectingProjectTemp.StageId);
+
+                stageItemViewModel.IsSelected = false;
+
+                //if (first != null)
+                //{
+                //    SelectingProject = first.ProjectItems.FirstOrDefault(projectItem =>
+                //        projectItem.ProjectId == selectingProjectTemp.ProjectId);
+                //}
+            }
+            else
+            {
+                CurrentPageStageItems = newStageList;
+            }
 
             if (TotalPage == 1)
             {
@@ -505,7 +508,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsProjectViewVisible = false;
             IsSignIn = false;
-            //ClearAuthorization();
 
             StageItems = null;
             CurrentPageStageItems = null;
@@ -519,18 +521,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             UriSource = AuthorizationRepository.LOGIN_URI;
         }
 
-        private void LoginByAuthorizationCode(string code)
+        private async void LoginByAuthorizationCodeAsync(string code)
         {
-            // TODO: 로그인 처리 로직은 서비스 단에서.
-            var authorizationRepository = new AuthorizationRepository();
-
-            var authResponse = authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_ENDPOINT, code));
-
             try
             {
-                if (authResponse.AccessToken.IsNullOrEmpty()) return;
+                var authorizationResponse =
+                    await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
-                _authorization = new Authorization(authResponse.AccessToken, null, null);
+                if (authorizationResponse.AccessToken.IsNullOrEmpty()) return;
 
                 LoadStageAndProject();
             }
@@ -595,19 +593,45 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 foreach (var item in emptyProjectStages) StageItems.Remove(item);
 
-                //// --- Test Data 
+                //// Test Data 
 
-                //StageItemViewModel firstItem = StageItems.First();
+                //var firstItem = StageItems.First();
 
-                //string originalName = firstItem.Name;
-                //for (int i = 1; i < 7; i++)
+                //var originalName = firstItem.Name;
+                //for (var i = 1; i < 7; i++)
                 //{
-                //    StageItemViewModel newItem = new StageItemViewModel(firstItem.Source)
+                //    var newItem = new StageItemViewModel(firstItem.Source)
                 //    {
-                //        Id = "D",
-                //        Name = $"{originalName}_{i}",
-                //        ProjectItems = firstItem.ProjectItems
+                //        Id = $"test{i}",
+                //        Name = $"{originalName}_{i}"
+                //        //ProjectItems = firstItem.ProjectItems.Select(item => new ProjectItemViewModel($"test{i}", item.Source)).ToList()
                 //    };
+
+                //    var projectModelList = new List<ProjectItemViewModel>();
+                //    var loogCount = 1;
+                //    foreach (var firstItemProjectItem in firstItem.ProjectItems)
+                //    {
+                //        var project = new Project(
+                //            $"{i}_{loogCount}",
+                //            firstItemProjectItem.Source.Name,
+                //            firstItemProjectItem.Source.Description,
+                //            firstItemProjectItem.Source.UsePlayout,
+                //            firstItemProjectItem.Source.IsActive,
+                //            firstItemProjectItem.Source.CreatedAt,
+                //            firstItemProjectItem.Source.CreatedById,
+                //            firstItemProjectItem.Source.CreatedByName,
+                //            firstItemProjectItem.Source.CreatedByUsername,
+                //            firstItemProjectItem.Source.UpdatedAt,
+                //            firstItemProjectItem.Source.UpdatedById,
+                //            firstItemProjectItem.Source.UpdatedByName,
+                //            firstItemProjectItem.Source.UpdatedByUsername);
+
+                //        projectModelList.Add(new ProjectItemViewModel(newItem.Id, project));
+                //        loogCount++;
+                //    }
+
+                //    newItem.ProjectItems = projectModelList;
+
                 //    StageItems.Add(newItem);
                 //}
                 //// ----
@@ -752,11 +776,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CurrentPageNumber = 1;
         }
 
+        private void OnProjectSelectionChanged()
+        {
+            if (SelectingStage != null)
+                SelectingStage.IsSelected = false;
+
+            //SelectingStage =
+            //    CurrentPageStageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject?.StageId));
+            if (SelectingProject != null)
+                SelectingStage =
+                    StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject?.StageId));
+
+            if (SelectingStage != null)
+                SelectingStage.IsSelected = true;
+        }
+
         private void OnNavigating(string code)
         {
             if (code.IsNullOrEmpty()) return;
 
-            Task.Run(() => LoginByAuthorizationCode(code));
+            Task.Run(() => LoginByAuthorizationCodeAsync(code));
         }
     }
 }

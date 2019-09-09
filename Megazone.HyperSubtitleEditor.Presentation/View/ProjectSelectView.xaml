@@ -10,6 +10,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
+             xmlns:extensions="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Extension"
              mc:Ignorable="d"
              d:DesignHeight="736" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
@@ -28,23 +29,12 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-            <Style TargetType="{x:Type ListBox}" x:Key="Style_ListBoxProjectSelect"
-                   BasedOn="{StaticResource Style_ListBoxDefault}">
-                <Setter Property="Background" Value="#282f37" />
-                <Setter Property="BorderBrush" Value="#282f37" />
-            </Style>
-            <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemFreeSize"
-                   BasedOn="{StaticResource Style_ProjectSelect_ListBoxItem}">
-                <Setter Property="Height" Value="38" />
-                <Setter Property="Foreground" Value="#989CA7" />
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                <Setter Property="Background" Value="#2E353F" />
-                <Setter Property="BorderBrush" Value="#3C434D" />
-            </Style>
+            
+            
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource Brush_ProejctSelect_Background_Color}">
+    <Grid Background="{StaticResource Brush_ProjectSelect_Background_Color}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -69,7 +59,7 @@
                 </StackPanel>
                 <mz:ImageButton
                     Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
-                    Background="#2e353f"
+                    Background="{StaticResource Brush_ImageButton_Background_Color}"
                     DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
                     MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_hov.png"
@@ -120,7 +110,7 @@
                                    TextAlignment="Center" />
 
                         <Grid Margin="31,20,31,27"
-                              Background="#FF3d4450"
+                              Background="{StaticResource Brush_Normal_Background_Brush_Color}"
                               HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -237,12 +227,12 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="0,45,0,0">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="24">
-                        프로젝트를 선택해 주세요
-                    </TextBlock>
-                    <TextBlock Foreground="#a0a3aa" HorizontalAlignment="Center" FontSize="12">
-                        Please select Project of the Stage you want to access
-                    </TextBlock>
+                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="24"
+                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_KR}"/>
+                        
+                    
+                    <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" HorizontalAlignment="Center" FontSize="12"
+                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_EN}"/>
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -256,10 +246,13 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal"
                                 HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Label Foreground="White" HorizontalContentAlignment="Center" FontWeight="Bold">
-                            Stage Total
-                        </Label>
-                        <Label Foreground="#5fa5f0" Content="{Binding StageTotal}" Margin="5,0,0,0" FontWeight="Bold" />
+                        <TextBlock Foreground="White" 
+                                   FontWeight="Bold"
+                                   Text="{x:Static resources:Resource.CNT_PROJECT_SELECT_SAGE_TOTAL}"/>
+                        <TextBlock Foreground="#5fa5f0" 
+                                   Margin="5,0,0,0" 
+                                   FontWeight="Bold" 
+                                   Text="{Binding StageTotal}"/>
                     </StackPanel>
                     <Button Grid.Row="1"
                             Grid.Column="0"
@@ -295,52 +288,51 @@
                             <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
                                 <Grid Margin="15,0,15,0" HorizontalAlignment="Center">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="54" />
+                                        <RowDefinition Height="72" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <Border x:Name="PART_Stage_Title_Bd"
+                                    <Border x:Name="Stage_Title_Border"
                                             BorderThickness="1"
-                                            BorderBrush="#3C434D">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="54" />
-                                                <ColumnDefinition Width="1*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <Ellipse x:Name="PART_Stage_Symbol_Ellipse"
-                                                         Fill="#40485B"
-                                                         Height="40"
-                                                         Width="40" />
-                                                <TextBlock x:Name="PART_Stage_Symbol_Text"
+                                            BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                                            <Grid HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  Margin="18,13,0,12">
+                                                <Ellipse x:Name="Stage_Symbol_Ellipse"
+                                                         Fill="{StaticResource Brush_ListBoxItem_Stage_Symbol_Color}"
+                                                         Height="45"
+                                                         Width="45" />
+                                                <TextBlock x:Name="Stage_Symbol_Text"
                                                            Text="{Binding Path=SymbolTitle}"
-                                                           Margin="1,0,0,1"
+                                                           Margin="1,0,0,2"
                                                            HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
-                                                           Foreground="#848B9B"
+                                                           Foreground="{StaticResource Brush_ListBoxItem_Stage_Symbol_Text_Color}"
                                                            FontSize="22" />
                                             </Grid>
                                             <TextBlock Grid.Column="1"
+                                                       x:Name="Stage_Name_Text"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Stretch"
-                                                       Margin="5"
-                                                       FontSize="16"
-                                                       Foreground="#F9FEFF"
+                                                       Margin="19,0,0,0"
+                                                       FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource Brush_ListBoxItem_Stage_Title_Color}"
                                                        Text="{Binding Path=Name}" />
-                                        </Grid>
+                                        </StackPanel>
                                     </Border>
                                     <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
-                                            BorderBrush="#3C434D">
-                                        <ListBox
-                                            x:Name="ProjectListBox"
-                                            ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
+                                            BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
+                                        <ListBox x:Name="ProjectListBox"
+                                                 ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Style="{StaticResource Style_ListBoxProjectSelect}"
-                                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
-                                                 SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject}"
+                                                 ItemContainerStyle="{StaticResource Style_ListBoxItemProjectSelect}"
+                                                 SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject, Mode=TwoWay}"
                                                  Width="340">
                                             <i:Interaction.Behaviors>
-                                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding DataContext.ProjectSelectionChangedCommand, ElementName=Root}" CommandParameter="{Binding ElementName=ProjectListBox, Path=SelectedItem}" />
+                                                <behavior:ListBoxSelectionChangedBehavior Command="{Binding DataContext.ProjectSelectionChangedCommand, ElementName=Root}"/>
                                             </i:Interaction.Behaviors>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
@@ -359,9 +351,9 @@
                                                                    VerticalAlignment="Bottom"
                                                                    LineHeight="14"
                                                                    FontSize="11" />
-                                                        <Image x:Name="PART_Check"
+                                                        <Image x:Name="Check_Image"
                                                                Stretch="None"
-                                                               Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                               Visibility="{Binding Path=IsFocused, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                                                                Margin="0,0,20,0"
                                                                HorizontalAlignment="Right"
                                                                VerticalAlignment="Center"
@@ -374,9 +366,15 @@
                                 </Grid>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                        <Setter TargetName="PART_Stage_Title_Bd" Property="BorderBrush" Value="#60A5F0" />
-                                        <Setter TargetName="PART_Stage_Symbol_Ellipse" Property="Fill" Value="#60A5F0" />
-                                        <Setter TargetName="PART_Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                        <Setter TargetName="Stage_Title_Border" Property="BorderBrush" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                        <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                        <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=SignIn.SelectingStage}" Value="{x:Null}">
+                                        <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
+                                        <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
+                                        <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                        <Setter TargetName="Stage_Name_Text" Property="Foreground" Value="{StaticResource Brush_PointColor}" />
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
@@ -394,7 +392,7 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1" HorizontalAlignment="Center"
-                            Style="{StaticResource Style_Button_Left_Navi}"
+                            Style="{StaticResource Style_Button_Left_Arrow}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                             Visibility="{Binding IsCancelButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding Path=CancelProjectSelectCommand}" />
@@ -409,7 +407,7 @@
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource Style_Slider_ProjectSelect}" />
                     <Button Grid.Column="3" HorizontalAlignment="Center"
-                            Style="{StaticResource Style_Button_Right_Navi}"
+                            Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_START}" />
                 </Grid>
