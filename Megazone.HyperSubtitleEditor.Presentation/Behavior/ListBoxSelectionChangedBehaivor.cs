@@ -24,12 +24,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 
         private SignInViewModel SigninViewmodel { get; set; }
 
-        //public ListBoxSelectionChangedBehavior(SignInViewModel signinViewmodel)
-        //{
-        //    SigninViewmodel = signinViewmodel;
-        //}
-
-
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
@@ -52,12 +46,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             AssociatedObject.SelectionChanged -= AssociatedObjectOnSelectionChanged;
         }
 
+        private static ListBox _currentListBox;
+
         private void AssociatedObjectOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SigninViewmodel.IsPageChanged)
+            var listBox = sender as ListBox;
+
+            if (_currentListBox != null)
             {
-                e.RemovedItems.Clear();
+                if (listBox != null && !_currentListBox.Uid.Equals(listBox.Uid))
+                {
+                    _currentListBox.SelectedItem = null;
+                }
             }
+
+            _currentListBox = listBox;
+
 
             Command?.Execute("");
         }

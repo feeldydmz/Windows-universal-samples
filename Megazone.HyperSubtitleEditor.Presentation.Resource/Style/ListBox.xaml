@@ -214,8 +214,8 @@
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
                             <!--<Setter Property="Foreground" Value="#a0a3aa"></Setter>-->
-                            <!--<Setter Property="Background" Value="#5fa5f0"></Setter>
-                            <Setter Property="Foreground" Value="Red"></Setter>-->
+                            <Setter Property="Background" Value="#5fa5f0"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
                         </MultiTrigger>
                         <!--선택되고 리스트도 포커스드-->
                         <MultiTrigger>

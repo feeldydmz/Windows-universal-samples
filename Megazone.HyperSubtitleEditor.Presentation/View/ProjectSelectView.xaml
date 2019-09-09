@@ -275,7 +275,9 @@
                                   Grid.Row="1"
                                   Grid.Column="1"
                                   ItemsSource="{Binding Path=CurrentPageStageItems}"
-                                  VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                  
+                                  VerticalAlignment="Top" 
+                                  HorizontalAlignment="Stretch">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -329,7 +331,8 @@
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Style="{StaticResource Style_ListBoxProjectSelect}"
                                                  ItemContainerStyle="{StaticResource Style_ListBoxItemProjectSelect}"
-                                                 SelectedItem="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.SelectingProject, Mode=TwoWay}"
+                                                 SelectedItem="{Binding Path=SelectingProjectInStage, Mode=TwoWay}"
+                                                 Uid="{Binding Id}"
                                                  Width="340">
                                             <i:Interaction.Behaviors>
                                                 <behavior:ListBoxSelectionChangedBehavior Command="{Binding DataContext.ProjectSelectionChangedCommand, ElementName=Root}"/>

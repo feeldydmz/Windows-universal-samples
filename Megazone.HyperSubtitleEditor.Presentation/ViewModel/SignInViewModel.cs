@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -77,7 +76,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private StageItemViewModel _selectingStage;
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
-        private ICommand _stageSelectionChangedCommand;
 
         private int _stageTotal;
 
@@ -134,17 +132,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _selectedProject;
             set => Set(ref _selectedProject, value);
-        }
-
-        public ProjectItemViewModel SelectingProject
-        {
-            get => _selectingProject;
-            set
-            {
-                Debug.WriteLine($"old : {_selectingProject?.ProjectId} new : {value?.ProjectId}");
-
-                Set(ref _selectingProject, value);
-            }
         }
 
         public bool IsProjectViewVisible
@@ -256,7 +243,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-
         public ICommand LoadedCommand
         {
             get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
@@ -317,16 +303,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public ICommand StageSelectionChangedCommand
-        {
-            get
-            {
-                return _stageSelectionChangedCommand =
-                    _stageSelectionChangedCommand ??
-                    new RelayCommand(OnStageSelectionChanged);
-            }
-        }
-
         public ICommand ProjectSelectionChangedCommand
         {
             get
@@ -335,10 +311,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _projectSelectionChangedCommand ??
                     new RelayCommand(OnProjectSelectionChanged);
             }
-        }
-
-        private void OnStageSelectionChanged()
-        {
         }
 
         public void Save()
@@ -388,6 +360,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (StageTotal == 0)
                 return false;
 
+            //Debug.WriteLine("CanStartProject()");
+            var SelectingProject = GetSelectedProject();
+
             if (SelectingProject != null &&
                 SelectingProject != SelectedProject)
                 return true;
@@ -406,7 +381,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsStartButtonVisible = true;
             CurrentPageNumber = 1;
 
-            SelectingProject = SelectedProject;
+
+            if (StageItems == null || SelectedProject == null) return;
+
+            var projectItem = StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectedProject.StageId));
+            if (projectItem != null)
+                projectItem.SelectingProjectInStage = SelectedProject;
         }
 
         private void CalculateTotalPage()
@@ -437,23 +417,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
 
+            var SelectingProject = GetSelectedProject();
+
+            DeselectProject();
+            if (SelectingStage != null)
+            {
+                SelectingStage.IsSelected = false;
+                SelectingStage = null;
+            }
+
+
             if (SelectingProject != null)
             {
-                //IsPageChanged = true;
-                var selectingProjectTemp = SelectingProject;
-
                 CurrentPageStageItems = newStageList;
 
                 var stageItemViewModel =
-                    StageItems.FirstOrDefault(item => item.Id == selectingProjectTemp.StageId);
-
-                stageItemViewModel.IsSelected = false;
-
-                //if (first != null)
-                //{
-                //    SelectingProject = first.ProjectItems.FirstOrDefault(projectItem =>
-                //        projectItem.ProjectId == selectingProjectTemp.ProjectId);
-                //}
+                    StageItems.FirstOrDefault(item => item.Id == SelectingProject.StageId);
             }
             else
             {
@@ -480,28 +459,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsRightNavigateButtonVisible = false;
                 IsLeftNavigateButtonVisible = true;
             }
+        }
 
-            //if (CurrentPageNumber == 0 && StageTotal > StagePerPageNumber)
-            //{
-            //    IsRightNavigateButtonVisible = true;
-            //    IsLeftNavigateButtonVisible = false;
-            //}
-            //else if (CurrentPageNumber > 0 && 
-            //         (CurrentPageNumber == (TotalPage - 1)))
-            //{
-            //    IsRightNavigateButtonVisible = false;
-            //    IsLeftNavigateButtonVisible = true;
-            //}
-            //else if (CurrentPageNumber > 0 && StageTotal > StagePerPageNumber)
-            //{
-            //    IsRightNavigateButtonVisible = true;
-            //    IsLeftNavigateButtonVisible = true;
-            //}
-            //else
-            //{
-            //    IsRightNavigateButtonVisible = false;
-            //    IsLeftNavigateButtonVisible = false;
-            //}
+        public void DeselectProject()
+        {
+            foreach (var stageItem in StageItems)
+                if (stageItem.SelectingProjectInStage != null)
+                    stageItem.SelectingProjectInStage = null;
+        }
+
+        public ProjectItemViewModel GetSelectedProject()
+        {
+            foreach (var stageItem in StageItems)
+                if (stageItem.SelectingProjectInStage != null)
+                    return stageItem.SelectingProjectInStage;
+
+            return null;
         }
 
         private void OnLogout()
@@ -515,7 +488,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedProject = null;
             SelectedStage = null;
 
-            SelectingProject = null;
+            DeselectProject();
             SelectingStage = null;
 
             UriSource = AuthorizationRepository.LOGIN_URI;
@@ -537,7 +510,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _logger.Error.Write(ex);
             }
         }
-
 
         private async void LoadStageAndProject()
         {
@@ -733,8 +705,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
 
-            if (SelectedProject != null &&
-                SelectedProject != SelectingProject)
+
+            if (SelectedProject != null)
             {
                 var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
@@ -759,11 +731,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
             }
 
-            SelectedStage = SelectingStage;
+            ProjectItemViewModel selectedProject = null;
 
-            if (!string.IsNullOrEmpty(SelectingProject?.ProjectId) && !string.IsNullOrEmpty(SelectedStage?.Id))
+            foreach (var stageItem in StageItems)
             {
-                SelectedProject = SelectingProject;
+                if (stageItem.SelectingProjectInStage == null) continue;
+
+                SelectedStage = stageItem;
+
+                selectedProject = stageItem.SelectingProjectInStage;
+
+                break;
+            }
+
+            if (!string.IsNullOrEmpty(selectedProject?.ProjectId) && !string.IsNullOrEmpty(SelectedStage?.Id))
+            {
+                SelectedProject = selectedProject;
                 IsProjectViewVisible = false;
             }
         }
@@ -781,8 +764,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectingStage != null)
                 SelectingStage.IsSelected = false;
 
-            //SelectingStage =
-            //    CurrentPageStageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject?.StageId));
+            var SelectingProject = GetSelectedProject();
+
             if (SelectingProject != null)
                 SelectingStage =
                     StageItems.SingleOrDefault(stage => stage.Id.Equals(SelectingProject?.StageId));
