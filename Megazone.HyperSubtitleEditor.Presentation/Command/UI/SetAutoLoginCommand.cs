@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
+using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
@@ -9,9 +11,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     {
         private readonly SignInViewModel _signInViewModel;
 
-        public SetAutoLoginCommand(SignInViewModel signInViewModel)
+        public SetAutoLoginCommand()
         {
-            _signInViewModel = signInViewModel;
+            _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }
 
         public bool CanExecute(object parameter)
