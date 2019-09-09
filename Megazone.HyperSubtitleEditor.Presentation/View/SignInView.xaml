@@ -12,7 +12,7 @@
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Path=LoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="clo" />
     </i:Interaction.Triggers>

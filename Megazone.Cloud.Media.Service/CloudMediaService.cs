@@ -64,7 +64,7 @@ namespace Megazone.Cloud.Media.Service
                 var authorizationResponse =
                     _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_END_POINT, code));
 
-                return new Authorization(authorizationResponse.AccessToken, null, null);
+                return new Authorization(authorizationResponse.AccessToken, authorizationResponse.RefreshToken, authorizationResponse.Expires);
             }, cancellationToken);
         }
 

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
@@ -61,7 +59,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isStartButtonVisible;
         private ICommand _leftSlideNavigateCommand;
 
-        private ICommand _loadedCommand;
+        private ICommand _loadCommand;
         private string _loginId;
         private ICommand _logoutCommand;
         private ICommand _moveProjectStepCommand;
@@ -72,16 +70,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
 
-        private ProjectItemViewModel _selectingProject;
         private StageItemViewModel _selectingStage;
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
 
         private int _stageTotal;
-
         private ICommand _startProjectCommand;
         private int _totalPage;
-
         private string _uriSource;
 
         public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger, IBrowser browser)
@@ -89,19 +84,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _logger = logger;
             _browser = browser;
             _cloudMediaService = cloudMediaService;
-
             _config = ConfigHolder.Current;
 
             CurrentPageNumber = 1;
-
             UriSource = "about:blank";
-
-            AuthorizationFilePath = $"{Path.GetTempPath()}\\subtitleAuthorization.json";
-
             LoadAuthorizationInfo();
         }
 
-        internal string AuthorizationFilePath { get; set; }
+        internal string AuthorizationFilePath => $"{Path.GetTempPath()}\\subtitleAuthorization.json";
         private UserProfile User { get; set; }
 
         public List<StageItemViewModel> StageItems
@@ -243,9 +233,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public ICommand LoadedCommand
+        public ICommand LoadCommand
         {
-            get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
+            get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
 
@@ -498,12 +488,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var authorizationResponse =
-                    await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
+                _authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
-                if (authorizationResponse.AccessToken.IsNullOrEmpty()) return;
+                if (string.IsNullOrEmpty(_authorization?.AccessToken))
+                    return;
 
-                LoadStageAndProject();
+                LoadStageAndProjectAsync();
             }
             catch (Exception ex)
             {
@@ -511,7 +501,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async void LoadStageAndProject()
+        private async void LoadStageAndProjectAsync()
         {
             try
             {
@@ -540,7 +530,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var emptyProjectStages = new List<StageItemViewModel>();
 
-                await Task.Delay(TimeSpan.FromSeconds(3));
 #if STAGING
                 emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
 #else
@@ -653,24 +642,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private bool LoadAuthorizationInfo()
+        private void LoadAuthorizationInfo()
         {
             try
             {
                 var profileData = File.ReadAllText(AuthorizationFilePath);
-
-                _authorization =
-                    JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
-
-                return _authorization != null && !_authorization.AccessToken.IsNullOrEmpty();
+                _authorization = JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
             }
-            catch (Exception ex)
+            catch (FileNotFoundException)
             {
-                _logger.Error.Write(ex.Message);
                 _authorization = null;
             }
-
-            return false;
         }
 
         public void ClearAuthorization()
@@ -681,7 +663,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 File.Delete(AuthorizationFilePath);
         }
 
-        private void OnLoaded()
+        private void Load()
         {
             if (!_config.Subtitle.AutoLogin)
             {
@@ -691,7 +673,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (_authorization != null)
             {
-                Task.Factory.StartNew(LoadStageAndProject);
+                LoadStageAndProjectAsync();
             }
             else
             {
@@ -776,9 +758,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnNavigating(string code)
         {
-            if (code.IsNullOrEmpty()) return;
+            if (string.IsNullOrEmpty(code))
+                return;
 
-            Task.Run(() => LoginByAuthorizationCodeAsync(code));
+            LoginByAuthorizationCodeAsync(code);
         }
     }
 }
