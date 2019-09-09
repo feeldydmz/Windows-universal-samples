@@ -26,11 +26,7 @@
                     ProjectName="Megazone.HyperSubtitleEditor.Presentation"
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
-            
-            
         </ResourceDictionary>
     </UserControl.Resources>
 

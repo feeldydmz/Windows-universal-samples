@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Api.Transcoder.ServiceInterface;
@@ -108,6 +109,91 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             public string JobId { get; }
 
             public string ProfileId { get; }
+        }
+
+
+        public struct McmConfiguration
+        {
+            public string StageId { get; }
+            public string ProjectId { get; }
+            public string VideoId { get; private set; }
+            public string AssetId { get; private set; }
+
+            public McmConfiguration(string stageId, string projectId)
+            {
+                StageId = stageId;
+                ProjectId = projectId;
+                VideoId = null;
+                AssetId = null;
+            }
+
+            public class Creator
+            {
+                private string _assetId;
+                private string _projectId;
+                private string _stageId;
+                private string _videoId;
+
+                public McmConfiguration Create()
+                {
+                    var configuration = new McmConfiguration(_stageId, _projectId)
+                    { VideoId = _videoId, AssetId = _assetId };
+
+                    return configuration;
+                }
+
+                public Creator SetStageId(string stageId)
+                {
+                    _stageId = stageId;
+                    return this;
+                }
+
+                public Creator SetProjectId(string projectId)
+                {
+                    _projectId = projectId;
+                    return this;
+                }
+
+                public Creator SetVideoId(string videoId)
+                {
+                    _videoId = videoId;
+                    return this;
+                }
+
+                public Creator SetAssetId(string assetId)
+                {
+                    _assetId = assetId;
+                    return this;
+                }
+            }
+        }
+        public static McmConfiguration McmConfig { get; private set; }
+        public static void SetMcmConfig(McmConfiguration configuration)
+        {
+            McmConfig = configuration;
+        }
+
+        public static void SetMcmConfig(IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            var creator = new McmConfiguration.Creator();
+            foreach (var argument in arguments)
+                switch (argument.Key)
+                {
+                    case "stageId":
+                        creator.SetStageId(argument.Value);
+                        break;
+                    case "projectId":
+                        creator.SetProjectId(argument.Value);
+                        break;
+                    case "videoId":
+                        creator.SetVideoId(argument.Value);
+                        break;
+                    case "assetId":
+                        creator.SetAssetId(argument.Value);
+                        break;
+                }
+
+            SetMcmConfig(creator.Create());
         }
     }
 }

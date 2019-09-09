@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
-using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -17,7 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Source = stage;
             Id = stage.Id;
             Name = stage.Name;
-            SymbolTitle = Name.IsNullOrEmpty() ? "E" : Name.Substring(0, 1);
+            SymbolTitle = string.IsNullOrEmpty(Name) ? "E" : Name.Substring(0, 1);
             ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project)).ToList();
         }
 
