@@ -23,7 +23,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            _signInViewModel.IsAutoLogin = !_signInViewModel.IsAutoLogin;
             _signInViewModel.Save();
         }
 

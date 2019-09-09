@@ -88,7 +88,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CurrentPageNumber = 1;
             UriSource = "about:blank";
-            LoadAuthorizationInfo();
+            IsAutoLogin = _config.Subtitle.AutoLogin;
+
+            if (_config.Subtitle.AutoLogin)
+                _authorization = GetAuthorizationInfo();
         }
 
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}\\subtitleAuthorization.json";
@@ -182,7 +185,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public bool IsAutoLogin
         {
-            get => _config.Subtitle.AutoLogin;
+            get => _isAutoLogin;
             set => Set(ref _isAutoLogin, value);
         }
 
@@ -305,13 +308,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void Save()
         {
-            _config.Subtitle.AutoLogin = _isAutoLogin;
+            _config.Subtitle.AutoLogin = IsAutoLogin;
             ConfigHolder.Save(_config);
 
-            if (_isAutoLogin)
+            if (IsAutoLogin)
                 SaveAuthorization();
         }
-
 
         public Authorization GetAuthorization()
         {
@@ -388,7 +390,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             IsNavigationBarVisible = TotalPage > 1;
         }
-
 
         private void CalculateStageSlidePosition()
         {
@@ -646,17 +647,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void LoadAuthorizationInfo()
+        private Authorization GetAuthorizationInfo()
         {
             try
             {
                 var profileData = File.ReadAllText(AuthorizationFilePath);
-                _authorization = JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
+                return JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
             }
             catch (FileNotFoundException)
             {
-                _authorization = null;
             }
+
+            return null;
         }
 
         public void ClearAuthorization()
