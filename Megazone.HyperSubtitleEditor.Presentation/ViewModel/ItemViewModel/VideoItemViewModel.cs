@@ -123,8 +123,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public void Update()
         {
-            SelectedCaptionCount = SelectedCaptionAsset?.Elements.Count(element => element.IsSelected) ?? 0;
-            HasSelectedCaption = SelectedCaptionCount > 0;
+            if (SelectedCaptionAsset?.Source != null)
+            {
+                SelectedCaptionCount = SelectedCaptionAsset?.Elements?.Count(element => element.IsSelected) ?? 0;
+                HasSelectedCaption = SelectedCaptionCount > 0;
+            }
+            else
+            {
+                SelectedCaptionCount = 0;
+                HasSelectedCaption = false;
+            }
+        }
+
+        public void Initialize()
+        {
+            SelectedCaptionAsset = null;
+            SelectedCaptionCount = 0;
+            HasSelectedCaption = false;
         }
     }
 }

@@ -199,7 +199,7 @@
                                                            HorizontalAlignment="Left" />
 
                                                     <!--캡션 이동 버튼-->
-                                                    <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0, 1">
+                                                    <!--<Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0, 1">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="9" />
@@ -208,7 +208,7 @@
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Text="Caption" HorizontalAlignment="Right" />
-                                                        <!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />-->
+                                                        --><!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />--><!--
                                                         <TextBlock Grid.Column="2" HorizontalAlignment="Right"
                                                                    Visibility="{Binding Path=HasSelectedCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                             <TextBlock.Text>
@@ -250,11 +250,11 @@
                                                                 <EventTrigger RoutedEvent="Button.Unloaded">
                                                                     <StopStoryboard
                                                                         BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                                                                    <!--<RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />-->
+                                                                    --><!--<RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />--><!--
                                                                 </EventTrigger>
                                                             </mz:ImageButton.Triggers>
                                                         </mz:ImageButton>
-                                                    </Grid>
+                                                    </Grid>-->
 
                                                     <Grid Grid.Row="1" VerticalAlignment="Center"
                                                           HorizontalAlignment="Left">
@@ -325,7 +325,7 @@
                                 Style="{StaticResource Style_TransparentImageButton}">
                                 <mz:ImageButton.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
-                                        <BeginStoryboard Name="CaptionBoardOpenStoryboard">
+                                        <BeginStoryboard Name="CaptionBoardCloseStoryboard">
                                             <Storyboard>
                                                 <DoubleAnimation
                                                     Storyboard.Target="{Binding ElementName=CaptionBorder}"
@@ -374,7 +374,8 @@
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition />
                                                 </Grid.RowDefinitions>
-                                                <StackPanel Orientation="Horizontal">
+                                                <!--TODO: DataTemplateSelector 이용하는 방식으로-->
+                                                <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                     <Image Style="{StaticResource Style_CaptionBadgeImage}" />
                                                     <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
                                                 </StackPanel>
@@ -390,10 +391,11 @@
                                                                TextTrimming="CharacterEllipsis" />
                                                     <TextBlock Grid.Column="1"
                                                                Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                                               Margin="3,0" />
+                                                               Margin="3,0" 
+                                                               Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
                                                 </Grid>
                                             </Grid>
-                                            <Grid Grid.Column="3">
+                                            <Grid Grid.Column="3" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                 <ItemsControl x:Name="CaptionItemsControl"
                                                               ItemsSource="{Binding Path=Elements}">
                                                     <ItemsControl.ItemTemplate>
@@ -468,8 +470,37 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
-                        Command="{Binding ConfirmCommand, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
+                        Command="{Binding NextCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard Name="CaptionBoardOpenStoryboard">
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                        Duration="0:0:0.3" From="530" To="0"
+                                        SpeedRatio="1"
+                                        FillBehavior="HoldEnd" />
+                                    <DoubleAnimation
+                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                        Storyboard.TargetProperty="Opacity"
+                                        BeginTime="0:0:0"
+                                        Duration="0:0:0.3" From="0" To="1"
+                                        FillBehavior="HoldEnd" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Button.Unloaded">
+                            <StopStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
+                            <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="{Binding Path=IsConfirmButtonVisible}"
+                        Command="{Binding ConfirmCommand}" Visibility="{Binding Path=IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
                 <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
                         Click="CancelButtonBase_OnClick" />
             </Grid>

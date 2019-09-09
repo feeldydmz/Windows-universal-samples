@@ -50,6 +50,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _enterCommand;
         private bool _isBusy;
 
+        private bool _isConfirmButtonVisible;
+        private bool _isLoading;
+
+        private bool _isNextButtonVisible = true;
+
         private bool _isShowCaption;
 
         private string _keyword;
@@ -57,6 +62,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
+
+        private ICommand _nextCommand;
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -68,7 +75,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private int _totalCount;
         private IList<VideoItemViewModel> _videoItems;
-        private bool _isLoading = false;
 
         public VideoListViewModel(IBrowser browser, ICloudMediaService cloudMediaService,
             SignInViewModel signInViewModel)
@@ -99,6 +105,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
+        }
+
+        public ICommand NextCommand
+        {
+            get { return _nextCommand = _nextCommand ?? new RelayCommand(Next, CanNext); }
         }
 
         public ICommand ConfirmCommand
@@ -162,6 +173,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return _durationEndTimeChangedCommand =
                     _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged);
             }
+        }
+
+        public bool IsNextButtonVisible
+        {
+            get => _isNextButtonVisible;
+            set => Set(ref _isNextButtonVisible, value);
+        }
+
+        public bool IsConfirmButtonVisible
+        {
+            get => _isConfirmButtonVisible;
+            set => Set(ref _isConfirmButtonVisible, value);
         }
 
         public TimeSpan DurationStartTime
@@ -234,6 +257,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
+        private bool CanNext()
+        {
+            return SelectedVideoItem != null;
+        }
+
+        private void Next()
+        {
+            if (SelectedVideoItem != null) LoadCaptionAsync(SelectedVideoItem);
+        }
+
         private async void OnSelectedPageNoChanged(int selectedPageNo)
         {
             if (_isLoading)
@@ -299,6 +332,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void LoadCaptionAsync(VideoItemViewModel videoItem)
         {
+            IsNextButtonVisible = false;
+            IsConfirmButtonVisible = true;
+
             // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
             IsBusy = true;
             try
@@ -324,6 +360,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _cancellationTokenSource.Token);
 
                     videoItem.UpdateSource(result);
+                    if (videoItem.CaptionItems != null)
+                        if (videoItem.CaptionItems is IList<CaptionAssetItemViewModel> list)
+                            list.Add(CaptionAssetItemViewModel.Empty);
                 }
             }
             finally
@@ -341,10 +380,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Back()
         {
             SelectedVideoItem?.Update();
+            SelectedVideoItem?.Initialize();
             SetTitleAction?.Invoke($"{Resource.CNT_VIDEO}");
             IsShowCaption = false;
             if (IsBusy)
                 _cancellationTokenSource.Cancel();
+            IsNextButtonVisible = true;
+            IsConfirmButtonVisible = false;
         }
 
         private async void Enter(string keyword)
@@ -462,9 +504,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (SelectedVideoItem?.CaptionItems?.Any() ?? false)
                 {
+                    if (SelectedVideoItem?.SelectedCaptionAsset != null 
+                        && SelectedVideoItem.SelectedCaptionAsset.Source == null)
+                        return true;
+
                     if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
                         return SelectedVideoItem.SelectedCaptionCount > 0;
-                    return true;
+                    return false;
                 }
 
                 return false;
