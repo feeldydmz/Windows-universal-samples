@@ -480,7 +480,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
 
             var captionAssetItem = SelectedVideoItem.CaptionItems.SingleOrDefault(assetItem =>
-                assetItem.Elements.Any(element => element.Equals(item)));
+                assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
 
             if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
             {

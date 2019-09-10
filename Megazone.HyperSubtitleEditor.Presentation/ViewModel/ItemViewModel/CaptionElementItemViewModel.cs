@@ -9,6 +9,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     internal class CaptionElementItemViewModel : ViewModelBase
     {
         private bool _isDraft;
+
+        private bool _canDeploy;
         private bool _isPreferred;
         private bool _isSelected;
 
@@ -50,6 +52,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _isSelected;
             set => Set(ref _isSelected, value);
+        }
+
+        public bool CanDeploy
+        {
+            get => _canDeploy;
+            set => Set(ref _canDeploy, value);
         }
     }
 }
