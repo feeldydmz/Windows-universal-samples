@@ -9,14 +9,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 {
     public class ProjectSelectBehavior : Behavior<ProjectSelectView>
     {
-        private const int StageWidth = 340;
-        private const int StagePaddingWidth = 30;
+        public static readonly DependencyProperty StageMarginWidthProperty =
+            DependencyProperty.Register("StargeWidthMargin", typeof(int),
+                typeof(ProjectSelectBehavior));
+
+        public static readonly DependencyProperty StageWidthProperty = 
+            DependencyProperty.Register("StageWidth", typeof(int),
+                typeof(ProjectSelectBehavior));
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand),
                 typeof(ProjectSelectBehavior));
 
         private int _stagePerPage = 1;
+
+        public int StageMarginWidth
+        {
+            get => (int)GetValue(StageMarginWidthProperty);
+            set => SetValue(StageMarginWidthProperty, value);
+        }
+
+        public int StageWidth
+        {
+            get => (int) GetValue(StageWidthProperty);
+            set => SetValue(StageWidthProperty, value);
+        }
 
         public ICommand Command
         {
@@ -44,9 +61,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 
             var itemsControl = view.FindName("StageItemControl") as ItemsControl;
 
-            var itemsControlWidth = itemsControl?.ActualWidth + StagePaddingWidth;
+            var itemsControlWidth = itemsControl?.ActualWidth + StageMarginWidth;
 
-            var stageItemWidth = StageWidth + StagePaddingWidth;
+            var stageItemWidth = StageWidth + StageMarginWidth;
 
             var stageNumberPerPage =
                 Convert.ToInt32(Math.Truncate(Convert.ToDecimal(itemsControlWidth / stageItemWidth)));

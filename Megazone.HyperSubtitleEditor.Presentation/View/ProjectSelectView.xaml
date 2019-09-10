@@ -16,7 +16,7 @@
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
              x:Name="Root">
     <i:Interaction.Behaviors>
-        <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" />
+        <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" StageWidth="340" StageMarginWidth="30" />
     </i:Interaction.Behaviors>
 
     <UserControl.Resources>
@@ -27,6 +27,7 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -271,7 +272,6 @@
                                   Grid.Row="1"
                                   Grid.Column="1"
                                   ItemsSource="{Binding Path=CurrentPageStageItems}"
-                                  
                                   VerticalAlignment="Top" 
                                   HorizontalAlignment="Stretch">
                         <ItemsControl.ItemsPanel>
@@ -327,11 +327,11 @@
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Style="{StaticResource Style_ListBoxProjectSelect}"
                                                  ItemContainerStyle="{StaticResource Style_ListBoxItemProjectSelect}"
-                                                 SelectedItem="{Binding Path=SelectingProjectInStage, Mode=TwoWay}"
+                                                 SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}"
                                                  Uid="{Binding Id}"
                                                  Width="340">
                                             <i:Interaction.Behaviors>
-                                                <behavior:ListBoxSelectionChangedBehavior Command="{Binding DataContext.ProjectSelectionChangedCommand, ElementName=Root}"/>
+                                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" CommandParameter="{Binding Path=SelectedProject}" />
                                             </i:Interaction.Behaviors>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
@@ -364,7 +364,7 @@
                                     </Border>
                                 </Grid>
                                 <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource NullToFalseNTrue}}" Value="True">
                                         <Setter TargetName="Stage_Title_Border" Property="BorderBrush" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
                                         <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
                                         <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
