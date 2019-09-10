@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Megazone.Core.Log;
 using Megazone.Core.Windows;
@@ -45,9 +47,33 @@ namespace Megazone.HyperSubtitleEditor
             //InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1503635312970-mqi68t", "1503991012824-nhzcae", "ap-southeast-1" });
             InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1499781023404-tl0eyt", "1543807711137-znn0wp", "ap-southeast-1" });
             //InitializeAppContext(new[] { "b9a19922-955e-489a-a0dd-66749ed6ea0a", "1499781023404-tl0eyt", "1518573724969-ngy3k1", "ap-southeast-1" });
+            //InitializeMcmData(new string[] { "megazone.hypersubtitleeditor.v1://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/contents?stageId=mz-cm-v1&projectId=mz-cm-v1&videoId=1310&assetId=5910&captionIds='1,2,3,4,5,6'" });
 #else
             InitializeAppContext(e.Args);
+            InitializeMcmData(e.Args);
 #endif
+        }
+
+        private void InitializeMcmData(string[] args)
+        {
+            if (!(args?.Any() ?? false))
+                return;
+
+            var uri = new Uri(args[0]);
+            if (!uri.IsWellFormedOriginalString())
+                return;
+
+            var parameterList =
+                (uri.Query.StartsWith("?") ? uri.Query.Substring(1, uri.Query.Length - 1) : uri.Query)
+                .Split('&')
+                .Select(
+                    part =>
+                    {
+                        var array = part.Split('=');
+                        return new KeyValuePair<string, string>(array[0], array[1]);
+                    }).ToList();
+
+            AppContext.SetMcmOpenData(parameterList);
         }
 
         private static void InitializeAppContext(string[] args)
