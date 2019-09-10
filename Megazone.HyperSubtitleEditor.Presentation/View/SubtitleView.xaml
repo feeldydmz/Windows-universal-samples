@@ -897,7 +897,7 @@
                                                                         CommandParameter="{Binding}" />
                                                                     <Separator />
                                                                     <Button
-                                                                        Content="{x:Static resources:Resource.CNT_REMOVE_CAPTION}"
+                                                                        Content="{x:Static resources:Resource.CNT_CLOSE_TAB}"
                                                                         Command="{StaticResource DeleteTabCommand}"
                                                                         CommandParameter="{Binding}" />
                                                                     <!--<Button Content="{x:Static resources:Resource.CNT_EDIT_CAPTION_INFO}" 

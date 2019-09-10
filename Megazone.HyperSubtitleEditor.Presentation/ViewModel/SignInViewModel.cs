@@ -535,45 +535,45 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 // Test Data 
 
-                var firstItem = StageItems.First();
+                //var firstItem = StageItems.First();
 
-                var originalName = firstItem.Name;
-                for (var i = 1; i < 7; i++)
-                {
-                    var newItem = new StageItemViewModel(firstItem.Source)
-                    {
-                        Id = $"test{i}",
-                        Name = $"{originalName}_{i}"
-                        //ProjectItems = firstItem.ProjectItems.Select(item => new ProjectItemViewModel($"test{i}", item.Source)).ToList()
-                    };
+                //var originalName = firstItem.Name;
+                //for (var i = 1; i < 7; i++)
+                //{
+                //    var newItem = new StageItemViewModel(firstItem.Source)
+                //    {
+                //        Id = $"test{i}",
+                //        Name = $"{originalName}_{i}"
+                //        //ProjectItems = firstItem.ProjectItems.Select(item => new ProjectItemViewModel($"test{i}", item.Source)).ToList()
+                //    };
 
-                    var projectModelList = new List<ProjectItemViewModel>();
-                    var count = 1;
-                    foreach (var firstItemProjectItem in firstItem.ProjectItems)
-                    {
-                        var project = new Project(
-                            $"{i}_{count}",
-                            firstItemProjectItem.Source.Name,
-                            firstItemProjectItem.Source.Description,
-                            firstItemProjectItem.Source.UsePlayout,
-                            firstItemProjectItem.Source.IsActive,
-                            firstItemProjectItem.Source.CreatedAt,
-                            firstItemProjectItem.Source.CreatedById,
-                            firstItemProjectItem.Source.CreatedByName,
-                            firstItemProjectItem.Source.CreatedByUsername,
-                            firstItemProjectItem.Source.UpdatedAt,
-                            firstItemProjectItem.Source.UpdatedById,
-                            firstItemProjectItem.Source.UpdatedByName,
-                            firstItemProjectItem.Source.UpdatedByUsername);
+                //    var projectModelList = new List<ProjectItemViewModel>();
+                //    var count = 1;
+                //    foreach (var firstItemProjectItem in firstItem.ProjectItems)
+                //    {
+                //        var project = new Project(
+                //            $"{i}_{count}",
+                //            firstItemProjectItem.Source.Name,
+                //            firstItemProjectItem.Source.Description,
+                //            firstItemProjectItem.Source.UsePlayout,
+                //            firstItemProjectItem.Source.IsActive,
+                //            firstItemProjectItem.Source.CreatedAt,
+                //            firstItemProjectItem.Source.CreatedById,
+                //            firstItemProjectItem.Source.CreatedByName,
+                //            firstItemProjectItem.Source.CreatedByUsername,
+                //            firstItemProjectItem.Source.UpdatedAt,
+                //            firstItemProjectItem.Source.UpdatedById,
+                //            firstItemProjectItem.Source.UpdatedByName,
+                //            firstItemProjectItem.Source.UpdatedByUsername);
 
-                        projectModelList.Add(new ProjectItemViewModel(newItem.Id, project));
-                        count++;
-                    }
+                //        projectModelList.Add(new ProjectItemViewModel(newItem.Id, project));
+                //        count++;
+                //    }
 
-                    newItem.ProjectItems = projectModelList;
+                //    newItem.ProjectItems = projectModelList;
 
-                    StageItems.Add(newItem);
-                }
+                //    StageItems.Add(newItem);
+                //}
                 // ----
 
                 StageTotal = StageItems.Count();
