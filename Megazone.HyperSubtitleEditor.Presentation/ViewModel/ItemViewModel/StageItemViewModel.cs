@@ -9,7 +9,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     {
         private bool _isSelected;
         private IEnumerable<ProjectItemViewModel> _projectItems;
-        private ProjectItemViewModel _selectingProject;
+        private ProjectItemViewModel _selectedProject;
 
         public StageItemViewModel(Stage stage)
         {
@@ -37,10 +37,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _projectItems, value);
         }
 
-        public ProjectItemViewModel SelectingProjectInStage
+        public ProjectItemViewModel SelectedProject
         {
-            get => _selectingProject;
-            set => Set(ref _selectingProject, value);
+            get => _selectedProject;
+            set => Set(ref _selectedProject, value);
         }
     }
 }
