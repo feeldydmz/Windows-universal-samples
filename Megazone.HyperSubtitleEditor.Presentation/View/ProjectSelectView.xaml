@@ -224,12 +224,15 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="0,45,0,0">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="24"
-                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_KR}"/>
-                        
-                    
-                    <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" HorizontalAlignment="Center" FontSize="12"
-                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_EN}"/>
+                    <TextBlock Foreground="White" 
+                               HorizontalAlignment="Center" 
+                               FontSize="24"
+                               Margin="0,0,0,12"
+                               Text="{Binding UserName, StringFormat='{x:Static resources:Resource.MSG_PROJECT_HI_USER}', Mode=TwoWay}"/>
+                    <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="12"
+                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_GUIDE}"/>
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -331,7 +334,9 @@
                                                  Uid="{Binding Id}"
                                                  Width="340">
                                             <i:Interaction.Behaviors>
-                                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" CommandParameter="{Binding Path=SelectedProject}" />
+                                                <mz:ListBoxSelectionChangedCommandBehavior 
+                                                    Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
+                                                    CommandParameter="{Binding Path=SelectedProject}" />
                                             </i:Interaction.Behaviors>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">

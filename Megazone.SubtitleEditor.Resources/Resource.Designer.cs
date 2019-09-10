@@ -1659,20 +1659,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Please select Project of the Stage you want to access과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   HI, {0}과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string MSG_PROJECT_SELECT_PAGE_EN {
+        public static string MSG_PROJECT_HI_USER {
             get {
-                return ResourceManager.GetString("MSG_PROJECT_SELECT_PAGE_EN", resourceCulture);
+                return ResourceManager.GetString("MSG_PROJECT_HI_USER", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   프로젝트를 선택해 주세요과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Please select Project of the Stage you want to access과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string MSG_PROJECT_SELECT_PAGE_KR {
+        public static string MSG_PROJECT_SELECT_PAGE_GUIDE {
             get {
-                return ResourceManager.GetString("MSG_PROJECT_SELECT_PAGE_KR", resourceCulture);
+                return ResourceManager.GetString("MSG_PROJECT_SELECT_PAGE_GUIDE", resourceCulture);
             }
         }
         
