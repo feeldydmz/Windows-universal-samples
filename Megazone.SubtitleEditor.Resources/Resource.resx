@@ -668,4 +668,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="MSG_PROJECT_HI_USER" xml:space="preserve">
     <value>HI, {0}</value>
   </data>
+  <data name="CNT_CLOSE_TAB" xml:space="preserve">
+    <value>Close tab</value>
+  </data>
 </root>

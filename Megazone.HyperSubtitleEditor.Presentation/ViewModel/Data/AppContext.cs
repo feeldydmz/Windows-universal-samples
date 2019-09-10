@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         internal static Configuration Config { get; private set; }
         internal static Job Job { get; private set; }
         internal static CredentialInfo CredentialInfo { get; private set; }
+        public static McmData McmOpenData { get; private set; }
 
         public void SetConfig(string profileId, string pipelineId, string jobId, string region)
         {
@@ -93,6 +94,41 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Job = job;
         }
 
+        public static void SetMcmOpenData(IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            var argumentList = arguments?.ToList() ?? new List<KeyValuePair<string, string>>();
+            if (!argumentList.Any())
+                return;
+
+            var creator = new McmData.Creator();
+            foreach (var argument in argumentList)
+                switch (argument.Key)
+                {
+                    case "stageId":
+                        creator.SetStageId(argument.Value);
+                        break;
+                    case "projectId":
+                        creator.SetProjectId(argument.Value);
+                        break;
+                    case "videoId":
+                        creator.SetVideoId(argument.Value);
+                        break;
+                    case "assetId":
+                        creator.SetAssetId(argument.Value);
+                        break;
+                    case "captionIds":
+                        creator.SetCaptionIds(ConvertToList(argument.Value));
+                        break;
+                }
+
+            McmOpenData = creator.Create();
+
+            List<string> ConvertToList(string args)
+            {
+                return string.IsNullOrEmpty(args) ? null : args.Split(',').Select(id => id.Trim()).ToList();
+            }
+        }
+
         public struct Configuration
         {
             public Configuration(string profileId, string pipelineId, string jobId, string region)
@@ -112,14 +148,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         }
 
 
-        public struct McmConfiguration
+        public struct McmData
         {
             public string StageId { get; }
             public string ProjectId { get; }
             public string VideoId { get; private set; }
             public string AssetId { get; private set; }
 
-            public McmConfiguration(string stageId, string projectId)
+            public McmData(string stageId, string projectId)
             {
                 StageId = stageId;
                 ProjectId = projectId;
@@ -133,11 +169,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 private string _projectId;
                 private string _stageId;
                 private string _videoId;
+                private IEnumerable<string> _captionIds;
 
-                public McmConfiguration Create()
+                public McmData Create()
                 {
-                    var configuration = new McmConfiguration(_stageId, _projectId)
-                    { VideoId = _videoId, AssetId = _assetId };
+                    var configuration = new McmData(_stageId, _projectId)
+                        {VideoId = _videoId, AssetId = _assetId};
 
                     return configuration;
                 }
@@ -165,35 +202,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     _assetId = assetId;
                     return this;
                 }
-            }
-        }
-        public static McmConfiguration McmConfig { get; private set; }
-        public static void SetMcmConfig(McmConfiguration configuration)
-        {
-            McmConfig = configuration;
-        }
 
-        public static void SetMcmConfig(IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            var creator = new McmConfiguration.Creator();
-            foreach (var argument in arguments)
-                switch (argument.Key)
+                public Creator SetCaptionIds(IEnumerable<string> captionIds)
                 {
-                    case "stageId":
-                        creator.SetStageId(argument.Value);
-                        break;
-                    case "projectId":
-                        creator.SetProjectId(argument.Value);
-                        break;
-                    case "videoId":
-                        creator.SetVideoId(argument.Value);
-                        break;
-                    case "assetId":
-                        creator.SetAssetId(argument.Value);
-                        break;
+                    _captionIds = _captionIds?.ToList();
+                    return this;
                 }
-
-            SetMcmConfig(creator.Create());
+            }
         }
     }
 }

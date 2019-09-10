@@ -129,7 +129,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
                                     <Border Height="25">
-                                        <Grid VerticalAlignment="Center">
+                                        <Grid VerticalAlignment="Center" IsEnabled="{Binding Path=CanDeploy}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="30" />
                                                 <ColumnDefinition />

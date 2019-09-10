@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -97,7 +98,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _captionItems, value);
         }
 
-        private void Load()
+        private async void Load()
         {
             try
             {
@@ -106,7 +107,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 VideoItem = new VideoItemViewModel(_subtitleViewModel.WorkContext.OpenedVideo);
                 if (_subtitleViewModel.WorkContext.OpenedCaptionAsset != null)
                     CaptionAssetItem = new CaptionAssetItemViewModel(_subtitleViewModel.WorkContext.OpenedCaptionAsset);
-                CaptionItems = MakeList();
+                CaptionItems = await MakeList();
 
                 // 에셋 생성모드
                 if (_subtitleViewModel.WorkContext.OpenedCaptionAsset == null)
@@ -119,6 +120,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     };
                     SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
                 }
+                CommandManager.InvalidateRequerySuggested();
             }
             catch (Exception e)
             {
@@ -139,18 +141,46 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 return TrackKind.Subtitle;
             }
+        }
 
-            IEnumerable<CaptionElementItemViewModel> MakeList()
+        private async Task<IEnumerable<CaptionElementItemViewModel>> MakeList()
+        {
+            var editedCaptionList = _subtitleViewModel.Tabs.Select(tab =>
+                new CaptionElementItemViewModel(tab.Caption ?? new Caption(null, false, false, tab.LanguageCode,
+                                                    CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(),
+                                                    tab.Name, null))
+                {
+                    IsSelected = true,
+                    CanDeploy = true
+                }).ToList();
+
+            foreach (var item in editedCaptionList)
             {
-                var captionList = _subtitleViewModel.Tabs.Select(tab =>
-                    new CaptionElementItemViewModel(tab.Caption ?? new Caption(null, false, false, tab.LanguageCode,
-                                                        CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(),
-                                                        tab.Name, null))).ToList();
-                foreach (var item in captionList)
-                    item.IsSelected = true;
-
-                return captionList;
+                item.IsSelected = true;
+                item.CanDeploy = true;
             }
+
+            var captionAssetId = _subtitleViewModel.WorkContext.OpenedCaptionAsset.Id;
+            if (!string.IsNullOrEmpty(captionAssetId))
+            {
+                var captionAsset = await _subtitleViewModel.WorkContext.GetCaptionAssetAsync(captionAssetId);
+                if (!string.IsNullOrEmpty(captionAsset?.Id))
+                {
+                    var captionItemList =
+                        captionAsset.Elements?.Select(caption => new CaptionElementItemViewModel(caption)).ToList() ??
+                        new List<CaptionElementItemViewModel>();
+
+                    // 편집하지 않은 캡션 정보 추가.
+                    foreach (var item in captionItemList)
+                    {
+                        if (!editedCaptionList.Any(caption => caption.Id?.Equals(item.Id) ?? false))
+                        {
+                            editedCaptionList.Add(item);
+                        }
+                    }
+                }
+            }
+            return editedCaptionList;
 
             string CountryCode(string languageCode)
             {
@@ -172,6 +202,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return string.Empty;
             }
         }
+
+        
 
         private bool CanConfirm()
         {
