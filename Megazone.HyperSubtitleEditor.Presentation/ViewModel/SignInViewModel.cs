@@ -32,12 +32,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     public class SignInViewModel : ViewModelBase
     {
-        private const string AUTHORIZATION_ENDPOINT = "https://megaone.io";
-
         private readonly IBrowser _browser;
-
         private readonly ICloudMediaService _cloudMediaService;
-
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
 
@@ -95,7 +91,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CurrentPageNumber = 1;
             UriSource = "about:blank";
-            LoadAuthorizationInfo();
         }
 
         private bool SelectionsChangedFlag
@@ -207,7 +202,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public bool IsAutoLogin
         {
-            get => _config.Subtitle.AutoLogin;
+            get => _isAutoLogin;
             set => Set(ref _isAutoLogin, value);
         }
 
@@ -329,13 +324,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void Save()
         {
-            _config.Subtitle.AutoLogin = _isAutoLogin;
+            _config.Subtitle.AutoLogin = IsAutoLogin;
             ConfigHolder.Save(_config);
 
-            if (_isAutoLogin)
+            if (IsAutoLogin)
                 SaveAuthorization();
         }
-
 
         public Authorization GetAuthorization()
         {
@@ -405,7 +399,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             IsNavigationBarVisible = TotalPage > 1;
         }
-
 
         private void CalculateStageSlidePosition()
         {
@@ -627,7 +620,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void LoadAuthorizationInfo()
+        private Authorization GetAuthorizationInfo()
         {
             try
             {
@@ -637,8 +630,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             catch (FileNotFoundException)
             {
-                _authorization = null;
             }
+
+            return null;
         }
 
         public void ClearAuthorization()
@@ -725,6 +719,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (!SelectionsChangedFlag)
             {
+                if (StageItems == null) return;
+
                 SelectionsChangedFlag = true;
 
                 SelectingStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));

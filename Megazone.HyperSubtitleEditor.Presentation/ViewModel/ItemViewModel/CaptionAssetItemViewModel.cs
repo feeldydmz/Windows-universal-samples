@@ -20,6 +20,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private string _name;
 
+        private CaptionAssetItemViewModel()
+        {
+            Name = "No Caption (Only Video select.)";
+        }
+
         public CaptionAssetItemViewModel(CaptionAsset asset)
         {
             _cloudMediaService = Bootstrapper.Container.Resolve<ICloudMediaService>();
@@ -79,5 +84,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 foreach (var element in Elements)
                     element.IsSelected = true;
         }
+
+        public static CaptionAssetItemViewModel Empty => new CaptionAssetItemViewModel();
+        
     }
 }
