@@ -44,12 +44,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Megazone.HyperSubtitleEditor.Domain\Megazone.HyperSubtitleEditor.Domain.csproj">
-      <Project>{19761767-46d2-423c-99ae-4c916771745b}</Project>
-      <Name>Megazone.HyperSubtitleEditor.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

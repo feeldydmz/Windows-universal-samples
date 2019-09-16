@@ -390,26 +390,6 @@
       <Project>{afd40395-55f2-4e76-8e9f-e3d649ae813c}</Project>
       <Name>Megazone.Cloud.Media.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Aws.Domain\Megazone.Cloud.Aws.Domain.csproj">
-      <Project>{7f117f79-be0e-4f1a-aa5c-c17328fbf70e}</Project>
-      <Name>Megazone.Cloud.Aws.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Common.Domain\Megazone.Cloud.Common.Domain.csproj">
-      <Project>{881E7A8D-CF37-4D7C-909A-94B70569B914}</Project>
-      <Name>Megazone.Cloud.Common.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.csproj">
-      <Project>{7497ad35-a665-4b04-8ceb-33831026e93d}</Project>
-      <Name>Megazone.Cloud.Transcoder.Domain.ElasticTranscoder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Domain\Megazone.Cloud.Transcoder.Domain.csproj">
-      <Project>{3f5ba27c-f095-4638-8cf7-0e777ca2aa64}</Project>
-      <Name>Megazone.Cloud.Transcoder.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.csproj">
-      <Project>{eb27724e-6fc2-425a-912a-0252c9a1283b}</Project>
-      <Name>Megazone.Cloud.Transcoder.Repository.ElasticTranscoder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Client\Megazone.Core.Client.csproj">
       <Project>{CE8F2D46-9F9E-4A36-8488-B3799D61F014}</Project>
       <Name>Megazone.Core.Client</Name>

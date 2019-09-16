@@ -14,8 +14,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation
             configuration.Initialize();
             Container = configuration.Container;
 
-            
-            new Cloud.Transcoder.Repository.ElasticTranscoder.Bootstrapper().Initialize();
             new Cloud.Media.Service.Bootstrapper().Initialize();
         }
     }

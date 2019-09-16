@@ -72,18 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Aws.Domain\Megazone.Cloud.Aws.Domain.csproj">
-      <Project>{7f117f79-be0e-4f1a-aa5c-c17328fbf70e}</Project>
-      <Name>Megazone.Cloud.Aws.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Common.Domain\Megazone.Cloud.Common.Domain.csproj">
-      <Project>{881E7A8D-CF37-4D7C-909A-94B70569B914}</Project>
-      <Name>Megazone.Cloud.Common.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.csproj">
-      <Project>{EB27724E-6FC2-425A-912A-0252C9A1283B}</Project>
-      <Name>Megazone.Cloud.Transcoder.Repository.ElasticTranscoder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.IoC.Unity\Megazone.Core.IoC.Unity.csproj">
       <Project>{9a5bdcba-168c-42ce-95b6-2db21c72c5fe}</Project>
       <Name>Megazone.Core.IoC.Unity</Name>
