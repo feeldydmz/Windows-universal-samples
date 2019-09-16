@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -34,7 +33,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
             VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
             VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
-            CaptionKind = GetTrackKind(openedCaptionAsset);
+            CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
         public Video OpenedVideo { get; private set; }
@@ -45,14 +44,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public Dictionary<string,Dictionary<int, string>> VideoResolutionsByType { get; private set; }
 
-        public TrackKind CaptionKind { get; private set; }
+        public CaptionKind CaptionKind { get; private set; }
 
         public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
         {
             OpenedVideo = openedVideo;
             OpenedCaptionAsset = openedCaptionAsset;
             VideoMediaUrl = GetVideoMediaUrl(openedVideo);
-            CaptionKind = GetTrackKind(openedCaptionAsset);
+            CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
         public async Task<CaptionAsset> GetCaptionAssetAsync(string captionAssetId)
@@ -268,30 +267,30 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return url;
         }
 
-        private TrackKind GetTrackKind(CaptionAsset asset)
+        private CaptionKind GetCaptionKind(CaptionAsset asset)
         {
             var kind = asset?.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
-            var trackKind = TrackKind.Subtitle;
+            var captionKind = CaptionKind.Subtitle;
             switch (kind)
             {
                 case "SUBTITLE":
-                    trackKind = TrackKind.Subtitle;
+                    captionKind = CaptionKind.Subtitle;
                     break;
                 case "CAPTION":
-                    trackKind = TrackKind.Caption;
+                    captionKind = CaptionKind.Caption;
                     break;
                 case "CHAPTER":
-                    trackKind = TrackKind.Chapter;
+                    captionKind = CaptionKind.Chapter;
                     break;
                 case "DESCRIPTION":
-                    trackKind = TrackKind.Description;
+                    captionKind = CaptionKind.Description;
                     break;
                 case "METADATA":
-                    trackKind = TrackKind.Metadata;
+                    captionKind = CaptionKind.Metadata;
                     break;
             }
 
-            return trackKind;
+            return captionKind;
         }
     }
 }

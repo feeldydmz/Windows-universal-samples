@@ -100,10 +100,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Domain\Megazone.Api.Transcoder.Domain.csproj">
-      <Project>{BBC0BB54-4768-43ED-AFA3-F90C4D5F943B}</Project>
-      <Name>Megazone.Api.Transcoder.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>

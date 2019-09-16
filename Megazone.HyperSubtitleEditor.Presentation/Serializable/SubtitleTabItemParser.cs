@@ -17,7 +17,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Serializable
                     LanguageCode = tab.LanguageCode,
                     Kind = tab.Kind,
                     IsSelected = tab.IsSelected,
-                    Track = tab.Track,
                     FilePath = tab.FilePath,
                     VideoId = tab.VideoId,
                     CaptionAssetId = tab.CaptionAssetId

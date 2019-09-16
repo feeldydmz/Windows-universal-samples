@@ -358,10 +358,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Domain\Megazone.Api.Transcoder.Domain.csproj">
-      <Project>{bbc0bb54-4768-43ed-afa3-f90c4d5f943b}</Project>
-      <Name>Megazone.Api.Transcoder.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
@@ -27,9 +27,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _confirmCommand;
         private ICommand _loadCommand;
         private string _projectName;
-        private TrackKind _selectedSubtitleKind;
+        private CaptionKind _selectedSubtitleKind;
         private string _stageName;
-        private IEnumerable<TrackKind> _subtitleKinds;
+        private IEnumerable<CaptionKind> _subtitleKinds;
         private VideoItemViewModel _videoItem;
 
         public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel)
@@ -68,13 +68,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _assetName, value);
         }
 
-        public IEnumerable<TrackKind> SubtitleKinds
+        public IEnumerable<CaptionKind> SubtitleKinds
         {
             get => _subtitleKinds;
             set => Set(ref _subtitleKinds, value);
         }
 
-        public TrackKind SelectedSubtitleKind
+        public CaptionKind SelectedSubtitleKind
         {
             get => _selectedSubtitleKind;
             set => Set(ref _selectedSubtitleKind, value);
@@ -112,11 +112,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 // 에셋 생성모드
                 if (_subtitleViewModel.WorkContext.OpenedCaptionAsset == null)
                 {
-                    SubtitleKinds = new List<TrackKind>
+                    SubtitleKinds = new List<CaptionKind>
                     {
-                        TrackKind.Subtitle,
-                        TrackKind.Caption,
-                        TrackKind.Chapter
+                        CaptionKind.Subtitle,
+                        CaptionKind.Caption,
+                        CaptionKind.Chapter
                     };
                     SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
                 }
@@ -128,18 +128,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 throw;
             }
 
-            TrackKind Convert(string kind)
+            CaptionKind Convert(string kind)
             {
                 switch (kind?.ToUpper())
                 {
-                    case "CAPTION": return TrackKind.Caption;
-                    case "CHAPTER": return TrackKind.Chapter;
-                    case "DESCRIPTION": return TrackKind.Description;
-                    case "METADATA": return TrackKind.Metadata;
-                    case "SUBTITLE": return TrackKind.Subtitle;
+                    case "CAPTION": return CaptionKind.Caption;
+                    case "CHAPTER": return CaptionKind.Chapter;
+                    case "DESCRIPTION": return CaptionKind.Description;
+                    case "METADATA": return CaptionKind.Metadata;
+                    case "SUBTITLE": return CaptionKind.Subtitle;
                 }
 
-                return TrackKind.Subtitle;
+                return CaptionKind.Subtitle;
             }
         }
 

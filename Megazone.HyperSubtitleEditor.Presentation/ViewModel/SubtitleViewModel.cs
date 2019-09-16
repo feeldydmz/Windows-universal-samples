@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Api.Transcoder.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Core.Extension;
@@ -50,8 +49,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
-        private readonly IList<Track> _removedTracks = new List<Track>();
-        
+        private readonly IList<Caption> _removedCaptions = new List<Caption>();
+
         private readonly SubtitleListItemValidator _subtitleListItemValidator;
 
         private readonly SubtitleParserProxy _subtitleService;
@@ -366,8 +365,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void CloseTab(SubtitleTabItemViewModel tab)
         {
             Tabs.Remove(tab);
-            if (tab.IsDeployedOnce || tab.Track != null)
-                _removedTracks.Add(tab.Track);
+            if (tab.IsDeployedOnce || tab.Caption != null)
+                _removedCaptions.Add(tab.Caption);
             if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
             var lastTab = Tabs.LastOrDefault();
             if (lastTab != null)
@@ -462,7 +461,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<SubtitleView.SelectAllRowsMessage>(OnSelectAllRowsRequested);
             MessageCenter.Instance.Unregist<SubtitleView.DeleteSelectRowsMessage>(OnDeleteSelectedRowsRequested);
             MessageCenter.Instance.Unregist<Subtitle.AddNewRowMessage>(OnAddNewRowRequested);
-            MessageCenter.Instance.Unregist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
+            MessageCenter.Instance
+                .Unregist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
 
             MessageCenter.Instance.Unregist<Subtitle.EditTabMessage>(OnEditSubtitle);
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowMessage>(OnInsertNewRowRequested);
@@ -588,7 +588,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             tab.Kind,
                             OnDisplayTextChanged,
                             tab.LanguageCode,
-                            tab.Track,
                             tab.Caption)
                         {
                             IsSelected = tab.IsSelected,
@@ -815,12 +814,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CloseTab(message.Tab);
         }
 
-        private string GetUsername(Job job)
-        {
-            //return job.Payload.UserMetadata["iam"];
-            return job?.Payload?.UserMetadata?.Name;
-        }
-
         private async void OnMcmDeployRequested(Subtitle.DeployRequestedMessage message)
         {
             // 현재 정보
@@ -828,16 +821,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 message.Param.Captions.ToList());
 
             if (isSuccess)
-            {
                 _browser.Main.ShowMcmDeployConfirmDialog(message.Param.Video, message.Param.CaptionAsset,
                     message.Param.Captions.ToList(), GetVideoUrl());
-            }
             else
-            {
                 // [resource]
-                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "게시를 실패하였습니다.\n관리자에게 문의하십시오.", MessageBoxButton.OK,
-                    TextAlignment.Center));
-            }
+                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "게시를 실패하였습니다.\n관리자에게 문의하십시오.",
+                    MessageBoxButton.OK));
 
             return;
 
@@ -853,6 +842,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return $"{hostUrl}/contents/videos/{message.Param.Video.Id}";
             }
         }
+
         private void OnDisplayTextChanged(SubtitleTabItemViewModel tab)
         {
             if (MediaPlayer.IsMediaPlaying) return;
@@ -1000,11 +990,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // video영상을 가져온다.
             if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
-            {
                 MediaPlayer.InitMedia(WorkContext, false);
-                //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
-            }
-            
+            //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
+
             var texts = await LoadCaptionTextListAsync();
 
             _subtitleListItemValidator.IsEnabled = false;
@@ -1021,7 +1009,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     WorkContext.CaptionKind,
                     OnDisplayTextChanged,
                     caption.Language,
-                    null,
                     caption)
                 {
                     IsSelected = false,
@@ -1053,8 +1040,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var caption in captionList)
                     try
                     {
-                        var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
-                        dic.Add(caption.Id, text);
+                        if (!string.IsNullOrEmpty(caption.Url) && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute))
+                        {
+                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
+                            dic.Add(caption.Id, text);
+                        }
                     }
                     catch (WebException e)
                     {

@@ -75,6 +75,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             catch (Exception ex)
             {
                 _logger.Error.Write(ex.Message);
+                // [resource]
+                var errorMessage = "알 수 없는 오류로 파일 불러오기를 실패 하였습니다. 관리자에게 문의하십시오.";
+                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, errorMessage,
+                    MessageBoxButton.OK));
             }
         }
 

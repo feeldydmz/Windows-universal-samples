@@ -99,7 +99,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                 Label = info.Label,
                                 LanguageCode = info.LanguageCode,
                                 Format = info.TrackFormat,
-                                Kind = info.TrackKind
+                                Kind = info.CaptionKind
                             };
 
                             var workSheet = ((WorksheetPart) workbookPart.GetPartById(selectedSheet.Id)).Worksheet;

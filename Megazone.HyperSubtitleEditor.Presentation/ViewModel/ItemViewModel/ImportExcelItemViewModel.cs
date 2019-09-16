@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Language;
 
@@ -14,17 +14,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private string _label;
         private IList<LanguageItemViewModel> _languages;
         private LanguageItemViewModel _selectedLanguageItemViewModel;
-        private TrackKind _selectedSubtitleKind;
+        private CaptionKind _selectedSubtitleKind;
         private string _sheetName;
-        private IList<TrackKind> _subtitleKinds;
+        private IList<CaptionKind> _subtitleKinds;
 
         public ImportExcelItemViewModel()
         {
-            _subtitleKinds = new List<TrackKind>
+            _subtitleKinds = new List<CaptionKind>
             {
-                TrackKind.Subtitle,
-                TrackKind.Caption,
-                TrackKind.Chapter
+                CaptionKind.Subtitle,
+                CaptionKind.Caption,
+                CaptionKind.Chapter
             };
             _languages = new List<LanguageItemViewModel>();
             var preferedLanguageInfoFilePath = Path.GetDirectoryName(
@@ -68,14 +68,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             }
         }
 
-        public IList<TrackKind> SubtitleKinds
+        public IList<CaptionKind> SubtitleKinds
         {
             get => _subtitleKinds;
 
             set => Set(ref _subtitleKinds, value);
         }
 
-        public TrackKind SelectedSubtitleKind
+        public CaptionKind SelectedSubtitleKind
         {
             get => _selectedSubtitleKind;
 

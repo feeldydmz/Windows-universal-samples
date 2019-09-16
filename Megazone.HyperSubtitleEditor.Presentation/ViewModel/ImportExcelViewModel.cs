@@ -91,7 +91,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     SheetName = item.SheetName,
                     Label = item.Label,
                     LanguageCode = item.SelectedLanguageItemViewModel.LanguageCode,
-                    TrackKind = item.SelectedSubtitleKind,
+                    CaptionKind = item.SelectedSubtitleKind,
                     TrackFormat = TrackFormat.WebVtt
                 });
             }
@@ -137,7 +137,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             {
                                 LanguageCode = sheetInfo.LanguageCode ?? string.Empty
                             },
-                        SelectedSubtitleKind = sheetInfo.TrackKind
+                        SelectedSubtitleKind = sheetInfo.CaptionKind
                     });
             }
             catch (Exception)

@@ -1,4 +1,4 @@
-﻿using Megazone.Api.Transcoder.Domain;
+﻿using Megazone.Cloud.Media.Domain;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 {
@@ -8,6 +8,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
         public string Label { get; set; }
         public string LanguageCode { get; set; }
         public TrackFormat TrackFormat { get; set; }
-        public TrackKind TrackKind { get; set; }
+        public CaptionKind CaptionKind { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
-using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
 using Megazone.Core.VideoTrack.Model;
@@ -35,7 +35,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isLoadedFromDataSheet;
         private bool _isRowCollectionChanged;
         private bool _isSelected;
-        private TrackKind _kind;
+        private CaptionKind _kind;
         private string _languageCode;
         private string _name;
         private ISubtitleListItemViewModel _selectedRow;
@@ -46,10 +46,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public SubtitleTabItemViewModel(string name, Action<SubtitleTabItemViewModel> rowCollectionChangedAction,
             Action<SubtitleTabItemViewModel> validateAction, Action<SubtitleTabItemViewModel> onSelectedAction,
             Action<ISubtitleListItemViewModel> onSelectedRowAction,
-            TrackKind kind,
+            CaptionKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
-            Track track = null,
             Caption caption = null)
         {
             _originalData = new OriginalData(name, kind, languageCode);
@@ -65,9 +64,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             var rows = new ObservableCollection<ISubtitleListItemViewModel>();
             rows.CollectionChanged += Items_CollectionChanged;
             _rows = rows;
-            Track = track;
             Caption = caption;
-            _isAddedFromLocal = track == null;
+            _isAddedFromLocal = caption == null;
         }
 
         public IList SelectedRows
@@ -98,7 +96,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public bool IsDeployedOnce { get; private set; }
 
-        public Track Track { get; }
         public Caption Caption { get; }
         public string VideoId { get; set; }
         public string CaptionAssetId { get; set; }
@@ -117,7 +114,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             }
         }
 
-        public TrackKind Kind
+        public CaptionKind Kind
         {
             get => _kind;
             set
@@ -398,7 +395,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private class OriginalData
         {
-            public OriginalData(string name, TrackKind kind, string languageCode)
+            public OriginalData(string name, CaptionKind kind, string languageCode)
             {
                 Name = name;
                 Kind = kind;
@@ -406,7 +403,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             }
 
             public string Name { get; }
-            public TrackKind Kind { get; }
+            public CaptionKind Kind { get; }
             public string LanguageCode { get; }
         }
 

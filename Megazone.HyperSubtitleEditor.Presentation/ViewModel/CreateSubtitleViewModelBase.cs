@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
-using Megazone.Api.Transcoder.Domain;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -20,17 +20,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IList<LanguageItemViewModel> _languages;
         private ICommand _onConfirmCommand;
         private LanguageItemViewModel _selectedLanguageItemViewModel;
-        private TrackKind _selectedSubtitleKind;
-        private IList<TrackKind> _subtitleKinds;
+        private CaptionKind _selectedSubtitleKind;
+        private IList<CaptionKind> _subtitleKinds;
 
         protected CreateSubtitleViewModelBase(ILogger logger)
         {
             Logger = logger;
-            _subtitleKinds = new List<TrackKind>
+            _subtitleKinds = new List<CaptionKind>
             {
-                TrackKind.Subtitle,
-                TrackKind.Caption,
-                TrackKind.Chapter
+                CaptionKind.Subtitle,
+                CaptionKind.Caption,
+                CaptionKind.Chapter
             };
             _languages = new List<LanguageItemViewModel>();
             var preferedLanguageInfoFilePath = Path.GetDirectoryName(
@@ -47,7 +47,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedLanguageItemViewModel = Languages.Where(i => i.LanguageCode.Equals("en"))
                 .ToList()
                 .FirstOrDefault();
-            SelectedSubtitleKind = TrackKind.Subtitle;
+            SelectedSubtitleKind = CaptionKind.Subtitle;
         }
 
         public string Label
@@ -70,13 +70,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedLanguageItemViewModel, value);
         }
 
-        public IList<TrackKind> SubtitleKinds
+        public IList<CaptionKind> SubtitleKinds
         {
             get => _subtitleKinds;
             set => Set(ref _subtitleKinds, value);
         }
 
-        public TrackKind SelectedSubtitleKind
+        public CaptionKind SelectedSubtitleKind
         {
             get => _selectedSubtitleKind;
             set => Set(ref _selectedSubtitleKind, value);

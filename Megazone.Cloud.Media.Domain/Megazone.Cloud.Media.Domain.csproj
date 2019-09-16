@@ -60,6 +60,7 @@
     <Compile Include="AssetListRequest.cs" />
     <Compile Include="AssetListResponse.cs" />
     <Compile Include="AssetRequest.cs" />
+    <Compile Include="CaptionKind.cs" />
     <Compile Include="DeleteAssetRequest.cs" />
     <Compile Include="IAuthorizationRepository.cs" />
     <Compile Include="ICloudMediaRepository.cs" />
