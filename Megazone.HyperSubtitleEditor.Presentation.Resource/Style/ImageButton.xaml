@@ -43,7 +43,7 @@
                         <DockPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid x:Name="PART_ImageContainer" DockPanel.Dock="Left">
-                                <Image x:Name="PART_DefaultImage" Source="{TemplateBinding DefaultImage}"
+                                <Image x:Name="PART_DefaultImage" Source="{TemplateBinding NormalImage}"
                                        Stretch="None" />
                                 <Image x:Name="PART_DisabledImage" Source="{TemplateBinding DisabledImage}"
                                        Visibility="Hidden" Stretch="None" />
@@ -131,7 +131,7 @@
                         <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid x:Name="PART_ImageContainer">
-                                <Image x:Name="PART_DefaultImage" Source="{TemplateBinding DefaultImage}"
+                                <Image x:Name="PART_DefaultImage" Source="{TemplateBinding NormalImage}"
                                        Stretch="UniformToFill" />
                                 <Image x:Name="PART_DisabledImage" Source="{TemplateBinding DisabledImage}"
                                        Visibility="Hidden" Stretch="UniformToFill" />

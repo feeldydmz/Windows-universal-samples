@@ -55,13 +55,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 
                             var splitedSheetName = selectedSheet.Name.Value.Split('_');
 
-                            if (splitedSheetName[0]
-                                .IsNotNullOrAny())
+                            if (!string.IsNullOrEmpty(splitedSheetName[0]))
                                 excelFileInfo.LanguageCode = splitedSheetName[0];
 
-                            if (splitedSheetName.Length > 1 &&
-                                splitedSheetName[1]
-                                    .IsNotNullOrAny())
+                            if (splitedSheetName.Length > 1 && !string.IsNullOrEmpty(splitedSheetName[1]))
                                 excelFileInfo.Label = splitedSheetName[1];
 
                             result.Add(excelFileInfo);

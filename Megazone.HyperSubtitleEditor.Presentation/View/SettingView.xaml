@@ -17,7 +17,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
-                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <mz:InvertBooleanConverter x:Key="InvertBooleanConverter" />

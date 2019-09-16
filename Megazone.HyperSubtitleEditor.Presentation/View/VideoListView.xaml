@@ -22,7 +22,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
-                    ProjectName="Megazone.HyperSubtitleEditor.Presentation"
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -112,7 +111,7 @@
                                 Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
                                 Command="{Binding Path=SearchCommand}"
                                 CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
-                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
                                 PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_hov.png"
                                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_dis.png"
@@ -149,7 +148,7 @@
                                             HorizontalAlignment="Right" VerticalAlignment="Center"
                                             Command="{Binding Path=RefreshCommand}"
                                             ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
+                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
                                             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_pres.png"
                                             MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_hov.png"
                                             DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_dis.png"
@@ -319,7 +318,7 @@
                                 ToolTip="{x:Static resources:Resource.CNT_BACKWARD}" Width="18" Height="14"
                                 Margin="0,0,6,0"
                                 Command="{Binding Path=BackCommand}"
-                                DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_nor.png"
+                                NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_nor.png"
                                 PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_hov.png"
                                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_dis.png"

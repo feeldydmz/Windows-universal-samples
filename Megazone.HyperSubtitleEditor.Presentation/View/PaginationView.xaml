@@ -21,7 +21,7 @@
 
         <mz:ImageButton
             Grid.Column="0" x:Name="PreviousButton" Click="PreviousButton_OnClick"
-            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_nor.png"
+            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_nor.png"
             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_pres.png"
             MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_left_hov.png"
             Style="{StaticResource Style_TransparentImageButton}" Width="10" Height="16" />
@@ -89,7 +89,7 @@
         
         <mz:ImageButton
             Grid.Column="4" x:Name="NextButton" Click="NextButton_OnClick"
-            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_nor.png"
+            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_nor.png"
             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_pres.png"
             MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_hov.png"
             Style="{StaticResource Style_TransparentImageButton}" Width="10" Height="16" />
