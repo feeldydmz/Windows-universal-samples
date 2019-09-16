@@ -482,9 +482,6 @@
                                         <Button Content="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
                                                 Focusable="True"
                                                 Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
-                                        <Button Content="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
-                                                Command="{StaticResource ShowJobMediaSelectorViewCommand}"
-                                                Focusable="True" Visibility="Collapsed" />
                                         <Button Content="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
                                                 Command="{StaticResource OpenVideoListDialogCommand}"
                                                 Focusable="True" />
@@ -494,8 +491,7 @@
                         </Popup>
                     </Grid>
                     <Rectangle />
-                    <!--<Button Command="{StaticResource DeployCommand}">-->
-                    <Button Command="{StaticResource DeployToMcmCommand}">
+                    <Button Command="{StaticResource DeployCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />

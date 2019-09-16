@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,11 +10,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Api.Transcoder.Domain;
-using Megazone.Api.Transcoder.ServiceInterface;
-using Megazone.Cloud.Aws.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Cloud.Storage.ServiceInterface.S3;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
@@ -27,7 +23,6 @@ using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.Core.Windows.Xaml.Behaviors;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
-using Megazone.HyperSubtitleEditor.Presentation.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
@@ -40,7 +35,6 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data;
-using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -54,16 +48,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
-        private readonly IJobService _jobService;
         private readonly ILogger _logger;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
         private readonly IList<Track> _removedTracks = new List<Track>();
-        private readonly IS3Service _s3Service;
+        
         private readonly SubtitleListItemValidator _subtitleListItemValidator;
 
         private readonly SubtitleParserProxy _subtitleService;
-        private readonly ITrackService _trackService;
         private ICommand _addItemCommand;
         private ICommand _closeTabCommand;
         private IList<SubtitleListItemViewModel> _copiedRows;
@@ -93,9 +85,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ExcelService excelService,
             SubtitleListItemValidator subtitleListItemValidator,
             IBrowser browser,
-            IS3Service s3Service,
-            ITrackService trackService,
-            IJobService jobService,
             ICloudMediaService cloudMediaService)
         {
             _subtitleService = subtitleService;
@@ -103,12 +92,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _fileManager = fileManager;
             _excelService = excelService;
             _browser = browser;
-            _trackService = trackService;
-            _jobService = jobService;
             _cloudMediaService = cloudMediaService;
             _subtitleListItemValidator = subtitleListItemValidator;
             _browser = browser;
-            _s3Service = s3Service;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext(this);
@@ -412,14 +398,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _hasRegisteredMessageHandlers = true;
             MessageCenter.Instance.Regist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            MessageCenter.Instance.Regist<JobFoundMessage>(OnJobFound);
             MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
             MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
-            MessageCenter.Instance.Regist<Subtitle.McmCaptionAssetOpenedMessage>(OnMcmCaptionAssetOpened);
+            MessageCenter.Instance.Regist<Subtitle.CaptionOpenedMessage>(OnMcmCaptionAssetOpened);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
-            MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
-            MessageCenter.Instance.Regist<Subtitle.McmDeployRequestedMessage>(OnMcmDeployRequested);
+            MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Regist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
@@ -465,13 +449,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!_hasRegisteredMessageHandlers) return;
             MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            MessageCenter.Instance.Unregist<JobFoundMessage>(OnJobFound);
             MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
-            MessageCenter.Instance.Unregist<Subtitle.McmCaptionAssetOpenedMessage>(OnMcmCaptionAssetOpened);
+            MessageCenter.Instance.Unregist<Subtitle.CaptionOpenedMessage>(OnMcmCaptionAssetOpened);
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
-            MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnDeployRequested);
-            MessageCenter.Instance.Unregist<Subtitle.McmDeployRequestedMessage>(OnMcmDeployRequested);
+            MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Unregist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
@@ -484,9 +466,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<SubtitleView.SelectAllRowsMessage>(OnSelectAllRowsRequested);
             MessageCenter.Instance.Unregist<SubtitleView.DeleteSelectRowsMessage>(OnDeleteSelectedRowsRequested);
             MessageCenter.Instance.Unregist<Subtitle.AddNewRowMessage>(OnAddNewRowRequested);
-            MessageCenter.Instance
-                .Unregist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
-
+            MessageCenter.Instance.Unregist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
 
             MessageCenter.Instance.Unregist<Subtitle.EditTabMessage>(OnEditSubtitle);
             MessageCenter.Instance.Unregist<Subtitle.InsertNewRowMessage>(OnInsertNewRowRequested);
@@ -520,15 +500,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     var nextRow = rows[i + 1];
                     currentRow.EndTime = nextRow.StartTime.Add(-TimeSpan.FromMilliseconds(100));
-                }
-                else
-                {
-                    // last one
-                    var job = AppContext.Job;
-                    if (job == null) return;
-                    var durationMillis =
-                        job.Payload.Outputs?.FirstOrDefault()?.Duration ?? 0;
-                    currentRow.EndTime = TimeSpan.FromMilliseconds(long.Parse(durationMillis.ToString()));
                 }
             }
         }
@@ -650,26 +621,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             InitializeTabs();
             InitializeEncodingItems();
-
-            _browser.Main.LoadingManager.Show();
-            this.InvokeOnTask(() =>
-            {
-                new AppContext().Initialize(_jobService,
-                    success =>
-                    {
-                        this.InvokeOnUi(() =>
-                        {
-                            _browser.Main.LoadingManager.Hide();
-                            if (!success)
-                            {
-                                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
-                                    Resource.MSG_INVALID_APPLICATION_INFO,
-                                    MessageBoxButton.OK));
-                                Application.Current.Shutdown();
-                            }
-                        });
-                    });
-            });
         }
 
         private void OnSettingsSaved(Subtitle.SettingsSavedMessage message)
@@ -874,7 +825,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return job?.Payload?.UserMetadata?.Name;
         }
 
-        private async void OnMcmDeployRequested(Subtitle.McmDeployRequestedMessage message)
+        private async void OnMcmDeployRequested(Subtitle.DeployRequestedMessage message)
         {
             // 현재 정보
             var isSuccess = await WorkContext.DeployAsync(message.Param.Video, message.Param.CaptionAsset,
@@ -906,286 +857,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return $"{hostUrl}/contents/videos/{message.Param.Video.Id}";
             }
         }
-
-        private void OnDeployRequested(Subtitle.DeployRequestedMessage message)
-        {
-            _browser.Main.LoadingManager.Show();
-
-            var dirtyTabs = Tabs.Where(tab => tab.CheckDirty())
-                .ToList();
-            this.InvokeOnTask(() =>
-            {
-                try
-                {
-                    var topicArn = PipelineLoader.Instance.SelectedPipeline.Notifications.Completed;
-                    var job = AppContext.Job;
-                    var credentialInfo = (CredentialInfo) PipelineLoader.Instance.OutputBucketCredentialInfo;
-                    var isExistRemovedTracks = _removedTracks.Any();
-                    if (isExistRemovedTracks)
-                        DeleteRemovedTracks(credentialInfo, job, topicArn, _removedTracks);
-                    var isExistDirtyTabs = dirtyTabs.Any();
-                    if (isExistDirtyTabs)
-                        DeployDirtyTabs(dirtyTabs, credentialInfo, job, topicArn);
-
-                    if (isExistRemovedTracks || isExistDirtyTabs)
-                        this.InvokeOnUi(() =>
-                            {
-                                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                                    Resource.MSG_DEPLOY_SUCCESS,
-                                    MessageBoxButton.OK));
-                                CommandManager.InvalidateRequerySuggested();
-                            }
-                        );
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error.Write(ex);
-                    this.InvokeOnUi(() =>
-                        {
-                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                                Resource.MSG_DEPLOY_FAIL,
-                                MessageBoxButton.OK));
-                        }
-                    );
-                }
-                finally
-                {
-                    this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
-                }
-            });
-        }
-
-        private void DeployDirtyTabs(List<ISubtitleTabItemViewModel> dirtyTabs, CredentialInfo credentialInfo, Job job,
-            string topicArn)
-        {
-            var tempFolderPath = this.GetTempFolderPath();
-            var userName = GetUsername(AppContext.Job);
-            foreach (var tab in dirtyTabs)
-            {
-                var epochTime = DateTime.UtcNow.DateTimeToEpoch();
-                var newFileName = Guid.NewGuid().ToString() + epochTime;
-                var filePath = tempFolderPath + "\\" + newFileName + ".temp";
-                if (!Save(filePath, tab.Rows))
-                    throw new Exception("Saving a temp file failed");
-                var newTrack = new Track(newFileName + ".vtt",
-                    tab.Name,
-                    tab.Kind,
-                    userName,
-                    tab.LanguageCode,
-                    (long) epochTime);
-                var isUploaded = _trackService.UploadFile(new TrackInfo(credentialInfo,
-                    credentialInfo.Region,
-                    PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-                    job.Payload.OutputKeyPrefix,
-                    newTrack,
-                    filePath));
-                if (!isUploaded)
-                    throw new Exception("Uploading a file failed");
-                try
-                {
-                    _trackService.Deploy(RegionManager.Instance.Current.API,
-                        job.Payload.JobId,
-                        topicArn,
-                        newTrack,
-                        tab.Track);
-                }
-                catch (DeleteTrackFailedException)
-                {
-                    // ignore
-                }
-
-                tab.SetAsDeployed();
-            }
-        }
-
-        private void DeleteRemovedTracks(CredentialInfo credentialInfo, Job job, string topicArn,
-            IEnumerable<Track> removedTracks)
-        {
-            var succeedList = new List<Track>();
-            try
-            {
-                foreach (var removedTrack in removedTracks)
-                {
-                    var myTrackInfo = new TrackInfo(credentialInfo,
-                        credentialInfo.Region,
-                        PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-                        job.Payload.OutputKeyPrefix,
-                        removedTrack);
-                    if (!_trackService.DeleteFile(myTrackInfo))
-                        throw new Exception("Deleting file failed");
-                    if (!_trackService.Delete(RegionManager.Instance.Current.API,
-                        job.Payload.JobId,
-                        topicArn,
-                        removedTrack))
-                        throw new Exception("Deleting track failed");
-                    succeedList.Add(removedTrack);
-                }
-            }
-            finally
-            {
-                foreach (var track in succeedList)
-                    _removedTracks.Remove(track);
-            }
-        }
-
-        private string GetMediaItemUrl(Job job, int outputIndex = 0)
-        {
-            var outputList = job?.Payload?.Outputs?.ToList();
-            if (outputList == null) return null;
-            if (outputList.Count - 1 < outputIndex) return null;
-            var output = outputList[outputIndex];
-            if (output != null)
-            {
-                string relativeUrl;
-                var outputKeyPrefix = job.Payload.OutputKeyPrefix;
-
-                var playlist = job.Payload.Playlists?.FirstOrDefault(p => p.OutputKeys.Any(o => o == output.Key));
-                if (playlist != null)
-                {
-                    // streaming type은 playlist봐야함 
-                    var masterPlaylistName = playlist.Name;
-                    var extension = playlist.Format.GetExtension();
-
-                    relativeUrl = masterPlaylistName.Contains(extension)
-                        ? $"{outputKeyPrefix}{masterPlaylistName}"
-                        : $"{outputKeyPrefix}{masterPlaylistName}.{extension}";
-                }
-                else
-                {
-                    relativeUrl = $"{outputKeyPrefix}{output.Key}";
-                }
-
-                var outputBucket = PipelineLoader.Instance.SelectedPipeline.OutputBucket;
-                var credentialInfo = AppContext.CredentialInfo;
-                var baseUrl = _s3Service.GetUrlWith(credentialInfo.Region, outputBucket);
-                return $"{baseUrl}{relativeUrl}";
-            }
-
-            return null;
-        }
-
-        private void OnJobFound(JobFoundMessage message)
-        {
-            if (Tabs?.Any() ?? false)
-            {
-                var messageBoxResult =
-                    _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                        Resource.MSG_KEEP_CURRENT_TAB,
-                        MessageBoxButton.YesNo));
-                if (messageBoxResult != MessageBoxResult.Yes)
-                {
-                    Tabs.Clear();
-                    SelectedTab = null;
-                }
-            }
-
-            _browser.Main.LoadingManager.Show();
-            this.InvokeOnTask(() =>
-            {
-                try
-                {
-                    var job = message.Job;
-                    SetMediaItem(job, message.SelectedOutputIndex);
-                    if (message.ShouldImportAllSubtitles)
-                        LoadTabFromTrack(job);
-                }
-                finally
-                {
-                    this.InvokeOnUi(() => { _browser.Main.LoadingManager.Hide(); });
-                }
-            });
-        }
-
-        private void LoadTabFromTrack(Job job)
-        {
-            TrackList trackList;
-            try
-            {
-                trackList = _trackService.Get(RegionManager.Instance.Current.API, job.Payload.JobId,
-                    PipelineLoader.Instance.SelectedPipeline.Notifications.Completed);
-                if (trackList?.Tracks == null)
-                    return;
-            }
-            catch
-            {
-                // ignored
-                return;
-            }
-
-            var credentialInfo = (CredentialInfo) PipelineLoader.Instance.InputBucketCredentialInfo;
-            var tempFolderPath = this.GetTempFolderPath();
-
-//#if DEBUG
-//            foreach (var track in trackList.Tracks)
-//            {
-//                try
-//                {
-//                    _trackService.DeleteFile(new TrackInfo(credentialInfo, credentialInfo.Region,
-//                        PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-//                        job.Payload.OutputKeyPrefix, track));
-//                }
-//                catch
-//                {
-//                    // ignored
-//                }
-
-//                _trackService.Delete(RegionManager.Instance.Current.API,
-//                    job.Payload.JobId,
-//                    PipelineLoader.Instance.SelectedPipeline.Notifications.Completed,
-//                    track);
-//            }
-//#endif
-
-            foreach (var track in trackList.Tracks)
-                try
-                {
-                    var filePath = tempFolderPath + "\\" + Guid.NewGuid() + DateTime.UtcNow.DateTimeToEpoch() + ".vtt";
-                    var isDownloaded =
-                        _trackService.DownloadFile(new TrackInfo(credentialInfo,
-                            credentialInfo.Region,
-                            PipelineLoader.Instance.SelectedPipeline.OutputBucket,
-                            job.Payload.OutputKeyPrefix,
-                            track,
-                            filePath));
-                    if (isDownloaded)
-                    {
-                        var fileText = File.ReadAllText(filePath);
-                        if (!string.IsNullOrEmpty(fileText))
-                        {
-                            var subtitles = _subtitleService.Load(fileText, TrackFormat.WebVtt);
-                            if (subtitles == null) return;
-                            this.InvokeOnUi(() =>
-                            {
-                                var newTab = new SubtitleTabItemViewModel(track.Label.ToUpper(),
-                                    OnRowCollectionChanged,
-                                    OnValidateRequested,
-                                    OnTabSelected,
-                                    OnItemSelected,
-                                    track.Kind,
-                                    OnDisplayTextChanged,
-                                    track.Language,
-                                    track);
-                                newTab.AddDatasheet(subtitles.ToList());
-                                Tabs.Add(newTab);
-                            });
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error.Write(ex);
-                }
-
-            this.InvokeOnUi(() =>
-            {
-                if (SelectedTab != null) return;
-                var firstTab = Tabs.FirstOrDefault();
-                if (firstTab != null)
-                    firstTab.IsSelected = true;
-                CommandManager.InvalidateRequerySuggested();
-            });
-        }
-
         private void OnDisplayTextChanged(SubtitleTabItemViewModel tab)
         {
             if (MediaPlayer.IsMediaPlaying) return;
@@ -1204,19 +875,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             MediaPlayer.CurrentPositionText = iTextList;
-        }
-
-        private void SetMediaItem(Job job, int outputIndex = 0)
-        {
-            if (outputIndex < 0)
-            {
-                this.InvokeOnUi(() => { MediaPlayer.RemoveMediaItem(); });
-                return;
-            }
-
-            var url = GetMediaItemUrl(job, outputIndex);
-            if (string.IsNullOrEmpty(url)) return;
-            this.InvokeOnUi(() => { MediaPlayer.OpenMedia(url, false); });
         }
 
         private void InitializeEncodingItems()
@@ -1320,7 +978,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Encoding.UTF8);
         }
 
-        private async void OnMcmCaptionAssetOpened(Subtitle.McmCaptionAssetOpenedMessage message)
+        private async void OnMcmCaptionAssetOpened(Subtitle.CaptionOpenedMessage message)
         {
             if (message.Param == null)
                 return;

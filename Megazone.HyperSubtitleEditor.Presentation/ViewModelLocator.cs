@@ -19,20 +19,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public SubtitleViewModel Subtitle => Bootstrapper.Container.Resolve<SubtitleViewModel>();
         public SettingViewModel Setting => Bootstrapper.Container.Resolve<SettingViewModel>();
         public ImportExcelViewModel ImportExcel => Bootstrapper.Container.Resolve<ImportExcelViewModel>();
-
-        public JobMediaItemSelectorViewModel JobMediaItemSelector =>
-            Bootstrapper.Container.Resolve<JobMediaItemSelectorViewModel>();
-
-        public JobSelectorViewModel JobSelector => Bootstrapper.Container.Resolve<JobSelectorViewModel>();
         public OpenSubtitleViewModel OpenSubtitle => Bootstrapper.Container.Resolve<OpenSubtitleViewModel>();
-
-        public AddAndEditSubtitleViewModel AddAndEditSubtitle =>
-            Bootstrapper.Container.Resolve<AddAndEditSubtitleViewModel>();
-
+        public AddAndEditSubtitleViewModel AddAndEditSubtitle => Bootstrapper.Container.Resolve<AddAndEditSubtitleViewModel>();
         public CopySubtitleViewModel CopySubtitle => Bootstrapper.Container.Resolve<CopySubtitleViewModel>();
         public GoToLineViewModel GoToLine => Bootstrapper.Container.Resolve<GoToLineViewModel>();
         public FindAndReplaceViewModel FindAndReplace => Bootstrapper.Container.Resolve<FindAndReplaceViewModel>();
-
         public SignInViewModel SignIn => Bootstrapper.Container.Resolve<SignInViewModel>();
         public VideoListViewModel VideoList => Bootstrapper.Container.Resolve<VideoListViewModel>();
         public McmDeployViewModel McmDeploy => Bootstrapper.Container.Resolve<McmDeployViewModel>();

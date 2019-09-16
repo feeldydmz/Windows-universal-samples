@@ -10,8 +10,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
     public interface IMainView
     {
         ILoadingManager LoadingManager { get; }
-        IJobSelector JobSelector { get; }
-        IJobMediaItemSelector JobMediaItemSelector { get; }
         ISubtitleView SubtitleView { get; }
         void ShowSettingsDialog();
         void ShowImportExcelDialog(string initialFilePath = null);

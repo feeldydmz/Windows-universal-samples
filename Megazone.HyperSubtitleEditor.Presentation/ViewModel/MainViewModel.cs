@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Windows.Input;
-using Megazone.Api.Transcoder.ServiceInterface;
 using Megazone.Core.IoC;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
@@ -15,15 +14,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class MainViewModel : ViewModelBase
     {
-        private readonly IJobService _jobService;
-        private string _jobId;
         private ICommand _loadedCommand;
         private ICommand _unloadedCommand;
-
-        public MainViewModel(IJobService jobService)
-        {
-            _jobService = jobService;
-        }
 
         public ICommand LoadedCommand
         {
@@ -35,16 +27,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _unloadedCommand = _unloadedCommand ?? new RelayCommand(OnUnloaded); }
         }
 
-        public string JobId
-        {
-            get => _jobId;
-            set => Set(ref _jobId, value);
-        }
-
         private void OnLoaded()
         {
             MessageCenter.Instance.Regist<ReinitializeAppContextMessage>(OnReinitializeAppContextMessageReceived);
-            MessageCenter.Instance.Regist<JobFoundMessage>(OnJobFound);
             CleanUpTempFiles();
         }
 
@@ -66,32 +51,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             });
         }
 
-        private void OnJobFound(JobFoundMessage message)
-        {
-            AppContext.SetJob(message.Job);
-            JobId = message.Job.Payload.JobId;
-            CommandManager.InvalidateRequerySuggested();
-        }
-
         private void OnReinitializeAppContextMessageReceived(ReinitializeAppContextMessage message)
         {
-            if (string.IsNullOrEmpty(message.ProfileId) ||
-                string.IsNullOrEmpty(message.PipelineId) ||
-                string.IsNullOrEmpty(message.JobId))
-            {
-                AppContext.SetJob(null);
-                JobId = null;
-                return;
-            }
+            // 초기화 
 
-            var appContext = new AppContext();
-            appContext.SetConfig(message.ProfileId, message.PipelineId, message.JobId, message.Region);
-            appContext.Initialize(_jobService, null);
+            //if (string.IsNullOrEmpty(message.ProfileId) ||
+            //    string.IsNullOrEmpty(message.PipelineId) ||
+            //    string.IsNullOrEmpty(message.JobId))
+            //{
+            //    //AppContext.SetJob(null);
+            //    JobId = null;
+            //    return;
+            //}
+
+            //var appContext = new AppContext();
+            ////appContext.SetConfig(message.ProfileId, message.PipelineId, message.JobId, message.Region);
+            ////appContext.Initialize(_jobService, null);
         }
 
         private void OnUnloaded()
         {
-            MessageCenter.Instance.Unregist<JobFoundMessage>(OnJobFound);
             MessageCenter.Instance.Unregist<ReinitializeAppContextMessage>(OnReinitializeAppContextMessageReceived);
         }
     }

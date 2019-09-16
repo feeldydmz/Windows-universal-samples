@@ -221,8 +221,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var captionAsset = CaptionAssetItem?.Source ?? CreateCaptionAsset();
                 var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
 
-                MessageCenter.Instance.Send(new Subtitle.McmDeployRequestedMessage(this,
-                    new McmDeployRequestedMessageParameter(video, captionAsset, selectedCaptionList)));
+                MessageCenter.Instance.Send(new Subtitle.DeployRequestedMessage(this,
+                    new DeployRequestedMessageParameter(video, captionAsset, selectedCaptionList)));
             }
             catch (Exception e)
             {

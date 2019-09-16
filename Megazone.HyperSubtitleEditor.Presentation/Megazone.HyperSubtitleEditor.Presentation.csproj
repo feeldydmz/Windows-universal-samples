@@ -167,7 +167,6 @@
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
-    <Compile Include="Command\UI\DeployToMcmCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
     <Compile Include="Command\UI\PlayBackByHalfSecondCommand.cs" />
@@ -198,17 +197,14 @@
     <Compile Include="Command\UI\OpenSubtitleCommand.cs" />
     <Compile Include="Command\UI\ReplaceTextCommand.cs" />
     <Compile Include="Command\UI\SaveGroupFileCommand.cs" />
-    <Compile Include="Command\UI\SelectJobCommand.cs" />
-    <Compile Include="Command\UI\SetAutoLoginCommand.cs" />
+    <Compile Include="Command\UI\TapAutoLoginCommand.cs" />
     <Compile Include="Command\UI\ShowApplicatoinInfoCommand.cs" />
-    <Compile Include="Command\UI\ShowJobMediaSelectorViewCommand.cs" />
     <Compile Include="Command\UI\PasteRowCommand.cs" />
     <Compile Include="Command\UI\PlayOrPauseVideoCommand.cs" />
     <Compile Include="Command\UI\ExportAllTabsAsVttCommand.cs" />
     <Compile Include="Command\UI\SaveAsCommand.cs" />
     <Compile Include="Command\UI\ExportSelectedTabAsVttCommand.cs" />
     <Compile Include="Command\UI\SelectAllRowsCommand.cs" />
-    <Compile Include="Command\UI\ShowJobSelectorViewCommand.cs" />
     <Compile Include="Command\UI\ShowOpenVideoAddressWindowCommand.cs" />
     <Compile Include="Command\UI\ShowSettingsViewCommand.cs" />
     <Compile Include="Command\UI\SyncEndTimeToCurrentMediaPositionCommand.cs" />
@@ -229,13 +225,12 @@
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
     <Compile Include="Message\Excel.cs" />
-    <Compile Include="Message\JobFoundMessage.cs" />
     <Compile Include="Message\MediaPlayer.cs" />
     <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
-    <Compile Include="Message\Parameter\McmCaptionAssetOpenedMessageParameter.cs" />
-    <Compile Include="Message\Parameter\McmDeployRequestedMessageParameter.cs" />
+    <Compile Include="Message\Parameter\CaptionOpenedMessageParameter.cs" />
+    <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
@@ -267,18 +262,12 @@
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
     <Compile Include="ViewModel\Data\ProfileLoader.cs" />
     <Compile Include="ViewModel\Data\MediaTypeExtension.cs" />
-    <Compile Include="ViewModel\Data\PipelineLoader.cs" />
     <Compile Include="ViewModel\Data\PlaylistFormatExtension.cs" />
-    <Compile Include="ViewModel\Data\PresetLoader.cs" />
     <Compile Include="ViewModel\Data\AppContext.cs" />
-    <Compile Include="ViewModel\ItemViewModel\JobItemViewModel.cs" />
     <Compile Include="ViewModel\ImportExcelViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\ImportExcelItemViewModel.cs" />
-    <Compile Include="ViewModel\ItemViewModel\JobListItemOutputViewModel.cs" />
-    <Compile Include="ViewModel\ItemViewModel\JobListItemOutputViewModelBuilder.cs" />
     <Compile Include="ViewModel\ItemViewModel\JobListPagingItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\LanguageItemViewModel.cs" />
-    <Compile Include="ViewModel\JobMediaItemSelectorViewModel.cs" />
     <Compile Include="ViewModel\OpenSubtitleViewModel.cs" />
     <Compile Include="ViewModel\Strategy\SettingSaveStrategyFactory.cs" />
     <Compile Include="ViewModel\Strategy\DefaultSettingSaveStrategy.cs" />
@@ -325,10 +314,6 @@
     <Compile Include="View\OpenSubtitleView.xaml.cs">
       <DependentUpon>OpenSubtitleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\JobMediaItemSelectorView.xaml.cs">
-      <DependentUpon>JobMediaItemSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\JobSelectorViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemValidator.cs" />
     <Compile Include="ViewModel\ItemViewModel\SubtitleTabItemViewModel.cs" />
     <Compile Include="ViewModel\MediaPlayerViewModel.cs" />
@@ -344,9 +329,6 @@
     <Compile Include="ViewModel\SubtitleViewModel.cs" />
     <Compile Include="View\ImportExcelView.xaml.cs">
       <DependentUpon>ImportExcelView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\JobSelectorView.xaml.cs">
-      <DependentUpon>JobSelectorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LoadingManager.cs" />
     <Compile Include="View\MainView.xaml.cs">
@@ -393,14 +375,6 @@
       <Project>{bbc0bb54-4768-43ed-afa3-f90c4d5f943b}</Project>
       <Name>Megazone.Api.Transcoder.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.ServiceInterface\Megazone.Api.Transcoder.ServiceInterface.csproj">
-      <Project>{c04904c0-9065-4f6c-a76f-2556f53f5661}</Project>
-      <Name>Megazone.Api.Transcoder.ServiceInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Api.Transcoder\Megazone.Api.Transcoder.Service\Megazone.Api.Transcoder.Service.csproj">
-      <Project>{b59643bb-f955-4ce0-b04e-21eecc12cfbd}</Project>
-      <Name>Megazone.Api.Transcoder.Service</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>
@@ -424,22 +398,6 @@
     <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Common.Domain\Megazone.Cloud.Common.Domain.csproj">
       <Project>{881E7A8D-CF37-4D7C-909A-94B70569B914}</Project>
       <Name>Megazone.Cloud.Common.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Domain\Megazone.Cloud.Storage.Domain.csproj">
-      <Project>{35c2520d-61c1-4206-afe4-185a4a121013}</Project>
-      <Name>Megazone.Cloud.Storage.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Repository.S3\Megazone.Cloud.Storage.Repository.S3.csproj">
-      <Project>{67ef99e8-a604-4dd7-a0a6-a1878f1ca485}</Project>
-      <Name>Megazone.Cloud.Storage.Repository.S3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.Service.S3\Megazone.Cloud.Storage.Service.S3.csproj">
-      <Project>{fcb618bd-9b51-422d-b11d-05cde6d6e3bc}</Project>
-      <Name>Megazone.Cloud.Storage.Service.S3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Storage.ServiceInterface.S3\Megazone.Cloud.Storage.ServiceInterface.S3.csproj">
-      <Project>{4c3c8a0b-7a52-4e63-9f32-03912ce5b4b3}</Project>
-      <Name>Megazone.Cloud.Storage.ServiceInterface.S3</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Cloud\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.csproj">
       <Project>{7497ad35-a665-4b04-8ceb-33831026e93d}</Project>
@@ -591,19 +549,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\JobMediaItemSelectorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\CommandDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ImportExcelView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\JobSelectorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

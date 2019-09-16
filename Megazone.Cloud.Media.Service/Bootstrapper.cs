@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using Megazone.Cloud.Common.Domain;
 using Megazone.Core.IoC.Unity;
 using Unity;
 
 namespace Megazone.Cloud.Media.Service
 {
-    public class Bootstrapper : IBootstrapper
+    public class Bootstrapper
     {
         public IUnityContainer Container { get; private set; }
 

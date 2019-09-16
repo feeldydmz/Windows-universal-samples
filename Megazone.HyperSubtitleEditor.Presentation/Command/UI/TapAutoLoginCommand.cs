@@ -7,11 +7,11 @@ using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
-    public class SetAutoLoginCommand : DependencyObject, ICommand
+    public class TapAutoLoginCommand : DependencyObject, ICommand
     {
         private readonly SignInViewModel _signInViewModel;
 
-        public SetAutoLoginCommand()
+        public TapAutoLoginCommand()
         {
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }

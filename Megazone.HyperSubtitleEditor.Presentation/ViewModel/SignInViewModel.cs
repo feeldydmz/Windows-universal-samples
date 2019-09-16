@@ -32,6 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     public class SignInViewModel : ViewModelBase
     {
+        private const string password = "Megazone@1";
         private readonly IBrowser _browser;
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ConfigHolder _config;
@@ -63,7 +64,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _moveProjectStepCommand;
         private ICommand _navigatingCommand;
 
-        private ICommand _projectSelectionChangedCommand;
         private ICommand _rightNavigateCommand;
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
@@ -91,6 +91,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CurrentPageNumber = 1;
             UriSource = "about:blank";
+            _authorization = ReadSavedAuthorization();
         }
 
         private bool SelectionsChangedFlag
@@ -111,7 +112,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        internal string AuthorizationFilePath => $"{Path.GetTempPath()}\\subtitleAuthorization.json";
+        internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.json";
         public UserProfile User { get; set; }
 
         private string _username;
@@ -334,7 +335,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _config.Subtitle.AutoLogin = IsAutoLogin;
             ConfigHolder.Save(_config);
 
-            if (IsAutoLogin)
+            if (_config.Subtitle.AutoLogin)
                 SaveAuthorization();
         }
 
@@ -600,7 +601,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     CalculateStageSlidePosition();
 
-                    if (IsAutoLogin)
+                    if (_config.Subtitle.AutoLogin)
                         SaveAuthorization();
                 }
 
@@ -617,7 +618,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898("Megazone@1");
+                var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898(password);
 
                 File.WriteAllText(AuthorizationFilePath, profileData);
             }
@@ -628,18 +629,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private Authorization GetAuthorizationInfo()
+        private Authorization ReadSavedAuthorization()
         {
             try
             {
                 var profileData = File.ReadAllText(AuthorizationFilePath);
-                _authorization =
-                    JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898("Megazone@1"));
+                return JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898(password));
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException e)
             {
+                _logger.Error.Write(e);
             }
-
             return null;
         }
 
@@ -653,6 +653,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Load()
         {
+            IsAutoLogin = _config.Subtitle.AutoLogin;
             if (!_config.Subtitle.AutoLogin)
             {
                 UriSource = AuthorizationRepository.LOGIN_URI;

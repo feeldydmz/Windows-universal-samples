@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core;
@@ -15,7 +16,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     {
         private readonly FileManager _fileManager;
         private readonly ILogger _logger;
-        private readonly MainViewModel _mainViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
         private readonly SignInViewModel _signInViewModel;
 
@@ -23,14 +23,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         {
             _logger = Bootstrapper.Container.Resolve<ILogger>();
             _fileManager = Bootstrapper.Container.Resolve<FileManager>();
-            _mainViewModel = Bootstrapper.Container.Resolve<MainViewModel>();
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }
 
         public bool CanExecute(object parameter)
         {
-            return !string.IsNullOrEmpty(_mainViewModel.JobId) || _subtitleViewModel.HasTab;
+            return _subtitleViewModel.HasTab && (_subtitleViewModel.Tabs?.Any(tab => tab.IsDirty) ?? false);
         }
 
         public void Execute(object parameter)
@@ -39,8 +38,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             {
                 var subtitleTabItems = SubtitleTabItemParser.Convert(_subtitleViewModel.Tabs);
 
-                var subtitleGroup = new SubtitleGroup(AppContext.Config.ProfileId, AppContext.Config.PipelineId,
-                    _mainViewModel.JobId, AppContext.Config.Region, subtitleTabItems,
+                var subtitleGroup = new SubtitleGroup(subtitleTabItems,
                     _subtitleViewModel.WorkContext.OpenedVideo?.Id,
                     _subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id,
                     _signInViewModel.SelectedStage.Source,

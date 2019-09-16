@@ -36,8 +36,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             get { return _loadingManager = _loadingManager ?? new LoadingManager(LoadingProgressView); }
         }
 
-        public IJobSelector JobSelector { get; } = new JobSelectorImpl();
-        public IJobMediaItemSelector JobMediaItemSelector { get; } = new JobMediaItemSelectorImpl();
+        //public IJobSelector JobSelector { get; } = new JobSelectorImpl();
+        //public IJobMediaItemSelector JobMediaItemSelector { get; } = new JobMediaItemSelectorImpl();
 
         public void ShowSettingsDialog()
         {
@@ -315,70 +315,70 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             }
         }
 
-        private class JobMediaItemSelectorImpl : IJobMediaItemSelector
-        {
-            private JobMediaItemSelectorView _jobMediaItemSelectorView;
+        //private class JobMediaItemSelectorImpl : IJobMediaItemSelector
+        //{
+        //    private JobMediaItemSelectorView _jobMediaItemSelectorView;
 
-            public ILoadingManager LoadingManager => _jobMediaItemSelectorView?.LoadingManager;
+        //    public ILoadingManager LoadingManager => _jobMediaItemSelectorView?.LoadingManager;
 
-            public void Show()
-            {
-                _jobMediaItemSelectorView = new JobMediaItemSelectorView();
-                var window = new ChildWindow
-                {
-                    Owner = Application.Current.MainWindow,
-                    Title = Resource.CNT_SELECT_VIDEO, // TODO: 다국어
-                    ResizeMode = ResizeMode.CanResize,
-                    Width = 320,
-                    MinWidth = 320,
-                    Height = 440,
-                    MinHeight = 440,
-                    SizeToContent = SizeToContent.Height,
-                    Content = _jobMediaItemSelectorView,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner
-                };
-                window.ShowDialog();
-                window.Closed += Window_Closed;
-            }
+        //    public void Show()
+        //    {
+        //        _jobMediaItemSelectorView = new JobMediaItemSelectorView();
+        //        var window = new ChildWindow
+        //        {
+        //            Owner = Application.Current.MainWindow,
+        //            Title = Resource.CNT_SELECT_VIDEO, // TODO: 다국어
+        //            ResizeMode = ResizeMode.CanResize,
+        //            Width = 320,
+        //            MinWidth = 320,
+        //            Height = 440,
+        //            MinHeight = 440,
+        //            SizeToContent = SizeToContent.Height,
+        //            Content = _jobMediaItemSelectorView,
+        //            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        //        };
+        //        window.ShowDialog();
+        //        window.Closed += Window_Closed;
+        //    }
 
-            private void Window_Closed(object sender, EventArgs e)
-            {
-                if (sender is Window window)
-                    window.Closed -= Window_Closed;
+        //    private void Window_Closed(object sender, EventArgs e)
+        //    {
+        //        if (sender is Window window)
+        //            window.Closed -= Window_Closed;
 
-                _jobMediaItemSelectorView = null;
-            }
-        }
+        //        _jobMediaItemSelectorView = null;
+        //    }
+        //}
 
-        private class JobSelectorImpl : IJobSelector
-        {
-            private JobSelectorView _jobSelectorView;
+        //private class JobSelectorImpl : IJobSelector
+        //{
+        //    private JobSelectorView _jobSelectorView;
 
-            public ILoadingManager LoadingManager => _jobSelectorView?.LoadingManager;
+        //    public ILoadingManager LoadingManager => _jobSelectorView?.LoadingManager;
 
-            public void Show()
-            {
-                _jobSelectorView = new JobSelectorView();
-                var window = new ChildWindow
-                {
-                    Owner = Application.Current.MainWindow,
-                    Title = Resource.CNT_SELECT_JOB, // TODO: 다국어
-                    ResizeMode = ResizeMode.NoResize,
-                    SizeToContent = SizeToContent.WidthAndHeight,
-                    Content = _jobSelectorView,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner
-                };
-                window.ShowDialog();
-                window.Closed += Window_Closed;
-            }
+        //    public void Show()
+        //    {
+        //        _jobSelectorView = new JobSelectorView();
+        //        var window = new ChildWindow
+        //        {
+        //            Owner = Application.Current.MainWindow,
+        //            Title = Resource.CNT_SELECT_JOB, // TODO: 다국어
+        //            ResizeMode = ResizeMode.NoResize,
+        //            SizeToContent = SizeToContent.WidthAndHeight,
+        //            Content = _jobSelectorView,
+        //            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        //        };
+        //        window.ShowDialog();
+        //        window.Closed += Window_Closed;
+        //    }
 
-            private void Window_Closed(object sender, EventArgs e)
-            {
-                if (sender is Window window)
-                    window.Closed -= Window_Closed;
+        //    private void Window_Closed(object sender, EventArgs e)
+        //    {
+        //        if (sender is Window window)
+        //            window.Closed -= Window_Closed;
 
-                _jobSelectorView = null;
-            }
-        }
+        //        _jobSelectorView = null;
+        //    }
+        //}
     }
 }

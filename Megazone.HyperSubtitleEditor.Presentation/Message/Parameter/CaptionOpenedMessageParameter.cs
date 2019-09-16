@@ -4,17 +4,17 @@ using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
-    public class McmDeployRequestedMessageParameter
+    public class CaptionOpenedMessageParameter
     {
-        public McmDeployRequestedMessageParameter(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions)
+        public CaptionOpenedMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions)
         {
             Video = video;
-            CaptionAsset = captionAsset;
+            Asset = asset;
             Captions = captions;
         }
 
         public Video Video { get; }
-        public CaptionAsset CaptionAsset { get; }
+        public CaptionAsset Asset { get; }
         public IEnumerable<Caption> Captions { get; }
     }
 }

@@ -23,8 +23,6 @@
     <ui:InsertRowBeforeSelectedRowCommand x:Key="InsertRowBeforeSelectedRowCommand" />
     <ui:ApplyItalicToAllTextCommand x:Key="ApplyItalicToAllTextCommand" />
     <ui:OpenLocalVideoCommand x:Key="OpenLocalVideoCommand" />
-    <ui:ShowJobMediaSelectorViewCommand x:Key="ShowJobMediaSelectorViewCommand" />
-    <ui:ShowJobSelectorViewCommand x:Key="ShowJobSelectorViewCommand" />
     <ui:PasteRowCommand x:Key="PasteRowCommand" />
     <ui:PlayOrPauseVideoCommand x:Key="PlayOrPauseVideoCommand" />
     <ui:OpenLogFolderCommand x:Key="OpenLogFolderCommand" />
@@ -33,7 +31,6 @@
     <ui:SelectAllRowsCommand x:Key="SelectAllRowsCommand" />
     <ui:ApplyUnderlineToAllTextCommand x:Key="ApplyUnderlineToAllTextCommand" />
     <ui:ExitApplicationCommand x:Key="ExitApplicationCommand" />
-    <ui:SelectJobCommand x:Key="SelectJobCommand" />
     <ui:EditTabCommand x:Key="EditSubtitleCommand" />
     <ui:AddNewRowCommand x:Key="AddNewRowCommand" />
     <ui:OpenFindWindowCommand x:Key="OpenFindWindowCommand" />
@@ -50,6 +47,5 @@
     <ui:ShowApplicatoinInfoCommand x:Key="ShowApplicatoinInfoCommand" />
     <ui:DownloadExcelTemplet x:Key="DownloadExcelTemplet" />
     <ui:AutoAdjustEndtimesCommand x:Key="AutoAdjustEndtimesCommand" />
-    <ui:DeployToMcmCommand x:Key="DeployToMcmCommand" />
-    <ui:SetAutoLoginCommand x:Key="SetAutoLoginCommand"/>
+    <ui:TapAutoLoginCommand x:Key="TapAutoLoginCommand"/>
 </ResourceDictionary>

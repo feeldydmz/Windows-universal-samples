@@ -6,7 +6,6 @@
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cui="clr-namespace:Megazone.VideoStudio.Presentation.Common.Infrastructure.Command.UI;assembly=Megazone.VideoStudio.Presentation.Common.Infrastructure"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
@@ -20,10 +19,7 @@
                 <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <mz:StringNullOrEmptyToParameterValueConverter x:Key="StringNullOrEmptyToParameterValueConverter" />
-            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
         </ResourceDictionary>
-
-
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <cui:DirectKeyCommandBinding RealCommand="{StaticResource AddNewRowCommand}"
@@ -128,9 +124,7 @@
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
                           Command="{StaticResource ExportSelectedTabAsVttCommand}" />
                 <Separator />
-                <!--<MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />-->
-                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}"
-                          Command="{StaticResource DeployToMcmCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
                           Command="{StaticResource OpenSubtitleCommand}" />
@@ -211,8 +205,6 @@
             <MenuItem Header="{x:Static resources:Resource.CNT_VIDEO}">
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
                           Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
-                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_IN_JOB}"
-                          Command="{StaticResource ShowJobMediaSelectorViewCommand}" Visibility="Collapsed" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
                           Command="{StaticResource OpenVideoListDialogCommand}" />
             </MenuItem>
@@ -223,7 +215,7 @@
                           Command="{StaticResource ShowApplicatoinInfoCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_AUTO_LOGIN}"
                           IsCheckable="True"
-                          Command="{StaticResource SetAutoLoginCommand}"
+                          Command="{StaticResource TapAutoLoginCommand}"
                           IsChecked="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn.IsAutoLogin}" />
             </MenuItem>
         </Menu>
@@ -278,50 +270,6 @@
             <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
                        Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"
                        Visibility="Collapsed" />
-            <Button Margin="0,1,0,-1"
-                    Content="{Binding JobId, Converter={StaticResource StringNullOrEmptyToParameterValueConverter}, ConverterParameter={x:Static resources:Resource.CNT_NOT_CONNECTED}}"
-                    Command="{StaticResource SelectJobCommand}" VerticalAlignment="Center"
-                    Visibility="Collapsed">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="UseLayoutRounding" Value="True" />
-                        <Setter Property="SnapsToDevicePixels" Value="True" />
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <Setter Property="Opacity" Value="0.8" />
-                        <Setter Property="Padding" Value="3,3,3,5" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid Background="Transparent">
-                                        <ContentPresenter
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Margin="{TemplateBinding Padding}" />
-                                        <Rectangle x:Name="Underline" Height="1" Visibility="Collapsed"
-                                                   VerticalAlignment="Bottom" Fill="{TemplateBinding Foreground}"
-                                                   Margin="4" />
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Opacity" Value="1" />
-                                            <Setter Property="Visibility" Value="Visible" TargetName="Underline" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Opacity" Value="0.6" />
-                                            <Setter Property="Visibility" Value="Visible" TargetName="Underline" />
-                                        </Trigger>
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Opacity" Value="0.3" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
         </StackPanel>
 
         <!--툴바-->

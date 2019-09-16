@@ -40,7 +40,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            if (!string.IsNullOrEmpty(_mainViewModel.JobId) || _subtitleViewModel.HasTab)
+            if (_subtitleViewModel.HasTab)
             {
                 var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                     Resource.MSG_LOAD_GROUP_FILE,
@@ -68,9 +68,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     }
                 }
 
-                MessageCenter.Instance.Send(
-                    new ReinitializeAppContextMessage(this, group.PipelineId, group.JobId, group.ProfileId,
-                        group.Region));
+                MessageCenter.Instance.Send(new ReinitializeAppContextMessage(this));
 
                 MessageCenter.Instance.Send(new Subtitle.LoadTabsMessage(this, group.Tabs));
             }

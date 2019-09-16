@@ -70,19 +70,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class DeployRequestedMessage : MessageBase
         {
-            public DeployRequestedMessage(object sender) : base(sender)
-            {
-            }
-        }
-
-        internal class McmDeployRequestedMessage : MessageBase
-        {
-            public McmDeployRequestedMessage(object sender, McmDeployRequestedMessageParameter param) : base(sender)
+            public DeployRequestedMessage(object sender, DeployRequestedMessageParameter param) : base(sender)
             {
                 Param = param;
             }
 
-            public McmDeployRequestedMessageParameter Param { get; }
+            public DeployRequestedMessageParameter Param { get; }
         }
 
         internal class FileOpenedMessage : MessageBase
@@ -95,15 +88,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public FileOpenedMessageParameter Param { get; }
         }
 
-        internal class McmCaptionAssetOpenedMessage : MessageBase
+        internal class CaptionOpenedMessage : MessageBase
         {
-            public McmCaptionAssetOpenedMessage(object sender, McmCaptionAssetOpenedMessageParameter param) :
+            public CaptionOpenedMessage(object sender, CaptionOpenedMessageParameter param) :
                 base(sender)
             {
                 Param = param;
             }
 
-            public McmCaptionAssetOpenedMessageParameter Param { get; }
+            public CaptionOpenedMessageParameter Param { get; }
         }
 
         internal class SaveMessage : MessageBase
