@@ -260,7 +260,6 @@
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
-    <Compile Include="ViewModel\Data\ProfileLoader.cs" />
     <Compile Include="ViewModel\Data\MediaTypeExtension.cs" />
     <Compile Include="ViewModel\Data\PlaylistFormatExtension.cs" />
     <Compile Include="ViewModel\Data\AppContext.cs" />

@@ -68,24 +68,6 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Command\UI\DirectKeyCommandBinding.cs" />
     <Compile Include="Command\UI\KeyGestureMarkup.cs" />
-    <Compile Include="Data\Profile\ClientProfile.cs" />
-    <Compile Include="Data\Profile\ClientProfileCredentialInfo.cs" />
-    <Compile Include="Data\Profile\ClientProfileExtension.cs" />
-    <Compile Include="Data\Profile\ClientProfileManager.cs" />
-    <Compile Include="Data\Profile\ClientProfiles.cs" />
-    <Compile Include="Data\Profile\ClinetProfilesExtension.cs" />
-    <Compile Include="Data\Profile\EncryptedClientProfiles.cs" />
-    <Compile Include="Data\Profile\PersistantModel\CdnProfileItemModel.cs" />
-    <Compile Include="Data\Profile\PersistantModel\ClientProfileCredentialInfoModel.cs" />
-    <Compile Include="Data\Profile\PersistantModel\ClientProfileModel.cs" />
-    <Compile Include="Data\Profile\PersistantModel\ClientProfilesModel.cs" />
-    <Compile Include="Data\Profile\ProfileRegion.cs" />
-    <Compile Include="Data\Profile\PersistantModel\ProfileRegionModel.cs" />
-    <Compile Include="Data\Profile\ProfileRegionExtension.cs" />
-    <Compile Include="Data\Profile\RegionInformation.cs" />
-    <Compile Include="Data\Profile\PersistantModel\RegionInformationModel.cs" />
-    <Compile Include="Data\Profile\RegionInformationExtension.cs" />
-    <Compile Include="Data\RegionManager.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

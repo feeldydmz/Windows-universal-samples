@@ -34,7 +34,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
-using Megazone.VideoStudio.Presentation.Common.Infrastructure.Data;
 using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -102,9 +101,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public McmWorkContext WorkContext { get; private set; }
         public MediaPlayerViewModel MediaPlayer { get; }
-
-        // ReSharper disable once UnusedMember.Global
-        public bool IsApiEndpointSet => !string.IsNullOrEmpty(RegionManager.Instance.Current?.API);
 
         public ICommand DeleteSelectedItemsCommand
         {
