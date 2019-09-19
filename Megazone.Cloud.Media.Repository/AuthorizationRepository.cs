@@ -9,7 +9,8 @@ namespace Megazone.Cloud.Media.Repository
     [Inject(Source = typeof(IAuthorizationRepository), Scope = LifetimeScope.Transient)]
     public class AuthorizationRepository : IAuthorizationRepository
     {
-        private const string Domain = "oauth.megazone.io";
+        //private const string Domain = "oauth.megazone.io";
+        private const string Domain = "megaone.io";
 
         public const string LOGIN_URL =
             "https://" + Domain +
