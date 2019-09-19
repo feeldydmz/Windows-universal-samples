@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 
-namespace Megazone.HyperSubtitleEditor.Presentation.Language
+namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language
 {
     public static class LanguageParser
     {

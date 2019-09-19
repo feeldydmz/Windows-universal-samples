@@ -10,6 +10,7 @@ using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
+// ReSharper disable InconsistentNaming
 
 namespace Megazone.Cloud.Media.Service
 {
@@ -30,8 +31,6 @@ namespace Megazone.Cloud.Media.Service
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
 #endif
-        private const string AUTHORIZATION_END_POINT = "https://megaone.io";
-
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
 
@@ -48,7 +47,7 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var authorizationResponse =
-                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_END_POINT, userName, password));
+                    _authorizationRepository.Get(new AuthorizationRequest(userName, password, string.Empty));
                 var accessToken = authorizationResponse.AccessToken;
                 var refreshToken = authorizationResponse.RefreshToken;
                 var expires = authorizationResponse.Expires;
@@ -62,9 +61,10 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var authorizationResponse =
-                    _authorizationRepository.Get(new AuthorizationRequest(AUTHORIZATION_END_POINT, code));
+                    _authorizationRepository.Get(new AuthorizationRequest(string.Empty, string.Empty, code));
 
-                return new Authorization(authorizationResponse?.AccessToken, authorizationResponse?.RefreshToken, authorizationResponse?.Expires);
+                return new Authorization(authorizationResponse?.AccessToken, authorizationResponse?.RefreshToken,
+                    authorizationResponse?.Expires);
             }, cancellationToken);
         }
 
@@ -273,7 +273,8 @@ namespace Megazone.Cloud.Media.Service
                 var assetId = parameter.CaptionAssetId;
                 var version = parameter.Version;
 
-                var result = _cloudMediaRepository.DeleteCaptionAsset(new DeleteAssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var result = _cloudMediaRepository.DeleteCaptionAsset(new DeleteAssetRequest(CLOUD_MEDIA_ENDPOINT,
+                    accessToken,
                     stageId, projectId, assetId, version));
                 Debug.Assert(!result, "Asset 삭제 실패.");
             }, cancellationToken);

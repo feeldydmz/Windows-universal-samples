@@ -2,20 +2,13 @@
 {
     public class AuthorizationRequest
     {
-        public AuthorizationRequest(string endpoint, string username, string password)
+        public AuthorizationRequest(string username, string password, string code)
         {
-            Endpoint = endpoint;
             Username = username;
             Password = password;
-        }
-
-        public AuthorizationRequest(string endpoint, string code)
-        {
-            Endpoint = endpoint;
             Code = code;
         }
 
-        public string Endpoint { get; }
         public string Username { get; }
         public string Password { get; }
         public string Code { get; }

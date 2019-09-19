@@ -9,6 +9,7 @@ using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
@@ -145,14 +146,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task<IEnumerable<CaptionElementItemViewModel>> MakeList()
         {
-            var editedCaptionList = _subtitleViewModel.Tabs.Select(tab =>
-                new CaptionElementItemViewModel(tab.Caption ?? new Caption(null, false, false, tab.LanguageCode,
-                                                    CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(),
-                                                    tab.Name, null))
+            // 현재 탭으로 오픈된 자막을 게시한다.
+            CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
+            {
+                var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode,
+                    CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
+                
+                return new CaptionElementItemViewModel(caption)
                 {
-                    IsSelected = true,
-                    CanDeploy = true
-                }).ToList();
+                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode),
+                    CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode)
+                };
+            }
+            var editedCaptionList = _subtitleViewModel.Tabs.Select(CrateCaptionElementItemViewModel).ToList();
 
             foreach (var item in editedCaptionList)
             {

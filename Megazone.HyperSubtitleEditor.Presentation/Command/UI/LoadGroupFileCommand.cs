@@ -54,6 +54,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             {
                 var filePath = _fileManager.OpenFile("HyperSubtitleEditor files (.hsg)|*.hsg");
 
+                if(string.IsNullOrEmpty(filePath))
+                    return;
+
                 var group = BinarySerialization.ReadFromBinaryFile<SubtitleGroup>(filePath);
                 if (!string.IsNullOrEmpty(group.Stage?.Id) && !string.IsNullOrEmpty(group.Project?.Id))
                 {

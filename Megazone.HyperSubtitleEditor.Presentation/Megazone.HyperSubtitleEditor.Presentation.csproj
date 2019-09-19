@@ -209,8 +209,6 @@
     <Compile Include="Excel\TrackFormat.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
-    <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageParser.cs" />
     <Compile Include="Message\Excel.cs" />
     <Compile Include="Message\MediaPlayer.cs" />
     <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
@@ -351,7 +349,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Excel\HyperSubtitleEditor_Caption_Format.xlsx" />
     <None Include="app.config" />
-    <Resource Include="Language\LanguageInfo.json" />
     <None Include="packages.config" />
     <Content Include="PreferedLanguageInfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

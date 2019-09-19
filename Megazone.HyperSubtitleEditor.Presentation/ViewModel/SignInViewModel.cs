@@ -468,7 +468,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             SelectingStage = null;
 
-            UriSource = AuthorizationRepository.LOGIN_URI;
+            UriSource = AuthorizationRepository.LOGIN_URL;
         }
 
         private async void LoginByAuthorizationCodeAsync(string code)
@@ -502,7 +502,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     IsSignIn = false;
                     IsBusy = false;
-                    UriSource = AuthorizationRepository.LOGIN_URI;
+                    UriSource = AuthorizationRepository.LOGIN_URL;
                     return;
                 }
 
@@ -656,7 +656,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsAutoLogin = _config.Subtitle.AutoLogin;
             if (!_config.Subtitle.AutoLogin)
             {
-                UriSource = AuthorizationRepository.LOGIN_URI;
+                UriSource = AuthorizationRepository.LOGIN_URL;
                 return;
             }
 
@@ -666,7 +666,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             else
             {
-                UriSource = AuthorizationRepository.LOGIN_URI;
+                UriSource = AuthorizationRepository.LOGIN_URL;
                 IsProjectViewVisible = false;
                 IsSignIn = false;
             }

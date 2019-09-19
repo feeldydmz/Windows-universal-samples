@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Language;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {

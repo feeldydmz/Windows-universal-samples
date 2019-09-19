@@ -9,21 +9,26 @@ namespace Megazone.Cloud.Media.Repository
     [Inject(Source = typeof(IAuthorizationRepository), Scope = LifetimeScope.Transient)]
     public class AuthorizationRepository : IAuthorizationRepository
     {
-        public const string LOGIN_URI = "https://megaone.io/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+        private const string Domain = "oauth.megazone.io";
+
+        public const string LOGIN_URL =
+            "https://" + Domain +
+            "/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
 
         public AuthorizationResponse Get(AuthorizationRequest request)
         {
             // 사용자 인증.
-            // 인증 URL : https://megaone.io/oauth/token
+            // 인증 URL : https://oauth.megazone.io/oauth/token
             var clientAuthorization = GetClientAuthorization();
             var content =
                 $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.media.megazone.io/megaone/login";
+
             var restRequest = new RestRequest("oauth/token", Method.POST)
                 //var restRequest = new RestRequest("v1/token", Method.GET)
                 .AddHeader("Authorization", $"Basic {clientAuthorization}")
                 .AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
 
-            var exResult = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            var exResult = RestSharpExtension.CreateRestClient($"https://{Domain}").Execute(restRequest);
 
 
             //// TODO 나중에 Get 방식으로 받는 코드로 교체

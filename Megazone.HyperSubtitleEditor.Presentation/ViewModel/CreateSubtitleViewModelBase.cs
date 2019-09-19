@@ -8,7 +8,7 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Language;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
