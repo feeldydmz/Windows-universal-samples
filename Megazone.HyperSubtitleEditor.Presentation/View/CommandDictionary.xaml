@@ -44,8 +44,10 @@
     <ui:PlayBackByHalfSecondCommand x:Key="PlayBackByHalfSecondCommand" />
     <ui:PlayForwardByHalfSecondCommand x:Key="PlayForwardByHalfSecondCommand" />
     <ui:InsertRowAtCurrentMediaPositionCommand x:Key="InsertRowAtCurrentMediaPositionCommand" />
-    <ui:ShowApplicatoinInfoCommand x:Key="ShowApplicatoinInfoCommand" />
+    <ui:ShowApplicationInfoCommand x:Key="ShowApplicationInfoCommand" />
     <ui:DownloadExcelTemplet x:Key="DownloadExcelTemplet" />
     <ui:AutoAdjustEndtimesCommand x:Key="AutoAdjustEndtimesCommand" />
     <ui:TapAutoLoginCommand x:Key="TapAutoLoginCommand"/>
+    <ui:LogoutCommand x:Key="LogoutCommand" />
+    <ui:ShowProjectViewCommand x:Key="ShowProjectViewCommand" />
 </ResourceDictionary>

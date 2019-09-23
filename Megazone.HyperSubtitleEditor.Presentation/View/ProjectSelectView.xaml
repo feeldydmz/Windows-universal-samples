@@ -13,7 +13,7 @@
              xmlns:extensions="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Extension"
              mc:Ignorable="d"
              d:DesignHeight="736" d:DesignWidth="1280"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel}"
              x:Name="Root">
     <i:Interaction.Behaviors>
         <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" StageWidth="340" StageMarginWidth="30" />
@@ -69,8 +69,7 @@
         </StackPanel>
 
 
-        <Border Grid.Row="1"
-                Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Grid.Row="1" Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Control x:Name="LoadingProgressView"
                      Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Style="{StaticResource Style_IndeterminateControl}"
@@ -398,7 +397,7 @@
                             Style="{StaticResource Style_Button_Left_Arrow}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                             Visibility="{Binding IsCancelButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Command="{Binding Path=CancelProjectSelectCommand}" />
+                            Command="{Binding Path=CloseCommand}" />
                     <Slider Grid.Column="2"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"

@@ -88,7 +88,7 @@
                                           KeyGesture="{ui:KeyGestureMarkup Key=F5}" />
         <ui:DirectKeyCommandBinding RealCommand="{StaticResource DownloadCommand}"
                                           KeyGesture="{ui:KeyGestureMarkup Key=F8}" />
-        <ui:DirectKeyCommandBinding RealCommand="{StaticResource ShowApplicatoinInfoCommand}"
+        <ui:DirectKeyCommandBinding RealCommand="{StaticResource ShowApplicationInfoCommand}"
                                           KeyGesture="{ui:KeyGestureMarkup Key=F12}" />
     </UserControl.CommandBindings>-->
     <i:Interaction.Triggers>
@@ -211,7 +211,7 @@
                 <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_SETTING}"
                           Command="{StaticResource ShowSettingsViewCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_PROGRAM_INFO}"
-                          Command="{StaticResource ShowApplicatoinInfoCommand}" />
+                          Command="{StaticResource ShowApplicationInfoCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_AUTO_LOGIN}"
                           IsCheckable="True"
                           Command="{StaticResource TapAutoLoginCommand}"
@@ -231,7 +231,7 @@
                     <TextBlock Text="{Binding Path=SelectedProject.Name}" Margin="2,0" />
                 </StackPanel>
 
-                <mz:ImageButton Command="{Binding Path=MoveProjectStepCommand}"
+                <mz:ImageButton Command="{StaticResource ShowProjectViewCommand}"
                                 NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_nor.png"
                                 PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_pres.png"
                                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_arrow_admin_hov.png"
@@ -250,8 +250,7 @@
                     Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" />-->
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,14,0">
-                    <Image
-                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
+                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
                     <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center"
                                TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>

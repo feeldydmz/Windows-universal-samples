@@ -1,21 +1,20 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Core.Windows.Extension;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
-    internal class ShowApplicationInfoCommand : DependencyObject, ICommand
+    public class LogoutCommand : DependencyObject, ICommand
     {
-        private readonly IBrowser _browser;
+        private readonly SignInViewModel _signInViewModel;
 
-        public ShowApplicationInfoCommand()
+        public LogoutCommand()
         {
-            if (this.IsInDesignMode())
-                return;
-            _browser = Bootstrapper.Container.Resolve<IBrowser>();
+            _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            _browser.Main.ShowApplicationInfoWindow();
+            _signInViewModel.Logout();
         }
 
         public event EventHandler CanExecuteChanged

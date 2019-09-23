@@ -152,6 +152,6 @@
     </MenuItem>
     <!--도움말-->
     <MenuItem Header="도움말">
-        <!--<MenuItem Header="프로그램 정보" InputGestureText="F12" Command="{StaticResource ShowApplicatoinInfoCommand}" />-->
+        <!--<MenuItem Header="프로그램 정보" InputGestureText="F12" Command="{StaticResource ShowApplicationInfoCommand}" />-->
     </MenuItem>
 </Menu>

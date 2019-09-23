@@ -27,5 +27,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public SignInViewModel SignIn => Bootstrapper.Container.Resolve<SignInViewModel>();
         public VideoListViewModel VideoList => Bootstrapper.Container.Resolve<VideoListViewModel>();
         public McmDeployViewModel McmDeploy => Bootstrapper.Container.Resolve<McmDeployViewModel>();
+        public ProjectViewModel McmProjectViewModel => Bootstrapper.Container.Resolve<ProjectViewModel>();
     }
 }
