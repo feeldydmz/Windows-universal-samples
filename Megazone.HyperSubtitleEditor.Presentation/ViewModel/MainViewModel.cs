@@ -7,7 +7,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {

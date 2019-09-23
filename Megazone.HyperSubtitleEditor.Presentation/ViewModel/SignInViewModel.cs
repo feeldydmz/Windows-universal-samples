@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
@@ -17,6 +16,7 @@ using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -36,6 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly IBrowser _browser;
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ConfigHolder _config;
+        private readonly LanguageParser _languageParser;
         private readonly ILogger _logger;
 
         private readonly object SYNC_OBJECT = new object();
@@ -82,11 +83,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private int _totalPage;
         private string _uriSource;
 
-        public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger, IBrowser browser)
+        private string _username;
+
+        public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger, IBrowser browser,
+            LanguageParser languageParser)
         {
             _logger = logger;
             _browser = browser;
             _cloudMediaService = cloudMediaService;
+            _languageParser = languageParser;
             _config = ConfigHolder.Current;
 
             CurrentPageNumber = 1;
@@ -115,7 +120,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.json";
         public UserProfile User { get; set; }
 
-        private string _username;
         public string UserName
         {
             get => _username;
@@ -640,6 +644,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _logger.Error.Write(e);
             }
+
             return null;
         }
 
@@ -705,6 +710,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedProject = SelectingStage.SelectedProject;
             IsProjectViewVisible = string.IsNullOrEmpty(SelectedProject?.ProjectId) ||
                                    string.IsNullOrEmpty(SelectedStage?.Id);
+
+
+            _languageParser.UpdateLanguageAsync(_authorization.AccessToken, SelectedProject?.StageId,
+                SelectedProject?.ProjectId);
         }
 
         private void OnCancelProjectSelect()

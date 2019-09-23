@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -18,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ISubtitleTabItemViewModel _selectedTab;
         private IList<ISubtitleTabItemViewModel> _tabs;
 
-        public CopySubtitleViewModel(ILogger logger) : base(logger)
+        public CopySubtitleViewModel(ILogger logger, LanguageParser languageParser) : base(logger, languageParser)
         {
         }
 

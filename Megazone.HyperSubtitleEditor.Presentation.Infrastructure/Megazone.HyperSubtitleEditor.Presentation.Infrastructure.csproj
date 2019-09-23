@@ -107,6 +107,10 @@
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.ServiceInterface\Megazone.Cloud.Media.ServiceInterface.csproj">
+      <Project>{df0d1eae-deb3-4518-bd64-4be12ec10d9b}</Project>
+      <Name>Megazone.Cloud.Media.ServiceInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Debug\Megazone.Core.Debug.csproj">
       <Project>{3951711f-e61d-4d2c-b2ce-289971431767}</Project>
       <Name>Megazone.Core.Debug</Name>

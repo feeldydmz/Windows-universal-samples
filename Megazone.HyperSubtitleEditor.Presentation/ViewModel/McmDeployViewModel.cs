@@ -8,6 +8,7 @@ using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -19,6 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class McmDeployViewModel : ViewModelBase
     {
+        private readonly LanguageParser _languageParser;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
 
@@ -33,10 +35,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<CaptionKind> _subtitleKinds;
         private VideoItemViewModel _videoItem;
 
-        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel)
+        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
+            LanguageParser languageParser)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
+            _languageParser = languageParser;
         }
 
         public Action CloseAction { get; set; }
@@ -121,6 +125,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     };
                     SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
                 }
+
                 CommandManager.InvalidateRequerySuggested();
             }
             catch (Exception e)
@@ -150,14 +155,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
             {
                 var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode,
-                    CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
-                
+                    tab.Caption?.Country, tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
+
                 return new CaptionElementItemViewModel(caption)
                 {
                     IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode),
                     CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode)
                 };
             }
+
             var editedCaptionList = _subtitleViewModel.Tabs.Select(CrateCaptionElementItemViewModel).ToList();
 
             foreach (var item in editedCaptionList)
@@ -178,14 +184,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     // 편집하지 않은 캡션 정보 추가.
                     foreach (var item in captionItemList)
-                    {
                         if (!editedCaptionList.Any(caption => caption.Id?.Equals(item.Id) ?? false))
-                        {
                             editedCaptionList.Add(item);
-                        }
-                    }
                 }
             }
+
             return editedCaptionList;
 
             string CountryCode(string languageCode)
@@ -209,7 +212,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        
 
         private bool CanConfirm()
         {

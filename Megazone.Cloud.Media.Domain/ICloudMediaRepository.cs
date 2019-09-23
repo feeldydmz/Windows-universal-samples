@@ -18,6 +18,7 @@ namespace Megazone.Cloud.Media.Domain
         CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request);
         CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request);
         VideoListResponse GetVideos(VideoListRequest request);
+        Languages GetLanguages(LanguageRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);
         bool UpdateVideoCaptions(VideoRequest request);
