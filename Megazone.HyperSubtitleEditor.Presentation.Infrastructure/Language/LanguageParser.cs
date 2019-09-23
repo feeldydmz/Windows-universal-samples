@@ -1,53 +1,64 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using Newtonsoft.Json;
+using System.Threading;
+using Megazone.Cloud.Media.ServiceInterface;
+using Megazone.Cloud.Media.ServiceInterface.Parameter;
+using Megazone.Core.Extension;
+using Megazone.Core.IoC;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language
 {
-    public static class LanguageParser
+    [Inject(Source = typeof(LanguageParser), Scope = LifetimeScope.Singleton)]
+    public class LanguageParser
     {
-        private static string ReadFromFile(string filePath)
+        private readonly ICloudMediaService _cloudMediaService;
+
+        public LanguageParser(ICloudMediaService cloudMediaService)
         {
-            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath)) return File.ReadAllText(filePath);
-            return null;
+            _cloudMediaService = cloudMediaService;
+
+            Languages = new List<Language>();
         }
 
-        private static string GetDefaultLanguages()
+        public List<Language> Languages { get; }
+
+        public async void UpdateLanguageAsync(string authorizationAccessToken, string stageId, string projectId)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = assembly.GetName()
-                                   .Name +
-                               ".Language.LanguageInfo.json";
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            var languages = await _cloudMediaService.GetLanguageAsync(
+                new GetLanguageParameter(authorizationAccessToken, stageId, projectId), CancellationToken.None);
+
+            foreach (var language in languages)
             {
-                if (stream == null)
-                    return null;
-                using (var reader = new StreamReader(stream))
+                var newLanguage = new Language();
+
+                if (language.Name.IsNotNullAndAny())
                 {
-                    return reader.ReadToEnd();
+                    var splitStrings = language.Name.Split('-');
+
+                    if (splitStrings.Length >= 2)
+                    {
+                        newLanguage.Name = splitStrings[0].Trim();
+                        newLanguage.CountryInfo.Name = splitStrings[1].Trim();
+                    }
+                    else
+                    {
+                        newLanguage.Name = language.Name;
+                        newLanguage.CountryInfo.Name = language.Name;
+                    }
                 }
-            }
-        }
 
-        private static IEnumerable<Language> TryConvert(string jsonText)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(jsonText))
-                    return JsonConvert.DeserializeObject<IEnumerable<Language>>(jsonText);
-            }
-            catch
-            {
-                // ignored
-            }
-            return null;
-        }
+                if (language.Code.IsNotNullAndAny())
+                {
+                    var splitStrings = language.Code.Split('-');
 
-        public static IEnumerable<Language> GetLanguages(string filePath = null)
-        {
-            var convertedLanguages = TryConvert(ReadFromFile(filePath));
-            return convertedLanguages ?? TryConvert(GetDefaultLanguages());
+                    if (splitStrings.Length >= 2)
+                    {
+                        newLanguage.Alpha2 = splitStrings[0].Trim();
+                        newLanguage.CountryInfo.Alpha2 = splitStrings[1].Trim();
+                    }
+                }
+
+                Languages.Add(newLanguage);
+            }
         }
     }
 }

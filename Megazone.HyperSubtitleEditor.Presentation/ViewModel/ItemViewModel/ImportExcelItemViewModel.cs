@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
@@ -10,6 +8,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class ImportExcelItemViewModel : ViewModelBase
     {
+        private readonly LanguageParser _languageParser;
         private bool _isChecked;
         private string _label;
         private IList<LanguageItemViewModel> _languages;
@@ -18,25 +17,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private string _sheetName;
         private IList<CaptionKind> _subtitleKinds;
 
-        public ImportExcelItemViewModel()
+        public ImportExcelItemViewModel(LanguageParser languageParser)
         {
+            _languageParser = languageParser;
+
             _subtitleKinds = new List<CaptionKind>
             {
                 CaptionKind.Subtitle,
                 CaptionKind.Caption,
                 CaptionKind.Chapter
             };
+
             _languages = new List<LanguageItemViewModel>();
-            var preferedLanguageInfoFilePath = Path.GetDirectoryName(
-                                                   Assembly.GetExecutingAssembly()
-                                                       .Location) +
-                                               "\\PreferedLanguageInfo.json";
-            foreach (var item in LanguageParser.GetLanguages(preferedLanguageInfoFilePath)
-                .ToList())
+
+            var languages = _languageParser.Languages;
+
+            foreach (var item in languages.ToList())
                 Languages.Add(new LanguageItemViewModel
                 {
                     LanguageCode = item.Alpha2,
-                    NativeName = item.NativeName
+                    CountryCode = item.CountryInfo.Alpha2,
+                    CountryName = item.CountryInfo.Name
                 });
         }
 

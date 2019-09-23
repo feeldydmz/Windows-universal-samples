@@ -8,6 +8,7 @@ using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
@@ -18,16 +19,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
+        private readonly LanguageParser _languageParser;
         private string _excelFilePath;
         private ICommand _importChooseExcelSheetCommand;
         private ICommand _importExcelFileCommand;
         private ICommand _loadedCommand;
         private IList<ImportExcelItemViewModel> _sheets;
 
-        public ImportExcelViewModel(FileManager fileManager, ExcelService excelService)
+        public ImportExcelViewModel(FileManager fileManager, ExcelService excelService, LanguageParser languageParser)
         {
             _fileManager = fileManager;
             _excelService = excelService;
+            _languageParser = languageParser;
             _sheets = new ObservableCollection<ImportExcelItemViewModel>();
         }
 
@@ -127,7 +130,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 foreach (var sheetInfo in infos)
-                    Sheets.Add(new ImportExcelItemViewModel
+                    Sheets.Add(new ImportExcelItemViewModel(_languageParser)
                     {
                         IsChecked = true, // 기본값이 체크되어 있는 형태.
                         SheetName = sheetInfo.SheetName,

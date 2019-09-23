@@ -5,7 +5,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     internal class LanguageItemViewModel : ViewModelBase
     {
         private string _languageCode;
-        private string _nativeName;
+        private string _countryCode;
+        private string _countryName;
 
         public string LanguageCode
         {
@@ -14,13 +15,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _languageCode, value);
         }
 
-        public string NativeName
+        public string CountryCode
         {
-            get => _nativeName;
+            get => _countryCode;
 
-            set => Set(ref _nativeName, value);
+            set => Set(ref _countryCode, value);
         }
 
-        public string DisplayName => NativeName + " ( " + LanguageCode + " )";
+        public string CountryName
+        {
+            get => _countryName;
+
+            set => Set(ref _countryName, value);
+        }
+
+        public string DisplayName => CountryName + " ( " + LanguageCode + "-" + CountryCode + " )";
     }
 }

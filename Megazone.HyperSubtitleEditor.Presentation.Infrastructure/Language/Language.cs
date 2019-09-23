@@ -4,23 +4,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language
 {
     public class Language
     {
-        [JsonProperty("Name")] public string Name { get; set; }
+        public Language()
+        {
+            CountryInfo = new Country();
+        }
 
-        [JsonProperty("NativeName")] public string NativeName { get; set; }
+        public string Name { get; set; }
 
-        [JsonProperty("Alpha2")] public string Alpha2 { get; set; }
+        public string NativeName { get; set; }
 
-        [JsonProperty("Alpha3")] public string Alpha3 { get; set; }
+        public string Alpha2 { get; set; }
+
+        public Country CountryInfo { get; set; }
     }
 
     public class Country
     {
-        [JsonProperty("Name")] public string Name { get; set; }
+         public string Name { get; set; }
 
-        [JsonProperty("NativeName")] public string NativeName { get; set; }
-
-        [JsonProperty("Alpha2")] public string Alpha2 { get; set; }
-
-        [JsonProperty("Alpha3")] public string Alpha3 { get; set; }
+        public string Alpha2 { get; set; }
     }
 }

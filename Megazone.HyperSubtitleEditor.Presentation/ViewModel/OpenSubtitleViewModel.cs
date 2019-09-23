@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
@@ -18,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadedCommand;
         private ICommand _openSubtitleFileCommand;
 
-        public OpenSubtitleViewModel(ILogger logger, FileManager fileManager) : base(logger)
+        public OpenSubtitleViewModel(ILogger logger, FileManager fileManager, LanguageParser languageParser) : base(logger, languageParser)
         {
             _fileManager = fileManager;
         }
