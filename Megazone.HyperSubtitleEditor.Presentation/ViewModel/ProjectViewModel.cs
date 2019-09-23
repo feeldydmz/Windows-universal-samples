@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _leftSlideNavigateCommand;
         private ICommand _loadCommand;
         private ICommand _rightNavigateCommand;
-        private StageItemViewModel _selectingStage;
+        private StageItemViewModel _selectedStage;
         private bool _selectionsChangedFlag;
         private ICommand _selectProjectCommand;
         private List<StageItemViewModel> _stageItems;
@@ -69,10 +69,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isProjectViewVisible, value);
         }
 
-        public StageItemViewModel SelectingStage
+        public StageItemViewModel SelectedStage
         {
-            get => _selectingStage;
-            set => Set(ref _selectingStage, value);
+            get => _selectedStage;
+            set => Set(ref _selectedStage, value);
         }
 
         public List<StageItemViewModel> StageItems
@@ -190,7 +190,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _leftSlideNavigateCommand =
-                    _leftSlideNavigateCommand ?? new RelayCommand<string>(OnLeftSlideNavigate);
+                    _leftSlideNavigateCommand ?? new RelayCommand<string>(NavigateLeft);
             }
         }
 
@@ -198,7 +198,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get
             {
-                return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(OnRightSlideNavigate);
+                return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(NavigateRight);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (StageTotal == 0)
                 return false;
 
-            return SelectingStage?.SelectedProject != _signInViewModel.SelectedProject;
+            return SelectedStage?.SelectedProject != _signInViewModel.SelectedProject;
         }
 
         private void StartProject()
@@ -265,8 +265,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
             }
 
-            _signInViewModel.SelectedStage = SelectingStage;
-            _signInViewModel.SelectedProject = SelectingStage.SelectedProject;
+            _signInViewModel.SelectedStage = SelectedStage;
+            _signInViewModel.SelectedProject = SelectedStage.SelectedProject;
             IsProjectViewVisible = string.IsNullOrEmpty(_signInViewModel.SelectedProject?.ProjectId) ||
                                    string.IsNullOrEmpty(_signInViewModel.SelectedStage?.Id);
         }
@@ -279,10 +279,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 _selectionsChangedFlag = true;
 
-                SelectingStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
+                SelectedStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
 
                 foreach (var stage in StageItems)
-                    if (!stage.Equals(SelectingStage))
+                    if (!stage.Equals(SelectedStage))
                         if (stage.SelectedProject != null)
                             stage.SelectedProject = null;
                 _selectionsChangedFlag = false;
@@ -298,14 +298,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CalculateStageSlidePosition();
         }
 
-        private void OnRightSlideNavigate(string obj)
+        private void NavigateRight(string obj)
         {
             ++CurrentPageNumber;
 
             CalculateStageSlidePosition();
         }
 
-        private void OnLeftSlideNavigate(string obj)
+        private void NavigateLeft(string obj)
         {
             if (CurrentPageNumber > 0)
                 --CurrentPageNumber;
@@ -414,7 +414,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = false;
             StageItems = null;
             CurrentPageStageItems = null;
-            SelectingStage = null;
+            SelectedStage = null;
         }
 
         private async void OnLoadStageProjectRequested(SignIn.LoadStageProjectMessage message)

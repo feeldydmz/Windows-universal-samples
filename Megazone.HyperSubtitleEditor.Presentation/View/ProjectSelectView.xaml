@@ -382,7 +382,7 @@
                                         <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
                                         <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=SignIn.SelectingStage}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}" Value="{x:Null}">
                                         <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
                                         <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
                                         <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
