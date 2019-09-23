@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Serializable
         public string Name { get; set; }
         public CaptionKind Kind { get; set; }
         public string LanguageCode { get; set; }
+        public string CountryCode { get; set; }
         public IList<SubtitleItem> Rows { get; set; }
 
         public bool IsSelected { get; set; }

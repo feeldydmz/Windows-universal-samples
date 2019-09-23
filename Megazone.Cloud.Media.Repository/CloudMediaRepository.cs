@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -161,13 +162,13 @@ namespace Megazone.Cloud.Media.Repository
             return response?.Content;
         }
 
-        public Languages GetLanguages(LanguageRequest request)
+        public IEnumerable<Language> GetLanguages(LanguageRequest request)
         {
             var restRequest = new RestRequest("v1/stages/mz-cm-v1/languages", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Languages>();
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<IEnumerable<Language>>();
         }
 
         public Video GetVideo(VideoRequest request)

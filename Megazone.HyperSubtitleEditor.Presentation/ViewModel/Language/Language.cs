@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language
+namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language
 {
     public class Language
     {

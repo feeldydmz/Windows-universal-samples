@@ -588,6 +588,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             tab.Kind,
                             OnDisplayTextChanged,
                             tab.LanguageCode,
+                            tab.CountryCode,
                             tab.Caption)
                         {
                             IsSelected = tab.IsSelected,
@@ -1009,6 +1010,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     WorkContext.CaptionKind,
                     OnDisplayTextChanged,
                     caption.Language,
+                    caption.Country,
                     caption)
                 {
                     IsSelected = false,
@@ -1072,7 +1074,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnItemSelected,
                 param.Kind,
                 OnDisplayTextChanged,
-                param.LanguageCode)
+                param.LanguageCode,
+                param.CountryCode)
             {
                 IsSelected = true,
                 FilePath = param.FilePath,
@@ -1143,7 +1146,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             OnItemSelected,
                             subtitle.Kind,
                             OnDisplayTextChanged,
-                            subtitle.LanguageCode)
+                            subtitle.LanguageCode,
+                            subtitle.CountryCode)
                         {
                             VideoId = WorkContext?.OpenedVideo?.Id,
                             CaptionAssetId = WorkContext?.OpenedCaptionAsset?.Id
@@ -1193,7 +1197,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnItemSelected,
                 param.Kind,
                 OnDisplayTextChanged,
-                param.LanguageCode)
+                param.LanguageCode,
+                param.CountryCode)
             {
                 IsSelected = true,
                 VideoId = WorkContext?.OpenedVideo?.Id,
@@ -1223,6 +1228,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 tab.Name = param.Label;
                 tab.Kind = param.Kind;
                 tab.LanguageCode = param.LanguageCode;
+                tab.CountryCode = param.CountryCode;
             }
         }
 

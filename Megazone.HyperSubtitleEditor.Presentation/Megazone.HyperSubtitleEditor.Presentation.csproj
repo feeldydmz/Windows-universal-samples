@@ -243,6 +243,8 @@
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
+    <Compile Include="ViewModel\Language\Language.cs" />
+    <Compile Include="ViewModel\Language\LanguageLoader.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
@@ -565,6 +567,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

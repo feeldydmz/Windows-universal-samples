@@ -8,7 +8,7 @@ using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -20,7 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class McmDeployViewModel : ViewModelBase
     {
-        private readonly LanguageParser _languageParser;
+        private readonly LanguageLoader _languageLoader;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
 
@@ -36,11 +36,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private VideoItemViewModel _videoItem;
 
         public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
-            LanguageParser languageParser)
+            LanguageLoader languageLoader)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
-            _languageParser = languageParser;
+            _languageLoader = languageLoader;
         }
 
         public Action CloseAction { get; set; }
@@ -155,12 +155,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
             {
                 var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode,
-                    tab.Caption?.Country, tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
+                    tab.CountryCode, tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
 
                 return new CaptionElementItemViewModel(caption)
                 {
-                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode),
-                    CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode)
+                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) && !string.IsNullOrEmpty(tab.CountryCode),
+                    CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) && !string.IsNullOrEmpty(tab.CountryCode)
                 };
             }
 
@@ -190,28 +190,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             return editedCaptionList;
-
-            string CountryCode(string languageCode)
-            {
-                switch (languageCode)
-                {
-                    case "en": return "US";
-                    case "ja": return "JP";
-                    case "zh": return "CN";
-                    case "es": return "ES";
-                    case "km": return "KH";
-                    case "th": return "TH";
-                    case "ms": return "MY";
-                    case "vi": return "VN";
-                    case "ko": return "KR";
-                    case "id": return "ID";
-                    case "ru": return "RU";
-                }
-
-                return string.Empty;
-            }
         }
-
 
         private bool CanConfirm()
         {

@@ -6,14 +6,14 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     internal abstract class CreateSubtitleViewModelBase : ViewModelBase
     {
-        private readonly LanguageParser _languageParser;
+        private readonly LanguageLoader _languageLoader;
         protected readonly ILogger Logger;
         private string _label;
         private IList<LanguageItemViewModel> _languages;
@@ -22,10 +22,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private CaptionKind _selectedSubtitleKind;
         private IList<CaptionKind> _subtitleKinds;
 
-        protected CreateSubtitleViewModelBase(ILogger logger, LanguageParser languageParser)
+        protected CreateSubtitleViewModelBase(ILogger logger, LanguageLoader languageLoader)
         {
             Logger = logger;
-            _languageParser = languageParser;
+            _languageLoader = languageLoader;
 
             _subtitleKinds = new List<CaptionKind>
             {
@@ -35,7 +35,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             };
             _languages = new List<LanguageItemViewModel>();
 
-            var languages = _languageParser.Languages;
+            var languages = _languageLoader.Languages;
 
             foreach (var item in languages.ToList())
                 Languages.Add(new LanguageItemViewModel

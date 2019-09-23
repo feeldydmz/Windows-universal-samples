@@ -2,13 +2,13 @@
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class ImportExcelItemViewModel : ViewModelBase
     {
-        private readonly LanguageParser _languageParser;
+        private readonly LanguageLoader _languageLoader;
         private bool _isChecked;
         private string _label;
         private IList<LanguageItemViewModel> _languages;
@@ -17,9 +17,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private string _sheetName;
         private IList<CaptionKind> _subtitleKinds;
 
-        public ImportExcelItemViewModel(LanguageParser languageParser)
+        public ImportExcelItemViewModel(LanguageLoader languageLoader)
         {
-            _languageParser = languageParser;
+            _languageLoader = languageLoader;
 
             _subtitleKinds = new List<CaptionKind>
             {
@@ -30,7 +30,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             _languages = new List<LanguageItemViewModel>();
 
-            var languages = _languageParser.Languages;
+            var languages = _languageLoader.Languages;
 
             foreach (var item in languages.ToList())
                 Languages.Add(new LanguageItemViewModel

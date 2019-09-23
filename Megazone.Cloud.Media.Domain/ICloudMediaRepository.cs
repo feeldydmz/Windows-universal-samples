@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.Domain
@@ -18,7 +19,7 @@ namespace Megazone.Cloud.Media.Domain
         CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request);
         CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request);
         VideoListResponse GetVideos(VideoListRequest request);
-        Languages GetLanguages(LanguageRequest request);
+        IEnumerable<Language> GetLanguages(LanguageRequest request);
         Video GetVideo(VideoRequest request);
         Video UpdateVideo(VideoRequest request);
         bool UpdateVideoCaptions(VideoRequest request);

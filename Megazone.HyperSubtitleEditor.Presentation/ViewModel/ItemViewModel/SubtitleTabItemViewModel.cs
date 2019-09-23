@@ -37,6 +37,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isSelected;
         private CaptionKind _kind;
         private string _languageCode;
+        private string _countryCode;
         private string _name;
         private ISubtitleListItemViewModel _selectedRow;
 
@@ -49,9 +50,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CaptionKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
+            string countryCode = null,
             Caption caption = null)
         {
-            _originalData = new OriginalData(name, kind, languageCode);
+            _originalData = new OriginalData(name, kind, languageCode, countryCode);
 
             _rowCollectionChangedAction = rowCollectionChangedAction;
             _validateAction = validateAction;
@@ -59,6 +61,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _onSelectedRowAction = onSelectedRowAction;
             _onDisplayTextChangedAction = onDisplayTextChangedAction;
             _languageCode = languageCode;
+            _countryCode = countryCode;
             _kind = kind;
             _name = name;
             var rows = new ObservableCollection<ISubtitleListItemViewModel>();
@@ -110,6 +113,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set
             {
                 Set(ref _languageCode, value);
+                CheckDirty();
+            }
+        }
+
+        public string CountryCode
+        {
+            get => _countryCode;
+            set
+            {
+                Set(ref _countryCode, value);
                 CheckDirty();
             }
         }
@@ -173,7 +186,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             if (_isDirty) return true;
             var isBaseInfoChanged = _originalData.Name != Name ||
                                     _originalData.Kind != Kind ||
-                                    _originalData.LanguageCode != LanguageCode;
+                                    _originalData.LanguageCode != LanguageCode ||
+                                    _originalData.CountryCode != CountryCode;
+
             var hasDirtyRow = Rows != null && Rows.Any(r => r.IsDirty());
             IsDirty = isBaseInfoChanged || _isAddedFromLocal || _isRowCollectionChanged || hasDirtyRow;
             return IsDirty;
@@ -395,16 +410,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private class OriginalData
         {
-            public OriginalData(string name, CaptionKind kind, string languageCode)
+            public OriginalData(string name, CaptionKind kind, string languageCode, string countryCode)
             {
                 Name = name;
                 Kind = kind;
                 LanguageCode = languageCode;
+                CountryCode = countryCode;
             }
 
             public string Name { get; }
             public CaptionKind Kind { get; }
             public string LanguageCode { get; }
+            public string CountryCode { get; }
         }
 
         internal enum InsertRowDirection

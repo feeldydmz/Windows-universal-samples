@@ -56,7 +56,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                             var splitedSheetName = selectedSheet.Name.Value.Split('_');
 
                             if (!string.IsNullOrEmpty(splitedSheetName[0]))
-                                excelFileInfo.LanguageCode = splitedSheetName[0];
+                            {
+                                var splitLanguageAndCountry = splitedSheetName[0].Split('-');
+
+                                if (!string.IsNullOrEmpty(splitLanguageAndCountry[0]))
+                                    excelFileInfo.LanguageCode = splitLanguageAndCountry[0];
+
+                                if (!string.IsNullOrEmpty(splitLanguageAndCountry[1]))
+                                    excelFileInfo.CountryCode = splitLanguageAndCountry[1];
+                            }
 
                             if (splitedSheetName.Length > 1 && !string.IsNullOrEmpty(splitedSheetName[1]))
                                 excelFileInfo.Label = splitedSheetName[1];
@@ -98,6 +106,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                             {
                                 Label = info.Label,
                                 LanguageCode = info.LanguageCode,
+                                CountryCode = info.CountryCode,
                                 Format = info.TrackFormat,
                                 Kind = info.CaptionKind
                             };
@@ -322,6 +331,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
             var newSheet = new Sheet
             {
                 Name = subtitle.LanguageCode +
+                       "-" +
+                       subtitle.CountryCode +
                        "_" +
                        subtitle.Label +
                        "(" +

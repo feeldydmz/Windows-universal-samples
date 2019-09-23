@@ -65,7 +65,7 @@
     <Compile Include="IAuthorizationRepository.cs" />
     <Compile Include="ICloudMediaRepository.cs" />
     <Compile Include="LanguageRequest.cs" />
-    <Compile Include="Languages.cs" />
+    <Compile Include="Language.cs" />
     <Compile Include="Megaone.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Project.cs" />

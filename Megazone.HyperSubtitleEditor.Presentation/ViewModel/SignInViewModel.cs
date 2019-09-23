@@ -27,7 +27,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
-
+        
         private Authorization _authorization;
         private bool _isAutoLogin;
         private bool _isBusy;

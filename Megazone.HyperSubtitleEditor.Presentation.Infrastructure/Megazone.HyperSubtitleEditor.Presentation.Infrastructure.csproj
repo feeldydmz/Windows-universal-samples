@@ -72,8 +72,6 @@
     <Compile Include="Config\UploadConfigHolder.cs" />
     <Compile Include="Enum\SubtitleDialogViewMode.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
-    <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageParser.cs" />
     <Compile Include="Messagenger\IMessage.cs" />
     <Compile Include="Messagenger\MessageBase.cs" />
     <Compile Include="Messagenger\MessageCenter.cs" />
@@ -99,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Resource Include="Language\LanguageInfo.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

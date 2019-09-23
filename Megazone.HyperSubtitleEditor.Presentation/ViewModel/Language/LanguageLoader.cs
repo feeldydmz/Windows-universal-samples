@@ -5,14 +5,14 @@ using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 
-namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language
+namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language
 {
-    [Inject(Source = typeof(LanguageParser), Scope = LifetimeScope.Singleton)]
-    public class LanguageParser
+    [Inject(Source = typeof(LanguageLoader), Scope = LifetimeScope.Singleton)]
+    public class LanguageLoader
     {
         private readonly ICloudMediaService _cloudMediaService;
 
-        public LanguageParser(ICloudMediaService cloudMediaService)
+        public LanguageLoader(ICloudMediaService cloudMediaService)
         {
             _cloudMediaService = cloudMediaService;
 

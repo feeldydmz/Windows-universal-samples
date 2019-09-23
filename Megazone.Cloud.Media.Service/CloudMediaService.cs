@@ -204,7 +204,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<Languages> GetLanguageAsync(GetLanguageParameter parameter,
+        public async Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>

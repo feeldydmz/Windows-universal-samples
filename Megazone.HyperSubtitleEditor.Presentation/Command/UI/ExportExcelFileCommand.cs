@@ -58,6 +58,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     {
                         Label = tab.Name,
                         LanguageCode = tab.LanguageCode,
+                        CountryCode = tab.CountryCode,
                         Format = TrackFormat.WebVtt,
                         Kind = tab.Kind
                     };

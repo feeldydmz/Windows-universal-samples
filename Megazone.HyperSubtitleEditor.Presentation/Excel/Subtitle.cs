@@ -8,6 +8,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
     {
         public string Label { get; set; }
         public string LanguageCode { get; set; }
+        public string CountryCode { get; set; }
         public TrackFormat Format { get; set; }
         public CaptionKind Kind { get; set; }
         public IList<SubtitleItem> Datasets { get; set; } = new List<SubtitleItem>();

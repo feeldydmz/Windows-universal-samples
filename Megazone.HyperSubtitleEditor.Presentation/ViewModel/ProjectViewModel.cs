@@ -11,6 +11,7 @@ using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -27,6 +28,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ILogger _logger;
         private readonly SignInViewModel _signInViewModel;
+        private readonly LanguageLoader _languageLoader;
 
         private ICommand _closeCommand;
         private int _currentPageNumber;
@@ -54,10 +56,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private int _totalPage;
         private ICommand _unloadCommand;
 
-        public ProjectViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel)
+        public ProjectViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel, LanguageLoader languageLoader)
         {
             _browser = browser;
             _cloudMediaService = cloudMediaService;
+            _languageLoader = languageLoader;
             _logger = logger;
             _signInViewModel = signInViewModel;
             CurrentPageNumber = 1;
@@ -269,6 +272,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel.SelectedProject = SelectedStage.SelectedProject;
             IsProjectViewVisible = string.IsNullOrEmpty(_signInViewModel.SelectedProject?.ProjectId) ||
                                    string.IsNullOrEmpty(_signInViewModel.SelectedStage?.Id);
+
+            _languageLoader.UpdateLanguageAsync(_signInViewModel.GetAuthorization().AccessToken, SelectedStage.Id, SelectedStage.SelectedProject.ProjectId);
         }
 
         private void SelectProject(ProjectItemViewModel projectItem)
