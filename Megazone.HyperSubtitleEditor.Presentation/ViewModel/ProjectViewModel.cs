@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Megazone.Cloud.Media.ServiceInterface;
+using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
+using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
@@ -20,12 +24,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     public class ProjectViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
+        private readonly ICloudMediaService _cloudMediaService;
+        private readonly ILogger _logger;
         private readonly SignInViewModel _signInViewModel;
+
         private ICommand _closeCommand;
-
         private int _currentPageNumber;
-
         private IEnumerable<StageItemViewModel> _currentPageStageItems;
+        private bool _hasRegisteredMessageHandlers;
         private bool _isBusy;
         private bool _isCancelButtonVisible;
         private bool _isEmptyProjectPage;
@@ -36,23 +42,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isRightNavigateButtonVisible;
         private bool _isStartButtonVisible;
         private ICommand _leftSlideNavigateCommand;
-
+        private ICommand _loadCommand;
         private ICommand _rightNavigateCommand;
         private StageItemViewModel _selectingStage;
         private bool _selectionsChangedFlag;
-
         private ICommand _selectProjectCommand;
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
         private int _stageTotal;
-
         private ICommand _startProjectCommand;
         private int _totalPage;
+        private ICommand _unloadCommand;
 
-
-        public ProjectViewModel(IBrowser browser,SignInViewModel signInViewModel)
+        public ProjectViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel)
         {
             _browser = browser;
+            _cloudMediaService = cloudMediaService;
+            _logger = logger;
             _signInViewModel = signInViewModel;
             CurrentPageNumber = 1;
         }
@@ -100,8 +106,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _currentPageNumber;
             set => Set(ref _currentPageNumber, value);
         }
-
-        public bool IsPageChanged { get; set; }
 
         public bool IsLeftNavigateButtonVisible
         {
@@ -204,6 +208,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isBusy, value);
         }
 
+        public ICommand LoadCommand
+        {
+            get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
+        }
+
+        public ICommand UnloadCommand
+        {
+            get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
+        }
+
+        private void Load()
+        {
+            RegisterMessageHandlers();
+        }
+
+        private void Unload()
+        {
+            UnregisterMessageHandlers();
+        }
+
         private bool CanStartProject()
         {
             if (StageTotal == 0)
@@ -299,7 +323,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (StageItems == null || _signInViewModel.SelectedProject == null)
                 return;
 
-            var stageItem = StageItems.SingleOrDefault(stage => stage.Id.Equals(_signInViewModel.SelectedProject.StageId));
+            var stageItem =
+                StageItems.SingleOrDefault(stage => stage.Id.Equals(_signInViewModel.SelectedProject.StageId));
             if (stageItem != null)
                 stageItem.SelectedProject = _signInViewModel.SelectedProject;
         }
@@ -366,6 +391,137 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsCancelButtonVisible = false;
             IsStartButtonVisible = false;
             CurrentPageNumber = 1;
+        }
+
+        private void RegisterMessageHandlers()
+        {
+            if (_hasRegisteredMessageHandlers) return;
+            _hasRegisteredMessageHandlers = true;
+            MessageCenter.Instance.Regist<SignIn.LogoutMessage>(OnLogoutRequested);
+            MessageCenter.Instance.Regist<SignIn.LoadStageProjectMessage>(OnLoadStageProjectRequested);
+        }
+
+
+        private void UnregisterMessageHandlers()
+        {
+            if (!_hasRegisteredMessageHandlers) return;
+            MessageCenter.Instance.Unregist<SignIn.LogoutMessage>(OnLogoutRequested);
+            MessageCenter.Instance.Unregist<SignIn.LoadStageProjectMessage>(OnLoadStageProjectRequested);
+        }
+
+        private void OnLogoutRequested(SignIn.LogoutMessage message)
+        {
+            IsProjectViewVisible = false;
+            StageItems = null;
+            CurrentPageStageItems = null;
+            SelectingStage = null;
+        }
+
+        private async void OnLoadStageProjectRequested(SignIn.LoadStageProjectMessage message)
+        {
+            try
+            {
+                IsLoadingProjectPage = true;
+                IsBusy = true;
+                IsProjectViewVisible = true;
+
+                StageItems = message.UserProfile?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                             new List<StageItemViewModel>();
+
+                var emptyProjectStages = new List<StageItemViewModel>();
+
+#if STAGING
+                emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
+#else
+                foreach (var stageItem in StageItems)
+                {
+                    var projects = await _cloudMediaService.GetProjects(
+                        new GetProjectsParameter(_signInViewModel.GetAuthorization(), stageItem.Id, stageItem.Name),
+                        CancellationToken.None);
+
+                    if (projects == null || projects.TotalCount == 0)
+                    {
+                        emptyProjectStages.Add(stageItem);
+                        continue;
+                    }
+
+                    var projectItems = projects.Results
+                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
+                    stageItem.ProjectItems = projectItems;
+                }
+
+#endif
+
+                foreach (var item in emptyProjectStages) StageItems.Remove(item);
+
+                //// Test Data 
+
+                //var firstItem = StageItems.First();
+
+                //var originalName = firstItem.Name;
+                //for (var i = 1; i < 7; i++)
+                //{
+                //    var newItem = new StageItemViewModel(firstItem.Source)
+                //    {
+                //        Id = $"test{i}",
+                //        Name = $"{originalName}_{i}"
+                //        //ProjectItems = firstItem.ProjectItems.Select(item => new ProjectItemViewModel($"test{i}", item.Source)).ToList()
+                //    };
+
+                //    var projectModelList = new List<ProjectItemViewModel>();
+                //    var count = 1;
+                //    foreach (var firstItemProjectItem in firstItem.ProjectItems)
+                //    {
+                //        var project = new Project(
+                //            $"{i}_{count}",
+                //            firstItemProjectItem.Source.Name,
+                //            firstItemProjectItem.Source.Description,
+                //            firstItemProjectItem.Source.UsePlayout,
+                //            firstItemProjectItem.Source.IsActive,
+                //            firstItemProjectItem.Source.CreatedAt,
+                //            firstItemProjectItem.Source.CreatedById,
+                //            firstItemProjectItem.Source.CreatedByName,
+                //            firstItemProjectItem.Source.CreatedByUsername,
+                //            firstItemProjectItem.Source.UpdatedAt,
+                //            firstItemProjectItem.Source.UpdatedById,
+                //            firstItemProjectItem.Source.UpdatedByName,
+                //            firstItemProjectItem.Source.UpdatedByUsername);
+
+                //        projectModelList.Add(new ProjectItemViewModel(newItem.Id, project));
+                //        count++;
+                //    }
+
+                //    newItem.ProjectItems = projectModelList;
+
+                //    StageItems.Add(newItem);
+                //}
+                //// ----
+
+                StageTotal = StageItems.Count();
+
+                CalculateTotalPage();
+
+                if (StageTotal == 0)
+                {
+                    IsLoadingProjectPage = false;
+                    IsEmptyProjectPage = true;
+                }
+                else
+                {
+                    IsLoadingProjectPage = false;
+                    IsEmptyProjectPage = false;
+
+                    CalculateStageSlidePosition();
+                    _signInViewModel.Save();
+                }
+
+                IsBusy = false;
+            }
+            catch (Exception e)
+            {
+                _logger.Error.Write(e);
+                throw;
+            }
         }
     }
 }

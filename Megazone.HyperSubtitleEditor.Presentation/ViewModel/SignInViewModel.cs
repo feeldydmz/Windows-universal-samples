@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
-using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Security.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
-using Megazone.SubtitleEditor.Resources;
 using Newtonsoft.Json;
-using Unity;
 
 // ReSharper disable InconsistentNaming
 
@@ -32,8 +24,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     public class SignInViewModel : ViewModelBase
     {
         private const string _password = "Megazone@1";
-        private readonly IBrowser _browser;
-        private readonly ProjectViewModel _projectViewModel;
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
@@ -44,16 +34,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isSignIn;
         private ICommand _loadCommand;
         private string _loginId;
-        
+        private ICommand _navigatingCommand;
+
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
         private string _uriSource;
 
-        public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger, IBrowser browser, ProjectViewModel projectViewModel)
+
+        private string _username;
+
+        public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger)
         {
             _logger = logger;
-            _browser = browser;
-            _projectViewModel = projectViewModel;
             _cloudMediaService = cloudMediaService;
             _config = ConfigHolder.Current;
 
@@ -62,9 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.json";
-        public UserProfile User { get; set; }
 
-        private string _username;
         public string UserName
         {
             get => _username;
@@ -118,6 +108,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
+        public ICommand NavigatingCommand
+        {
+            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
+        }
+
         public void Save()
         {
             _config.Subtitle.AutoLogin = IsAutoLogin;
@@ -134,17 +129,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 유효하지 않다면, refresh token을 받도록 exception을 낸다.
             return _authorization;
         }
+
         public void Logout()
         {
             IsSignIn = false;
             SelectedProject = null;
             SelectedStage = null;
 
-            _projectViewModel.IsProjectViewVisible = false;
-            _projectViewModel.StageItems = null;
-            _projectViewModel.CurrentPageStageItems = null;
-            _projectViewModel.SelectingStage = null;
-            
+            MessageCenter.Instance.Send(new SignIn.LogoutMessage(this));
+
             UriSource = AuthorizationRepository.LOGIN_URL;
         }
 
@@ -157,7 +150,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (string.IsNullOrEmpty(_authorization?.AccessToken))
                     return;
 
-                LoadStageAndProjectAsync();
+                OpenProjectViewAsync();
             }
             catch (Exception ex)
             {
@@ -165,17 +158,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async void LoadStageAndProjectAsync()
+        private async void OpenProjectViewAsync()
         {
             try
             {
-                IsLoadingProjectPage = true;
                 IsBusy = true;
-
-                User = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
+                var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
 
                 // 유저 인증 실패 401
-                if (User == null)
+                if (user == null)
                 {
                     IsSignIn = false;
                     IsBusy = false;
@@ -183,111 +174,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
-                UserName = User.Name;
-                LoginId = User.Username;
-
-                IsProjectViewVisible = true;
+                UserName = user.Name;
+                LoginId = user.Username;
                 IsSignIn = true;
 
-                StageItems = User.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
-                             new List<StageItemViewModel>();
-
-
-                var emptyProjectStages = new List<StageItemViewModel>();
-
-#if STAGING
-                emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
-#else
-                foreach (var stageItem in StageItems)
-                {
-                    var projects = await _cloudMediaService.GetProjects(
-                        new GetProjectsParameter(_authorization, stageItem.Id, stageItem.Name),
-                        CancellationToken.None);
-
-                    if (projects == null || projects.TotalCount == 0)
-                    {
-                        emptyProjectStages.Add(stageItem);
-                        continue;
-                    }
-
-                    var projectItems = projects.Results
-                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
-                    stageItem.ProjectItems = projectItems;
-                }
-
-#endif
-
-                foreach (var item in emptyProjectStages) StageItems.Remove(item);
-
-                //// Test Data 
-
-                //var firstItem = StageItems.First();
-
-                //var originalName = firstItem.Name;
-                //for (var i = 1; i < 7; i++)
-                //{
-                //    var newItem = new StageItemViewModel(firstItem.Source)
-                //    {
-                //        Id = $"test{i}",
-                //        Name = $"{originalName}_{i}"
-                //        //ProjectItems = firstItem.ProjectItems.Select(item => new ProjectItemViewModel($"test{i}", item.Source)).ToList()
-                //    };
-
-                //    var projectModelList = new List<ProjectItemViewModel>();
-                //    var count = 1;
-                //    foreach (var firstItemProjectItem in firstItem.ProjectItems)
-                //    {
-                //        var project = new Project(
-                //            $"{i}_{count}",
-                //            firstItemProjectItem.Source.Name,
-                //            firstItemProjectItem.Source.Description,
-                //            firstItemProjectItem.Source.UsePlayout,
-                //            firstItemProjectItem.Source.IsActive,
-                //            firstItemProjectItem.Source.CreatedAt,
-                //            firstItemProjectItem.Source.CreatedById,
-                //            firstItemProjectItem.Source.CreatedByName,
-                //            firstItemProjectItem.Source.CreatedByUsername,
-                //            firstItemProjectItem.Source.UpdatedAt,
-                //            firstItemProjectItem.Source.UpdatedById,
-                //            firstItemProjectItem.Source.UpdatedByName,
-                //            firstItemProjectItem.Source.UpdatedByUsername);
-
-                //        projectModelList.Add(new ProjectItemViewModel(newItem.Id, project));
-                //        count++;
-                //    }
-
-                //    newItem.ProjectItems = projectModelList;
-
-                //    StageItems.Add(newItem);
-                //}
-                //// ----
-
-                StageTotal = StageItems.Count();
-
-                CalculateTotalPage();
-
-                if (StageTotal == 0)
-                {
-                    IsLoadingProjectPage = false;
-                    IsEmptyProjectPage = true;
-                }
-                else
-                {
-                    IsLoadingProjectPage = false;
-                    IsEmptyProjectPage = false;
-
-                    CalculateStageSlidePosition();
-
-                    if (_config.Subtitle.AutoLogin)
-                        SaveAuthorization();
-                }
-
-                IsBusy = false;
+                MessageCenter.Instance.Send(new SignIn.LoadStageProjectMessage(this, user));
             }
             catch (Exception e)
             {
                 _logger.Error.Write(e);
                 throw;
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -317,6 +217,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _logger.Error.Write(e);
             }
+
             return null;
         }
 
@@ -339,19 +240,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (_authorization != null)
             {
-                LoadStageAndProjectAsync();
+                OpenProjectViewAsync();
             }
             else
             {
                 UriSource = AuthorizationRepository.LOGIN_URL;
-                IsProjectViewVisible = false;
                 IsSignIn = false;
             }
-        }
-        private ICommand _navigatingCommand;
-        public ICommand NavigatingCommand
-        {
-            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
         }
 
         private void OnNavigating(string code)

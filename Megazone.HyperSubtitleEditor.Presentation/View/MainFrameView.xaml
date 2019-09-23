@@ -16,7 +16,7 @@
         <Border>
             <view:MainView />
         </Border>
-        <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
+        <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel}"
                 Visibility="{Binding Path=IsProjectViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <view:ProjectSelectView />
         </Border>

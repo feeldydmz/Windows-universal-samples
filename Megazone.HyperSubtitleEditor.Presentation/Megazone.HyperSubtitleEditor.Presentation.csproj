@@ -219,6 +219,7 @@
     <Compile Include="Message\Parameter\CaptionOpenedMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
+    <Compile Include="Message\SignIn.cs" />
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

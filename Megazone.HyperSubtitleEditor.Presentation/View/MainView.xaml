@@ -256,7 +256,7 @@
                 </StackPanel>
 
                 <mz:ImageButton
-                    Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                    Command="{StaticResource LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
                     Background="#2e353f"
                     NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
