@@ -142,10 +142,20 @@
                                                 <TextBlock Grid.Column="0" Text="{Binding Path=Label}"
                                                            HorizontalAlignment="Left" ToolTip="{Binding Path=Label}"
                                                            TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="1"
+                                                <!--<TextBlock Grid.Column="1"
                                                            Text="{Binding Path=Language, StringFormat={}[{0}]}"
                                                            HorizontalAlignment="Right"
-                                                           Foreground="{StaticResource Brush_PointColor}" />
+                                                           Foreground="{StaticResource Brush_PointColor}" />-->
+                                                <TextBlock Grid.Column="1" Foreground="{StaticResource Brush_PointColor}" HorizontalAlignment="Right">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}[{0}-{1}]">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding Path="Language" />
+                                                                <Binding Path="Country" />
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                             </Grid>
                                         </Grid>
                                     </Border>
