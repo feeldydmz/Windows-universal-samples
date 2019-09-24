@@ -343,6 +343,7 @@
                     </Style>
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal" Margin="5,0">
+                    <Button Content="열기" Command="{StaticResource OpenLeftSideMenuCommand}" Style="{x:Null}" />
                     <Button Command="{StaticResource LoadGroupFileCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
