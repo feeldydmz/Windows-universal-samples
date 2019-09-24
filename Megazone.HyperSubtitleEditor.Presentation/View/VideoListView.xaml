@@ -413,10 +413,7 @@
                                                                           Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
                                                                           CommandParameter="{Binding}" />
                                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3"
-                                                                           Text="{Binding Path=Language, StringFormat={}[{0}]}"
-                                                                           Foreground="{StaticResource Brush_PointColor}" />
-                                                                <!--<TextBlock Grid.Column="3">
+                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                             <MultiBinding.Bindings>
@@ -425,7 +422,7 @@
                                                                             </MultiBinding.Bindings>
                                                                         </MultiBinding>
                                                                     </TextBlock.Text>
-                                                                </TextBlock>-->
+                                                                </TextBlock>
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
