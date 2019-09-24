@@ -61,10 +61,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             set
             {
-                var code = value.LanguageCode.ToLower();
+                var languageCode = value.LanguageCode.ToLower();
+                var countryCode = value.CountryCode.ToUpper();
 
                 foreach (var item in Languages.ToList())
-                    if (item.LanguageCode.Equals(code))
+                    if (item.LanguageCode.Equals(languageCode) && item.CountryCode.Equals(countryCode))
                         Set(ref _selectedLanguageItemViewModel, item);
             }
         }
