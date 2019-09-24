@@ -824,7 +824,14 @@
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                                                             TextBlock.FontWeight="Bold">
                                                     <TextBlock Text="[" VerticalAlignment="Center" />
-                                                    <TextBlock Text="{Binding LanguageCode}" VerticalAlignment="Center" />
+                                                    <TextBlock VerticalAlignment="Center" >
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}-{1}">
+                                                                <Binding Path="LanguageCode"/>
+                                                                <Binding Path="CountryCode"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
                                                     <TextBlock Text="]" VerticalAlignment="Center" />
                                                 </StackPanel>
                                                 <TextBlock Grid.Column="2" Margin="0,0,2,0" FontWeight="Bold"
