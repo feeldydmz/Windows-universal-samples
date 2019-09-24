@@ -11,8 +11,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language
 
         public string Name { get; set; }
 
-        public string NativeName { get; set; }
-
         public string Alpha2 { get; set; }
 
         public Country CountryInfo { get; set; }

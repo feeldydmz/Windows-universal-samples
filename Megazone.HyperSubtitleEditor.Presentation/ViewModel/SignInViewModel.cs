@@ -113,6 +113,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
         }
 
+        public ICommand Command
+        {
+            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
+        }
+
         public void Save()
         {
             _config.Subtitle.AutoLogin = IsAutoLogin;
@@ -253,6 +258,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (string.IsNullOrEmpty(code))
                 return;
+
+            UriSource = "about:blank";
 
             LoginByAuthorizationCodeAsync(code);
         }
