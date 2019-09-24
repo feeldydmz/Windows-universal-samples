@@ -7,7 +7,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
-    public class DeleteTabCommand : DependencyObject, ICommand
+    public class CloseTabCommand : DependencyObject, ICommand
     {
         public bool CanExecute(object parameter)
         {
@@ -17,7 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             if (parameter is SubtitleTabItemViewModel tab)
-                MessageCenter.Instance.Send(new Subtitle.DeleteTabMessage(this, tab));
+                MessageCenter.Instance.Send(new Subtitle.CloseTabMessage(this, tab));
         }
 
         public event EventHandler CanExecuteChanged

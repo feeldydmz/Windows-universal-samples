@@ -16,7 +16,7 @@
     <ui:CutSelectedRowsCommand x:Key="CutRowCommand" />
     <ui:CopyContentsToClipboardCommand x:Key="CopyContentsToClipboardCommand" />
     <ui:DeleteSelectedRowsCommand x:Key="DeleteRowsCommand" />
-    <ui:DeleteTabCommand x:Key="DeleteTabCommand" />
+    <ui:CloseTabCommand x:Key="CloseTabCommand" />
     <ui:DeployCommand x:Key="DeployCommand" />
     <ui:GoToSubtitleNumberCommand x:Key="GoToSubtitleNumberCommand" />
     <ui:InsertRowAfterSelectedRowCommand x:Key="InsertRowAfterSelectedRowCommand" />

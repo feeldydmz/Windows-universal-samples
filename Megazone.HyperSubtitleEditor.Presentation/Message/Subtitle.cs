@@ -58,9 +58,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
         }
 
-        internal class DeleteTabMessage : MessageBase
+        internal class CloseTabMessage : MessageBase
         {
-            public DeleteTabMessage(object sender, SubtitleTabItemViewModel tab) : base(sender)
+            public CloseTabMessage(object sender, SubtitleTabItemViewModel tab) : base(sender)
             {
                 Tab = tab;
             }
@@ -86,17 +86,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
 
             public FileOpenedMessageParameter Param { get; }
-        }
-
-        internal class CaptionOpenedMessage : MessageBase
-        {
-            public CaptionOpenedMessage(object sender, CaptionOpenedMessageParameter param) :
-                base(sender)
-            {
-                Param = param;
-            }
-
-            public CaptionOpenedMessageParameter Param { get; }
         }
 
         internal class SaveMessage : MessageBase

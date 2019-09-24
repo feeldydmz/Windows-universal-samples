@@ -169,7 +169,7 @@
     <Compile Include="Command\UI\CreateNewFileCommand.cs" />
     <Compile Include="Command\UI\CutSelectedRowsCommand.cs" />
     <Compile Include="Command\UI\DeleteSelectedRowsCommand.cs" />
-    <Compile Include="Command\UI\DeleteTabCommand.cs" />
+    <Compile Include="Command\UI\CloseTabCommand.cs" />
     <Compile Include="Command\UI\DeployCommand.cs" />
     <Compile Include="Command\UI\ExitApplicationCommand.cs" />
     <Compile Include="Command\UI\ExportExcelFileCommand.cs" />
@@ -211,12 +211,13 @@
     <Compile Include="Excel\TrackFormat.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
+    <Compile Include="Message\CloudMedia.cs" />
     <Compile Include="Message\Excel.cs" />
     <Compile Include="Message\MediaPlayer.cs" />
     <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
-    <Compile Include="Message\Parameter\CaptionOpenedMessageParameter.cs" />
+    <Compile Include="Message\Parameter\CaptionOpenMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="ViewModel\SubtitleParserProxy.cs" />
     <Compile Include="ViewModel\VideoListViewModel.cs" />
     <Compile Include="ViewModel\ViewModes.cs" />
+    <Compile Include="ViewModel\WorkBarViewModel.cs" />
     <Compile Include="View\AddAndEditSubtitleView.xaml.cs">
       <DependentUpon>AddAndEditSubtitleView.xaml</DependentUpon>
     </Compile>
