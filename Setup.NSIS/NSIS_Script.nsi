@@ -529,7 +529,7 @@ FunctionEnd
 
 Section "MainSection" SEC01
   # Chcek .Net Framework version and install.
-  !insertmacro CheckNetFramework 461
+  !insertmacro CheckNetFramework 462
 
   Var /GLOBAL InstalledPath
   ReadRegStr $InstalledPath HKLM "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstallPath}"
@@ -551,35 +551,19 @@ Section "MainSection" SEC01
   ;SetOverwrite try
   SetOverwrite on
 
-  File "Install_Files\CommonServiceLocator.dll"
   File "Install_Files\DocumentFormat.OpenXml.dll"
   File "Install_Files\HyperSubtitleEditor.exe"
-  File "Install_Files\LGPL_21.txt"
   File "Install_Files\log4net.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Domain.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Repository.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Service.dll"
-  File "Install_Files\Megazone.Api.Transcoder.ServiceInterface.dll"
-  File "Install_Files\Megazone.Cloud.Aws.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Common.Domain.dll"
   File "Install_Files\Megazone.Cloud.Media.Domain.dll"
   File "Install_Files\Megazone.Cloud.Media.Repository.dll"
   File "Install_Files\Megazone.Cloud.Media.Service.dll"
   File "Install_Files\Megazone.Cloud.Media.ServiceInterface.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Domain.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Repository.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Service.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.ServiceInterface.S3.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.dll"
-  File "Install_Files\Megazone.Core.AWS.dll"
   File "Install_Files\Megazone.Core.Client.dll"
   File "Install_Files\Megazone.Core.Debug.dll"
   File "Install_Files\Megazone.Core.dll"
   File "Install_Files\Megazone.Core.IoC.Unity.dll"
   File "Install_Files\Megazone.Core.Log.Log4Net.dll"
+  File "Install_Files\Megazone.Core.RestSharp.dll"
   File "Install_Files\Megazone.Core.Security.dll"
   File "Install_Files\Megazone.Core.VideoTrack.dll"
   File "Install_Files\Megazone.Core.VideoTrack.WebVtt.dll"
@@ -598,11 +582,10 @@ Section "MainSection" SEC01
   File "Install_Files\Megazone.HyperSubtitleEditor.Presentation.Resource.dll"
   File "Install_Files\Megazone.SubtitleEditor.Resources.dll"
   File "Install_Files\Megazone.VideoStudio.Presentation.Common.Infrastructure.dll"
+  File "Install_Files\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll"
   File "Install_Files\Microsoft.Win32.Primitives.dll"
-  File "Install_Files\Ms-PL.txt"
   File "Install_Files\NAudio.dll"
   File "Install_Files\Newtonsoft.Json.dll"
-  File "Install_Files\PreferedLanguageInfo.json"
   File "Install_Files\RestSharp.dll"
   File "Install_Files\System.AppContext.dll"
   File "Install_Files\System.Console.dll"
@@ -615,6 +598,7 @@ Section "MainSection" SEC01
   File "Install_Files\System.IO.Packaging.dll"
   File "Install_Files\System.Net.Http.dll"
   File "Install_Files\System.Net.Sockets.dll"
+  File "Install_Files\System.Runtime.CompilerServices.Unsafe.dll"
   File "Install_Files\System.Runtime.InteropServices.RuntimeInformation.dll"
   File "Install_Files\System.Security.Cryptography.Algorithms.dll"
   File "Install_Files\System.Security.Cryptography.Encoding.dll"
@@ -623,12 +607,10 @@ Section "MainSection" SEC01
   File "Install_Files\System.Windows.Interactivity.dll"
   File "Install_Files\System.Xml.ReaderWriter.dll"
   File "Install_Files\Unity.Abstractions.dll"
-  File "Install_Files\Unity.Configuration.dll"
   File "Install_Files\Unity.Container.dll"
-  File "Install_Files\Unity.Interception.Configuration.dll"
-  File "Install_Files\Unity.Interception.dll"
-  File "Install_Files\Unity.RegistrationByConvention.dll"
-  File "Install_Files\Unity.ServiceLocation.dll"
+  File "Install_Files\LGPL_21.txt"
+  File "Install_Files\Ms-PL.txt"
+  File "Install_Files\PreferedLanguageInfo.json"
 
   SetOutPath "$INSTDIR\ko-kr"
   File "Install_Files\ko-kr\Megazone.SubtitleEditor.Resources.resources.dll"
@@ -732,6 +714,7 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\ko-kr\Megazone.SubtitleEditor.Resources.resources.dll"
+  
   Delete "$INSTDIR\CommonServiceLocator.dll"
   Delete "$INSTDIR\DocumentFormat.OpenXml.dll"
   Delete "$INSTDIR\HyperSubtitleEditor.exe"
