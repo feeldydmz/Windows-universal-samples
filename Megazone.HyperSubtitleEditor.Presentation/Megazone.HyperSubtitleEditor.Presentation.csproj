@@ -139,11 +139,13 @@
   <ItemGroup>
     <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
     <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
+    <Compile Include="Behavior\ListBoxDataLoadBehavior.cs" />
     <Compile Include="Behavior\ListBoxSelectionChangedBehaivor.cs" />
     <Compile Include="Behavior\ListViewItemDoubleClickBehavior.cs" />
     <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPlayStateChangedToCommandBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPositionChangedToCommandBehavior.cs" />
+    <Compile Include="Behavior\PopupHeightControlBehavior.cs" />
     <Compile Include="Behavior\ProjectSelectBehavior.cs" />
     <Compile Include="Behavior\SubtitleItemsFilterBehavior.cs" />
     <Compile Include="Behavior\VideoElementLogBehavior.cs" />
@@ -374,6 +376,9 @@
     <Compile Include="View\VideoListView.xaml.cs">
       <DependentUpon>VideoListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WorkBarView.xaml.cs">
+      <DependentUpon>WorkBarView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Excel\HyperSubtitleEditor_Caption_Format.xlsx" />
@@ -599,6 +604,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\VideoListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WorkBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

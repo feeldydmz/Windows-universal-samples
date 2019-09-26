@@ -11,7 +11,8 @@
              xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}">
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}"
+             Unloaded="UserControl_Unloaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
@@ -33,70 +34,147 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Brush_CommonBackground}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="열기" />
-            <Button Grid.Column="1" Content="닫기" ToolTip="닫기" Command="{Binding Path=CloseCommand}" />
+        <Grid Grid.Column="0" Background="{StaticResource Brush_CommonBackground}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Border Height="50" Background="Blue" Width="50" HorizontalAlignment="Left" Margin="10,0,0,0">
+                <Image />
+            </Border>
+
+            <Border Grid.Row="2">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style x:Key="FocusVisual">
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#FFFFFFFF"/>
+                        <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#FF707070"/>
+                        <Style x:Key="OptionMarkFocusVisual">
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF"/>
+                        <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
+                        <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121"/>
+                        <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6"/>
+                        <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC"/>
+                        <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070"/>
+                        <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF"/>
+                        <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
+                        <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121"/>
+                        
+                        <Style x:Key="RadioButtonStyle1" TargetType="{x:Type RadioButton}">
+                            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                            <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                                            <Border x:Name="PART_ButtonBorder" />
+                                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="HasContent" Value="true">
+                                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.MouseOver.Background}"/>
+                                                <Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.MouseOver.Border}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Disabled.Background}"/>
+                                                <Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Disabled.Border}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="true">
+                                                <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Pressed.Background}"/>
+                                                <Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Pressed.Border}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="true">
+                                                <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="1"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                                <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="0.56"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource RadioButtonStyle1}" />
+                    </StackPanel.Resources>
+                    <RadioButton x:Name="McmRadioButton" Content="MCM 열기"  GroupName="LeftSideMainMenuGroup" Margin="3,2" />
+                    <RadioButton x:Name="MyComputerRadioButton" Content="내 컴퓨터" GroupName="LeftSideMainMenuGroup" Margin="3,2" />
+                    <RadioButton x:Name="RecentlyRadioButton" Content="최근 파일" GroupName="LeftSideMainMenuGroup" Margin="3,2" />
+                </StackPanel>
+            </Border>
         </Grid>
 
-        <!--대분류 탭 메뉴: MCM, 내컴퓨터-->
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="McmRadioButton" Content="Media Cloud Media" IsChecked="True" GroupName="FirstMenuGroup" />
-                <RadioButton x:Name="MyComputerRadioButton" Content="내 컴퓨터" GroupName="FirstMenuGroup" />
-            </StackPanel>
-        </Grid>
+        <Grid Grid.Column="1" MaxWidth="400">
+            <Grid Background="{StaticResource Brush_CommonBackground}">
+                <!-- [Media Cloud Media] -->
+                <Border Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-        <Grid Grid.Row="2">
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                            </Grid.ColumnDefinitions>
 
-            <!-- [Media Cloud Media] -->
-            <Border Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" TextBlock.FontSize="14">
+                                <RadioButton x:Name="VideoRadioButton" Content="Video" GroupName="McmMenuGroup" IsChecked="True" Margin="3" />
+                                <RadioButton x:Name="AssetRadioButton" Content="Asset" GroupName="McmMenuGroup" Margin="3" />
+                            </StackPanel>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="8" />
-                        </Grid.ColumnDefinitions>
+                            <Button Grid.Column="2" Content="Refresh" ToolTip="Refresh" />
+                        </Grid>
 
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <RadioButton x:Name="VideoRadioButton" Content="Video" GroupName="McmMenuGroup" IsChecked="True" />
-                            <RadioButton x:Name="AssetRadioButton" Content="Asset" GroupName="McmMenuGroup" />
-                        </StackPanel>
+                        <Border Grid.Row="1" Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <local:McmVideoMenuView />
+                        </Border>
 
-                        <Button Grid.Column="2" Content="Refresh" ToolTip="Refresh" />
+                        <Border Grid.Row="1" Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <local:McmCaptionAssetMenuView />
+                        </Border>
                     </Grid>
+                </Border>
 
-                    <Border Grid.Row="1" Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <local:McmVideoMenuView />
-                    </Border>
-
-                    <Border Grid.Row="1" Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <local:McmCaptionAssetMenuView />
-                    </Border>
-                </Grid>
-            </Border>
-
-            <!-- [내 컴퓨터] -->
-            <Border Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <local:MyComputerMenuView />
-            </Border>
+                <!-- [내 컴퓨터] -->
+                <Border Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <local:MyComputerMenuView />
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

@@ -11,6 +11,7 @@
              xmlns:config="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
+             xmlns:views="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              mc:Ignorable="d" Background="White"
              d:DesignHeight="600" d:DesignWidth="900"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Subtitle}">
@@ -292,7 +293,6 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
-            <i:InvokeCommandAction Command="{Binding Path=WorkBar.LoadCommand, Source={StaticResource SubtitleViewModelLocator}}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Unloaded">
             <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
@@ -546,42 +546,8 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1" DataContext="{Binding Path=WorkBar, Source={StaticResource SubtitleViewModelLocator}}">
-            <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <TextBlock Text="Untitled" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <Button Content="편집" Style="{x:Null}" />
-                </StackPanel>
-            </Grid>
-            <Grid Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <!--
-                아이콘
-                <Image />-->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" DataContext="{Binding Path=VideoItem}">
-                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} ({1})">
-                                <Binding Path="Name" />
-                                <Binding Path="Id" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    
-                    <Button Content="정보" Style="{x:Null}" />
-                    <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding Path=SelectedCaptionAsset.Name}" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <Button Content="편집" Style="{x:Null}" />
-                </StackPanel>
-            </Grid>
+        <Grid Grid.Row="1">
+            <views:WorkBarView />
         </Grid>
 
         <Grid Grid.Row="2">
@@ -1307,7 +1273,6 @@
                         </Grid>
                     </Grid>
                 </Border>
-
             </Grid>
 
             <!--그리드 스플리터-->

@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
 {
@@ -10,6 +12,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         public LeftSideMenuView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            McmRadioButton.IsChecked = false;
+            MyComputerRadioButton.IsChecked = false;
+            RecentlyRadioButton.IsChecked = false;
         }
     }
 }
