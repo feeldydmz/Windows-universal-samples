@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
+using Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT;
+using Microsoft.Toolkit.Wpf.UI.Controls;
 using mshtml;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
@@ -89,30 +91,36 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public SignInView()
         {
             InitializeComponent();
-            WebBrowser.Navigated += WebBrowser_Navigated;
+            
         }
 
-        private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void WebView_OnNavigationStarting(object sender, WebViewControlNavigationStartingEventArgs e)
         {
-            Error.HideScriptErrors(WebBrowser, true);
-        }
-    }
+            const string CODE_PATTEN = "code=";
+            var absoluteUri = e.Uri.AbsoluteUri;
+            var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
 
-    public class Error
-    {
-        public static void HideScriptErrors(WebBrowser wb, bool hide)
-        {
-            var fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            if (fiComWebBrowser == null)
+            if (index == -1)
                 return;
+            e.Cancel = true;
+            
+            if (sender is WebView webview)
+            {
+                webview.Source = new Uri("about: blank");
+            }
 
-            var objComWebBrowser = fiComWebBrowser.GetValue(wb);
-            if (objComWebBrowser == null)
-                return;
+            //var document2 = browser.Document as IHTMLDocument2;
+            //document2?.execCommand("ClearAuthenticationCache");
 
-            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser,
-                new object[] {hide});
+            var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
+
+            if (DataContext is SignInViewModel vm)
+            {
+
+            }
+
+            //if (command.CanExecute(code))
+            //    command.Execute(code);
         }
     }
 }

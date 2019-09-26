@@ -3,5 +3,6 @@
     public interface IAuthorizationRepository
     {
         AuthorizationResponse Get(AuthorizationRequest request);
+        MeResponse GetMe(MeRequest request);
     }
 }

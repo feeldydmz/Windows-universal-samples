@@ -81,9 +81,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response =
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
-
+                var response = _authorizationRepository.GetMe(new MeRequest(authorization.AccessToken));
                 return response == null ? null : new UserProfile(response);
             }, cancellationToken);
         }

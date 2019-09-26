@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.IoC;
@@ -9,8 +10,8 @@ namespace Megazone.Cloud.Media.Repository
     [Inject(Source = typeof(IAuthorizationRepository), Scope = LifetimeScope.Transient)]
     public class AuthorizationRepository : IAuthorizationRepository
     {
-        //private const string Domain = "oauth.megazone.io";
-        private const string Domain = "megaone.io";
+        private const string Domain = "oauth.megazone.io";
+        //private const string Domain = "megaone.io";
 
         public const string LOGIN_URL =
             "https://" + Domain +
@@ -46,6 +47,19 @@ namespace Megazone.Cloud.Media.Repository
 
 
             return exResult.Convert<AuthorizationResponse>();
+        }
+
+        public MeResponse GetMe(MeRequest request)
+        {
+            // API : https://api.media.megazone.io/v1/me
+
+            var restRequest = new RestRequest("resource/v1/me", Method.GET)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}");
+            var apiEndpoint = $"https://{Domain}";
+            var response = RestSharpExtension.CreateRestClient(apiEndpoint).Execute(restRequest);
+
+
+            return response.StatusCode == HttpStatusCode.Unauthorized ? null : response.Convert<MeResponse>();
         }
 
         private string GetClientAuthorization()

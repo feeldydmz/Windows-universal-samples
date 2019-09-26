@@ -85,20 +85,6 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<AssetListResponse<CaptionAsset>>();
         }
 
-        public MeResponse GetMe(MeRequest request)
-        {
-            // API : https://api.media.megazone.io/v1/me
-
-            var restRequest = new RestRequest("v1/me", Method.GET)
-                .AddHeader("Authorization", $"Bearer {request.AccessToken}");
-
-            var response = RestSharpExtension.CreateRestClient(request.Endpoint)
-                .Execute(restRequest);
-
-
-            return response.StatusCode == HttpStatusCode.Unauthorized ? null : response.Convert<MeResponse>();
-        }
-
         public ProjectListResponse GetProjects(ProjectListRequest listRequest)
         {
             var restRequest = new RestRequest($"v1/stages/{listRequest.StageId}/projects", Method.GET)
