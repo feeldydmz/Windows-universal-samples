@@ -153,6 +153,7 @@
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />
+    <Compile Include="Command\UI\OpenLeftSideMenuCommand.cs" />
     <Compile Include="Command\UI\ShowProjectViewCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
@@ -169,7 +170,7 @@
     <Compile Include="Command\UI\CreateNewFileCommand.cs" />
     <Compile Include="Command\UI\CutSelectedRowsCommand.cs" />
     <Compile Include="Command\UI\DeleteSelectedRowsCommand.cs" />
-    <Compile Include="Command\UI\DeleteTabCommand.cs" />
+    <Compile Include="Command\UI\CloseTabCommand.cs" />
     <Compile Include="Command\UI\DeployCommand.cs" />
     <Compile Include="Command\UI\ExitApplicationCommand.cs" />
     <Compile Include="Command\UI\ExportExcelFileCommand.cs" />
@@ -211,12 +212,14 @@
     <Compile Include="Excel\TrackFormat.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
+    <Compile Include="Message\CloudMedia.cs" />
     <Compile Include="Message\Excel.cs" />
+    <Compile Include="Message\LeftSideMenu.cs" />
     <Compile Include="Message\MediaPlayer.cs" />
     <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
-    <Compile Include="Message\Parameter\CaptionOpenedMessageParameter.cs" />
+    <Compile Include="Message\Parameter\CaptionOpenMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
     <Compile Include="ViewModel\Language\Language.cs" />
     <Compile Include="ViewModel\Language\LanguageLoader.cs" />
+    <Compile Include="ViewModel\LeftSideMenuViewModel.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
@@ -265,6 +269,7 @@
     <Compile Include="ViewModel\SubtitleParserProxy.cs" />
     <Compile Include="ViewModel\VideoListViewModel.cs" />
     <Compile Include="ViewModel\ViewModes.cs" />
+    <Compile Include="ViewModel\WorkBarViewModel.cs" />
     <Compile Include="View\AddAndEditSubtitleView.xaml.cs">
       <DependentUpon>AddAndEditSubtitleView.xaml</DependentUpon>
     </Compile>
@@ -285,6 +290,18 @@
     </Compile>
     <Compile Include="View\GoToLineView.xaml.cs">
       <DependentUpon>GoToLineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\LeftSideMenuView.xaml.cs">
+      <DependentUpon>LeftSideMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\McmCaptionAssetMenuView.xaml.cs">
+      <DependentUpon>McmCaptionAssetMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\McmVideoMenuView.xaml.cs">
+      <DependentUpon>McmVideoMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\MyComputerMenuView.xaml.cs">
+      <DependentUpon>MyComputerMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainFrameView.xaml.cs">
       <DependentUpon>MainFrameView.xaml</DependentUpon>
@@ -490,6 +507,22 @@
     <Page Include="View\GoToLineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LeftSideMenu\LeftSideMenuView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\McmCaptionAssetMenuView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\McmVideoMenuView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\MyComputerMenuView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\MainFrameView.xaml">
       <SubType>Designer</SubType>
