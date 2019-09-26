@@ -70,7 +70,7 @@ namespace Megazone.Cloud.Media.Service
         }
 
 
-        public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter,
+        public async Task<ProjectListResponse> GetProjectsAsync(GetProjectsParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(
@@ -78,13 +78,16 @@ namespace Megazone.Cloud.Media.Service
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.Name)), cancellationToken);
         }
 
+        public async Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() => _cloudMediaRepository.GetStages(CLOUD_MEDIA_ENDPOINT, parameter.Authorization.AccessToken), cancellationToken);
+        }
+
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response =
-                    _cloudMediaRepository.GetMe(new MeRequest(CLOUD_MEDIA_ENDPOINT, authorization.AccessToken));
-
+                var response = _authorizationRepository.GetMe(new MeRequest(authorization.AccessToken));
                 return response == null ? null : new UserProfile(response);
             }, cancellationToken);
         }

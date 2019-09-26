@@ -86,18 +86,12 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<AssetListResponse<CaptionAsset>>();
         }
 
-        public MeResponse GetMe(MeRequest request)
+        public IEnumerable<Stage> GetStages(string apiEndpoint, string accessToken)
         {
-            // API : https://api.media.megazone.io/v1/me
+            var restRequest =
+                new RestRequest("v1/stages", Method.GET).AddHeader("Authorization", $"Bearer {accessToken}");
 
-            var restRequest = new RestRequest("v1/me", Method.GET)
-                .AddHeader("Authorization", $"Bearer {request.AccessToken}");
-
-            var response = RestSharpExtension.CreateRestClient(request.Endpoint)
-                .Execute(restRequest);
-
-
-            return response.StatusCode == HttpStatusCode.Unauthorized ? null : response.Convert<MeResponse>();
+            return RestSharpExtension.CreateRestClient(apiEndpoint).Execute(restRequest).Convert<IEnumerable<Stage>>();
         }
 
         public ProjectListResponse GetProjects(ProjectListRequest listRequest)
@@ -168,7 +162,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<IEnumerable<Language>>();
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest)
+                .Convert<IEnumerable<Language>>();
         }
 
         public Video GetVideo(VideoRequest request)

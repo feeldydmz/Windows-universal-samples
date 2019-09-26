@@ -39,9 +39,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ProjectItemViewModel _selectedProject;
         private StageItemViewModel _selectedStage;
         private string _uriSource;
-
-
         private string _username;
+
+        public Action<string> OnSourceUriChanged;
 
         public SignInViewModel(ICloudMediaService cloudMediaService, ILogger logger)
         {
@@ -53,7 +53,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _authorization = ReadSavedAuthorization();
         }
 
-        internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.json";
+        internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.dat";
 
         public string UserName
         {
@@ -110,12 +110,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ICommand NavigatingCommand
         {
-            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
+            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(NavigateToProject); }
         }
 
         public ICommand Command
         {
-            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(OnNavigating); }
+            get { return _navigatingCommand = _navigatingCommand ?? new RelayCommand<string>(NavigateToProject); }
+        }
+
+        private void SetSourceUri(string url)
+        {
+            this.UriSource = url;
+            OnSourceUriChanged?.Invoke(url);
         }
 
         public void Save()
@@ -143,7 +149,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Send(new SignIn.LogoutMessage(this));
 
-            UriSource = AuthorizationRepository.LOGIN_URL;
+            SetSourceUri(AuthorizationRepository.LOGIN_URL);
         }
 
         private async void LoginByAuthorizationCodeAsync(string code)
@@ -175,7 +181,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     IsSignIn = false;
                     IsBusy = false;
-                    UriSource = AuthorizationRepository.LOGIN_URL;
+                    SetSourceUri(AuthorizationRepository.LOGIN_URL);
                     return;
                 }
 
@@ -239,7 +245,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsAutoLogin = _config.Subtitle.AutoLogin;
             if (!_config.Subtitle.AutoLogin)
             {
-                UriSource = AuthorizationRepository.LOGIN_URL;
+                SetSourceUri(AuthorizationRepository.LOGIN_URL);
                 return;
             }
 
@@ -249,17 +255,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             else
             {
-                UriSource = AuthorizationRepository.LOGIN_URL;
+                SetSourceUri(AuthorizationRepository.LOGIN_URL);
                 IsSignIn = false;
             }
         }
 
-        private void OnNavigating(string code)
+        public void NavigateToProject(string code)
         {
             if (string.IsNullOrEmpty(code))
                 return;
-
-            UriSource = "about:blank";
+            
+            SetSourceUri("about:blank");
 
             LoginByAuthorizationCodeAsync(code);
         }

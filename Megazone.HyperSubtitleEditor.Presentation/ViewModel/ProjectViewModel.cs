@@ -403,7 +403,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (_hasRegisteredMessageHandlers) return;
             _hasRegisteredMessageHandlers = true;
             MessageCenter.Instance.Regist<SignIn.LogoutMessage>(OnLogoutRequested);
-            MessageCenter.Instance.Regist<SignIn.LoadStageProjectMessage>(OnLoadStageProjectRequested);
+            MessageCenter.Instance.Regist<SignIn.LoadStageProjectMessage>(LoadStageProject);
         }
 
 
@@ -411,7 +411,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (!_hasRegisteredMessageHandlers) return;
             MessageCenter.Instance.Unregist<SignIn.LogoutMessage>(OnLogoutRequested);
-            MessageCenter.Instance.Unregist<SignIn.LoadStageProjectMessage>(OnLoadStageProjectRequested);
+            MessageCenter.Instance.Unregist<SignIn.LoadStageProjectMessage>(LoadStageProject);
         }
 
         private void OnLogoutRequested(SignIn.LogoutMessage message)
@@ -422,7 +422,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedStage = null;
         }
 
-        private async void OnLoadStageProjectRequested(SignIn.LoadStageProjectMessage message)
+        private async void LoadStageProject(SignIn.LoadStageProjectMessage message)
         {
             try
             {
@@ -430,7 +430,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsBusy = true;
                 IsProjectViewVisible = true;
 
-                StageItems = message.UserProfile?.Stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
+                var stages =
+                    await _cloudMediaService.GetStagesAsync(new GetStagesParameter(_signInViewModel.GetAuthorization()),
+                        CancellationToken.None);
+
+                StageItems = stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
                              new List<StageItemViewModel>();
 
                 var emptyProjectStages = new List<StageItemViewModel>();
@@ -440,7 +444,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 #else
                 foreach (var stageItem in StageItems)
                 {
-                    var projects = await _cloudMediaService.GetProjects(
+                    var projects = await _cloudMediaService.GetProjectsAsync(
                         new GetProjectsParameter(_signInViewModel.GetAuthorization(), stageItem.Id, stageItem.Name),
                         CancellationToken.None);
 
