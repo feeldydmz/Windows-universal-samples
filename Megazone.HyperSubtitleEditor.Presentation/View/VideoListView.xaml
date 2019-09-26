@@ -351,8 +351,7 @@
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
-                                <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
+                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
