@@ -10,6 +10,7 @@ using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
+
 // ReSharper disable InconsistentNaming
 
 namespace Megazone.Cloud.Media.Service
@@ -198,6 +199,18 @@ namespace Megazone.Cloud.Media.Service
                 var videos = response?.Videos ?? new List<Video>();
                 return new VideoList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage, totalCount,
                     videos);
+            }, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter,
+            CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var response = _cloudMediaRepository.GetLanguages(new LanguageRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.AuthorizationAccessToken, parameter.StageId, parameter.ProjectId));
+
+                return response;
             }, cancellationToken);
         }
 

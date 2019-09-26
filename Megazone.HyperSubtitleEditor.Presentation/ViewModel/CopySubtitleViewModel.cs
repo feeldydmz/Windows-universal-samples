@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -18,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ISubtitleTabItemViewModel _selectedTab;
         private IList<ISubtitleTabItemViewModel> _tabs;
 
-        public CopySubtitleViewModel(ILogger logger) : base(logger)
+        public CopySubtitleViewModel(ILogger logger, LanguageLoader languageLoader) : base(logger, languageLoader)
         {
         }
 
@@ -43,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Set(ref _selectedTab, value);
                 Label = value.Name + Resource.CNT_COPY;
                 SelectedLanguageItemViewModel =
-                    Languages.Where(i => i.LanguageCode.Equals(value.LanguageCode))
+                    Languages.Where(i => i.LanguageCode.Equals(value.LanguageCode) && i.CountryCode.Equals(value.CountryCode))
                         .ToList()
                         .FirstOrDefault();
                 SelectedSubtitleKind = value.Kind;
@@ -65,6 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     Kind = SelectedSubtitleKind,
                     Label = Label,
                     LanguageCode = SelectedLanguageItemViewModel.LanguageCode,
+                    CountryCode =  SelectedLanguageItemViewModel.CountryCode,
                     Rows = Rows
                 }));
             }

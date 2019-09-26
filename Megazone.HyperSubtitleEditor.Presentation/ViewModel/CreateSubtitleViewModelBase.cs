@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     internal abstract class CreateSubtitleViewModelBase : ViewModelBase
     {
+        private readonly LanguageLoader _languageLoader;
         protected readonly ILogger Logger;
         private string _label;
         private IList<LanguageItemViewModel> _languages;
@@ -23,9 +22,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private CaptionKind _selectedSubtitleKind;
         private IList<CaptionKind> _subtitleKinds;
 
-        protected CreateSubtitleViewModelBase(ILogger logger)
+        protected CreateSubtitleViewModelBase(ILogger logger, LanguageLoader languageLoader)
         {
             Logger = logger;
+            _languageLoader = languageLoader;
+
             _subtitleKinds = new List<CaptionKind>
             {
                 CaptionKind.Subtitle,
@@ -33,20 +34,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionKind.Chapter
             };
             _languages = new List<LanguageItemViewModel>();
-            var preferedLanguageInfoFilePath = Path.GetDirectoryName(
-                                                   Assembly.GetExecutingAssembly()
-                                                       .Location) +
-                                               "\\PreferedLanguageInfo.json";
-            foreach (var item in LanguageParser.GetLanguages(preferedLanguageInfoFilePath)
-                .ToList())
+
+            var languages = _languageLoader.Languages;
+
+            foreach (var item in languages.ToList())
                 Languages.Add(new LanguageItemViewModel
                 {
                     LanguageCode = item.Alpha2,
-                    NativeName = item.NativeName
+                    CountryCode = item.CountryInfo.Alpha2,
+                    CountryName = item.CountryInfo.Name
                 });
-            SelectedLanguageItemViewModel = Languages.Where(i => i.LanguageCode.Equals("en"))
-                .ToList()
-                .FirstOrDefault();
+
+            var result = Languages.Where(i => i.LanguageCode.Equals("en"));
+
+            SelectedLanguageItemViewModel = result.ToList().FirstOrDefault();
             SelectedSubtitleKind = CaptionKind.Subtitle;
         }
 

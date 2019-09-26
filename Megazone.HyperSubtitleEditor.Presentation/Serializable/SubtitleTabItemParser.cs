@@ -15,6 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Serializable
                 {
                     Name = tab.Name,
                     LanguageCode = tab.LanguageCode,
+                    CountryCode = tab.CountryCode,
                     Kind = tab.Kind,
                     IsSelected = tab.IsSelected,
                     FilePath = tab.FilePath,

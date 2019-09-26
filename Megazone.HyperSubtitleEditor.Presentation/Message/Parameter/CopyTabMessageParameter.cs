@@ -9,6 +9,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
         public string Label { get; set; }
         public IList<ISubtitleListItemViewModel> Rows { get; set; }
         public string LanguageCode { get; set; }
+        public string CountryCode { get; set; }
         public CaptionKind Kind { get; set; }
     }
 }

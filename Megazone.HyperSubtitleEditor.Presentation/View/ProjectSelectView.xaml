@@ -12,9 +12,18 @@
              xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              xmlns:extensions="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Extension"
              mc:Ignorable="d"
+             
              d:DesignHeight="736" d:DesignWidth="1280"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel}"
              x:Name="Root">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <i:Interaction.Behaviors>
         <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" StageWidth="340" StageMarginWidth="30" />
     </i:Interaction.Behaviors>
@@ -24,6 +33,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:NullToFalseNTrue x:Key="NullToFalseNTrue"/>
@@ -54,7 +64,7 @@
                                TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>
                 <mz:ImageButton
-                    Command="{Binding Path=LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                    Command="{StaticResource LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
                     Background="{StaticResource Brush_ImageButton_Background_Color}"
                     NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
@@ -69,8 +79,7 @@
         </StackPanel>
 
 
-        <Border Grid.Row="1"
-                Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Grid.Row="1" Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Control x:Name="LoadingProgressView"
                      Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Style="{StaticResource Style_IndeterminateControl}"
@@ -373,7 +382,7 @@
                                         <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
                                         <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=SignIn.SelectingStage}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}" Value="{x:Null}">
                                         <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
                                         <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
                                         <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
@@ -398,7 +407,7 @@
                             Style="{StaticResource Style_Button_Left_Arrow}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_BACK}"
                             Visibility="{Binding IsCancelButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Command="{Binding Path=CancelProjectSelectCommand}" />
+                            Command="{Binding Path=CloseCommand}" />
                     <Slider Grid.Column="2"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"

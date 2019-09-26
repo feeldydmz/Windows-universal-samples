@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -109,7 +110,7 @@ namespace Megazone.Cloud.Media.Repository
         public UploadResult UploadCaptionFile(UploadCaptionRequest request)
         {
             var sha256 = GetSha256(request.Text);
-            
+
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/upload", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -145,6 +146,15 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(new RestRequest(localPath, Method.GET));
 
             return response?.Content;
+        }
+
+        public IEnumerable<Language> GetLanguages(LanguageRequest request)
+        {
+            var restRequest = new RestRequest("v1/stages/mz-cm-v1/languages", Method.GET)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId);
+
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<IEnumerable<Language>>();
         }
 
         public Video GetVideo(VideoRequest request)
@@ -208,17 +218,15 @@ namespace Megazone.Cloud.Media.Repository
         public bool UpdateVideoCaptions(VideoRequest request)
         {
             var captionAssetList = request.Video.Captions.Select(asset => new VideoAsset(asset.Id)).ToList();
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk", Method.PATCH)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk",
+                    Method.PATCH)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("version", request.Video.Version.ToString())
                 .AddJsonString(captionAssetList);
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                return !response.Content.Contains("errorCode");
-            }
+            if (response.StatusCode == HttpStatusCode.OK) return !response.Content.Contains("errorCode");
             return false;
         }
 
@@ -238,6 +246,7 @@ namespace Megazone.Cloud.Media.Repository
             {
                 AssetId = assetId;
             }
+
             public string AssetId { get; }
         }
     }

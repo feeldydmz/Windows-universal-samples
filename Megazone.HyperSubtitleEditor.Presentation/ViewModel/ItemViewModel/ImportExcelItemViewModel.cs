@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Language;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class ImportExcelItemViewModel : ViewModelBase
     {
+        private readonly LanguageLoader _languageLoader;
         private bool _isChecked;
         private string _label;
         private IList<LanguageItemViewModel> _languages;
@@ -18,25 +17,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private string _sheetName;
         private IList<CaptionKind> _subtitleKinds;
 
-        public ImportExcelItemViewModel()
+        public ImportExcelItemViewModel(LanguageLoader languageLoader)
         {
+            _languageLoader = languageLoader;
+
             _subtitleKinds = new List<CaptionKind>
             {
                 CaptionKind.Subtitle,
                 CaptionKind.Caption,
                 CaptionKind.Chapter
             };
+
             _languages = new List<LanguageItemViewModel>();
-            var preferedLanguageInfoFilePath = Path.GetDirectoryName(
-                                                   Assembly.GetExecutingAssembly()
-                                                       .Location) +
-                                               "\\PreferedLanguageInfo.json";
-            foreach (var item in LanguageParser.GetLanguages(preferedLanguageInfoFilePath)
-                .ToList())
+
+            var languages = _languageLoader.Languages;
+
+            foreach (var item in languages.ToList())
                 Languages.Add(new LanguageItemViewModel
                 {
                     LanguageCode = item.Alpha2,
-                    NativeName = item.NativeName
+                    CountryCode = item.CountryInfo.Alpha2,
+                    CountryName = item.CountryInfo.Name
                 });
         }
 
@@ -60,10 +61,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             set
             {
-                var code = value.LanguageCode.ToLower();
+                var languageCode = value.LanguageCode.ToLower();
+                var countryCode = value.CountryCode.ToUpper();
 
                 foreach (var item in Languages.ToList())
-                    if (item.LanguageCode.Equals(code))
+                    if (item.LanguageCode.Equals(languageCode) && item.CountryCode.Equals(countryCode))
                         Set(ref _selectedLanguageItemViewModel, item);
             }
         }

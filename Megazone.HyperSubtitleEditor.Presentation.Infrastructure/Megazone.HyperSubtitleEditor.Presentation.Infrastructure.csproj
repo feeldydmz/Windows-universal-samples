@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -52,6 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachedProperty\WebBrowserAttchedProperty.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Browser\AdjustTimeBehavior.cs" />
     <Compile Include="Browser\AdjustTimeRange.cs" />
@@ -72,8 +76,6 @@
     <Compile Include="Config\UploadConfigHolder.cs" />
     <Compile Include="Enum\SubtitleDialogViewMode.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
-    <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageParser.cs" />
     <Compile Include="Messagenger\IMessage.cs" />
     <Compile Include="Messagenger\MessageBase.cs" />
     <Compile Include="Messagenger\MessageCenter.cs" />
@@ -99,13 +101,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Resource Include="Language\LanguageInfo.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Megazone.Cloud.Media.Domain\Megazone.Cloud.Media.Domain.csproj">
       <Project>{C829E377-BAE6-47BC-BA36-27DAA818A518}</Project>
       <Name>Megazone.Cloud.Media.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Megazone.Cloud.Media.ServiceInterface\Megazone.Cloud.Media.ServiceInterface.csproj">
+      <Project>{df0d1eae-deb3-4518-bd64-4be12ec10d9b}</Project>
+      <Name>Megazone.Cloud.Media.ServiceInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Debug\Megazone.Core.Debug.csproj">
       <Project>{3951711f-e61d-4d2c-b2ce-289971431767}</Project>
@@ -141,7 +146,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AttachedProperty\" />
     <Folder Include="Core\" />
   </ItemGroup>
   <ItemGroup>

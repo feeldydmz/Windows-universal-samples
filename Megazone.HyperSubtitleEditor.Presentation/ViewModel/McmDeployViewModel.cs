@@ -8,6 +8,7 @@ using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -19,6 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class McmDeployViewModel : ViewModelBase
     {
+        private readonly LanguageLoader _languageLoader;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
 
@@ -33,10 +35,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<CaptionKind> _subtitleKinds;
         private VideoItemViewModel _videoItem;
 
-        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel)
+        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
+            LanguageLoader languageLoader)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
+            _languageLoader = languageLoader;
         }
 
         public Action CloseAction { get; set; }
@@ -121,6 +125,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     };
                     SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
                 }
+
                 CommandManager.InvalidateRequerySuggested();
             }
             catch (Exception e)
@@ -150,14 +155,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
             {
                 var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode,
-                    CountryCode(tab.LanguageCode), tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
-                
+                    tab.CountryCode, tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url);
+
                 return new CaptionElementItemViewModel(caption)
                 {
-                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode),
-                    CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode)
+                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) && !string.IsNullOrEmpty(tab.CountryCode),
+                    CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) && !string.IsNullOrEmpty(tab.CountryCode)
                 };
             }
+
             var editedCaptionList = _subtitleViewModel.Tabs.Select(CrateCaptionElementItemViewModel).ToList();
 
             foreach (var item in editedCaptionList)
@@ -178,38 +184,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     // 편집하지 않은 캡션 정보 추가.
                     foreach (var item in captionItemList)
-                    {
                         if (!editedCaptionList.Any(caption => caption.Id?.Equals(item.Id) ?? false))
-                        {
                             editedCaptionList.Add(item);
-                        }
-                    }
                 }
             }
+
             return editedCaptionList;
-
-            string CountryCode(string languageCode)
-            {
-                switch (languageCode)
-                {
-                    case "en": return "US";
-                    case "ja": return "JP";
-                    case "zh": return "CN";
-                    case "es": return "ES";
-                    case "km": return "KH";
-                    case "th": return "TH";
-                    case "ms": return "MY";
-                    case "vi": return "VN";
-                    case "ko": return "KR";
-                    case "id": return "ID";
-                    case "ru": return "RU";
-                }
-
-                return string.Empty;
-            }
         }
-
-        
 
         private bool CanConfirm()
         {

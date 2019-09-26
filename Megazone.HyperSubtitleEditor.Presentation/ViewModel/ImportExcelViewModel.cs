@@ -8,6 +8,7 @@ using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
@@ -18,16 +19,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
+        private readonly LanguageLoader _languageLoader;
         private string _excelFilePath;
         private ICommand _importChooseExcelSheetCommand;
         private ICommand _importExcelFileCommand;
         private ICommand _loadedCommand;
         private IList<ImportExcelItemViewModel> _sheets;
 
-        public ImportExcelViewModel(FileManager fileManager, ExcelService excelService)
+        public ImportExcelViewModel(FileManager fileManager, ExcelService excelService, LanguageLoader languageLoader)
         {
             _fileManager = fileManager;
             _excelService = excelService;
+            _languageLoader = languageLoader;
             _sheets = new ObservableCollection<ImportExcelItemViewModel>();
         }
 
@@ -82,7 +85,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     continue;
 
                 if (string.IsNullOrEmpty(item.Label) ||
-                    string.IsNullOrEmpty(item.SelectedLanguageItemViewModel?.LanguageCode))
+                    string.IsNullOrEmpty(item.SelectedLanguageItemViewModel?.LanguageCode) ||
+                    string.IsNullOrEmpty(item.SelectedLanguageItemViewModel?.CountryCode))
                     return;
 
 
@@ -91,6 +95,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     SheetName = item.SheetName,
                     Label = item.Label,
                     LanguageCode = item.SelectedLanguageItemViewModel.LanguageCode,
+                    CountryCode = item.SelectedLanguageItemViewModel.CountryCode,
                     CaptionKind = item.SelectedSubtitleKind,
                     TrackFormat = TrackFormat.WebVtt
                 });
@@ -127,7 +132,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 foreach (var sheetInfo in infos)
-                    Sheets.Add(new ImportExcelItemViewModel
+                    Sheets.Add(new ImportExcelItemViewModel(_languageLoader)
                     {
                         IsChecked = true, // 기본값이 체크되어 있는 형태.
                         SheetName = sheetInfo.SheetName,
@@ -135,7 +140,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         SelectedLanguageItemViewModel =
                             new LanguageItemViewModel
                             {
-                                LanguageCode = sheetInfo.LanguageCode ?? string.Empty
+                                LanguageCode = sheetInfo.LanguageCode ?? string.Empty,
+                                CountryCode = sheetInfo.CountryCode ?? string.Empty
                             },
                         SelectedSubtitleKind = sheetInfo.CaptionKind
                     });

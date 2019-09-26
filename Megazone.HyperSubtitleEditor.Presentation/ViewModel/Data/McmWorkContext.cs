@@ -219,7 +219,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         {
             var url = caption.Url;
             if (string.IsNullOrEmpty(url))
-                return $"{caption.Label}_{caption.Language}_{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}.vtt";
+                return $"{caption.Label}_{caption.Language}_{caption.Country}_{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}.vtt";
 
             var lastSlashIndex = url.LastIndexOf('/');
 

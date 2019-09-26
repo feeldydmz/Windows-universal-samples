@@ -158,6 +158,8 @@
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
+    <Compile Include="Command\UI\LogoutCommand.cs" />
+    <Compile Include="Command\UI\ShowProjectViewCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
     <Compile Include="Command\UI\PlayBackByHalfSecondCommand.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="Message\Parameter\CaptionOpenedMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
+    <Compile Include="Message\SignIn.cs" />
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -246,8 +249,11 @@
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
+    <Compile Include="ViewModel\Language\Language.cs" />
+    <Compile Include="ViewModel\Language\LanguageLoader.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
+    <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\Data\SubtitleListItemParserProvider.cs" />
@@ -567,6 +573,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

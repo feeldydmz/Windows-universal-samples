@@ -10,6 +10,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         string Name { get; set; }
         bool IsDirty { get; }
         string LanguageCode { get; set; }
+        string CountryCode { get; set; }
         CaptionKind Kind { get; set; }
         IList<ISubtitleListItemViewModel> Rows { get; }
         bool IsSelected { get; set; }

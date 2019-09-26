@@ -6,6 +6,7 @@ using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -21,7 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _canSelectSubtitleKind;
         private ICommand _loadCommand;
 
-        public AddAndEditSubtitleViewModel(ILogger logger) : base(logger)
+        public AddAndEditSubtitleViewModel(ILogger logger, LanguageLoader languageLoader) : base(logger, languageLoader)
         {
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
         }
@@ -50,7 +51,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             TabId = tabItem.Id;
             Label = tabItem.Name;
-            SelectedLanguageItemViewModel = Languages.Where(i => i.LanguageCode.Equals(tabItem.LanguageCode))
+            SelectedLanguageItemViewModel = Languages.Where(i => i.LanguageCode.Equals(tabItem.LanguageCode) && i.CountryCode.Equals(tabItem.CountryCode))
                 .ToList()
                 .FirstOrDefault();
             SelectedSubtitleKind = tabItem.Kind;
@@ -70,7 +71,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         Kind = SelectedSubtitleKind,
                         Label = Label,
-                        LanguageCode = SelectedLanguageItemViewModel.LanguageCode
+                        LanguageCode = SelectedLanguageItemViewModel.LanguageCode,
+                        CountryCode = SelectedLanguageItemViewModel.CountryCode
                     }));
                 if (Mode == SubtitleDialogViewMode.Edit)
                     MessageCenter.Instance.Send(new Subtitle.EditTabMessage(this, new EditTabMessageParameter
@@ -78,7 +80,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         Id = TabId,
                         Kind = SelectedSubtitleKind,
                         Label = Label,
-                        LanguageCode = SelectedLanguageItemViewModel.LanguageCode
+                        LanguageCode = SelectedLanguageItemViewModel.LanguageCode,
+                        CountryCode = SelectedLanguageItemViewModel.CountryCode
                     }));
             }
             catch (Exception ex)
