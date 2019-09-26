@@ -92,36 +92,43 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public SignInView()
         {
             InitializeComponent();
-            
+
+            if (DataContext is SignInViewModel vm)
+            {
+                vm.OnSourceUriChanged = (url) => { WebView.Source = new Uri(url); };
+            }
+
+            WebView.IsJavaScriptEnabled = true;
         }
 
         private void WebView_OnNavigationStarting(object sender, WebViewControlNavigationStartingEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("1");
             const string CODE_PATTEN = "code=";
             var absoluteUri = e.Uri.AbsoluteUri;
+            System.Diagnostics.Debug.WriteLine(absoluteUri);
             var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
 
             if (index == -1)
                 return;
             e.Cancel = true;
-            
-            if (sender is WebView webview)
+
+            System.Diagnostics.Debug.WriteLine("2");
+
+            if (sender is WebView webView)
             {
-                webview.Source = new Uri("about: blank");
+                //webView.Source = new Uri("about: blank");
+                //webView.InvokeScript("ClearAuthenticationCache");
             }
 
-            //var document2 = browser.Document as IHTMLDocument2;
-            //document2?.execCommand("ClearAuthenticationCache");
+            System.Diagnostics.Debug.WriteLine("3");
 
             var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
 
             if (DataContext is SignInViewModel vm)
             {
-
+                vm.NavigateToProject(code);
             }
-
-            //if (command.CanExecute(code))
-            //    command.Execute(code);
         }
     }
 }

@@ -70,12 +70,17 @@ namespace Megazone.Cloud.Media.Service
         }
 
 
-        public async Task<ProjectListResponse> GetProjects(GetProjectsParameter parameter,
+        public async Task<ProjectListResponse> GetProjectsAsync(GetProjectsParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(
                 () => _cloudMediaRepository.GetProjects(new ProjectListRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.Name)), cancellationToken);
+        }
+
+        public async Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() => _cloudMediaRepository.GetStages(CLOUD_MEDIA_ENDPOINT, parameter.Authorization.AccessToken), cancellationToken);
         }
 
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)

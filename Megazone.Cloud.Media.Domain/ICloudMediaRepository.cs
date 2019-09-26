@@ -6,6 +6,7 @@ namespace Megazone.Cloud.Media.Domain
 {
     public interface ICloudMediaRepository
     {
+        IEnumerable<Stage> GetStages(string apiEndpoint, string accessToken);
         ProjectListResponse GetProjects(ProjectListRequest listRequest);
         AssetListResponse<TAsset> GetAssets<TAsset>(AssetListRequest request);
         TAsset GetAsset<TAsset>(AssetRequest request);

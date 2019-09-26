@@ -8,6 +8,7 @@
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:attachedProp="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedProperty;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:controls="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}">
@@ -18,8 +19,6 @@
         <i:EventTrigger EventName="clo" />
     </i:Interaction.Triggers>
     <Grid>
-        <WebBrowser Name="WebBrowser"
-                    attachedProp:WebBrowserAttchedProperty.UriSource="{Binding UriSource, Mode=TwoWay}"
-                    attachedProp:WebBrowserAttchedProperty.NavigatingCommand="{Binding NavigatingCommand}" />
+        <controls:WebView Name="WebView" NavigationStarting="WebView_OnNavigationStarting" />
     </Grid>
 </UserControl>
