@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
@@ -21,6 +23,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CreatedAt = string.IsNullOrEmpty(asset.CreatedAt)
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
+            Encryptions = asset.Encryptions;
+            HasEncryptions = asset.Encryptions?.Any() ?? false;
             Source = asset;
         }
 
@@ -32,6 +36,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string MediaType { get; }
         public long Duration { get; }
         public int Version { get; }
+        public IEnumerable<string> Encryptions { get; }
+        public bool HasEncryptions { get; }
         public DateTime CreatedAt { get; }
 
         public IEnumerable Elements

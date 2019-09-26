@@ -5,7 +5,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
     public abstract class Asset<TAssetElement> : IAsset<TAssetElement> where TAssetElement : IAssetElement
     {
         protected Asset(string id, string name, string status, string type, string mediaType, string ingestType,
-            long duration, int version, string createdAt, IEnumerable<TAssetElement> elements)
+            long duration, int version, string createdAt, IEnumerable<TAssetElement> elements, IEnumerable<string> encryptions)
         {
             Id = id;
             Name = name;
@@ -17,6 +17,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
             Version = version;
             CreatedAt = createdAt;
             Elements = elements;
+            Encryptions = encryptions;
         }
 
         public string IngestType { get; }
@@ -27,6 +28,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
         public string MediaType { get; }
         public long Duration { get; }
         public int Version { get; }
+        public IEnumerable<string> Encryptions { get; }
         public string CreatedAt { get; }
         public IEnumerable<TAssetElement> Elements { get; }
     }

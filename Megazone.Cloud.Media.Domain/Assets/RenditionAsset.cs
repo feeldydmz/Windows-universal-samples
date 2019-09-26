@@ -6,8 +6,8 @@ namespace Megazone.Cloud.Media.Domain.Assets
     public class RenditionAsset : Asset<Rendition>
     {
         public RenditionAsset(string id, string name, string status, string type, string mediaType, string ingestType,
-            long duration, int version, string createdAt, object urls, IEnumerable<Rendition> elements) : base(id, name,
-            status, type, mediaType, ingestType, duration, version, createdAt, elements)
+            long duration, int version, string createdAt, object urls, IEnumerable<Rendition> elements, IEnumerable<string> encryptions) : base(id, name,
+            status, type, mediaType, ingestType, duration, version, createdAt, elements, encryptions)
         {
             if (urls is string url)
                 Urls = new List<string> {url};

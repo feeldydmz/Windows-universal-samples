@@ -10,6 +10,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
         string Type { get; }
         string MediaType { get; }
         long Duration { get; }
+        IEnumerable<string> Encryptions { get; }
         int Version { get; }
         string CreatedAt { get; }
     }

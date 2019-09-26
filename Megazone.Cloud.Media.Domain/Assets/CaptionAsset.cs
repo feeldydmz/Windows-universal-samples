@@ -6,7 +6,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
     {
         public CaptionAsset(string id, string name, string status, string type, string mediaType, string ingestType,
             long duration, int version, string createdAt, IEnumerable<Caption> elements) : base(id, name, status, type,
-            mediaType, ingestType, duration, version, createdAt, elements)
+            mediaType, ingestType, duration, version, createdAt, elements, null)
         {
         }
     }
