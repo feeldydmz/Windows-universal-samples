@@ -9,7 +9,8 @@
         Icon="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Logo.ico"
         TextOptions.TextFormattingMode="Display"
         mc:Ignorable="d" UseLayoutRounding="True" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen"
-        Width="430" Height="260">
+        Width="530" Height="260"
+        SizeToContent="Height">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -17,6 +18,7 @@
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -28,10 +30,63 @@
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
+                
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton x:Name="UrlOpenButton" 
+                                 
+                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_URL_TITLE}"/>
+                    <RadioButton x:Name="FileOpenButton" 
+                                 IsChecked="True"
+                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_FILE_TITLE}" 
+                                 Margin="10,0,0,0"/>
+                    <RadioButton x:Name="McmOpenButton" 
+                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_MCM_TITLE}" 
+                                 Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <!--URL주소로 열기-->
+                <Border Grid.Row="1" 
+                        Visibility="{Binding IsChecked, ElementName=UrlOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
+                        MinHeight="120"
+                        Padding="20,10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="2" TextAlignment="Left"
+                                   Text="{x:Static resources:Resource.CNT_INPUT_VIDEO_URL_PATH}" TextWrapping="Wrap"
+                                   VerticalAlignment="Center"/>
+                        <Grid Grid.Row="1" MinHeight="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="UrlTextBox" TextChanged="UrlTextBox_OnTextChanged" Margin="0,0,5,0" 
+                                     Height="24"/>
+                        </Grid>
+                        <!--<Border x:Name="ErrorMessageBorder" Grid.Row="2" BorderBrush="Red" BorderThickness="1"
+                                Visibility="Collapsed"
+                                VerticalAlignment="Center" Background="Pink" Margin="0,10,0,-4">
+                            <TextBlock Text="{x:Static resources:Resource.CNT_NOT_EXIST_PATH}" TextAlignment="Center"
+                                       Foreground="Red" Margin="3" />
+                        </Border>-->
+                    </Grid>
+
+                </Border>
+
+
+                <!--내컴퓨터에서 열기-->
+                <Border Grid.Row="1" 
+                        Visibility="{Binding IsChecked, ElementName=FileOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
+                        MinHeight="120"
                         Padding="20,10">
 
                     <!--컨텐츠 영역-->
@@ -41,28 +96,51 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.ColumnSpan="2" TextAlignment="Center"
-                                   Text="{x:Static resources:Resource.CNT_INPUT_VIDEO_PATH}" TextWrapping="Wrap"
+                        <TextBlock Grid.ColumnSpan="2" TextAlignment="Left"
+                                   Text="{x:Static resources:Resource.CNT_INPUT_VIDEO_FILE_PATH}" TextWrapping="Wrap"
                                    VerticalAlignment="Center" />
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" MinHeight="30">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="UrlTextBox" TextChanged="UrlTextBox_OnTextChanged" Margin="0,0,5,0" />
+                            <TextBox x:Name="FilePathTextBox" TextChanged="UrlTextBox_OnTextChanged" 
+                                     Margin="0,0,5,0" 
+                                     Height="24"/>
                             <Button Grid.Column="1" Style="{StaticResource Style_IconLabelButton}"
                                     Content="{x:Static resources:Resource.CNT_FIND}" Click="OpenButton_OnClick" />
                         </Grid>
-                        <Border x:Name="ErrorMessageBorder" Grid.Row="2" BorderBrush="Red" BorderThickness="1"
+                        <!--<Border x:Name="ErrorMessageBorder" Grid.Row="2" BorderBrush="Red" BorderThickness="1"
                                 Visibility="Collapsed"
                                 VerticalAlignment="Center" Background="Pink" Margin="0,10,0,-4">
                             <TextBlock Text="{x:Static resources:Resource.CNT_NOT_EXIST_PATH}" TextAlignment="Center"
                                        Foreground="Red" Margin="3" />
-                        </Border>
+                        </Border>-->
+                    </Grid>
+                </Border>
+
+
+                <!--내컴퓨터에서 열기-->
+                <Border Grid.Row="1" 
+                        Visibility="{Binding IsChecked, ElementName=McmOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" 
+                        BorderThickness="1"
+                        Padding="20,10">
+
+                    <!--컨텐츠 영역-->
+                    <Grid MinHeight="300">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
                     </Grid>
 
                 </Border>
-                <Rectangle Grid.Row="1" Fill="#FFeceef0" Height="2" />
+
+
+                <Rectangle Grid.Row="2" Fill="#FFeceef0" Height="2" />
             </Grid>
         </Border>
 

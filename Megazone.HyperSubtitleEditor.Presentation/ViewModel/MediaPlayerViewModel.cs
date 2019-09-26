@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Extension;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
@@ -37,10 +39,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _positionChangedCommand;
 
-        private IEnumerable<string> _videoTypes;
+        private IEnumerable<MediaKind> _videoTypes;
         private IEnumerable<int> _resolutions;
         private int _currentResolution;
-        private string _currentVideoType;
+        private MediaKind _currentVideoType;
 
         private int _seekCount;
         private BitmapSource _thumbnailSource;
@@ -125,15 +127,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public string CurrentVideoType
+        public MediaKind CurrentVideoType
         {
             get => _currentVideoType;
             set
             {
                 Set(ref _currentVideoType, value);
 
-                /*var url = WorkContext?.VideoUrlOfResolutions[_currentVideoType];
-                OpenMedia(url, false);*/
+                VideoUrlOfResolutions = VideoResolutionsByType[_currentVideoType];
+                Resolutions = VideoUrlOfResolutions.Keys;
+                CurrentResolution = Resolutions.First();
             }
         }
 
@@ -144,12 +147,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Set(ref _currentResolution, value);
 
-                var url = WorkContext?.VideoUrlOfResolutions[_currentResolution];
+                var url = VideoUrlOfResolutions[_currentResolution];
+
+                Debug.WriteLine($"media url : {url}");
+
                 OpenMedia(url, false);
             }
         }
 
-        public IEnumerable<string> VideoTypes
+        public IEnumerable<MediaKind> VideoTypes
         {
             get => _videoTypes;
             set => Set(ref _videoTypes, value);
@@ -160,6 +166,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _resolutions;
             set => Set(ref _resolutions, value);
         }
+
+        public Dictionary<int, string> VideoUrlOfResolutions { get; private set; }
+
+        public Dictionary<MediaKind, Dictionary<int, string>> VideoResolutionsByType { get; private set; }
 
         private McmWorkContext WorkContext { get; set; }
 
@@ -195,8 +205,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
-            VideoTypes = WorkContext.VideoResolutionsByType.Keys;
-            Resolutions = WorkContext.VideoResolutionsByType.First().Value?.Keys;
+
+            VideoResolutionsByType = WorkContext.VideoResolutionsByType;
+            VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;
+
+            VideoTypes = VideoResolutionsByType.Keys;
+            Resolutions = VideoResolutionsByType.First().Value?.Keys;
             //Resolutions = WorkContext.VideoUrlOfResolutions.Keys;
             CurrentVideoType = VideoTypes.First();
             if (Resolutions != null) CurrentResolution = Resolutions.First();
@@ -206,6 +220,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void OpenMedia(string firstFilePath, bool isLocalFile)
         {
+            Debug.WriteLine($"media url : {firstFilePath}");
+
+
             MediaSource = firstFilePath;
             LoadMediaItem(firstFilePath, isLocalFile);
         }

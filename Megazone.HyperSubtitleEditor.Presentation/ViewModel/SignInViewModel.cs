@@ -156,6 +156,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+
                 _authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
                 if (string.IsNullOrEmpty(_authorization?.AccessToken))

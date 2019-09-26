@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -42,7 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         public string VideoMediaUrl { get; private set; }
 		public Dictionary<int, string> VideoUrlOfResolutions { get; private set; }
 
-        public Dictionary<string,Dictionary<int, string>> VideoResolutionsByType { get; private set; }
+        public Dictionary<MediaKind, Dictionary<int, string>> VideoResolutionsByType { get; private set; }
 
         public CaptionKind CaptionKind { get; private set; }
 
@@ -227,26 +228,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return fileName;
         }
 
-        private Dictionary<string, Dictionary<int, string>> GetVideoUrlDictionary(Video video)
+        private Dictionary<MediaKind, Dictionary<int, string>> GetVideoUrlDictionary(Video video)
         {
             if (video?.Sources == null) return null;
 
-            var resultDictionary = new Dictionary<string, Dictionary<int, string>>();
+            var resultDictionary = new Dictionary<MediaKind, Dictionary<int, string>>();
 
+            //해상도별 URL
             foreach (var renditionAsset in video.Sources)
             {
                 if (renditionAsset.Elements == null) continue;
 
-                var typeDictionaryic = new Dictionary<int, string>();
+                var resolutionDictionaryic = new Dictionary<int, string>();
 
                 foreach (var element in renditionAsset.Elements)
                 {
                     if (element.VideoSetting == null) continue;
 
-                    typeDictionaryic.Add(element.VideoSetting.Height, element.Urls?.FirstOrDefault() ?? "");
+                    resolutionDictionaryic.Add(element.VideoSetting.Height, element.Urls?.FirstOrDefault() ?? "");
                 }
 
-                resultDictionary.Add(renditionAsset.Type.ToUpper(), typeDictionaryic);
+                // renditionAsset Url이 비어있다면 resolutionDictionaryic의 첫번째 url로 채워준다
+                var baseUrl = renditionAsset.Urls?.FirstOrDefault() ?? resolutionDictionaryic.Values.FirstOrDefault()?? "";
+                resultDictionary.Add(new MediaKind(renditionAsset.Type, baseUrl), resolutionDictionaryic);
             }
 
             return resultDictionary;
