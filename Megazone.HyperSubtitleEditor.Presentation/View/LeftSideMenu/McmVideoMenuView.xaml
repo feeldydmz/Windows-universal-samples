@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.VideoListView"
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu.McmVideoMenuView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,16 +8,9 @@
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
-             Width="590" Height="545"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
-             x:Name="Root">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,12 +23,7 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
+    <Grid Background="{StaticResource Brush_CommonBackground}">
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
             <Grid>
                 <Border Background="{StaticResource Brush_CommonBackground}">
@@ -208,7 +196,9 @@
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Text="Caption" HorizontalAlignment="Right" />
-                                                        --><!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />--><!--
+                                                        -->
+                                                    <!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />-->
+                                                    <!--
                                                         <TextBlock Grid.Column="2" HorizontalAlignment="Right"
                                                                    Visibility="{Binding Path=HasSelectedCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                             <TextBlock.Text>
@@ -250,7 +240,9 @@
                                                                 <EventTrigger RoutedEvent="Button.Unloaded">
                                                                     <StopStoryboard
                                                                         BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                                                                    --><!--<RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />--><!--
+                                                                    -->
+                                                    <!--<RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />-->
+                                                    <!--
                                                                 </EventTrigger>
                                                             </mz:ImageButton.Triggers>
                                                         </mz:ImageButton>
@@ -456,50 +448,5 @@
         <Control Grid.Row="0" x:Name="LoadingProgressView"
                  Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                  Style="{StaticResource Style_IndeterminateControl}" />
-
-        <!--하단 버튼 영역-->
-        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
-            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
-                        Command="{Binding NextCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard Name="CaptionBoardOpenStoryboard">
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                        Duration="0:0:0.3" From="530" To="0"
-                                        SpeedRatio="1"
-                                        FillBehavior="HoldEnd" />
-                                    <DoubleAnimation
-                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                        Storyboard.TargetProperty="Opacity"
-                                        BeginTime="0:0:0"
-                                        Duration="0:0:0.3" From="0" To="1"
-                                        FillBehavior="HoldEnd" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Button.Unloaded">
-                            <StopStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                            <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
-
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="{Binding Path=IsConfirmButtonVisible}"
-                        Command="{Binding ConfirmCommand}" Visibility="{Binding Path=IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
-                        Click="CancelButtonBase_OnClick" />
-            </Grid>
-        </Border>
     </Grid>
 </UserControl>

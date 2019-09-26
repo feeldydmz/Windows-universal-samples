@@ -66,7 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool _hasRegisteredMessageHandlers;
         private bool _isCutRequest;
-        private ICommand _loadedCommand;
+        private ICommand _loadCommand;
         private decimal _previousPosition;
         private EncodingInfo _selectedEncoding;
         private ISubtitleListItemViewModel _selectedItem;
@@ -75,7 +75,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _selectPreviousRowCommand;
         private ICommand _syncMediaPositionCommand;
         private IList<ISubtitleTabItemViewModel> _tabs;
-        private ICommand _unloadedCommand;
+        private ICommand _unloadCommand;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -116,14 +116,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _addItemCommand = _addItemCommand ?? new RelayCommand(AddItem, CanAddItem); }
         }
 
-        public ICommand LoadedCommand
+        public ICommand LoadCommand
         {
-            get { return _loadedCommand = _loadedCommand ?? new RelayCommand(OnLoaded); }
+            get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
-        public ICommand UnloadedCommand
+        public ICommand UnloadCommand
         {
-            get { return _unloadedCommand = _unloadedCommand ?? new RelayCommand(OnUnloaded); }
+            get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
         }
 
         public EncodingInfo SelectedEncoding
@@ -210,6 +210,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _tabs;
             set => Set(ref _tabs, value);
         }
+
+        public VideoItemViewModel VideoItem
+        {
+            get => _videoItem;
+            set => Set(ref _videoItem, value);
+        } 
+        private VideoItemViewModel _videoItem;
 
         public bool HasTab => Tabs?.Any() ?? false;
 
@@ -382,7 +389,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MediaPlayer.SyncPosition(selectedItem.StartTime);
         }
 
-        private void OnUnloaded()
+        private void Unload()
         {
             UnregisterMessageHandlers();
         }
@@ -396,10 +403,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
             MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
-            MessageCenter.Instance.Regist<Subtitle.CaptionOpenedMessage>(OnMcmCaptionAssetOpened);
+            MessageCenter.Instance.Regist<CloudMedia.CaptionOpenMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
-            MessageCenter.Instance.Regist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
+            MessageCenter.Instance.Regist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
             MessageCenter.Instance.Regist<Subtitle.CopyTabMessage>(OnCopySubtitle);
@@ -445,11 +452,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
-            MessageCenter.Instance.Unregist<Subtitle.CaptionOpenedMessage>(OnMcmCaptionAssetOpened);
+            MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
-            MessageCenter.Instance.Unregist<Subtitle.DeleteTabMessage>(OnDeleteTabRequested);
+            MessageCenter.Instance.Unregist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
             MessageCenter.Instance.Unregist<Subtitle.CopyTabMessage>(OnCopySubtitle);
@@ -611,7 +618,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             });
         }
 
-        private void OnLoaded()
+        private void Load()
         {
             RegisterMessageHandlers();
 
@@ -810,7 +817,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MediaPlayer.OpenMedia(mediaFilePath, true);
         }
 
-        private void OnDeleteTabRequested(Subtitle.DeleteTabMessage message)
+        private void OnCloseTabRequested(Subtitle.CloseTabMessage message)
         {
             CloseTab(message.Tab);
         }
@@ -965,7 +972,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Encoding.UTF8);
         }
 
-        private async void OnMcmCaptionAssetOpened(Subtitle.CaptionOpenedMessage message)
+        private async void OnCaptionOpenRequest(CloudMedia.CaptionOpenMessage message)
         {
             if (message.Param == null)
                 return;

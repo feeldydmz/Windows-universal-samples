@@ -264,7 +264,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     foreach (var tab in removeTabs)
                         MessageCenter.Instance.Send(
-                            new Subtitle.DeleteTabMessage(this, tab as SubtitleTabItemViewModel));
+                            new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
                 }
             }
 

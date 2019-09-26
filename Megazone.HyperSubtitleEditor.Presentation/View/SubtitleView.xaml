@@ -291,10 +291,11 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Path=LoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=WorkBar.LoadCommand, Source={StaticResource SubtitleViewModelLocator}}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Unloaded">
-            <i:InvokeCommandAction Command="{Binding Path=UnloadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -302,6 +303,7 @@
         <Grid.RowDefinitions>
             <!--툴바 영역-->
             <RowDefinition Height="63" />
+            <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
             <RowDefinition Height="2.2*" />
             <RowDefinition Height="Auto" />
             <!--"StartTime:" 부분이 딱 보일만큼의 높이로 MinHeight 설정. 스크롤 없이 자막 세줄이보일만큼 기본 Height 설정-->
@@ -341,6 +343,7 @@
                     </Style>
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal" Margin="5,0">
+                    <Button Content="열기" Command="{StaticResource OpenLeftSideMenuCommand}" Style="{x:Null}" />
                     <Button Command="{StaticResource LoadGroupFileCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -543,7 +546,45 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" DataContext="{Binding Path=WorkBar, Source={StaticResource SubtitleViewModelLocator}}">
+            <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="Untitled" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                    <Button Content="편집" Style="{x:Null}" />
+                </StackPanel>
+            </Grid>
+            <Grid Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!--
+                아이콘
+                <Image />-->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" DataContext="{Binding Path=VideoItem}">
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} ({1})">
+                                <Binding Path="Name" />
+                                <Binding Path="Id" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    
+                    <Button Content="정보" Style="{x:Null}" />
+                    <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding Path=SelectedCaptionAsset.Name}" VerticalAlignment="Center" Margin="0,0,5,0" />
+                    <Button Content="편집" Style="{x:Null}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="Auto" />
@@ -823,16 +864,14 @@
                                                 </Grid>
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                                                             TextBlock.FontWeight="Bold">
-                                                    <TextBlock Text="[" VerticalAlignment="Center" />
                                                     <TextBlock VerticalAlignment="Center" >
                                                         <TextBlock.Text>
-                                                            <MultiBinding StringFormat="{}{0}-{1}">
+                                                            <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                 <Binding Path="LanguageCode"/>
                                                                 <Binding Path="CountryCode"/>
                                                             </MultiBinding>
                                                         </TextBlock.Text>
                                                     </TextBlock>
-                                                    <TextBlock Text="]" VerticalAlignment="Center" />
                                                 </StackPanel>
                                                 <TextBlock Grid.Column="2" Margin="0,0,2,0" FontWeight="Bold"
                                                            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
@@ -900,11 +939,8 @@
                                                                     <Separator />
                                                                     <Button
                                                                         Content="{x:Static resources:Resource.CNT_CLOSE_TAB}"
-                                                                        Command="{StaticResource DeleteTabCommand}"
+                                                                        Command="{StaticResource CloseTabCommand}"
                                                                         CommandParameter="{Binding}" />
-                                                                    <!--<Button Content="{x:Static resources:Resource.CNT_EDIT_CAPTION_INFO}" 
-                                                                            Command="{Binding DataContext.CloseTabCommand, ElementName=RootGrid}"
-                                                                            CommandParameter="{Binding}"/>-->
                                                                 </StackPanel>
                                                             </Grid>
                                                         </Border>
@@ -1337,9 +1373,9 @@
 
         </Grid>
 
-        <GridSplitter Grid.Row="2" Style="{StaticResource Style_GridSplitter}" />
+        <GridSplitter Grid.Row="3" Style="{StaticResource Style_GridSplitter}" />
 
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <Grid DataContext="{Binding SelectedItem}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="34" />
@@ -1732,7 +1768,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="#FFcbd0d8">
+        <Border Grid.Row="5" BorderThickness="0,1,0,0" BorderBrush="#FFcbd0d8">
             <Image HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0"
                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ResizeGrip.png"
                    Stretch="None" />

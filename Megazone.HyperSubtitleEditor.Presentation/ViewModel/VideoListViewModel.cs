@@ -534,7 +534,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var removeTabs = subtitleVm.Tabs.ToList();
                 foreach (var tab in removeTabs)
                     MessageCenter.Instance.Send(
-                        new Subtitle.DeleteTabMessage(this, tab as SubtitleTabItemViewModel));
+                        new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
             }
 
             // 선택된 video 정보를 메인 
@@ -544,8 +544,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new Subtitle.CaptionOpenedMessage(this,
-                new CaptionOpenedMessageParameter(video, asset, selectedCaptionList)));
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
+                new CaptionOpenMessageParameter(video, asset, selectedCaptionList)));
             CloseAction?.Invoke();
         }
 
