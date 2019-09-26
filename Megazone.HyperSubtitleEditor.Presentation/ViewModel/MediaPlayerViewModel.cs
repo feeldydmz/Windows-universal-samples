@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Extension;
 using Megazone.Core.Log;
@@ -134,6 +136,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Set(ref _currentVideoType, value);
 
+                if (_currentVideoType == null) return;
+
                 VideoUrlOfResolutions = VideoResolutionsByType[_currentVideoType];
                 Resolutions = VideoUrlOfResolutions.Keys;
                 CurrentResolution = Resolutions.First();
@@ -202,6 +206,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public Mpd ParseMpd(string url)
+        {
+            //string url = renditionAsset.Urls?.FirstOrDefault();
+
+            //if (url.IsNullOrEmpty())
+            //    return renditionAsset;
+            string xmlString = "";
+
+            using (var wc = new WebClient())
+            {
+                xmlString = wc.DownloadString(url);
+            }
+
+            var serializer = new XmlSerializer(typeof(Mpd));
+
+            using (TextReader reader = new StringReader(xmlString))
+            {
+                var obj = serializer.Deserialize(reader);
+
+                Mpd parseMpd = obj as Mpd;
+
+                return parseMpd;
+            }
+        }
+
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
@@ -211,9 +240,38 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             VideoTypes = VideoResolutionsByType.Keys;
             Resolutions = VideoResolutionsByType.First().Value?.Keys;
-            //Resolutions = WorkContext.VideoUrlOfResolutions.Keys;
+
+            var dashRenditionAsset = mcmWorkContext.OpenedVideo.Sources.FirstOrDefault(asset => asset.Type.ToUpper().Equals("DASH"));
+            if (dashRenditionAsset != null)
+            {
+                var dashDictionary = VideoResolutionsByType.Single(x=>x.Key.Type == MediaKind.TYPE.Dash).Value;
+
+                var mpdUrl = dashRenditionAsset.Urls?.FirstOrDefault();
+                //var mpdUrl = "https://dash.akamaized.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd";
+
+                if (!mpdUrl.IsNullOrEmpty())
+                {
+                    var lastIndex = mpdUrl.LastIndexOf("/");
+                    var baseUrl = mpdUrl.Substring(0, lastIndex);
+                    var mpd = ParseMpd(mpdUrl);
+
+                    var period = mpd.Period.FirstOrDefault();
+                    foreach (var adaptationSetNode in period.AdaptationSet)
+                    {
+                        if (adaptationSetNode.MimeType.Equals("video/mp4"))
+                        {
+                            foreach (var node in adaptationSetNode.Representation)
+                            {
+                                if (!dashDictionary.ContainsKey(node.Height))
+                                    dashDictionary.Add(node.Height, $"{baseUrl}/{node.BaseUrl}");
+                            }
+                        }
+                    }
+                }
+            }
+
             CurrentVideoType = VideoTypes.First();
-            if (Resolutions != null) CurrentResolution = Resolutions.First();
+            //if (Resolutions != null) CurrentResolution = Resolutions.First();
 
             MediaSource = mcmWorkContext.VideoMediaUrl;
         }

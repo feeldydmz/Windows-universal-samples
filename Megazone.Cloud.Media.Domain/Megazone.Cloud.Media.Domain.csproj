@@ -67,6 +67,7 @@
     <Compile Include="LanguageRequest.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Megaone.cs" />
+    <Compile Include="Mpd.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectListResponse.cs" />

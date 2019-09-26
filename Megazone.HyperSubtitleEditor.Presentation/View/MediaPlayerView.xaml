@@ -249,31 +249,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ComboBox>
-
-                    <!--<ComboBox Width="Auto" 
-                              Background="Transparent"
-                              Foreground="White"
-                              BorderThickness="0"
-                              BorderBrush="Transparent"
-                              DisplayMemberPath="Url"
-                              ItemsSource="{Binding Path=VideoTypes}"
-                              SelectedItem="{Binding Path=CurrentVideoType}">
-                    </ComboBox>-->
-
-                    <!--<ComboBox Width="Auto" 
-                              Background="Transparent"
-                              Foreground="White"
-                              BorderThickness="0"
-                              BorderBrush="Transparent"
-                              ItemsSource="{Binding Path=Resolutions}"
-                              SelectedItem="{Binding Path=CurrentResolution}"/>-->
-
-                    <!--이 영역에는 경로를 표시하는 텍스트가 보여지거나 '영상이 없다'는 메시지가 표시될 수 있음-->
-                    <!--TextBlock Foreground="White" TextOptions.TextFormattingMode="Ideal"
-                               Text="{Binding ElementName=MediaPlayer, Path=MediaSource}" TextTrimming="CharacterEllipsis"
-                               Margin="10,8" />-->
                 </StackPanel>
-                
             </Border>
         </Grid>
 
@@ -282,7 +258,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="47" />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="70" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
@@ -362,7 +338,6 @@
                 </StackPanel>
 
                 <ComboBox Grid.Column="2" 
-                          
                           Background="Transparent"
                           Foreground="Black"
                           BorderThickness="0"
