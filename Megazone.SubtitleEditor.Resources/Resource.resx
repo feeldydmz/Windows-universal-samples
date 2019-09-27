@@ -288,8 +288,8 @@
   <data name="CNT_INFO" xml:space="preserve">
     <value>Info</value>
   </data>
-  <data name="CNT_INPUT_VIDEO_PATH" xml:space="preserve">
-    <value>Browse file or enter URL to import</value>
+  <data name="CNT_INPUT_VIDEO_FILE_PATH" xml:space="preserve">
+    <value>Local file to import</value>
   </data>
   <data name="CNT_INSERT_AFTER" xml:space="preserve">
     <value>Insert into a next position</value>
@@ -670,5 +670,17 @@ platform, please contact our sales team. We'll assist you with more details.</va
   </data>
   <data name="CNT_CLOSE_TAB" xml:space="preserve">
     <value>Close tab</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_URL_PATH" xml:space="preserve">
+    <value>Enter URL to import</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_FILE_TITLE" xml:space="preserve">
+    <value>Open to local file</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_MCM_TITLE" xml:space="preserve">
+    <value>Open to MCM</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_URL_TITLE" xml:space="preserve">
+    <value>Open to URL</value>
   </data>
 </root>

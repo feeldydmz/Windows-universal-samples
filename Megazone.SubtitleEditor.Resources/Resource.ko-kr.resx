@@ -285,8 +285,8 @@
   <data name="CNT_INFO" xml:space="preserve">
     <value>알림</value>
   </data>
-  <data name="CNT_INPUT_VIDEO_PATH" xml:space="preserve">
-    <value>파일을 탐색하거나 가져올 수 있는 URL을 입력하세요.</value>
+  <data name="CNT_INPUT_VIDEO_FILE_PATH" xml:space="preserve">
+    <value>파일을 선택하세요.</value>
   </data>
   <data name="CNT_INSERT_AFTER" xml:space="preserve">
     <value>이후 위치에 삽입</value>
@@ -677,5 +677,17 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   </data>
   <data name="CNT_CLOSE_TAB" xml:space="preserve">
     <value>탭 닫기</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_URL_PATH" xml:space="preserve">
+    <value>비디오를 가져올 수 있는 URL을 입력하세요</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_FILE_TITLE" xml:space="preserve">
+    <value>파일주소로 열기</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_MCM_TITLE" xml:space="preserve">
+    <value>MCM에서 열기</value>
+  </data>
+  <data name="CNT_INPUT_VIDEO_URL_TITLE" xml:space="preserve">
+    <value>내컴퓨터에서 열기</value>
   </data>
 </root>

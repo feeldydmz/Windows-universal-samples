@@ -245,6 +245,7 @@
     <Compile Include="ViewModel\Data\BytePerSecondMeasurer.cs" />
     <Compile Include="ViewModel\Data\MediaDataLoader.cs" />
     <Compile Include="ViewModel\Data\McmWorkContext.cs" />
+    <Compile Include="ViewModel\Data\MediaKind.cs" />
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />

@@ -13,6 +13,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
 
@@ -156,6 +157,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+
                 _authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
                 if (string.IsNullOrEmpty(_authorization?.AccessToken))
