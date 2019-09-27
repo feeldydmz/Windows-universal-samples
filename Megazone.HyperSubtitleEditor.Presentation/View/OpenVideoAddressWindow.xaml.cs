@@ -17,6 +17,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public OpenVideoAddressWindow()
         {
             InitializeComponent();
+
+            Loaded+=OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+
+            this.Top -= 150;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

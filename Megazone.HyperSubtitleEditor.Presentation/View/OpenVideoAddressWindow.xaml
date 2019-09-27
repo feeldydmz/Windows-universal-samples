@@ -143,15 +143,14 @@
                         Visibility="{Binding IsChecked, ElementName=McmOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                         BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" 
                         BorderThickness="1"
-                        Padding="20,10"
-                        >
+                        Padding="20,10">
 
                     <!--컨텐츠 영역-->
-                    <Grid MinHeight="300">
+                    <Grid MaxHeight="750">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="34" />
-                            <RowDefinition />
+                            <RowDefinition/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
