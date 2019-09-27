@@ -197,10 +197,10 @@ if ($canCodesign.Equals("True")) {
 # Rename setup file name...
 #{
     #$stageName = "Staging"; // Staging이면 'Staging'으로 설정, 릴리즈배포버전에서는 공백으로 처리.
-    $outputSetup = "Hyper-Subtitle-Editor-Setup-" + $buildversion + ".exe";
+    $outputSetup = "Media-Cloud-Subtitle-Editor-Setup-" + $buildversion + ".exe";
 
     if($buildMode.Equals("STAGING")) {
-        $outputSetup = "Hyper-Subtitle-Editor-Setup-" + $buildversion + "-Staging.exe";
+        $outputSetup = "Media-Cloud-Subtitle-Editor-Setup-" + $buildversion + "-Staging.exe";
     }
 
     if (Test-Path .\$outputSetup) {

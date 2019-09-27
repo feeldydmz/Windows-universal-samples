@@ -2,9 +2,9 @@
 
 ; HM NIS Edit Wizard helper defines
 !define VersionHeader ".\Assembly_Version.nsh"
-!define PROCESS_NAME "HyperSubtitleEditor.exe"
-!define PRODUCT_NAME "Hyper Subtitle Editor"
-#!define PRODUCT_VERSION "0.5.0.4973
+!define PROCESS_NAME "MediaCloudSubtitleEditor.exe"
+!define PRODUCT_NAME "Media Cloud Subtitle Editor"
+#!define PRODUCT_VERSION "1.0.0.0
 !define PRODUCT_PUBLISHER "Megazone"
 !define PRODUCT_WEB_SITE "http://www.megazone.com"
 !define MCM_WEB_SITE "https://console.media.megazone.io"
@@ -14,7 +14,6 @@
 !define COMPANY_NAME "Megazone"
 
 !addplugindir "Plugins"
-
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
 !include "LangFile.nsh"
