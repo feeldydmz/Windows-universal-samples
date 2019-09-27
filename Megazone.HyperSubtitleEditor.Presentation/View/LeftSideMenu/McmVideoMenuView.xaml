@@ -180,10 +180,6 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <!--<RadioButton Grid.Column="0"
-                                                             IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                                             VerticalAlignment="Top" HorizontalAlignment="Center" />-->
-
                                                 <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
                                                     <Image Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
                                                     <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
@@ -306,9 +302,9 @@
                 </Border>
 
                 <!--Caption 뷰-->
-                <!--Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}"-->
+                <!---->
                 <Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}"
-                        RenderTransformOrigin=".5,.5">
+                        RenderTransformOrigin=".5,.5" Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Border.RenderTransform>
                         <TranslateTransform X="600" />
                     </Border.RenderTransform>

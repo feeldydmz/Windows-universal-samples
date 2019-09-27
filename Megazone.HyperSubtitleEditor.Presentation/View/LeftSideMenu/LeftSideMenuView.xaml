@@ -31,12 +31,52 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                <Setter Property="Margin" Value="0,5" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Foreground" Value="#FF222222" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="2" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource Brush_GrayBoxBorderBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#10000000" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="103" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
@@ -47,12 +87,16 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Border Height="50" Background="Blue" Width="50" HorizontalAlignment="Left" Margin="10,0,0,0">
-                <Image />
-            </Border>
+            <Grid HorizontalAlignment="Left" Margin="17, 12">
+                <Button Command="{Binding Path=CloseCommand}" Margin="0,0,0,0">
+                    <Grid>
+                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_open_close.png" Width="26" Height="26"/>
+                    </Grid>
+                </Button>
+            </Grid>
 
-            <Border Grid.Row="2">
-                <StackPanel>
+            <Border Grid.Row="2" >
+                <StackPanel TextBlock.FontSize="11.5" Style="{x:Null}">
                     <StackPanel.Resources>
                         <Style x:Key="FocusVisual">
                             <Setter Property="Control.Template">
@@ -95,7 +139,7 @@
                                     <ControlTemplate TargetType="{x:Type RadioButton}">
                                         <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
                                             <Border x:Name="PART_ButtonBorder" />
-                                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                         </Grid>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="HasContent" Value="true">
@@ -127,22 +171,23 @@
                         </Style>
                         <Style TargetType="RadioButton" BasedOn="{StaticResource RadioButtonStyle1}" />
                     </StackPanel.Resources>
-                    <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
+                    
+                    <RadioButton x:Name="McmRadioButton" Background="Red" GroupName="LeftSideMainMenuGroup" Margin="3,2" MouseEnter="OnMouseEnter">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="MCM 열기" />
+                            <TextBlock Grid.Column="0" Text="MCM 열기" HorizontalAlignment="Left" />
                             <TextBlock Grid.Column="2" Text=">" />
                         </Grid>
                     </RadioButton>
 
-                    <RadioButton x:Name="MyComputerRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
-                        <Grid>
+                    <RadioButton x:Name="MyComputerRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2" MouseEnter="OnMouseEnter">
+                        <Grid Background="Blue">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -150,7 +195,7 @@
                             <TextBlock Grid.Column="2" Text=">" />
                         </Grid>
                     </RadioButton>
-                    <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
+                    <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2" MouseEnter="OnMouseEnter">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />

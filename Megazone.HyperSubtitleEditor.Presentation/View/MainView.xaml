@@ -222,22 +222,6 @@
             </MenuItem>
         </Menu>
 
-        <Grid Grid.Row="0" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,0">
-            <Popup Grid.Row="0" 
-                   IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.IsOpen}" 
-                   StaysOpen="False"
-                   Placement="Bottom" 
-                   PopupAnimation="Fade" 
-                   AllowsTransparency="True">
-                <i:Interaction.Behaviors>
-                    <behaviors:PopupHeightControlBehavior />
-                </i:Interaction.Behaviors>
-                <Border>
-                    <leftmenu:LeftSideMenuView />
-                </Border>
-            </Popup>
-        </Grid>
-
         <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
             <StackPanel Orientation="Horizontal"
                         DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
@@ -294,12 +278,17 @@
         <!--컨텐츠 영역-->
         <Border Grid.Row="2" x:Name="RootViewContainer" Background="#FF292f37" />
 
-        <!--<Border Grid.Row="0" Grid.RowSpan="3"
-                DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}" 
-                Visibility="{Binding Path=IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
-                MinWidth="400" HorizontalAlignment="Left">
-            <leftmenu:LeftSideMenuView />
-        </Border>-->
+        <Border Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Left" 
+                Visibility="{Binding Path=LeftSideMenu.IsOpen, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <leftmenu:LeftSideMenuView MaxWidth="495" MinWidth="103">
+                <i:Interaction.Behaviors>
+                    <behaviors:CollapseBehavior 
+                        IsVisible="{Binding Path=LeftSideMenu.IsOpen, Mode=TwoWay, Source={StaticResource SubtitleViewModelLocator}}" />
+                </i:Interaction.Behaviors>
+            </leftmenu:LeftSideMenuView>
+        </Border>
+
         <Control x:Name="LoadingProgressView" Visibility="Collapsed"
                  Grid.Row="0" Grid.RowSpan="3"
                  Style="{StaticResource Style_IndeterminateControl}" />

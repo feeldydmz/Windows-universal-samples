@@ -145,6 +145,7 @@
     <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPlayStateChangedToCommandBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPositionChangedToCommandBehavior.cs" />
+    <Compile Include="Behavior\CollapseBehavior.cs" />
     <Compile Include="Behavior\PopupHeightControlBehavior.cs" />
     <Compile Include="Behavior\ProjectSelectBehavior.cs" />
     <Compile Include="Behavior\SubtitleItemsFilterBehavior.cs" />

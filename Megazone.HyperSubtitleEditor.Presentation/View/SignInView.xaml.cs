@@ -29,17 +29,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void WebView_OnNavigationStarting(object sender, WebViewControlNavigationStartingEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("1");
+            //System.Diagnostics.Debug.WriteLine("1");
             const string CODE_PATTEN = "code=";
             var absoluteUri = e.Uri.AbsoluteUri;
-            System.Diagnostics.Debug.WriteLine(absoluteUri);
+            //System.Diagnostics.Debug.WriteLine(absoluteUri);
             var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
 
             if (index == -1)
                 return;
             e.Cancel = true;
 
-            System.Diagnostics.Debug.WriteLine("2");
+            //System.Diagnostics.Debug.WriteLine("2");
 
             if (sender is WebView webView)
             {
@@ -47,7 +47,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 //webView.InvokeScript("ClearAuthenticationCache");
             }
 
-            System.Diagnostics.Debug.WriteLine("3");
+            //System.Diagnostics.Debug.WriteLine("3");
 
             var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
 

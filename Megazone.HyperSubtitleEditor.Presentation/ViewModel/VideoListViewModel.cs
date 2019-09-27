@@ -54,6 +54,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isBusy;
 
         private bool _isConfirmButtonVisible;
+
+        private bool _isInitialized;
         private bool _isLoading;
 
         private bool _isNextButtonVisible = true;
@@ -352,7 +354,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private bool _isInitialized;
         private void Initialize()
         {
             _isInitialized = false;
@@ -505,6 +506,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var authorization = _signInViewModel.GetAuthorization();
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
+
+                if (string.IsNullOrEmpty(stageId) || string.IsNullOrEmpty(projectId) ||
+                    string.IsNullOrEmpty(authorization?.AccessToken))
+                    return null;
 
                 return await _cloudMediaService.GetVideosAsync(
                     new GetVideosParameter(authorization, stageId, projectId, pagination, conditions),
