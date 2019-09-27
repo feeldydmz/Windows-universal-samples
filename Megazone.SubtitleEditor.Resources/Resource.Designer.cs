@@ -151,7 +151,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Media Cloud Subtitle Editor과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Megazone Cloud Media Caption Editor과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_APPLICATION_NAME {
             get {

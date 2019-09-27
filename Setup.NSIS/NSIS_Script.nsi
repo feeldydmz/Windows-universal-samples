@@ -2,8 +2,8 @@
 
 ; HM NIS Edit Wizard helper defines
 !define VersionHeader ".\Assembly_Version.nsh"
-!define PROCESS_NAME "MediaCloudSubtitleEditor.exe"
-!define PRODUCT_NAME "Media Cloud Subtitle Editor"
+!define PROCESS_NAME "MegazoneCloudMediaCaptionEditor.exe"
+!define PRODUCT_NAME "Megazone Cloud Media Caption Editor"
 #!define PRODUCT_VERSION "1.0.0.0
 !define PRODUCT_PUBLISHER "Megazone"
 !define PRODUCT_WEB_SITE "http://www.megazone.com"
@@ -74,7 +74,6 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-;OutFile "Hyper-SubtitleEditor-Setup-${PRODUCT_VERSION}.exe"
 OutFile "Setup.exe"
 InstallDir "$PROGRAMFILES64\${COMPANY_NAME}\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
@@ -266,7 +265,7 @@ FunctionEnd
     Pop ${result} ; The exit code
 !macroend
 
-; HyperBrowser.exe Process Runtime check.
+; Process Runtime check.
 Function CheckProcessRuntime
   Var /GLOBAL processFound
   StrCpy $processFound "1"
@@ -346,7 +345,7 @@ SHCTX or SHELL_CONTEXT
 !define REGISTRY_REGKEY_InstalledVersion "Version"         #설치버전 정보
 
 ; Custom Url Scheme
-!define CUSTOM_URL_SCHEME_REGISTRY_SUBKEY "Megazone.HyperSubtitleEditor.v1"
+!define CUSTOM_URL_SCHEME_REGISTRY_SUBKEY "Megazone.CloudMediaCaptionEditor.v1"
 
 ; 레지스트리 등록.
 Function WriteRegistry
@@ -551,7 +550,7 @@ Section "MainSection" SEC01
   SetOverwrite on
 
   File "Install_Files\DocumentFormat.OpenXml.dll"
-  File "Install_Files\HyperSubtitleEditor.exe"
+  File "Install_Files\MegazoneCloudMediaCaptionEditor.exe"
   File "Install_Files\log4net.dll"
   File "Install_Files\Megazone.Cloud.Media.Domain.dll"
   File "Install_Files\Megazone.Cloud.Media.Repository.dll"
@@ -614,29 +613,6 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR\ko-kr"
   File "Install_Files\ko-kr\Megazone.SubtitleEditor.Resources.resources.dll"
 
-/*
-  # 폴더명 수정.
-  # LocalAppData\Megazone\HyperBrowser -> LocalAppData\Megazone\Hyper Browser
-  IfFileExists "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser" GotoExist GotoNotExist
-  GotoExist:
-    IfFileExists "$LOCALAPPDATA\${COMPANY_NAME}\Hyper Browser" CanNotRename CanRename
-    CanNotRename:
-      ; 비정상적인 상황.
-      RMDir /r "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser"
-      goto IntallContinue
-    CanRename:
-      Rename "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser" "$LOCALAPPDATA\${COMPANY_NAME}\Hyper Browser"
-      goto IntallContinue
-  GotoNotExist:
-    goto IntallContinue
-  IntallContinue:
-    ; Nothing...
-
-  # ICON Image File copy
-  SetOutPath "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}"
-  File "Resources\ICON_IMAGE\logo.png"
-  File "Resources\ICON_IMAGE\logo_small.png"
-*/
   # Create shortcut in start menu.
   CreateDirectory "$SMPROGRAMS\${COMPANY_NAME}\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${COMPANY_NAME}\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PROCESS_NAME}"
@@ -716,7 +692,7 @@ Section Uninstall
   
   Delete "$INSTDIR\CommonServiceLocator.dll"
   Delete "$INSTDIR\DocumentFormat.OpenXml.dll"
-  Delete "$INSTDIR\HyperSubtitleEditor.exe"
+  Delete "$INSTDIR\MegazoneCloudMediaCaptionEditor.exe"
   Delete "$INSTDIR\LGPL_21.txt"
   Delete "$INSTDIR\log4net.dll"
   Delete "$INSTDIR\Megazone.Api.Transcoder.Domain.dll"
