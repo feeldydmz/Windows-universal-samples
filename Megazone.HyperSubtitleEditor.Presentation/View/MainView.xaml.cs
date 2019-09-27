@@ -193,7 +193,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new OpenVideoAddressWindow
             {
                 Owner = Application.Current.MainWindow,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
             };
             wnd.ShowDialog();
         }

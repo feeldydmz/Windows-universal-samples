@@ -404,11 +404,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Regist<CloudMedia.VideoOpenMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Regist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
-            MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
+            MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
             MessageCenter.Instance.Regist<Subtitle.CopyTabMessage>(OnCopySubtitle);
             MessageCenter.Instance.Regist<Subtitle.EditTabMessage>(OnEditSubtitle);
 
@@ -453,12 +454,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
             MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Unregist<CloudMedia.VideoOpenMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<Subtitle.DeployRequestedMessage>(OnMcmDeployRequested);
             MessageCenter.Instance.Unregist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
-            MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromUrlRequested);
+            MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
             MessageCenter.Instance.Unregist<Subtitle.CopyTabMessage>(OnCopySubtitle);
             MessageCenter.Instance.Unregist<Subtitle.SyncStartTimeToCurrentMediaPositionMessage>(
                 OnSyncStartTimeToCurrentMediaPositionRequested);
@@ -800,7 +802,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ListBoxScroll?.ScrollIntoView(item, true);
         }
 
-        private void OnOpenMediaFromUrlRequested(MediaPlayer.OpenMediaFromUrlMessage message)
+        private void OnOpenMediaFromFilePathRequested(MediaPlayer.OpenMediaFromUrlMessage message)
         {
             MediaPlayer.OpenMedia(message.Url, false);
         }
@@ -1062,6 +1064,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 return dic;
             }
+        }
+
+        private async void OnVideoOpenRequest(CloudMedia.VideoOpenMessage message)
+        {
+            var video = message.VideoParam;
+
+            WorkContext = new McmWorkContext(this, video);
+
+            //if (!string.IsNullOrEmpty(video?.Name))
+            //    _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
+
+            _browser.Main.LoadingManager.Show();
+
+            if (MediaPlayer.MediaSource != null)
+                MediaPlayer.RemoveMediaItem();
+
+            // video영상을 가져온다.
+            if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
+                MediaPlayer.InitMedia(WorkContext, false);
+
+            _browser.Main.LoadingManager.Hide();
         }
 
         private void OnFileOpened(Subtitle.FileOpenedMessage message)

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.SubtitleEditor.Resources;
 using Microsoft.Win32;
@@ -11,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
     /// <summary>
     ///     OpenVideoAddressWindow.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class OpenVideoAddressWindow : Window
+    public partial class OpenVideoAddressWindow : Window, IClosable
     {
         public OpenVideoAddressWindow()
         {
@@ -39,7 +40,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Filter = $"{Resource.CNT_ALL_FILES} (*.*)|*.*"
             };
             if (openFileDialog.ShowDialog() ?? false)
-                UrlTextBox.Text = openFileDialog.FileName;
+                FilePathTextBox.Text = openFileDialog.FileName;
         }
     }
 }

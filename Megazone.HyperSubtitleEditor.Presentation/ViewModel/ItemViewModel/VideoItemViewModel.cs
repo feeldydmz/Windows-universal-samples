@@ -112,7 +112,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Source = source;
             if (CaptionItems?.Any() ?? false)
                 CaptionItems?.Clear();
-
+            
             var list = source.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
 

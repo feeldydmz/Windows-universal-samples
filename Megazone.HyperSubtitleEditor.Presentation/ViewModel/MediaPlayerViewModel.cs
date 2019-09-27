@@ -245,9 +245,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (dashRenditionAsset != null)
             {
                 var dashDictionary = VideoResolutionsByType.Single(x=>x.Key.Type == MediaKind.TYPE.Dash).Value;
-
                 var mpdUrl = dashRenditionAsset.Urls?.FirstOrDefault();
-                //var mpdUrl = "https://dash.akamaized.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd";
 
                 if (!mpdUrl.IsNullOrEmpty())
                 {

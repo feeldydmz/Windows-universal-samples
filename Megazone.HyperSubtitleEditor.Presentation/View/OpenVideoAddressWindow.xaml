@@ -5,12 +5,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mz="http://schemas.megazone.co.kr"
         xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-        Title="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}" ResizeMode="NoResize"
+        xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
         Icon="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Logo.ico"
         TextOptions.TextFormattingMode="Display"
         mc:Ignorable="d" UseLayoutRounding="True" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen"
-        Width="530" Height="260"
+        Width="590" Height="260"
+        x:Name="OpenVideoWindow"
+        Title="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}" ResizeMode="NoResize"
+        DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=OpenVideoAsset}"
         SizeToContent="Height">
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Window.Resources>
         <ResourceDictionary>
@@ -19,6 +30,8 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -37,13 +50,14 @@
                 
                 <StackPanel Orientation="Horizontal">
                     <RadioButton x:Name="UrlOpenButton" 
-                                 
+                                 IsChecked="{Binding IsUrlOpenButtonChecked}"
                                  Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_URL_TITLE}"/>
                     <RadioButton x:Name="FileOpenButton" 
-                                 IsChecked="True"
+                                 IsChecked="{Binding IsFileOpenButtonChecked}"
                                  Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_FILE_TITLE}" 
                                  Margin="10,0,0,0"/>
                     <RadioButton x:Name="McmOpenButton" 
+                                 IsChecked="{Binding IsMcmOpenButtonChecked}"
                                  Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_MCM_TITLE}" 
                                  Margin="10,0,0,0"/>
                 </StackPanel>
@@ -68,8 +82,11 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="UrlTextBox" TextChanged="UrlTextBox_OnTextChanged" Margin="0,0,5,0" 
-                                     Height="24"/>
+                            <TextBox x:Name="UrlTextBox" 
+                                     TextChanged="UrlTextBox_OnTextChanged" 
+                                     Margin="0,0,5,0" 
+                                     Height="24"
+                                     Text="{Binding UrlPath, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                         <!--<Border x:Name="ErrorMessageBorder" Grid.Row="2" BorderBrush="Red" BorderThickness="1"
                                 Visibility="Collapsed"
@@ -104,9 +121,10 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="FilePathTextBox" TextChanged="UrlTextBox_OnTextChanged" 
+                            <TextBox x:Name="FilePathTextBox" 
                                      Margin="0,0,5,0" 
-                                     Height="24"/>
+                                     Height="24"
+                                     Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
                             <Button Grid.Column="1" Style="{StaticResource Style_IconLabelButton}"
                                     Content="{x:Static resources:Resource.CNT_FIND}" Click="OpenButton_OnClick" />
                         </Grid>
@@ -120,21 +138,230 @@
                 </Border>
 
 
-                <!--내컴퓨터에서 열기-->
+                <!--MCM에서 열기-->
                 <Border Grid.Row="1" 
                         Visibility="{Binding IsChecked, ElementName=McmOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                         BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" 
                         BorderThickness="1"
-                        Padding="20,10">
+                        Padding="20,10"
+                        >
 
                     <!--컨텐츠 영역-->
                     <Grid MinHeight="300">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="34" />
+                            <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        
+
+                        <!--검색항목-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox ItemsSource="{Binding Path=KeywordTypeItems}"
+                                      SelectedItem="{Binding Path=SelectedKeywordType}" MinWidth="94">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Display}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBox Grid.Column="1" x:Name="KeywordTextBox"
+                                     Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="3,0,0,0">
+                                <i:Interaction.Behaviors>
+                                    <mz:KeyEventToRunCommandBehavior Command="{Binding Path=EnterCommand}"
+                                                                     CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
+                                                                     Key="Enter" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
+                            <Grid Grid.Column="2" Margin="8,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Duration" VerticalAlignment="Center" TextAlignment="Center"
+                                           HorizontalAlignment="Center" Margin="10,0,0,0" />
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
+                                    <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TimeChanged">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding Path=DurationStartTimeChangedCommand}"
+                                                    CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </mz:TimeSpinner>
+                                    <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0" />
+                                    <mz:TimeSpinner Time="{Binding Path=DurationEndTime}" IsShowMilliseconds="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TimeChanged">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding Path=DurationEndTimeChangedCommand}"
+                                                    CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </mz:TimeSpinner>
+                                </StackPanel>
+                                <Rectangle Grid.Column="0" Grid.ColumnSpan="2"
+                                           Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1"
+                                           RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch" />
+                            </Grid>
+                            <mz:ImageButton
+                                Grid.Column="3" ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                Command="{Binding Path=SearchCommand}"
+                                CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
+                                NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_pres.png"
+                                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_hov.png"
+                                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_dis.png"
+                                Style="{StaticResource Style_TransparentImageButton}" Width="25" Height="25" />
+                        </Grid>
+
+                        <!--구분선-->
+                        <Rectangle Grid.Row="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}" Height="1"
+                                   Margin="0, 18, 0, 15" />
+
+
+                        <!--페이징-->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{Binding Path=TotalCount, StringFormat='{x:Static resources:Resource.CNT_TOTAL_COUNT}'}"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                            <view:PaginationView x:Name="PaginationView" Grid.Column="1" CountPerPage="10"
+                                                 TotalCount="{Binding Path=TotalCount}"
+                                                 Value="{Binding Path=SelectedPageNo, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ValueChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=SelectedPageNoChangedCommand}"
+                                                               CommandParameter="{Binding Path=SelectedPageNo}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </view:PaginationView>
+
+                            <mz:ImageButton Grid.Column="2"
+                                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            Command="{Binding Path=RefreshCommand}"
+                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
+                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_pres.png"
+                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_hov.png"
+                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_dis.png"
+                                            Style="{StaticResource Style_TransparentImageButton}" Width="25"
+                                            Height="25" />
+                        </Grid>
+
+                        <!--비디오 검색 결과 목록-->
+                        <Grid Grid.Row="3">
+                            <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}"
+                                     SelectedItem="{Binding Path=SelectedVideoItem}"
+                                     ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Standard">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="itemViewModel:VideoItemViewModel">
+                                        <Border Width="515" Height="98">
+                                            <Grid Margin="0, 15, 15, 15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="44" />
+                                                    <ColumnDefinition Width="68" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <RadioButton Grid.Column="0"
+                                                             IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                             VerticalAlignment="Top" HorizontalAlignment="Center" />
+
+                                                <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
+                                                    <Image
+                                                        Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
+                                                    <Image
+                                                        Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
+                                                </Grid>
+
+                                                <Grid Grid.Column="2" Margin="20, 0, 0 , 0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Grid Grid.Row="0" VerticalAlignment="Center"
+                                                          HorizontalAlignment="Stretch">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Grid.Column="0" 
+                                                               Style="{StaticResource Style_VideoBadgeImage}"
+                                                               HorizontalAlignment="Left" />
+
+                                                        <TextBlock Grid.Column="1" 
+                                                                   Margin="5,0,0,0"
+                                                                   FontSize="8"
+                                                                   Text="{Binding Source.Description}"/>
+
+
+                                                    </Grid>
+
+                                                    <Grid Grid.Row="1" VerticalAlignment="Center"
+                                                          HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}"
+                                                                   FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                                                   MaxWidth="255" />
+                                                        <TextBlock Grid.Column="1"
+                                                                   Text="{Binding Path=Id, StringFormat='{}({0})'}"
+                                                                   Margin="3,0" />
+                                                    </Grid>
+                                                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                                                        <TextBlock
+                                                            Text="{Binding Path=Duration, StringFormat={}Duration - {0:hh':'mm':'ss}}"
+                                                            TextAlignment="Center" VerticalAlignment="Center"
+                                                            HorizontalAlignment="Left" />
+                                                    </Grid>
+
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}"
+                                       StrokeThickness="1" />
+
+                            <Grid
+                                Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                <TextBlock Text="Empty Video List." VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                            </Grid>
+                        </Grid>
+
                     </Grid>
 
                 </Border>
@@ -153,8 +380,12 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="OpenButton" Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}"
-                        IsDefault="True" Click="ButtonBase_OnClick" />
+                <Button x:Name="OpenButton" 
+                        Grid.Column="1" 
+                        Content="{x:Static resources:Resource.CNT_OPEN}"
+                        IsDefault="True" 
+                        Command="{Binding ConfirmCommand}"
+                        CommandParameter="{Binding ElementName=OpenVideoWindow}"/>
                 <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}" IsCancel="True" />
             </Grid>
         </Border>
