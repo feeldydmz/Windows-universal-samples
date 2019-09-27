@@ -13,8 +13,11 @@
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}">
     <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Initialized">
+            <i:InvokeCommandAction Command="{Binding Path=InitializeCommand}" />
+        </i:EventTrigger>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.Resources>
@@ -36,8 +39,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <!--Height="34"-->
-                            <RowDefinition Height="0" />
+                            <RowDefinition Height="34" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="9" />
                             <RowDefinition Height="*" />
@@ -154,28 +156,6 @@
                             <TextBlock
                                 Text="{Binding Path=TotalCount, StringFormat='{x:Static resources:Resource.CNT_TOTAL_COUNT}'}"
                                 HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-                            <view:PaginationView x:Name="PaginationView" Grid.Column="1" CountPerPage="10"
-                                                 TotalCount="{Binding Path=TotalCount}"
-                                                 Value="{Binding Path=SelectedPageNo, Mode=TwoWay}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="ValueChanged">
-                                        <i:InvokeCommandAction Command="{Binding Path=SelectedPageNoChangedCommand}"
-                                                               CommandParameter="{Binding Path=SelectedPageNo}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </view:PaginationView>
-
-                            <mz:ImageButton Grid.Column="2"
-                                            HorizontalAlignment="Right" VerticalAlignment="Center"
-                                            Command="{Binding Path=RefreshCommand}"
-                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
-                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_pres.png"
-                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_hov.png"
-                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_dis.png"
-                                            Style="{StaticResource Style_TransparentImageButton}" Width="25"
-                                            Height="25" />
                         </Grid>
 
                         <!--비디오 검색 결과 목록-->

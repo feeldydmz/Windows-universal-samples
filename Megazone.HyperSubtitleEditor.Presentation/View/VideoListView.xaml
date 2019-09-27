@@ -14,8 +14,11 @@
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
              x:Name="Root">
     <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Initialized">
+            <i:InvokeCommandAction Command="{Binding Path=InitializeCommand}" />
+        </i:EventTrigger>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.Resources>
@@ -467,7 +470,7 @@
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
-                        Command="{Binding NextCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Command="{Binding NextStepCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard Name="CaptionBoardOpenStoryboard">

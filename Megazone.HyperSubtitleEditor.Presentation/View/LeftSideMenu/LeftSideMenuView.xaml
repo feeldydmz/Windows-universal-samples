@@ -127,9 +127,40 @@
                         </Style>
                         <Style TargetType="RadioButton" BasedOn="{StaticResource RadioButtonStyle1}" />
                     </StackPanel.Resources>
-                    <RadioButton x:Name="McmRadioButton" Content="MCM 열기"  GroupName="LeftSideMainMenuGroup" Margin="3,2" />
-                    <RadioButton x:Name="MyComputerRadioButton" Content="내 컴퓨터" GroupName="LeftSideMainMenuGroup" Margin="3,2" />
-                    <RadioButton x:Name="RecentlyRadioButton" Content="최근 파일" GroupName="LeftSideMainMenuGroup" Margin="3,2" />
+                    <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="MCM 열기" />
+                            <TextBlock Grid.Column="2" Text=">" />
+                        </Grid>
+                    </RadioButton>
+
+                    <RadioButton x:Name="MyComputerRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="내 컴퓨터" />
+                            <TextBlock Grid.Column="2" Text=">" />
+                        </Grid>
+                    </RadioButton>
+                    <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" Margin="3,2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="최근 파일" />
+                            <TextBlock Grid.Column="2" Text=">" />
+                        </Grid>
+                    </RadioButton>
                 </StackPanel>
             </Border>
         </Grid>

@@ -225,7 +225,7 @@
         <Grid Grid.Row="0" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,0">
             <Popup Grid.Row="0" 
                    IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.IsOpen}" 
-                   StaysOpen="True"
+                   StaysOpen="False"
                    Placement="Bottom" 
                    PopupAnimation="Fade" 
                    AllowsTransparency="True">

@@ -33,12 +33,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly SignInViewModel _signInViewModel;
 
         private ICommand _addDataCommand;
-
         private ICommand _backCommand;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         private ICommand _captionAssetSectionChangedCommand;
-
         private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
 
@@ -51,6 +49,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _durationStartTimeChangedCommand;
 
         private ICommand _enterCommand;
+
+        private ICommand _initializeCommand;
         private bool _isBusy;
 
         private bool _isConfirmButtonVisible;
@@ -66,12 +66,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
 
-        private ICommand _nextCommand;
+        private ICommand _nextStepCommand;
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
         private KeywordType _selectedKeywordType;
-        private int _selectedPageNo;
+        private int _selectedPageNo = 1;
 
         private ICommand _selectedPageNoChangedCommand;
         private VideoItemViewModel _selectedVideoItem;
@@ -105,6 +105,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand InitializeCommand
+        {
+            get { return _initializeCommand = _initializeCommand ?? new RelayCommand(Initialize); }
+        }
+
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
@@ -115,9 +120,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _addDataCommand = _addDataCommand ?? new RelayCommand(AddData); }
         }
 
-        public ICommand NextCommand
+        public ICommand NextStepCommand
         {
-            get { return _nextCommand = _nextCommand ?? new RelayCommand(Next, CanNext); }
+            get { return _nextStepCommand = _nextStepCommand ?? new RelayCommand(NextStep, CanNextStep); }
         }
 
         public ICommand ConfirmCommand
@@ -273,23 +278,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 var conditions = MakeSearchConditions(Keyword, DurationStartTime, DurationEndTime);
-                var results = await GetVideoListAsync(SelectedPageNo, conditions, _cancellationTokenSource.Token);
+                var nextPageIndex = SelectedPageNo;
+                var countPerPage = 30;
+                var results = await GetVideoListAsync(new Pagination(nextPageIndex, countPerPage), conditions,
+                    _cancellationTokenSource.Token);
 
                 if (results.List.Any())
                 {
                     if (VideoItems.Any())
-                    {
                         foreach (var videoItem in results.List)
-                        {
                             VideoItems.Add(new VideoItemViewModel(videoItem));
-                        }
-                    }
                     else
-                    {
                         VideoItems = new ObservableCollection<VideoItemViewModel>(
                             results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
                             new List<VideoItemViewModel>());
-                    }
+                    SelectedPageNo += 1;
                 }
             }
             catch (Exception e)
@@ -303,13 +306,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private bool CanNext()
+        private bool CanNextStep()
         {
             return SelectedVideoItem != null;
         }
 
-        //TODO: Next 대신 caption으로 전환하는 것으로.
-        private void Next()
+        //TODO: NextStep 대신 caption으로 전환하는 것으로.
+        private void NextStep()
         {
             if (SelectedVideoItem != null) LoadCaptionAsync(SelectedVideoItem);
         }
@@ -349,23 +352,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private async void Load()
+        private bool _isInitialized;
+        private void Initialize()
         {
-#if STAGING
-            KeywordTypeItems = new List<KeywordType>
-            {
-                new KeywordType(Resource.CNT_NAME, "title"),
-                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
-            };
-#else
+            _isInitialized = false;
+//#if STAGING
+//            KeywordTypeItems = new List<KeywordType>
+//            {
+//                new KeywordType(Resource.CNT_NAME, "title"),
+//                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
+//            };
+//#else
             KeywordTypeItems = new List<KeywordType>
             {
                 new KeywordType(Resource.CNT_NAME, "name"),
                 new KeywordType(Resource.CNT_VIDEO_ID, "id")
             };
-#endif
+//#endif
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
+            SelectedPageNo = 1;
+            _isInitialized = true;
+        }
+
+        private async void Load()
+        {
+            if (!_isInitialized)
+                Initialize();
 
             _isLoading = true;
             await SearchAsync(Keyword, 0);
@@ -460,12 +473,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (!isPaging)
                 {
+                    SelectedPageNo = 0;
                     TotalCount = 0;
                     VideoItems?.Clear();
                 }
 
                 SelectedVideoItem = null;
-                var results = await GetVideoListAsync(pageIndex, conditions, _cancellationTokenSource.Token);
+                var results = await GetVideoListAsync(new Pagination(pageIndex), conditions,
+                    _cancellationTokenSource.Token);
 
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(
@@ -482,8 +497,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-
-        private async Task<VideoList> GetVideoListAsync(int pageIndex, Dictionary<string, string> conditions, CancellationToken cancellationToken)
+        private async Task<VideoList> GetVideoListAsync(Pagination pagination, Dictionary<string, string> conditions,
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -492,13 +507,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
                 return await _cloudMediaService.GetVideosAsync(
-                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageIndex),
-                        conditions), cancellationToken);
+                    new GetVideosParameter(authorization, stageId, projectId, pagination, conditions),
+                    cancellationToken);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+
             return null;
         }
 

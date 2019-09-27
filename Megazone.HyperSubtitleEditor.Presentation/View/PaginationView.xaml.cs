@@ -32,7 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(int), typeof(PaginationView),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     (s, e) => { ((PaginationView) s).OnValueChanged((int) e.OldValue, (int) e.NewValue); }));
 
         public static readonly DependencyProperty IsPreviousDotVisibleProperty =
@@ -106,16 +106,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             remove => RemoveHandler(ValueChangedEvent, value);
         }
 
-
-        private void PageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                var pageNo = (int) button.Content;
-                Value = pageNo - 1;
-            }
-        }
-
         private void PreviousButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (Value > 1)
@@ -135,6 +125,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
             if (PageItems != null && !PageItems.Any(pageNo => pageNo.Equals(newValue)))
                 UpdatePageItems(CountPerPage, TotalCount, newValue);
+
             if (oldValue != newValue)
             {
                 var e = new RoutedPropertyChangedEventArgs<int>(oldValue, newValue, ValueChangedEvent) {Source = this};
