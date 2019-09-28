@@ -486,7 +486,7 @@
                         <Border Grid.Row="2"
                                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                             <Border
-                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
                                 <TextBlock
                                     Text="Empty Asset List."
                                     VerticalAlignment="Center"

@@ -236,7 +236,7 @@
                                HorizontalAlignment="Center" 
                                FontSize="24"
                                Margin="0,0,0,12"
-                               Text="{Binding UserName, StringFormat='{x:Static resources:Resource.MSG_PROJECT_HI_USER}', Mode=TwoWay}"/>
+                               Text="{Binding Path=SignIn.UserName, Source={StaticResource SubtitleViewModelLocator}, StringFormat='{x:Static resources:Resource.MSG_PROJECT_HI_USER}', Mode=TwoWay}"/>
                     <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" 
                                HorizontalAlignment="Center" 
                                FontSize="12"

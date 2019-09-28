@@ -1003,8 +1003,8 @@
                     <i:Interaction.Behaviors>
                         <mz:ListBoxScrollBehavior
                             ListBoxScroll="{Binding ElementName=RootGrid, Path=DataContext.ListBoxScroll, Mode=OneWayToSource}" />
-                        <behavior:SubtitleItemsFilterBehavior
-                            FilterText="{Binding Path=Text, ElementName=SearchInputTextBox, UpdateSourceTrigger=PropertyChanged}" />
+                        <!--<behavior:SubtitleItemsFilterBehavior
+                            FilterText="{Binding Path=Text, ElementName=SearchInputTextBox, UpdateSourceTrigger=PropertyChanged}" />-->
                         <mz:BindableSelectedItemsBehavior
                             SelectedItems="{Binding SelectedRows, FallbackValue={x:Null}, TargetNullValue={x:Null}, Mode=OneWayToSource}" />
                         <behavior:ListViewItemDoubleClickBehavior

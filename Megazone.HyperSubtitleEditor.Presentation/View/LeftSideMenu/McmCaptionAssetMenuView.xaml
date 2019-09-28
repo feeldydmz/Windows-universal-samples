@@ -272,14 +272,11 @@
                         </ListBox>
 
                         <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                            <Border
-                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                <TextBlock
-                                    Text="Empty Asset List."
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
-                            </Border>
+                            <TextBlock
+                                Text="Empty Asset List."
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                         </Border>
                     </Grid>
                 </Border>
