@@ -38,13 +38,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
                 return;
 
             Application.Current.MainWindow.Deactivated -= MainWindow_Deactivated;
-            Application.Current.MainWindow.Deactivated += MainWindow_Deactivated;
+            //Application.Current.MainWindow.Deactivated += MainWindow_Deactivated;
             Application.Current.MainWindow.StateChanged -= MainWindow_StateChanged;
             Application.Current.MainWindow.StateChanged += MainWindow_StateChanged;
             Application.Current.MainWindow.LocationChanged -= MainWindow_LocationChanged;
             Application.Current.MainWindow.LocationChanged += MainWindow_LocationChanged;
             Application.Current.MainWindow.MouseDown -= MainWindow_MouseDown;
-            Application.Current.MainWindow.MouseDown += MainWindow_MouseDown;
+            //Application.Current.MainWindow.MouseDown += MainWindow_MouseDown;
         }
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)

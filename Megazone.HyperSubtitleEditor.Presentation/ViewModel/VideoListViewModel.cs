@@ -628,6 +628,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList)));
             CloseAction?.Invoke();
+            MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }
 
         private void ValidCancellationTokenSource()

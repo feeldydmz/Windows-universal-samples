@@ -158,6 +158,7 @@
     <Compile Include="Command\UI\AdjustTimeCommand.cs" />
     <Compile Include="Command\UI\ApplyItalicToAllTextCommand.cs" />
     <Compile Include="Command\UI\AutoAdjustEndtimesCommand.cs" />
+    <Compile Include="Command\UI\CloseLeftSideMenuCommand.cs" />
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
@@ -312,6 +313,9 @@
     </Compile>
     <Compile Include="View\LeftSideMenu\MyComputerMenuView.xaml.cs">
       <DependentUpon>MyComputerMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\RecentlyMenuView.xaml.cs">
+      <DependentUpon>RecentlyMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainFrameView.xaml.cs">
       <DependentUpon>MainFrameView.xaml</DependentUpon>
@@ -536,6 +540,10 @@
     <Page Include="View\LeftSideMenu\MyComputerMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\RecentlyMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainFrameView.xaml">
       <SubType>Designer</SubType>

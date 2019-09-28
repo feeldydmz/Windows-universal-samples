@@ -343,8 +343,7 @@
                     </Style>
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal" Margin="5,0">
-                    <Button Content="열기" Command="{StaticResource OpenLeftSideMenuCommand}" Style="{x:Null}" />
-                    <Button Command="{StaticResource LoadGroupFileCommand}">
+                    <Button Command="{StaticResource OpenLeftSideMenuCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -355,6 +354,17 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_OPEN}" />
                         </Grid>
                     </Button>
+                    <!--<Button Command="{StaticResource LoadGroupFileCommand}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0"
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_OpenCaption.png" />
+                            <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_OPEN}" />
+                        </Grid>
+                    </Button>-->
                     <Button Command="{StaticResource SaveGroupCommand}">
                         <Grid>
                             <Grid.RowDefinitions>

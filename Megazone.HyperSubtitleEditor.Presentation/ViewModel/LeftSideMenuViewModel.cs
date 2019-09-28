@@ -70,6 +70,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _hasRegisteredMessageHandlers = true;
 
             MessageCenter.Instance.Regist<LeftSideMenu.OpenMessage>(OpenLeftSideMenuRequest);
+            MessageCenter.Instance.Regist<LeftSideMenu.CloseMessage>(CloseLeftSideMenuRequest);
         }
 
         private void UnregisterMessageHandlers()
@@ -78,13 +79,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
 
             MessageCenter.Instance.Unregist<LeftSideMenu.OpenMessage>(OpenLeftSideMenuRequest);
+            MessageCenter.Instance.Unregist<LeftSideMenu.CloseMessage>(CloseLeftSideMenuRequest);
         }
+
+        private void CloseLeftSideMenuRequest(LeftSideMenu.CloseMessage message)
+        {
+            Close();
+        }
+
         private void OpenLeftSideMenuRequest(LeftSideMenu.OpenMessage message)
         {
             IsOpen = true;
         }
 
-        private void Close()
+        public void Close()
         {
             IsOpen = false;
         }

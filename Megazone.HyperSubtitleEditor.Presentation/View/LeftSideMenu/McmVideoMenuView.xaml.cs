@@ -10,12 +10,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         public McmVideoMenuView()
         {
             InitializeComponent();
-            this.Initialized += McmVideoMenuView_Initialized;
-        }
-
-        private void McmVideoMenuView_Initialized(object sender, System.EventArgs e)
-        {
-            
         }
     }
 }

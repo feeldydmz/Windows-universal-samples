@@ -1423,4 +1423,6 @@
         </Style.Triggers>
     </Style>
 
+    <BitmapImage x:Key="Bitmap_NoFoundImage" UriSource="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/thumbnail_no_image_s.png" />
+
 </ResourceDictionary>

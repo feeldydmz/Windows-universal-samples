@@ -13,8 +13,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         public LeftSideMenuView()
         {
             InitializeComponent();
+            IsVisibleChanged += (s, e) =>
+            {
+                McmRadioButton.IsChecked = false;
+                RecentlyRadioButton.IsChecked = false;
+                MyComputerRadioButton.IsChecked = false;
+            };
         }
-
+        
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             McmRadioButton.IsChecked = false;
@@ -26,7 +32,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         {
             if (sender is RadioButton radioButton)
             {
-                radioButton.IsChecked = true;
+                //radioButton.IsChecked = true;
             }
         }
     }

@@ -15,5 +15,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             {
             }
         }
+
+        internal class CloseMessage : MessageBase
+        {
+            public CloseMessage(object sender) : base(sender)
+            {
+            }
+        }
     }
 }
