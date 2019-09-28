@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:domain="clr-namespace:Megazone.Cloud.Media.Domain;assembly=Megazone.Cloud.Media.Domain"
              xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
@@ -170,11 +171,19 @@
                                                           SelectedItem="{Binding Path=SelectedSubtitleKind}" />
                                                 <ComboBox Grid.Column="1" Grid.Row="1" Margin="0,5"
                                                           ItemsSource="{Binding Path=Languages}"
-                                                          SelectedItem="{Binding Path=SelectedLanguageItemViewModel}">
+                                                          SelectedItem="{Binding Path=SelectedLanguage}">
                                                     <ItemsControl.ItemTemplate>
-                                                        <DataTemplate
-                                                            DataType="{x:Type itemViewModel:LanguageItemViewModel}">
-                                                            <TextBlock Text="{Binding Path=DisplayName}" />
+                                                        <DataTemplate DataType="{x:Type domain:Language}">
+                                                            <TextBlock TextTrimming="CharacterEllipsis">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding StringFormat="{}{0}-{1} ({2}-{3})">
+                                                                        <Binding Path="LanguageName" />
+                                                                        <Binding Path="CountryName" />
+                                                                        <Binding Path="LanguageCode" />
+                                                                        <Binding Path="CountryCode" />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ComboBox>

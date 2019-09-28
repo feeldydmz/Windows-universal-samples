@@ -92,7 +92,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter,
+        public async Task<CaptionAssetList> GetCaptionAssetsAsync(GetAssetsParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
@@ -102,7 +102,7 @@ namespace Megazone.Cloud.Media.Service
                     accessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,
                     parameter.SearchConditions));
 
-                return new CaptionList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
+                return new CaptionAssetList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
                     response.TotalCount, response.Assets);
             }, cancellationToken);
         }

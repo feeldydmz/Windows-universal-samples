@@ -1,37 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
-using Megazone.Cloud.Media.Domain.Assets;
-using Megazone.Cloud.Media.ServiceInterface;
-using Megazone.Cloud.Media.ServiceInterface.Parameter;
+﻿using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
-using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
-using Megazone.SubtitleEditor.Resources;
-using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     [Inject(Scope = LifetimeScope.Singleton)]
-    public class LeftSideMenuViewModel : ViewModelBase
+    internal class LeftSideMenuViewModel : ViewModelBase
     {
         private ICommand _closeCommand;
+        private bool _hasRegisteredMessageHandlers;
+        private bool _isOpen;
         private ICommand _loadCommand;
         private ICommand _unloadCommand;
-        private bool _isOpen;
-        private bool _hasRegisteredMessageHandlers;
 
         public bool IsOpen
         {

@@ -303,7 +303,7 @@
         <Grid.RowDefinitions>
             <!--툴바 영역-->
             <RowDefinition Height="63" />
-            <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="2.2*" />
             <RowDefinition Height="Auto" />
             <!--"StartTime:" 부분이 딱 보일만큼의 높이로 MinHeight 설정. 스크롤 없이 자막 세줄이보일만큼 기본 Height 설정-->
@@ -1274,9 +1274,7 @@
                                     </Style>
                                 </UniformGrid.Resources>
                                 <!--<Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenVideoListDialogCommand}" />-->
-                                <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenSubtitleCommand}" />
+                                        Command="{StaticResource OpenSubtitleCommand}" />-->
                                 <Button Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0"
                                         Command="{StaticResource AddTabCommand}" />
                             </UniformGrid>

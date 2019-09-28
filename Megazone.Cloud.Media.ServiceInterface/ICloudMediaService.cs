@@ -16,13 +16,10 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken);
         Task<ProjectListResponse> GetProjectsAsync(GetProjectsParameter parameter, CancellationToken cancellationToken);
         Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter, CancellationToken cancellationToken);
-        Task<CaptionList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAssetList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken);
-
         Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter, CancellationToken cancellationToken);
-
         Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter, CancellationToken cancellationToken);
-
         Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter, CancellationToken cancellationToken);
         Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken);
         Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken);

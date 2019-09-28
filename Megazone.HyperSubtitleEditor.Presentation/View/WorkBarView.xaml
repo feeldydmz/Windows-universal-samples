@@ -8,8 +8,16 @@
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="450" d:DesignWidth="800" Height="42"
              DataContext="{Binding Path=WorkBar, Source={StaticResource SubtitleViewModelLocator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,29 +28,20 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
-        </i:EventTrigger>
-        <i:EventTrigger EventName="Unloaded">
-            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
     <Grid>
-        <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
+        <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#262f4d" />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="14" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock Text="Untitled" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                <Button Content="편집" Style="{x:Null}" />
-            </StackPanel>
+            <TextBlock Grid.Column="1" Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" />
         </Grid>
         <Grid Visibility="Collapsed">
             <Grid.ColumnDefinitions>
@@ -50,8 +49,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--
-                아이콘
-                <Image />-->
+                아이콘-->
+            <Image Grid.Column="0" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" Width="21" Height="15"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal" DataContext="{Binding Path=VideoItem}">
                 <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0">
                     <TextBlock.Text>

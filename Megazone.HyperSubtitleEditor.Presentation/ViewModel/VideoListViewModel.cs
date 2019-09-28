@@ -25,7 +25,7 @@ using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    [Inject(Scope = LifetimeScope.Transient)]
+    [Inject(Scope = LifetimeScope.Singleton)]
     internal class VideoListViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
@@ -63,7 +63,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isShowCaption;
 
         private string _keyword;
-        private IEnumerable<KeywordType> _keywordTypeItems;
+        private IEnumerable<DisplayItem> _keywordTypeItems;
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
@@ -72,7 +72,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
-        private KeywordType _selectedKeywordType;
+        private DisplayItem _selectedKeywordType;
         private int _selectedPageNo = 1;
 
         private ICommand _selectedPageNoChangedCommand;
@@ -244,13 +244,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedPageNo, value);
         }
 
-        public IEnumerable<KeywordType> KeywordTypeItems
+        public IEnumerable<DisplayItem> KeywordTypeItems
         {
             get => _keywordTypeItems;
             set => Set(ref _keywordTypeItems, value);
         }
 
-        public KeywordType SelectedKeywordType
+        public DisplayItem SelectedKeywordType
         {
             get => _selectedKeywordType;
             set => Set(ref _selectedKeywordType, value);
@@ -364,10 +364,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 //                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
 //            };
 //#else
-            KeywordTypeItems = new List<KeywordType>
+            KeywordTypeItems = new List<DisplayItem>
             {
-                new KeywordType(Resource.CNT_NAME, "name"),
-                new KeywordType(Resource.CNT_VIDEO_ID, "id")
+                new DisplayItem(Resource.CNT_NAME, "name"),
+                new DisplayItem(Resource.CNT_VIDEO_ID, "id")
             };
 //#endif
             if (SelectedKeywordType == null)
@@ -635,18 +635,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_cancellationTokenSource.IsCancellationRequested)
                 _cancellationTokenSource = new CancellationTokenSource();
-        }
-
-        public class KeywordType
-        {
-            public KeywordType(string display, string key)
-            {
-                Display = display;
-                Key = key;
-            }
-
-            public string Display { get; }
-            public string Key { get; }
         }
     }
 }

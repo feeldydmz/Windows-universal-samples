@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
@@ -11,6 +12,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
+    [Obsolete("", true)]
     public class CaptionListViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;

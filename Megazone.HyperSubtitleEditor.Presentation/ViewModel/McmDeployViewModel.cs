@@ -8,7 +8,6 @@ using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -20,7 +19,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class McmDeployViewModel : ViewModelBase
     {
-        private readonly LanguageLoader _languageLoader;
         private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
 
@@ -35,12 +33,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<CaptionKind> _subtitleKinds;
         private VideoItemViewModel _videoItem;
 
-        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
-            LanguageLoader languageLoader)
+        public McmDeployViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel)
         {
             _signInViewModel = signInViewModel;
             _subtitleViewModel = subtitleViewModel;
-            _languageLoader = languageLoader;
         }
 
         public Action CloseAction { get; set; }

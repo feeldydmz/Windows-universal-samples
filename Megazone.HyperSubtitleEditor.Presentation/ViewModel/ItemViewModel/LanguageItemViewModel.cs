@@ -1,34 +1,49 @@
-﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+﻿//using Megazone.Cloud.Media.ServiceInterface.Model;
+//using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
-namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
-{
-    internal class LanguageItemViewModel : ViewModelBase
-    {
-        private string _languageCode;
-        private string _countryCode;
-        private string _countryName;
+//namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
+//{
+//    internal class LanguageItemViewModel : ViewModelBase
+//    {
+//        private string _countryCode;
+//        private string _countryName;
+        
+//        private string _languageCode;
+//        private string _languageName;
 
-        public string LanguageCode
-        {
-            get => _languageCode;
+//        public LanguageItemViewModel(Language source)
+//        {
+//            Source = source;
+//            LanguageCode = source?.LanguageCode;
+//            LanguageName = source?.LanguageName;
+//            CountryCode = source?.CountryCode;
+//            CountryName = source?.CountryName;
+//        }
 
-            set => Set(ref _languageCode, value);
-        }
+//        public Language Source { get; }
 
-        public string CountryCode
-        {
-            get => _countryCode;
+//        public string LanguageCode
+//        {
+//            get => _languageCode;
+//            set => Set(ref _languageCode, value);
+//        }
 
-            set => Set(ref _countryCode, value);
-        }
+//        public string LanguageName
+//        {
+//            get => _languageName;
+//            set => Set(ref _languageName, value);
+//        }
 
-        public string CountryName
-        {
-            get => _countryName;
+//        public string CountryCode
+//        {
+//            get => _countryCode;
+//            set => Set(ref _countryCode, value);
+//        }
 
-            set => Set(ref _countryName, value);
-        }
-
-        public string DisplayName => CountryName + " ( " + LanguageCode + "-" + CountryCode + " )";
-    }
-}
+//        public string CountryName
+//        {
+//            get => _countryName;
+//            set => Set(ref _countryName, value);
+//        }
+//    }
+//}

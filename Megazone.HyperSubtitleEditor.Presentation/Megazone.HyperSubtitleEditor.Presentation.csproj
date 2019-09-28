@@ -241,6 +241,7 @@
     <Compile Include="Serializable\SubtitleTabItem.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\AddAndEditSubtitleViewModel.cs" />
+    <Compile Include="ViewModel\CaptionAssetListViewModel.cs" />
     <Compile Include="ViewModel\CaptionListViewModel.cs" />
     <Compile Include="ViewModel\CopySubtitleViewModel.cs" />
     <Compile Include="ViewModel\CreateSubtitleViewModelBase.cs" />
@@ -253,12 +254,12 @@
     <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\CaptionAssetItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\CaptionElementItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\DisplayItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
-    <Compile Include="ViewModel\Language\Language.cs" />
-    <Compile Include="ViewModel\Language\LanguageLoader.cs" />
+    <Compile Include="ViewModel\LanguageLoader.cs" />
     <Compile Include="ViewModel\LeftSideMenuViewModel.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="View\GoToLineView.xaml.cs">
       <DependentUpon>GoToLineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LanguageItemTemplateSelector.cs" />
     <Compile Include="View\LeftSideMenu\LeftSideMenuView.xaml.cs">
       <DependentUpon>LeftSideMenuView.xaml</DependentUpon>
     </Compile>

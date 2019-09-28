@@ -153,7 +153,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="MCM 열기" />
+                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
                                 <TextBlock Grid.Column="2" Text=">" />
                             </Grid>
                         </RadioButton>
@@ -164,7 +164,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="공유 파일" />
+                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_SHARE_FILE}" />
                                 <TextBlock Grid.Column="2" Text=">" />
                             </Grid>
                         </RadioButton>
@@ -186,7 +186,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="최근 파일" />
+                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
                                 <TextBlock Grid.Column="2" Text=">" />
                             </Grid>
                         </RadioButton>
