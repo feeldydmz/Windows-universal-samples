@@ -52,6 +52,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _label;
 
         private IEnumerable<LanguageItem> _languages;
+        private ICommand _initializeCommand;
         private ICommand _loadCommand;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -93,6 +94,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand InitializeCommand
+        {
+            get { return _initializeCommand = _initializeCommand ?? new RelayCommand(Initialize); }
+        }
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }

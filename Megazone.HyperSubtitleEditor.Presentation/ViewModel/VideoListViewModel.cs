@@ -357,19 +357,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Initialize()
         {
             _isInitialized = false;
-//#if STAGING
-//            KeywordTypeItems = new List<KeywordType>
-//            {
-//                new KeywordType(Resource.CNT_NAME, "title"),
-//                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
-//            };
-//#else
+
             KeywordTypeItems = new List<DisplayItem>
             {
                 new DisplayItem(Resource.CNT_NAME, "name"),
                 new DisplayItem(Resource.CNT_VIDEO_ID, "id")
             };
-//#endif
+
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
             SelectedPageNo = 1;

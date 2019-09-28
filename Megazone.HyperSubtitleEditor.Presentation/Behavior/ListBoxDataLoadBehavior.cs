@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -63,11 +65,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             }
         }
 
+        private DateTime _callTime;
         private void _scrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.ExtentHeight > 0 && e.VerticalOffset > 0)
-                if ((int) e.ExtentHeight == (int) (e.VerticalOffset + e.ViewportHeight))
-                    Command?.Execute(CommandParameter);
+            if (DateTime.Now.Subtract(_callTime).TotalMilliseconds > 100)
+            {
+                _callTime = DateTime.Now;
+                Debug.WriteLine($"{e.ExtentHeight - (e.VerticalOffset + e.ViewportHeight)}, VerticalChange: {e.VerticalChange}");
+                if (e.ExtentHeight > 0 && e.VerticalOffset > 0)
+                    if (e.ExtentHeight - (e.VerticalOffset + e.ViewportHeight + e.VerticalChange) < 2)
+                        Command?.Execute(CommandParameter);
+            }
         }
     }
 }
