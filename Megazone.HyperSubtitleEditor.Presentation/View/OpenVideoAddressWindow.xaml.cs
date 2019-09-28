@@ -28,14 +28,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             this.Top -= 150;
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(UrlTextBox.Text.Trim()))
-                return;
-            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlTextBox.Text));
-            Close();
-        }
-
         private void UrlTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             OpenButton.IsEnabled = !string.IsNullOrEmpty(UrlTextBox.Text.Trim());

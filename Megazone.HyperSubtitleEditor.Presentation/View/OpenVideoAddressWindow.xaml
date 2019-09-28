@@ -310,16 +310,38 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Image Grid.Column="0" 
+                                                        <!--<Image Grid.Column="0" 
                                                                Style="{StaticResource Style_VideoBadgeImage}"
-                                                               HorizontalAlignment="Left" />
+                                                               HorizontalAlignment="Left" />-->
 
-                                                        <TextBlock Grid.Column="1" 
-                                                                   Margin="5,0,0,0"
-                                                                   FontSize="8"
-                                                                   Text="{Binding Source.Description}"/>
+                                                        <Border Grid.Column="1"
+                                                                CornerRadius="2"
+                                                                Width ="60"
+                                                                Height="17">
+                                                            <TextBlock FontSize="12"
+                                                                       Foreground="White"
+                                                                       FontWeight="ExtraBold"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       Text="{Binding Source.Description}">
+                                                            </TextBlock>
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="HLS">
+                                                                            <Setter Property="Background" Value="#8660d9"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="MP4">
+                                                                            <Setter Property="Background" Value="#405fff"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="DASH">
+                                                                            <Setter Property="Background" Value="#5D8FFF"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
 
-
+                                                                </Style>
+                                                            </Border.Style>
+                                                        </Border>
                                                     </Grid>
 
                                                     <Grid Grid.Row="1" VerticalAlignment="Center"

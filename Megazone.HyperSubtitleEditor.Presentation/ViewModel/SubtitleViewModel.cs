@@ -804,6 +804,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnOpenMediaFromFilePathRequested(MediaPlayer.OpenMediaFromUrlMessage message)
         {
+            MediaPlayer.InitMedia(message.Url);
             MediaPlayer.OpenMedia(message.Url, false);
         }
 
@@ -1066,7 +1067,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async void OnVideoOpenRequest(CloudMedia.VideoOpenMessage message)
+        private void OnVideoOpenRequest(CloudMedia.VideoOpenMessage message)
         {
             var video = message.VideoParam;
 

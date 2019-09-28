@@ -1327,6 +1327,7 @@
                                        Grid.RowSpan="2"
                                        HasAudioOnly="{Binding HasAudioOnly}"
                                        MediaSource="{Binding MediaSource}"
+                                       StreamIndex="{Binding StreamIndex}"
                                        NaturalDuration="{Binding NaturalDuration}"
                                        ThumbnailSource="{Binding ThumbnailSource}"
                                        TimeSeeker="{Binding TimeSeeker}"

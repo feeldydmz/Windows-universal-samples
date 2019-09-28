@@ -500,26 +500,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return conditions;
         }
 
-        private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
-        {
-            if (SelectedVideoItem == null)
-                return;
-
-            var captionAssetItem = SelectedVideoItem.CaptionItems.SingleOrDefault(assetItem =>
-                assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
-
-            if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
-            {
-                SelectedVideoItem.CaptionItems?.ToList().ForEach(asset =>
-                {
-                    if (!asset.Equals(captionAssetItem))
-                        asset.Initialize();
-                });
-                SelectedVideoItem.SelectedCaptionAsset = captionAssetItem;
-            }
-
-            SelectedVideoItem.Update();
-        }
 
         private bool CanConfirm(IClosable window)
         {
@@ -538,15 +518,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (IsBusy)
                     return false;
 
-                if (SelectedVideoItem?.CaptionItems?.Any() ?? false)
+                if (SelectedVideoItem != null)
                 {
-                    if (SelectedVideoItem?.SelectedCaptionAsset != null
-                        && SelectedVideoItem.SelectedCaptionAsset.Source == null)
-                        return true;
-
-                    if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
-                        return SelectedVideoItem.SelectedCaptionCount > 0;
-                    return false;
+                    return true;
                 }
 
                 return false;
