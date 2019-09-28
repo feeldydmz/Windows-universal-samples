@@ -36,7 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly SignInViewModel _signInViewModel;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private IList<CaptionAssetItemViewModel> _captionAssetItems;
+        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems;
 
         private ICommand _captionAssetSectionChangedCommand;
         private IEnumerable<DisplayItem> _captionKindItems;
@@ -151,7 +151,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedCaptionAssetItem, value);
         }
 
-        public IList<CaptionAssetItemViewModel> CaptionAssetItems
+        public IEnumerable<CaptionAssetItemViewModel> CaptionAssetItems
         {
             get => _captionAssetItems;
             set => Set(ref _captionAssetItems, value);
@@ -220,6 +220,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async void OnSelectedPageNoChanged(int selectedPageNo)
         {
             if (_isLoading)
+                return;
+            if (SelectedPageNo == selectedPageNo)
                 return;
             await SearchAsync(Keyword, selectedPageNo - 1, true);
         }
@@ -314,9 +316,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (!isPaging)
                 {
-                    SelectedPageNo = 0;
+                    SelectedPageNo = 1;
                     TotalCount = 0;
-                    CaptionAssetItems?.Clear();
+                    CaptionAssetItems = null;
                 }
 
                 SelectedCaptionAssetItem = null;

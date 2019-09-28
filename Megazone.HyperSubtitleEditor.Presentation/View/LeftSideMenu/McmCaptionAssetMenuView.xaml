@@ -17,7 +17,7 @@
              x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Path=InitializeCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.Resources>
@@ -33,8 +33,7 @@
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
 
-            <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
-            <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
+            <system:Double x:Key="ListBoxItemWidth">350</system:Double>
             <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -165,18 +164,18 @@
                 </Grid>
 
                 <!--Caption 검색 결과-->
-                <Border Grid.Row="1" RenderTransformOrigin=".5,.5">
+                <Border Grid.Row="1">
                     <Grid>
                         <ListBox x:Name="AssetListBox"
                                  ItemsSource="{Binding Path=CaptionAssetItems}"
-                                 SelectedItem="{Binding Path=SelectedCaptionAssetItem}"
+                                 SelectedItem="{Binding Path=SelectedCaptionAssetItem, Mode=TwoWay}"
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
                                 <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
-                                    <Border Width="{StaticResource VideoListBoxItemWidth}">
+                                    <Border Width="{StaticResource ListBoxItemWidth}">
                                         <Grid Margin="0, 15">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
