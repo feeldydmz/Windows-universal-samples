@@ -256,6 +256,7 @@
     <Compile Include="ViewModel\ItemViewModel\CaptionElementItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\DisplayItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
+    <Compile Include="ViewModel\ItemViewModel\LanguageItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
@@ -514,6 +515,10 @@
     <Page Include="View\CaptionListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommonDataTemplete.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CopySubtitleView.xaml">
       <SubType>Designer</SubType>

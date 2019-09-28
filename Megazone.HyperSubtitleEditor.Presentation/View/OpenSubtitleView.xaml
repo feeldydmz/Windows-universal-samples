@@ -15,6 +15,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -87,22 +89,8 @@
                             <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=SubtitleKinds}"
                                       SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}" />
                             <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"
-                                      SelectedItem="{Binding Path=SelectedLanguage, UpdateSourceTrigger=PropertyChanged}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type domain:Language}">
-                                        <TextBlock TextTrimming="CharacterEllipsis">
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0}-{1} ({2}-{3})">
-                                                    <Binding Path="LanguageName" />
-                                                    <Binding Path="CountryName" />
-                                                    <Binding Path="LanguageCode" />
-                                                    <Binding Path="CountryCode" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ComboBox>
+                                      SelectedItem="{Binding Path=SelectedLanguage, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemTemplate="{StaticResource LanguageDataTemplate}" />
                             <TextBox Grid.Column="1" Grid.Row="4"
                                      Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" />
 

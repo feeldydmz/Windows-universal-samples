@@ -43,7 +43,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
         private ICommand _enterCommand;
-        private ICommand _initializeCommand;
         private bool _isBusy;
         private bool _isConfirmButtonVisible;
         private bool _isInitialized;
@@ -52,7 +51,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<DisplayItem> _keywordTypeItems;
         private string _label;
 
-        private IEnumerable<Language> _languages;
+        private IEnumerable<LanguageItem> _languages;
         private ICommand _loadCommand;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -60,7 +59,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private DisplayItem _selectedCaptionKindItem;
         private DisplayItem _selectedKeywordType;
 
-        private Language _selectedLanguage;
+        private LanguageItem _selectedLanguage;
         private int _selectedPageNo = 1;
 
         private ICommand _selectedPageNoChangedCommand;
@@ -92,11 +91,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return _selectedPageNoChangedCommand =
                     _selectedPageNoChangedCommand ?? new RelayCommand<int>(OnSelectedPageNoChanged);
             }
-        }
-
-        public ICommand InitializeCommand
-        {
-            get { return _initializeCommand = _initializeCommand ?? new RelayCommand(Initialize); }
         }
 
         public ICommand LoadCommand
@@ -206,13 +200,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _label, value);
         }
 
-        public IEnumerable<Language> Languages
+        public IEnumerable<LanguageItem> Languages
         {
             get => _languages;
             set => Set(ref _languages, value);
         }
 
-        public Language SelectedLanguage
+        public LanguageItem SelectedLanguage
         {
             get => _selectedLanguage;
             set => Set(ref _selectedLanguage, value);
@@ -263,7 +257,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 await _languageLoader.LoadAsync();
 
             var languageList = _languageLoader.Languages.ToList();
-            languageList.Insert(0, new Language(null, null));
+            languageList.Insert(0, new LanguageItem(null));
             Languages = languageList;
 
             if (SelectedKeywordType == null)
@@ -276,6 +270,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (!_isInitialized)
                 Initialize();
+
+            if(_isLoading)
+                return;
 
             _isLoading = true;
             await SearchAsync(Keyword, 0);
@@ -363,7 +360,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private Dictionary<string, string> MakeSearchConditions(string keyword, IEnumerable<string> kinds, string label,
-            Language language)
+            LanguageItem language)
         {
             // 검색조건
             var conditions = new Dictionary<string, string>
@@ -375,15 +372,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!string.IsNullOrEmpty(keyword))
                 conditions.Add(SelectedKeywordType.Key, keyword);
 
-            /*
-             *export const CAPTION_KINDS = [
-    {value: 'CAPTION', label: 'Caption'},
-    {value: 'SUB_TITLE', label: 'SubTitle'},
-    {value: 'DESCRIPTION', label: 'Description'},
-    {value: 'CHAPTER', label: 'Chapter'},
-    {value: 'METADATA', label: 'Metadata'}
- ];
-             */
             var kindList = kinds?.ToList() ?? new List<string>();
             if (kindList.Any())
             {
@@ -418,10 +406,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //    }
             //}
 
-            if (language != null)
+            if (!string.IsNullOrEmpty(language?.Code))
             {
-                conditions.Add("language", language.LanguageCode);
-                conditions.Add("country", language.CountryCode);
+                var languageCode = language.Code.Split('-')[0];
+                var countryCode = language.Code.Split('-')[1];
+                conditions.Add("language", languageCode);
+                conditions.Add("country", countryCode);
             }
 
             return conditions;

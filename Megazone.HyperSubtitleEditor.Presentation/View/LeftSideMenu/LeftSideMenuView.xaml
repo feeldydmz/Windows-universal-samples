@@ -25,6 +25,7 @@
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
                 <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -215,7 +216,8 @@
 
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" TextBlock.FontSize="14">
                                         <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3" />
-                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" />
+                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" 
+                                                     Command="{Binding Path=CaptionAssetList.LoadCommand, Source={StaticResource SubtitleViewModelLocator}}" />
                                     </StackPanel>
 
                                     <!--<Button Grid.Column="2" Content="Refresh" ToolTip="Refresh" />-->

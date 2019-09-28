@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Megazone.Cloud.Media.Domain;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -11,10 +11,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is Language language)
-            {
-                return string.IsNullOrEmpty(language.LanguageCode) ? EmptyDataTemplate : DataTemplate;
-            }
+            if (item is LanguageItem language)
+                return string.IsNullOrEmpty(language.Code) ? EmptyDataTemplate : DataTemplate;
             return item == null ? EmptyDataTemplate : DataTemplate;
             //return base.SelectTemplate(item, container);
         }

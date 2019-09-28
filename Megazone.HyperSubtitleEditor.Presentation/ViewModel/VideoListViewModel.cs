@@ -381,6 +381,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!_isInitialized)
                 Initialize();
 
+            if (_isLoading)
+                return;
+
             _isLoading = true;
             await SearchAsync(Keyword, 0);
             _isLoading = false;

@@ -73,7 +73,8 @@ namespace Megazone.Cloud.Media.Repository
 
         public AssetListResponse<CaptionAsset> GetCaptionAssets(AssetListRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/captions", Method.GET)
+            //var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/captions", Method.GET)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())

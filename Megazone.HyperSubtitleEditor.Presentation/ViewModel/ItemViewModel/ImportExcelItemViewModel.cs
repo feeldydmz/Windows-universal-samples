@@ -9,8 +9,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     {
         private bool _isChecked;
         private string _label;
-        private IList<Language> _languages;
-        private Language _selectedLanguage;
+        private IList<LanguageItem> _languages;
+        private LanguageItem _selectedLanguage;
         private CaptionKind _selectedSubtitleKind;
         private string _sheetName;
         private IList<CaptionKind> _subtitleKinds;
@@ -33,13 +33,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _label, value);
         }
 
-        public IList<Language> Languages
+        public IList<LanguageItem> Languages
         {
             get => _languages;
             set => Set(ref _languages, value);
         }
 
-        public Language SelectedLanguage
+        public LanguageItem SelectedLanguage
         {
             get => _selectedLanguage;
             set=> Set(ref _selectedLanguage, value);

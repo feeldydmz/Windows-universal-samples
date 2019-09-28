@@ -25,6 +25,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -34,34 +36,6 @@
             <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
             <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
-
-            <DataTemplate x:Key="DataTemplate_ComboBoxItem" DataType="{x:Type itemVm:DisplayItem}">
-                <TextBlock Text="{Binding Path=Display}" />
-            </DataTemplate>
-
-
-            <view:LanguageItemTemplateSelector x:Key="LanguageItemTemplateSelector">
-                <view:LanguageItemTemplateSelector.EmptyDataTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="" />
-                    </DataTemplate>
-                </view:LanguageItemTemplateSelector.EmptyDataTemplate>
-                <view:LanguageItemTemplateSelector.DataTemplate>
-                    <DataTemplate DataType="{x:Type domain:Language}">
-                        <TextBlock TextTrimming="CharacterEllipsis">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}-{1} ({2}-{3})">
-                                    <Binding Path="LanguageName" />
-                                    <Binding Path="CountryName" />
-                                    <Binding Path="LanguageCode" />
-                                    <Binding Path="CountryCode" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </DataTemplate>
-                </view:LanguageItemTemplateSelector.DataTemplate>
-            </view:LanguageItemTemplateSelector>
-
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -75,7 +49,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
                 <!--검색 패널-->
                 <Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}">
@@ -102,10 +76,15 @@
                         </Grid.RowDefinitions>
 
                         <!--키워드 검색-->
-                        <ComboBox Grid.Column="0" Grid.Row="0" MaxWidth="90" Width="90" 
+                        <ComboBox Grid.Column="0" Grid.Row="0" Width="80" 
                                   ItemsSource="{Binding Path=KeywordTypeItems}"
-                                  SelectedItem="{Binding Path=SelectedKeywordType}" 
-                                  ItemTemplate="{StaticResource DataTemplate_ComboBoxItem}" />
+                                  SelectedItem="{Binding Path=SelectedKeywordType}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type itemVm:DisplayItem}">
+                                    <TextBlock Text="{Binding Path=Display}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBox Grid.Column="2" Grid.Row="0" x:Name="KeywordTextBox"
                                          Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Behaviors>
@@ -117,13 +96,18 @@
                         </TextBox>
 
                         <!--Kind 검색-->
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static resources:Resource.CNT_KIND}" VerticalAlignment="Center" TextAlignment="Center"
-                                           HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static resources:Resource.CNT_KIND}" 
+                                   VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left"/>
 
                         <ComboBox Grid.Column="2" Grid.Row="2" 
                                   ItemsSource="{Binding Path=CaptionKindItems}" 
-                                  SelectedItem="{Binding Path=SelectedCaptionKindItem}" 
-                                  ItemTemplate="{StaticResource DataTemplate_ComboBoxItem}" />
+                                  SelectedItem="{Binding Path=SelectedCaptionKindItem}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type itemVm:DisplayItem}">
+                                    <TextBlock Text="{Binding Path=Display}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <!--Label 검색-->
                         <TextBlock Grid.Column="0" Grid.Row="4" Text="{x:Static resources:Resource.CNT_LABEL}" VerticalAlignment="Center" TextAlignment="Center"
@@ -144,22 +128,8 @@
                                    HorizontalAlignment="Left"/>
 
                         <ComboBox Grid.Column="2" Grid.Row="6" ItemsSource="{Binding Path=Languages}"
-                                  SelectedItem="{Binding Path=SelectedLanguage}" ItemTemplateSelector="{StaticResource LanguageItemTemplateSelector}">
-                            <!--<ComboBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type domain:Language}">
-                                    <TextBlock TextTrimming="CharacterEllipsis">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}-{1} ({2}-{3})">
-                                                <Binding Path="LanguageName" />
-                                                <Binding Path="CountryName" />
-                                                <Binding Path="LanguageCode" />
-                                                <Binding Path="CountryCode" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>-->
-                        </ComboBox>
+                                  SelectedItem="{Binding Path=SelectedLanguage}" 
+                                  ItemTemplateSelector="{StaticResource LanguageItemTemplateSelector}" />
                     </Grid>
 
                     <!--검색버튼-->
@@ -193,7 +163,6 @@
                         </Button>
                     </Grid>
                 </Grid>
-
 
                 <!--Caption 검색 결과-->
                 <Border Grid.Row="1" RenderTransformOrigin=".5,.5">
@@ -314,6 +283,32 @@
                         </Border>
                     </Grid>
                 </Border>
+
+                <Grid Grid.Row="2" Margin="0,0,20,0">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=TotalCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <view:PaginationView 
+                        x:Name="PaginationView" CountPerPage="10"
+                        TotalCount="{Binding Path=TotalCount}"
+                        Value="{Binding Path=SelectedPageNo, Mode=TwoWay}"
+                        HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="ValueChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding Path=SelectedPageNoChangedCommand}"
+                                    CommandParameter="{Binding Path=SelectedPageNo}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </view:PaginationView>
+                </Grid>
+                
             </Grid>
         </Border>
 
