@@ -258,6 +258,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 new DisplayItem("Metadata", CaptionKind.Metadata.ToString())
             };
 
+            if (SelectedKeywordType == null)
+                SelectedKeywordType = KeywordTypeItems.First();
+            SelectedPageNo = 1;
+
             if (!_languageLoader.Languages?.Any() ?? true)
                 await _languageLoader.LoadAsync();
 
@@ -265,9 +269,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             languageList.Insert(0, new LanguageItem(null));
             Languages = languageList;
 
-            if (SelectedKeywordType == null)
-                SelectedKeywordType = KeywordTypeItems.First();
-            SelectedPageNo = 1;
             _isInitialized = true;
         }
 

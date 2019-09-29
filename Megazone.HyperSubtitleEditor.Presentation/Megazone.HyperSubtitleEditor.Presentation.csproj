@@ -157,10 +157,12 @@
     <Compile Include="Command\UI\AutoAdjustEndtimesCommand.cs" />
     <Compile Include="Command\UI\CloseLeftSideMenuCommand.cs" />
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
+    <Compile Include="Command\UI\CreateNewCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />
     <Compile Include="Command\UI\OpenLeftSideMenuCommand.cs" />
+    <Compile Include="Command\UI\SaveCommand.cs" />
     <Compile Include="Command\UI\ShowProjectViewCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
@@ -232,8 +234,8 @@
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recently\RecentlyItem.cs" />
-    <Compile Include="Recently\RecentlyLoader.cs" />
+    <Compile Include="ViewModel\Data\RecentlyItem.cs" />
+    <Compile Include="ViewModel\RecentlyLoader.cs" />
     <Compile Include="Serializable\SubtitleGroup.cs" />
     <Compile Include="Serializable\SubtitleTabItemParser.cs" />
     <Compile Include="Serializable\SubtitleTabItem.cs" />

@@ -204,7 +204,8 @@
                                 <TextBlock Grid.Column="2" Text=">" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter">
+                        <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter"
+                                     Command="{Binding Path=LoadRecentlyCommand}">
                             <RadioButton.Triggers>
                                 <EventTrigger RoutedEvent="RadioButton.Checked">
                                     <BeginStoryboard Name="RecentlyFileListOpenStoryboard">

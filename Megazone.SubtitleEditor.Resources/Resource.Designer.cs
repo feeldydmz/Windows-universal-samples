@@ -691,6 +691,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Import a WebVTT과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_IMPORT_VTT {
+            get {
+                return ResourceManager.GetString("CNT_IMPORT_VTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Info과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_INFO {
