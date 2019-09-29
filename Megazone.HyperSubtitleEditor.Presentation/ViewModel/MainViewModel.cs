@@ -3,8 +3,8 @@ using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
-using Megazone.HyperSubtitleEditor.Presentation.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 
@@ -38,7 +38,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 try
                 {
-                    var folderPath = this.GetTempFolderPath();
+                    var folderPath = this.TempFolder();
                     var di = new DirectoryInfo(folderPath);
                     if (di.Exists)
                         di.Delete(true);

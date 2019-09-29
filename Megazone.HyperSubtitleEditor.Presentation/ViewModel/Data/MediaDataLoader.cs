@@ -9,9 +9,9 @@ using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Control.VideoPlayer;
 using Megazone.Core.Windows.Extension;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Unity;
-using ObjectExtension = Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension.ObjectExtension;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
@@ -65,7 +65,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     var indexOfFirstDot = fileName.IndexOf(".", StringComparison.Ordinal);
                     if (indexOfFirstDot == -1) return;
                     fileName = fileName.Substring(0, indexOfFirstDot) + ".jpg";
-                    var folderPath = ObjectExtension.TempFolder() + "\\" + Guid.NewGuid() +
+                    var folderPath = this.TempFolder() + "\\" + Guid.NewGuid() +
                                      DateTime.UtcNow.DateTimeToEpoch();
                     if (!Directory.Exists(folderPath))
                         try

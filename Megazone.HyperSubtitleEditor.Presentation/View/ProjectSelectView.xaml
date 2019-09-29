@@ -10,9 +10,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
-             xmlns:extensions="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Extension"
              mc:Ignorable="d"
-             
              d:DesignHeight="736" d:DesignWidth="1280"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel}"
              x:Name="Root">

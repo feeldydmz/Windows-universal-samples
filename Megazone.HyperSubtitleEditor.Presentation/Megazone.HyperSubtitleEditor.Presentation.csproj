@@ -220,7 +220,6 @@
     <Compile Include="Excel\ExcelSheetInfo.cs" />
     <Compile Include="Excel\Subtitle.cs" />
     <Compile Include="Excel\TrackFormat.cs" />
-    <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
     <Compile Include="Message\CloudMedia.cs" />
     <Compile Include="Message\Excel.cs" />
@@ -236,6 +235,8 @@
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recently\RecentlyItem.cs" />
+    <Compile Include="Recently\RecentlyLoader.cs" />
     <Compile Include="Serializable\SubtitleGroup.cs" />
     <Compile Include="Serializable\SubtitleTabItemParser.cs" />
     <Compile Include="Serializable\SubtitleTabItem.cs" />

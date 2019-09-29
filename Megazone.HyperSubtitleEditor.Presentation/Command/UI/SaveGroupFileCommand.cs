@@ -1,14 +1,12 @@
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core;
 using Megazone.Core.Log;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Serializable;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension;
 using Unity;
-using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
@@ -16,8 +14,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     {
         private readonly FileManager _fileManager;
         private readonly ILogger _logger;
-        private readonly SubtitleViewModel _subtitleViewModel;
         private readonly SignInViewModel _signInViewModel;
+        private readonly SubtitleViewModel _subtitleViewModel;
 
         public SaveGroupFileCommand()
         {
