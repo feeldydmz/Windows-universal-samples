@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,18 +6,18 @@ using mshtml;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedProperty
 {
-    public class WebBrowserAttchedProperty
+    public class WebBrowserAttachedProperty
     {
         private const string CODE_PATTEN = "code=";
 
         public static readonly DependencyProperty UriSourceProperty =
-            DependencyProperty.RegisterAttached("UriSource", typeof(string), typeof(WebBrowserAttchedProperty),
+            DependencyProperty.RegisterAttached("UriSource", typeof(string), typeof(WebBrowserAttachedProperty),
                 new PropertyMetadata((d, e) =>
                 {
-                    var webBrowser = (WebBrowser)d;
+                    var webBrowser = (WebBrowser) d;
                     if (webBrowser != null)
                     {
-                        var uri = (string)e.NewValue;
+                        var uri = (string) e.NewValue;
 
                         webBrowser.Source = !string.IsNullOrEmpty(uri) ? new Uri(uri) : new Uri("about:blank");
                     }
@@ -29,14 +25,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
             );
 
         public static readonly DependencyProperty NavigatingCommandProperty =
-            DependencyProperty.RegisterAttached("NavigatingCommand", typeof(ICommand), typeof(WebBrowserAttchedProperty),
+            DependencyProperty.RegisterAttached("NavigatingCommand", typeof(ICommand),
+                typeof(WebBrowserAttachedProperty),
                 new PropertyMetadata(null, (d, e) =>
                 {
                     var browser = d as WebBrowser;
                     if (browser != null)
                         browser.Navigating += (s, a) =>
                         {
-                            var command = (ICommand)e.NewValue;
+                            var command = (ICommand) e.NewValue;
                             var absoluteUri = a.Uri.AbsoluteUri;
 
                             var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
@@ -57,7 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
 
         public static string GetUriSource(DependencyObject dependencyObject)
         {
-            return (string)dependencyObject.GetValue(UriSourceProperty);
+            return (string) dependencyObject.GetValue(UriSourceProperty);
         }
 
         public static void SetUriSource(DependencyObject dependencyObject, string uri)
@@ -67,7 +64,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
 
         public static ICommand GetNavigatingCommand(DependencyObject obj)
         {
-            return (ICommand)obj.GetValue(NavigatingCommandProperty);
+            return (ICommand) obj.GetValue(NavigatingCommandProperty);
         }
 
         public static void SetNavigatingCommand(DependencyObject obj, ICommand value)

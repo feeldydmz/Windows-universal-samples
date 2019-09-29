@@ -1,12 +1,6 @@
-﻿using System;
-using System.Reflection;
-using System.Windows;
+﻿using System.Reflection;
 using System.Windows.Controls;
-using System.Windows.Input;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT;
-using Microsoft.Toolkit.Wpf.UI.Controls;
-using mshtml;
+using System.Windows.Navigation;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -18,43 +12,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public SignInView()
         {
             InitializeComponent();
-
-            if (DataContext is SignInViewModel vm)
-            {
-                vm.OnSourceUriChanged = (url) => { WebView.Source = new Uri(url); };
-            }
-
-            WebView.IsJavaScriptEnabled = true;
+            WebBrowser.Navigated += WebBrowser_Navigated;
         }
 
-        private void WebView_OnNavigationStarting(object sender, WebViewControlNavigationStartingEventArgs e)
+        private void WebBrowser_Navigated(object sender, NavigationEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("1");
-            const string CODE_PATTEN = "code=";
-            var absoluteUri = e.Uri.AbsoluteUri;
-            //System.Diagnostics.Debug.WriteLine(absoluteUri);
-            var index = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
+            Error.HideScriptErrors(WebBrowser, true);
+        }
+    }
 
-            if (index == -1)
+    public class Error
+    {
+        public static void HideScriptErrors(WebBrowser wb, bool hide)
+        {
+            var fiComWebBrowser =
+                typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (fiComWebBrowser == null)
                 return;
-            e.Cancel = true;
 
-            //System.Diagnostics.Debug.WriteLine("2");
+            var objComWebBrowser = fiComWebBrowser.GetValue(wb);
+            if (objComWebBrowser == null)
+                return;
 
-            if (sender is WebView webView)
-            {
-                //webView.Source = new Uri("about: blank");
-                //webView.InvokeScript("ClearAuthenticationCache");
-            }
-
-            //System.Diagnostics.Debug.WriteLine("3");
-
-            var code = absoluteUri.Substring(index + CODE_PATTEN.Length);
-
-            if (DataContext is SignInViewModel vm)
-            {
-                vm.NavigateToProject(code);
-            }
+            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser,
+                new object[] {hide});
         }
     }
 }
