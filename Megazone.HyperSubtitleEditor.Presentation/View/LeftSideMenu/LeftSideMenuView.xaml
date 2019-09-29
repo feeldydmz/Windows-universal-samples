@@ -39,7 +39,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Background="#f9fafb">
+            <Grid Grid.Column="0" Background="#f9fafb" Panel.ZIndex="999">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="10" />
@@ -148,6 +148,30 @@
                         </StackPanel.Resources>
 
                         <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter">
+                            <RadioButton.Triggers>
+                                <EventTrigger RoutedEvent="RadioButton.Checked">
+                                    <BeginStoryboard Name="McmBoardOpenStoryboard">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.Target="{Binding ElementName=McmBorder}"
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                Duration="0:0:0.15" From="-100" To="0"
+                                                AccelerationRatio="0.3"
+                                                DecelerationRatio="0.7"
+                                                FillBehavior="HoldEnd" />
+                                            <DoubleAnimation
+                                                Storyboard.Target="{Binding ElementName=McmBorder}"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:0.1" From="0.3" To="1"
+                                                FillBehavior="HoldEnd" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="RadioButton.Unloaded">
+                                    <StopStoryboard BeginStoryboardName="McmBoardOpenStoryboard" />
+                                    <RemoveStoryboard BeginStoryboardName="McmBoardOpenStoryboard" />
+                                </EventTrigger>
+                            </RadioButton.Triggers>
                             <Grid Width="90">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="17" />
@@ -181,6 +205,30 @@
                             </Grid>
                         </RadioButton>
                         <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter">
+                            <RadioButton.Triggers>
+                                <EventTrigger RoutedEvent="RadioButton.Checked">
+                                    <BeginStoryboard Name="RecentlyFileListOpenStoryboard">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.Target="{Binding ElementName=RecentlyFileListBorder}"
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                Duration="0:0:0.15" From="-100" To="0"
+                                                AccelerationRatio="0.3"
+                                                DecelerationRatio="0.7"
+                                                FillBehavior="HoldEnd" />
+                                            <DoubleAnimation
+                                                Storyboard.Target="{Binding ElementName=RecentlyFileListBorder}"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:0.1" From="0.3" To="1"
+                                                FillBehavior="HoldEnd" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="RadioButton.Unloaded">
+                                    <StopStoryboard BeginStoryboardName="RecentlyFileListOpenStoryboard" />
+                                    <RemoveStoryboard BeginStoryboardName="RecentlyFileListOpenStoryboard" />
+                                </EventTrigger>
+                            </RadioButton.Triggers>
                             <Grid Width="90">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="17" />
@@ -196,9 +244,14 @@
             </Grid>
 
             <Border Grid.Column="1" MaxWidth="392" BorderBrush="{StaticResource Brush_GrayBoxBorderBrush}" BorderThickness="1,0,0,0" Background="#f4f6f8">
+                
                 <Grid>
                     <!-- [Media Cloud Media] -->
-                    <Border Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="McmBorder" RenderTransformOrigin=".5,.5"
+                        Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Border.RenderTransform>
+                            <TranslateTransform />
+                        </Border.RenderTransform>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -234,13 +287,15 @@
                     </Border>
 
                     <!-- [내 컴퓨터] -->
-                    <Border Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="MyComputerBorder" RenderTransformOrigin=".5,.5"
+                        Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <leftMenuView:MyComputerMenuView />
                     </Border>
 
 
-                    <!-- [내 컴퓨터] -->
-                    <Border Visibility="{Binding ElementName=RecentlyRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- [최근 파일] -->
+                    <Border x:Name="RecentlyFileListBorder" RenderTransformOrigin=".5,.5"
+                        Visibility="{Binding ElementName=RecentlyRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <leftMenuView:RecentlyMenuView />
                     </Border>
                 </Grid>
