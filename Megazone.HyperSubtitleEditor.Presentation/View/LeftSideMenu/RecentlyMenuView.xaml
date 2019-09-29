@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:item="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
              xmlns:leftMenuView="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,7 +27,117 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Brush_CommonBackground}">
-        <TextBlock Text="Recently" />
+    <Grid>
+
+        <Border Margin="0, 20, 0, 20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+
+                <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
+                <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Standard">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type item:RecentlyItem}">
+                            <Button 
+                                Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}" 
+                                CommandParameter="{Binding}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="UseLayoutRounding" Value="True" />
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                                        <Setter Property="Margin" Value="0,5" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                        <Setter Property="BorderThickness" Value="1" />
+                                        <Setter Property="Foreground" Value="#FF222222" />
+                                        <Setter Property="FontSize" Value="11px" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border CornerRadius="2" Background="{TemplateBinding Background}" 
+                                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                                            BorderBrush="{TemplateBinding BorderBrush}">
+                                                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                                                            <Setter Property="Background" Value="#e7e9ee" />
+                                                            <!--<Setter Property="Opacity" Value="0.7" />-->
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#10000000" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Opacity" Value="0.3" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Grid Width="330" Height="65">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
+                                        <Image 
+                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png" Width="16" Height="16"
+                                        Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <Image Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_projet_file_small.jpg"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=Format}" Value="VTT">
+                                                            <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_vtt_small.png"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=Format}" Value="EXCEL">
+                                                            <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_excel_small.png"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                    </Grid>
+
+                                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=Video.Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=Video.Id, StringFormat={}({0})}" VerticalAlignment="Center"/>
+
+                                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=CaptionAsset.Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=CaptionAsset.Id, StringFormat={}({0})}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
+        
     </Grid>
 </UserControl>

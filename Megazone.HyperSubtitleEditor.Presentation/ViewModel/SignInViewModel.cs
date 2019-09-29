@@ -13,7 +13,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
 
@@ -28,7 +27,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
-        
+
         private Authorization _authorization;
         private bool _isAutoLogin;
         private bool _isBusy;
@@ -121,7 +120,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void SetSourceUri(string url)
         {
-            this.UriSource = url;
+            UriSource = url;
             OnSourceUriChanged?.Invoke(url);
         }
 
@@ -157,7 +156,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-
                 _authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
                 if (string.IsNullOrEmpty(_authorization?.AccessToken))
@@ -223,6 +221,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                if (!File.Exists(AuthorizationFilePath))
+                    return null;
+
                 var profileData = File.ReadAllText(AuthorizationFilePath);
                 return JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898(_password));
             }
@@ -266,7 +267,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (string.IsNullOrEmpty(code))
                 return;
-            
+
             SetSourceUri("about:blank");
 
             LoginByAuthorizationCodeAsync(code);

@@ -698,4 +698,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="CNT_SHARE_FILE" xml:space="preserve">
     <value>Shared file</value>
   </data>
+  <data name="CNT_IMPORT_VTT" xml:space="preserve">
+    <value>Import a WebVTT</value>
+  </data>
 </root>

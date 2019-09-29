@@ -40,9 +40,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task<IEnumerable<LanguageItem>> GetLanguagesAsync()
         {
-            var authorizationAccessToken = _signInViewModel.GetAuthorization().AccessToken;
+            var authorizationAccessToken = _signInViewModel.GetAuthorization()?.AccessToken;
             var stageId = _signInViewModel.SelectedStage?.Id;
             var projectId = _signInViewModel.SelectedProject?.ProjectId;
+
+            if (string.IsNullOrEmpty(authorizationAccessToken) || string.IsNullOrEmpty(stageId) || string.IsNullOrEmpty(projectId))
+                return new List<LanguageItem>();
 
             var languages = await _cloudMediaService.GetLanguageAsync(
                 new GetLanguageParameter(authorizationAccessToken, stageId, projectId), CancellationToken.None);

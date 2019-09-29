@@ -1,13 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
+using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -16,8 +19,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class WorkBarViewModel : ViewModelBase
     {
         private readonly ICloudMediaService _cloudMediaService;
+        private readonly ILogger _logger;
+        private readonly RecentlyLoader _recentlyLoader;
         private readonly SignInViewModel _signInViewModel;
+
+        private ICommand _editAssetNameCommand;
         private bool _hasData;
+
+        private bool _isOnlineData;
 
         private bool _isOpenVideoInfoPopup;
 
@@ -31,10 +40,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private VideoItemViewModel _videoItem;
 
-        public WorkBarViewModel(ICloudMediaService cloudMediaService, SignInViewModel signInViewModel)
+        public WorkBarViewModel(ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel,
+            RecentlyLoader recentlyLoader)
         {
             _cloudMediaService = cloudMediaService;
+            _logger = logger;
             _signInViewModel = signInViewModel;
+            _recentlyLoader = recentlyLoader;
         }
 
 
@@ -42,6 +54,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _isOpenVideoInfoPopup;
             set => Set(ref _isOpenVideoInfoPopup, value);
+        }
+
+        public bool IsOnlineData
+        {
+            get => _isOnlineData;
+            set => Set(ref _isOnlineData, value);
         }
 
         public bool HasData
@@ -81,7 +99,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private ICommand _editAssetNameCommand;
         public ICommand EditAssetNameCommand
         {
             get { return _editAssetNameCommand = _editAssetNameCommand ?? new RelayCommand(EditAssetName); }
@@ -117,34 +134,49 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (message.Param?.Video == null)
                 return;
 
-            var authorization = _signInViewModel.GetAuthorization();
-            var stageId = _signInViewModel.SelectedStage?.Id;
-            var projectId = _signInViewModel.SelectedProject?.ProjectId;
-            var videoId = message.Param.Video?.Id;
-            var assetId = message.Param.Asset?.Id;
-            var captions = message.Param.Captions;
+            // 초기화
+            IsOnlineData = false;
+            HasData = false;
 
-            var video = string.IsNullOrEmpty(videoId)
-                ? null
-                : await _cloudMediaService.GetVideoAsync(
-                    new GetVideoParameter(authorization, stageId, projectId, videoId), CancellationToken.None);
-
-            if (video != null)
+            try
             {
-                VideoItem = new VideoItemViewModel(video);
-                VideoItem.SelectedCaptionAsset =
-                    VideoItem.CaptionAssetItems.SingleOrDefault(asset => asset.Id.Equals(assetId));
+                var authorization = _signInViewModel.GetAuthorization();
+                var stageId = _signInViewModel.SelectedStage?.Id;
+                var projectId = _signInViewModel.SelectedProject?.ProjectId;
+                var videoId = message.Param.Video?.Id;
+                var assetId = message.Param.Asset?.Id;
+                var captions = message.Param.Captions;
+
+                var video = string.IsNullOrEmpty(videoId)
+                    ? null
+                    : await _cloudMediaService.GetVideoAsync(
+                        new GetVideoParameter(authorization, stageId, projectId, videoId), CancellationToken.None);
+
+                if (video != null)
+                {
+                    VideoItem = new VideoItemViewModel(video);
+                    VideoItem.SelectedCaptionAsset =
+                        VideoItem.CaptionAssetItems.SingleOrDefault(asset => asset.Id.Equals(assetId));
+                }
+
+                var captionAsset = string.IsNullOrEmpty(assetId)
+                    ? null
+                    : await _cloudMediaService.GetCaptionAssetAsync(
+                        new GetAssetParameter(authorization, stageId, projectId, assetId), CancellationToken.None);
+
+                if (captionAsset != null)
+                    SelectedCaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+
+                HasData = video != null || captionAsset != null;
+                IsOnlineData = true;
+                _recentlyLoader.Save(new RecentlyItem.OnlineRecentlyCreator().SetVideo(video)
+                    .SetCaptionAsset(captionAsset).SetCaptions(captions).Create());
             }
-
-            var captionAsset = string.IsNullOrEmpty(assetId)
-                ? null
-                : await _cloudMediaService.GetCaptionAssetAsync(
-                    new GetAssetParameter(authorization, stageId, projectId, assetId), CancellationToken.None);
-
-            if (captionAsset != null)
-                SelectedCaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
-
-            HasData = video != null || captionAsset != null;
+            catch (Exception e)
+            {
+                HasData = false;
+                _logger.Error.Write(e);
+            }
         }
     }
 }
