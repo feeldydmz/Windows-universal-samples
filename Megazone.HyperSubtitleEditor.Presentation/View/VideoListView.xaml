@@ -348,7 +348,7 @@
                         </StackPanel>
 
                         <ListBox Grid.Row="2" x:Name="AssetListBox"
-                                 ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}"
+                                 ItemsSource="{Binding Path=SelectedVideoItem.CaptionAssetItems}"
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>

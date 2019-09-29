@@ -342,8 +342,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             SelectedVideoItem?.SelectedCaptionAsset?.SelectAll();
             SelectedVideoItem?.Update();
-            if (SelectedVideoItem?.CaptionItems != null)
-                foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
+            if (SelectedVideoItem?.CaptionAssetItems != null)
+                foreach (var captionAssetItem in SelectedVideoItem.CaptionAssetItems)
                     if (!captionAssetItem.Equals(SelectedVideoItem?.SelectedCaptionAsset))
                         captionAssetItem.Initialize();
             CommandManager.InvalidateRequerySuggested();
@@ -385,7 +385,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool CanLoadCaption(VideoItemViewModel videoItem)
         {
-            return true; //videoItem?.CaptionItems?.Any() ?? false;
+            return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
         }
 
         private async void LoadCaptionAsync(VideoItemViewModel videoItem)
@@ -408,7 +408,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (videoItem.CanUpdate)
                 {
-                    videoItem?.CaptionItems?.Clear();
+                    videoItem?.CaptionAssetItems?.Clear();
                     var authorization = _signInViewModel.GetAuthorization();
                     var stageId = _signInViewModel.SelectedStage?.Id;
                     var projectId = _signInViewModel.SelectedStage?.Id;
@@ -418,8 +418,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _cancellationTokenSource.Token);
 
                     videoItem.UpdateSource(result);
-                    if (videoItem.CaptionItems != null)
-                        if (videoItem.CaptionItems is IList<CaptionAssetItemViewModel> list)
+                    if (videoItem.CaptionAssetItems != null)
+                        if (videoItem.CaptionAssetItems is IList<CaptionAssetItemViewModel> list)
                             list.Add(CaptionAssetItemViewModel.Empty);
                 }
             }
@@ -557,12 +557,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedVideoItem == null)
                 return;
 
-            var captionAssetItem = SelectedVideoItem.CaptionItems.SingleOrDefault(assetItem =>
+            var captionAssetItem = SelectedVideoItem.CaptionAssetItems.SingleOrDefault(assetItem =>
                 assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
 
             if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
             {
-                SelectedVideoItem.CaptionItems?.ToList().ForEach(asset =>
+                SelectedVideoItem.CaptionAssetItems?.ToList().ForEach(asset =>
                 {
                     if (!asset.Equals(captionAssetItem))
                         asset.Initialize();
@@ -580,7 +580,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (IsBusy)
                     return false;
 
-                if (SelectedVideoItem?.CaptionItems?.Any() ?? false)
+                if (SelectedVideoItem?.CaptionAssetItems?.Any() ?? false)
                 {
                     if (SelectedVideoItem?.SelectedCaptionAsset != null
                         && SelectedVideoItem.SelectedCaptionAsset.Source == null)

@@ -505,7 +505,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="#FFa0a8b6" />
+                            <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                            <Setter Property="Opacity" Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" Value="#10000000" />

@@ -221,8 +221,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_isLoading)
                 return;
-            if (SelectedPageNo == selectedPageNo)
-                return;
             await SearchAsync(Keyword, selectedPageNo - 1, true);
         }
 
@@ -310,6 +308,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task SearchCaptionAssetAsync(int pageIndex, Dictionary<string, string> conditions, bool isPaging)
         {
+            if (IsBusy)
+                return;
+
             ValidCancellationTokenSource();
             IsBusy = true;
             try
