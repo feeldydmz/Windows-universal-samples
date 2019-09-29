@@ -269,7 +269,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" TextBlock.FontSize="14">
-                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3" />
+                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3,3,15,3" />
                                         <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" />
                                     </StackPanel>
 

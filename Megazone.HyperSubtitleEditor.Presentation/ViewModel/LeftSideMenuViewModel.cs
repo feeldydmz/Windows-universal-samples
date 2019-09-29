@@ -1,12 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
+using Megazone.SubtitleEditor.Resources;
+using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -14,6 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class LeftSideMenuViewModel : ViewModelBase
     {
         private readonly RecentlyLoader _recentlyLoader;
+        private readonly IBrowser _browser;
         private ICommand _closeCommand;
         private bool _hasRegisteredMessageHandlers;
         private bool _isOpen;
@@ -24,8 +33,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<RecentlyItem> _recentlyItems;
         private ICommand _unloadCommand;
 
-        public LeftSideMenuViewModel(RecentlyLoader recentlyLoader)
+        public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader)
         {
+            _browser = browser;
             _recentlyLoader = recentlyLoader;
         }
 
@@ -59,6 +69,41 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand LoadRecentlyCommand
         {
             get { return _loadRecentlyCommand = _loadRecentlyCommand ?? new RelayCommand(LoadRecently); }
+        }
+
+        private ICommand _openRecentlyCommand;
+        public ICommand OpenRecentlyCommand
+        {
+            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
+        }
+
+        private void OpenRecently(RecentlyItem recentlyItem)
+        {
+            var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            if (subtitleVm.Tabs?.Any() ?? false)
+            {
+                if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
+                    // [resource]
+                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
+                            "편집 내용이 있습니다. 열려진 탭을 모두 닫고, 선택된 자막으로 오픈됩니다.\n계속 진행하시겠습니까?", MessageBoxButton.OKCancel)) !=
+                        MessageBoxResult.OK)
+                        return;
+
+                var removeTabs = subtitleVm.Tabs.ToList();
+                foreach (var tab in removeTabs)
+                    MessageCenter.Instance.Send(
+                        new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
+            }
+
+            // 선택된 video 정보를 메인 
+            var video = recentlyItem.Video;
+            var asset = recentlyItem.CaptionAsset;
+            var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
+
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
+                new CaptionOpenMessageParameter(video, asset, selectedCaptionList)));
+            
+            MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }
 
         private void LoadRecently()
