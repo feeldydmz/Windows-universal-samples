@@ -40,46 +40,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
-        //public async Task<Mpd> ParseMpdAsync(string url)
-        //{
-        //    //string url = renditionAsset.Urls?.FirstOrDefault();
-
-        //    //if (url.IsNullOrEmpty())
-        //    //    return renditionAsset;
-
-        //    string xmlString = await Task.Run(() => GetMpdContentAsync(url));
-
-        //    var serializer = new XmlSerializer(typeof(Mpd));
-          
-        //    using (TextReader reader = new StringReader(xmlString))
-        //    {
-        //        var obj = serializer.Deserialize(reader);
-
-        //        Mpd mpdObj = obj as Mpd;
-
-        //        //renditionAsset.Duration = Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration).TotalSeconds;
-
-
-
-        //        //Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration);
-        //        return mpdObj;
-        //    }
-        //}
-
-        //private async Task<string> GetMpdContentAsync(string url)
-        //{
-        //    string xmlStr = "";
-
-        //    using (var wc = new WebClient())
-        //    {
-        //        xmlStr = wc.DownloadString(url);
-        //    }
-        //    Debug.WriteLine(xmlStr);
-
-
-        //    return xmlStr;
-        //}
-        
         public Video OpenedVideo { get; private set; }
         public CaptionAsset OpenedCaptionAsset { get; private set; }
         public string UploadInputPath { get; private set; }
@@ -284,18 +244,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             {
                 if (renditionAsset.Elements == null) continue;
 
-                var resolutionDictionaryic = new Dictionary<int, string>();
+                var resolutionDictionary = new Dictionary<int, string>();
 
                 foreach (var element in renditionAsset.Elements)
                 {
                     if (element.VideoSetting == null || element.Urls == null) continue;
 
-                    resolutionDictionaryic.Add(element.VideoSetting.Height, element.Urls?.FirstOrDefault() ?? "");
+                    resolutionDictionary.Add(element.VideoSetting.Height, element.Urls?.FirstOrDefault() ?? "");
                 }
 
-                // renditionAsset Url이 비어있다면 resolutionDictionaryic의 첫번째 url로 채워준다
-                var baseUrl = renditionAsset.Urls?.FirstOrDefault() ?? resolutionDictionaryic.Values.FirstOrDefault()?? "";
-                resultDictionary.Add(new MediaKind(renditionAsset.Type, baseUrl), resolutionDictionaryic);
+                // renditionAsset Url이 비어있다면 resolutionDictionary의 첫번째 url로 채워준다
+                var baseUrl = renditionAsset.Urls?.FirstOrDefault() ?? resolutionDictionary.Values.FirstOrDefault()?? "";
+                resultDictionary.Add(new MediaKind(renditionAsset.Type, baseUrl), resolutionDictionary);
             }
 
             return resultDictionary;

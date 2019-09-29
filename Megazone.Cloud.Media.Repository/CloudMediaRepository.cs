@@ -205,9 +205,9 @@ namespace Megazone.Cloud.Media.Repository
 
         public CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.PUT)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.Asset.Id}", Method.PATCH)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
-                .AddHeader("projectId", request.ProjectId)
+                .AddHeader("projectId", request.ProjectId).AddParameter("version", request.Asset.Version)
                 .AddJsonString(request.Asset);
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)

@@ -148,6 +148,12 @@
                         </StackPanel.Resources>
 
                         <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.OpenCommand}" />
+                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <RadioButton.Triggers>
                                 <EventTrigger RoutedEvent="RadioButton.Checked">
                                     <BeginStoryboard Name="McmBoardOpenStoryboard">

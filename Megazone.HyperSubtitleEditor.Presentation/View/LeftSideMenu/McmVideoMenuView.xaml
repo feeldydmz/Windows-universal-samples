@@ -277,8 +277,8 @@
                 </Border>
 
                 <!--Caption 뷰-->
-                <!--Visibility="{Binding Path=IsShowCaption, Converter={StaticResource BooleanToVisibilityConverter}}"-->
-                <Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}" RenderTransformOrigin=".5,.5">
+                <Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}" RenderTransformOrigin=".5,.5"
+                        Visibility="{Binding Path=IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Border.RenderTransform>
                         <TranslateTransform X="400" />
                     </Border.RenderTransform>
@@ -297,8 +297,8 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Border>
-                                    <mz:ImageButton
-                                        ToolTip="{x:Static resources:Resource.CNT_BACKWARD}" Width="18" Height="14" Margin="0,0,6,0"
+                                    <mz:ImageButton x:Name="CaptionBackButton"
+                                        ToolTip="{x:Static resources:Resource.CNT_BACKWARD}" Width="18" Height="14" Margin="20,0,6,0"
                                         Command="{Binding Path=BackCommand}"
                                         NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_nor.png"
                                         PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_pres.png"

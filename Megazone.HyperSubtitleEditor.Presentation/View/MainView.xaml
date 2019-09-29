@@ -127,29 +127,25 @@
                     <MenuItem Header="내 컴퓨터" />
                 </MenuItem>-->
                 <Separator />
-                <MenuItem Header="내보내기">
-                    <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_WEBVTT}"
-                              Command="{StaticResource ExportAllTabsAsVttCommand}" />
-                    <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
-                              Command="{StaticResource ExportSelectedTabAsVttCommand}" />
-                    <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_EXCEL}"
-                              Command="{StaticResource ExportExcelFileCommand}" />
-                    <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_PROJECT}"
-                              Command="{StaticResource SaveGroupCommand}" Visibility="Collapsed" />
-                </MenuItem>
-
-                <MenuItem Header="가져오기">
-                    <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_VTT}"
-                              Command="{StaticResource OpenSubtitleCommand}" />
-                    <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
-                              Command="{StaticResource OpenExcelFileCommand}" />
-                    <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_PROJECT}"
-                              Command="{StaticResource LoadGroupFileCommand}" Visibility="Collapsed" />
-                </MenuItem>
-
-                <!--<Separator />
-                <MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" Visibility="Collapsed" />-->
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_WEBVTT}"
+                          Command="{StaticResource ExportAllTabsAsVttCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
+                          Command="{StaticResource ExportSelectedTabAsVttCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_EXCEL}"
+                          Command="{StaticResource ExportExcelFileCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_PROJECT}"
+                          Command="{StaticResource SaveGroupCommand}" Visibility="Collapsed" />
                 <Separator />
+                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_VTT}"
+                          Command="{StaticResource OpenSubtitleCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
+                          Command="{StaticResource OpenExcelFileCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_PROJECT}"
+                          Command="{StaticResource LoadGroupFileCommand}" Visibility="Collapsed" />
+                <Separator />
+
+                <!--<MenuItem Header="{x:Static resources:Resource.CNT_PUBLISH}" Command="{StaticResource DeployCommand}" Visibility="Collapsed" />
+                <Separator />-->
 
                 <MenuItem Header="{x:Static resources:Resource.CNT_DOWNLOAD_EXCEL_TEMPLET}"
                           Command="{StaticResource DownloadExcelTemplet}" />

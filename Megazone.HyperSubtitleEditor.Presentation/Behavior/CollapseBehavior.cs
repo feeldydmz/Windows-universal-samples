@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Message;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 {
@@ -25,6 +27,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             if (AssociatedObject != null)
             {
                 AssociatedObject.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
+                if (!newValue)
+                    MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
             }
         }
 
@@ -44,7 +48,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             Application.Current.MainWindow.LocationChanged -= MainWindow_LocationChanged;
             Application.Current.MainWindow.LocationChanged += MainWindow_LocationChanged;
             Application.Current.MainWindow.MouseDown -= MainWindow_MouseDown;
-            //Application.Current.MainWindow.MouseDown += MainWindow_MouseDown;
+            Application.Current.MainWindow.MouseDown += MainWindow_MouseDown;
         }
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)

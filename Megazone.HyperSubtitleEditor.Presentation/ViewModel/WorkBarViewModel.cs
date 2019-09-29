@@ -15,6 +15,9 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
+    // TODO: 기존 로직과 온라인에서 관리해야하는 롤이 추가되변서, 기능이 여기 저기 혼재 되어 있다. 정리 필요.
+    // 저장/오픈/게시등 데이터 관리 뷰모델.
+    // SubtitleViewModel은 편집 관련 
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class WorkBarViewModel : ViewModelBase
     {
@@ -25,19 +28,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _editAssetNameCommand;
         private bool _hasData;
-
         private bool _isOnlineData;
-
         private bool _isOpenVideoInfoPopup;
-
         private ICommand _loadCommand;
-
         private ICommand _openVideoInfoPopupCommand;
-
         private CaptionAssetItemViewModel _selectedCaptionAssetItem;
-
         private ICommand _unloadCommand;
-
         private VideoItemViewModel _videoItem;
 
         public WorkBarViewModel(ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel,

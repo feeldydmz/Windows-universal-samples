@@ -22,6 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class LeftSideMenuViewModel : ViewModelBase
     {
         private readonly RecentlyLoader _recentlyLoader;
+        private readonly VideoListViewModel _videoList;
         private readonly IBrowser _browser;
         private ICommand _closeCommand;
         private bool _hasRegisteredMessageHandlers;
@@ -33,10 +34,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private IEnumerable<RecentlyItem> _recentlyItems;
         private ICommand _unloadCommand;
 
-        public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader)
+        public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader, VideoListViewModel videoList)
         {
             _browser = browser;
             _recentlyLoader = recentlyLoader;
+            _videoList = videoList;
         }
 
         public bool IsOpen
@@ -153,6 +155,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void Close()
         {
             IsOpen = false;
+            _videoList.Close();
         }
     }
 }

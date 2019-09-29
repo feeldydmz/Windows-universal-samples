@@ -38,6 +38,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _captionAssetSectionChangedCommand;
         private ICommand _captionSelectionChangedCommand;
+        private ICommand _closeCommand;
         private ICommand _confirmCommand;
 
         private TimeSpan _durationEndTime;
@@ -59,7 +60,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isLoading;
 
         private bool _isNextButtonVisible = true;
-
+        private bool _isOpen;
         private bool _isShowCaption;
 
         private string _keyword;
@@ -69,6 +70,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadCommand;
 
         private ICommand _nextStepCommand;
+
+        private ICommand _openCommand;
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -268,9 +271,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isShowCaption, value);
         }
 
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set => Set(ref _isOpen, value);
+        }
 
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
+
+        public ICommand OpenCommand
+        {
+            get { return _openCommand = _openCommand ?? new RelayCommand(Open); }
+        }
+
+        public ICommand CloseCommand
+        {
+            get { return _closeCommand = _closeCommand ?? new RelayCommand(Close); }
+        }
 
         private async void AddData()
         {
@@ -370,6 +388,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _isInitialized = true;
         }
 
+        private void Open()
+        {
+            IsOpen = true;
+        }
+        
+        public void Close()
+        {
+            IsOpen = false;
+            CloseAction?.Invoke();
+        }
+
         private async void Load()
         {
             if (!_isInitialized)
@@ -381,6 +410,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _isLoading = true;
             await SearchAsync(Keyword, 0);
             _isLoading = false;
+            IsOpen = true;
         }
 
         private bool CanLoadCaption(VideoItemViewModel videoItem)
