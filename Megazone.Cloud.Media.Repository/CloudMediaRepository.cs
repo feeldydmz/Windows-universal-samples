@@ -159,7 +159,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public IEnumerable<Language> GetLanguages(LanguageRequest request)
         {
-            var restRequest = new RestRequest("v1/stages/mz-cm-v1/languages", Method.GET)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/languages", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId);
 

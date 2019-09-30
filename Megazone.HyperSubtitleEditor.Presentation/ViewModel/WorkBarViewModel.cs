@@ -8,6 +8,7 @@ using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
@@ -21,24 +22,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class WorkBarViewModel : ViewModelBase
     {
+        private readonly IBrowser _browser;
         private readonly ICloudMediaService _cloudMediaService;
         private readonly ILogger _logger;
         private readonly RecentlyLoader _recentlyLoader;
         private readonly SignInViewModel _signInViewModel;
 
-        private ICommand _editAssetNameCommand;
-        private bool _hasData;
+        private ICommand _openAssetEditorCommand;
+        private bool _hasWorkData;
         private bool _isOnlineData;
         private bool _isOpenVideoInfoPopup;
         private ICommand _loadCommand;
         private ICommand _openVideoInfoPopupCommand;
-        private CaptionAssetItemViewModel _selectedCaptionAssetItem;
+        private CaptionAssetItemViewModel _captionAssetItem;
         private ICommand _unloadCommand;
         private VideoItemViewModel _videoItem;
 
-        public WorkBarViewModel(ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel,
+        public WorkBarViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel,
             RecentlyLoader recentlyLoader)
         {
+            _browser = browser;
             _cloudMediaService = cloudMediaService;
             _logger = logger;
             _signInViewModel = signInViewModel;
@@ -58,22 +61,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isOnlineData, value);
         }
 
-        public bool HasData
+        // Video / Asset 데이터 유무.
+        public bool HasWorkData
         {
-            get => _hasData;
-            set => Set(ref _hasData, value);
+            get => _hasWorkData;
+            set => Set(ref _hasWorkData, value);
         }
 
+        // 작업대상인 Video 정보.
         public VideoItemViewModel VideoItem
         {
             get => _videoItem;
             set => Set(ref _videoItem, value);
         }
 
-        public CaptionAssetItemViewModel SelectedCaptionAssetItem
+        // 작업대상인 Asset 정보.
+        public CaptionAssetItemViewModel CaptionAssetItem
         {
-            get => _selectedCaptionAssetItem;
-            set => Set(ref _selectedCaptionAssetItem, value);
+            get => _captionAssetItem;
+            set => Set(ref _captionAssetItem, value);
         }
 
         public ICommand LoadCommand
@@ -95,14 +101,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public ICommand EditAssetNameCommand
+        public ICommand OpenAssetEditorCommand
         {
-            get { return _editAssetNameCommand = _editAssetNameCommand ?? new RelayCommand(EditAssetName); }
+            get { return _openAssetEditorCommand = _openAssetEditorCommand ?? new RelayCommand(OpenAssetEditor); }
         }
 
-        private void EditAssetName()
+        private void OpenAssetEditor()
         {
-            // 에셋 이름 편집창 띄우기.
+            _browser.Main.ShowAssetEditorDialog(false, CaptionAssetItem?.Name);
         }
 
         private void Load()
@@ -125,14 +131,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenMessage>(OnCaptionOpenRequest);
         }
 
+        private void Initialize()
+        {
+            IsOnlineData = false;
+            HasWorkData = false;
+            VideoItem = null;
+            CaptionAssetItem = null;
+        }
+
         private async void OnCaptionOpenRequest(CloudMedia.CaptionOpenMessage message)
         {
             if (message.Param?.Video == null)
                 return;
 
             // 초기화
-            IsOnlineData = false;
-            HasData = false;
+            Initialize();
 
             try
             {
@@ -161,16 +174,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         new GetAssetParameter(authorization, stageId, projectId, assetId), CancellationToken.None);
 
                 if (captionAsset != null)
-                    SelectedCaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
 
-                HasData = video != null || captionAsset != null;
+                HasWorkData = video != null || captionAsset != null;
                 IsOnlineData = true;
                 _recentlyLoader.Save(new RecentlyItem.OnlineRecentlyCreator().SetVideo(video)
                     .SetCaptionAsset(captionAsset).SetCaptions(captions).Create());
             }
             catch (Exception e)
             {
-                HasData = false;
+                HasWorkData = false;
                 _logger.Error.Write(e);
             }
         }

@@ -235,6 +235,7 @@
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AssetEditorViewModel.cs" />
     <Compile Include="ViewModel\Data\RecentlyItem.cs" />
     <Compile Include="ViewModel\RecentlyLoader.cs" />
     <Compile Include="Serializable\SubtitleGroup.cs" />
@@ -294,6 +295,9 @@
     </Compile>
     <Compile Include="View\ApplicationInformationWindow.xaml.cs">
       <DependentUpon>ApplicationInformationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AssetEditorView.xaml.cs">
+      <DependentUpon>AssetEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CaptionListView.xaml.cs">
       <DependentUpon>CaptionListView.xaml</DependentUpon>
@@ -512,6 +516,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ApplicationInformationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AssetEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

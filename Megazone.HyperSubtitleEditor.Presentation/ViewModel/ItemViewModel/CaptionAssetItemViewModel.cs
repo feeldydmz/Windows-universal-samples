@@ -22,7 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private CaptionAssetItemViewModel()
         {
-            Name = "No Caption (Only Video select.)";
+            Name = "캡션 새로 만들기";
         }
 
         public CaptionAssetItemViewModel(CaptionAsset asset)

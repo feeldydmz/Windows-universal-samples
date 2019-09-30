@@ -479,7 +479,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     .ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
-                new CaptionOpenMessageParameter(null, asset, selectedCaptionList)));
+                new CaptionOpenMessageParameter(null, asset, selectedCaptionList, true)));
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }

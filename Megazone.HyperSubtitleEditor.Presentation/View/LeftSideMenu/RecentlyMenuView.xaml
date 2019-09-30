@@ -29,7 +29,6 @@
     </UserControl.Resources>
 
     <Grid>
-
         <Border Margin="0, 20, 0, 20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -37,17 +36,13 @@
                     <RowDefinition Height="20" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-
-
                 <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
-                <ItemsControl x:Name="RecentlyItemControl" 
-                              Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
+                <ItemsControl x:Name="RecentlyItemControl" Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type item:RecentlyItem}">
-                            <Grid>
-                                <Button 
+                            <Button Width="350"
                                 Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}" 
                                 CommandParameter="{Binding}">
                                 <Button.Style>
@@ -55,8 +50,7 @@
                                         <Setter Property="UseLayoutRounding" Value="True" />
                                         <Setter Property="SnapsToDevicePixels" Value="True" />
                                         <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                        <Setter Property="Margin" Value="0,5" />
+                                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
                                         <Setter Property="Padding" Value="0" />
                                         <Setter Property="Background" Value="Transparent" />
                                         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -79,7 +73,7 @@
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="#FFa0a8b6" />
                                                             <Setter Property="Background" Value="#e7e9ee" />
-                                                            <Setter Property="Opacity" Value="0.7" />
+                                                            <!--<Setter Property="Opacity" Value="0.7" />-->
                                                         </Trigger>
                                                         <Trigger Property="IsPressed" Value="True">
                                                             <Setter Property="Background" Value="#10000000" />
@@ -102,8 +96,9 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <!--<RowDefinition Height="*" />-->
                                     </Grid.RowDefinitions>
 
                                     <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
@@ -133,15 +128,9 @@
 
                                     <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=CaptionAsset.Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=CaptionAsset.Id, StringFormat={}({0})}" VerticalAlignment="Center"/>
+                                    <!--<TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Path=CreatedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />-->
                                 </Grid>
                             </Button>
-                                
-                            </Grid>
-                            <DataTemplate.Triggers >
-                                <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=HasItems}" Value = "true">
-                                    <Setter Property="Visibility" Value="Collapsed" TargetName="EmptyListBlock"/>
-                                </DataTrigger>-->
-                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -156,7 +145,5 @@
                            Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
             </Grid>
         </Border>
-
-        
     </Grid>
 </UserControl>

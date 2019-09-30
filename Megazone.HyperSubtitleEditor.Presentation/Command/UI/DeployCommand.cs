@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
@@ -21,7 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public bool CanExecute(object parameter)
         {
-            return (_subtitleViewModel.WorkContext?.CanDeploy() ?? false) && _subtitleViewModel.HasTab;
+            return _subtitleViewModel.HasTab && _subtitleViewModel.Tabs.Any(tab => tab.CheckDirty());
         }
 
         public async void Execute(object parameter)

@@ -674,8 +674,7 @@
                     </Button.Triggers>
                 </Button>-->
 
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="{Binding Path=IsConfirmButtonVisible}" 
-                        
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="true" 
                         Command="{Binding ConfirmCommand}" />
             </Grid>
         </Border>
