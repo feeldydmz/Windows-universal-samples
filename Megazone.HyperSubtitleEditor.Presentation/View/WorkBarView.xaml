@@ -36,36 +36,40 @@
     </UserControl.Resources>
     <Grid>
         <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#262f4d" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="14" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="1" Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                <TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" />
+        <Grid Margin="14, 0, 0, 0">
+            <Grid Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                <TextBlock Text="불러오는 중..." VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
             </Grid>
-            <Grid Grid.Column="1" Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Grid Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="11" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" Width="21" Height="15"/>
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0"
-                               DataContext="{Binding Path=VideoItem}">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} ({1})">
-                                <Binding Path="Name" />
-                                <Binding Path="Id" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
 
-                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                            Command="{Binding Path=OpenVideoInfoPopupCommand}" Visibility="Collapsed">
+                <Grid Grid.Column="0" Visibility="{Binding Path=VideoItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="11" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" Width="21" Height="15"/>
+
+                    <Grid Grid.Column="2" Margin="0,0,5,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontWeight="Bold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="400"
+                                   DataContext="{Binding Path=VideoItem}" Text="{Binding Path=Name}" />
+                        <TextBlock Grid.Column="1" FontWeight="Bold" VerticalAlignment="Center" Margin="3,0,0,0"
+                                   DataContext="{Binding Path=VideoItem}" Text="{Binding Path=Id, StringFormat={}({0})}" /> 
+                    </Grid>
+                    <Button Grid.Column="3" Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenVideoInfoPopupCommand}" Visibility="Collapsed">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_video_info_nor.png" Width="15" Height="15" />
                             <Popup IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=WorkBar.IsOpenVideoInfoPopup}" StaysOpen="False">
@@ -86,25 +90,32 @@
                             </Popup>
                         </Grid>
                     </Button>
-                    <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White" />
-                    <!--<Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>-->
-                </StackPanel>
-                <StackPanel Grid.Column="3" Orientation="Horizontal">
-                    <TextBlock DataContext="{Binding Path=CaptionAssetItem}" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} ({1})" TargetNullValue="Untitle asset">
-                                <Binding Path="Name" />
-                                <Binding Path="Id" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenAssetEditorCommand}">
+                    <TextBlock Grid.Column="4" Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White" 
+                               Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
+                </Grid>
+
+                <Grid Grid.Column="1" Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold" 
+                               DataContext="{Binding Path=CaptionAssetItem}" 
+                               Text="{Binding Path=Name, TargetNullValue=Untitle, FallbackValue=Untitle}" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold" 
+                               DataContext="{Binding Path=CaptionAssetItem}" 
+                               Text="{Binding Path=Id, StringFormat={}({0})}" />
+                    <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenAssetEditorCommand}" 
+                            Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" Margin="0,-2,0,-2">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png" Width="15" Height="15" />
                         </Grid>
                     </Button>
-                </StackPanel>
+                </Grid>
+
             </Grid>
+           
         </Grid>
     </Grid>
 </UserControl>

@@ -68,16 +68,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public SubtitleTabItemViewModel Tab { get; }
         }
 
-        internal class DeployRequestedMessage : MessageBase
-        {
-            public DeployRequestedMessage(object sender, DeployRequestedMessageParameter param) : base(sender)
-            {
-                Param = param;
-            }
-
-            public DeployRequestedMessageParameter Param { get; }
-        }
-
         internal class FileOpenedMessage : MessageBase
         {
             public FileOpenedMessage(object sender, FileOpenedMessageParameter param) : base(sender)

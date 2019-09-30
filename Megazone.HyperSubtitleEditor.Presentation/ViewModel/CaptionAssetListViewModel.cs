@@ -227,10 +227,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnCaptionAssetSectionChanged()
         {
             SelectedCaptionAssetItem?.SelectAll();
-
-            foreach (var captionAssetItem in CaptionAssetItems)
-                if (!captionAssetItem.Equals(SelectedCaptionAssetItem))
-                    captionAssetItem.Initialize();
+            if (CaptionAssetItems != null)
+                foreach (var captionAssetItem in CaptionAssetItems)
+                    if (!captionAssetItem.Equals(SelectedCaptionAssetItem))
+                        captionAssetItem.Initialize();
 
             CommandManager.InvalidateRequerySuggested();
         }
@@ -478,7 +478,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected).Select(itemVm => itemVm.Source)
                     .ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(null, asset, selectedCaptionList, true)));
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));

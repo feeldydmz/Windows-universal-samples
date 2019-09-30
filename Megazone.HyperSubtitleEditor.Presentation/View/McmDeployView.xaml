@@ -10,7 +10,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              Width="534" Height="328"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy}">
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy}"
+             x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
@@ -22,6 +23,10 @@
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -63,7 +68,8 @@
                 </Grid.RowDefinitions>
 
                 <!--Video Info-->
-                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}">
+                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}"
+                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20" />
@@ -88,7 +94,8 @@
                 </Border>
 
                 <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
-                           Height="1" VerticalAlignment="Bottom" />
+                           Height="1" VerticalAlignment="Bottom" 
+                           Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}"/>
 
                 <!--CaptionAsset Info-->
                 <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">

@@ -11,8 +11,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=AssetEditor}"
-             Width="590" Height="200"
-             x:Name="Root">
+             Width="450" Height="155"
+             x:Name="Root"
+             Loaded="AssetEditorView_OnLoaded"
+             Unloaded="AssetEditorView_OnUnloaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
@@ -37,13 +39,14 @@
         </Grid.RowDefinitions>
 
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
-            <Grid Background="{StaticResource Brush_CommonBackground}">
+            <Grid Background="{StaticResource Brush_CommonBackground}" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition />
+                    <RowDefinition Height="11"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="에셋 이름" />
-                <TextBox Grid.Row="1" Text="{Binding Path=AssetName}" />
+                <TextBox x:Name="AssetNameTextBox" Grid.Row="2" Text="{Binding Path=AssetName}" />
             </Grid>
         </Border>
 

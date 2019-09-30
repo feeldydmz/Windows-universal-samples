@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
@@ -8,6 +11,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private CaptionAssetItemViewModel _captionAssetItem;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
+
+        private bool _hasVideo;
         private string _url;
         private VideoItemViewModel _videoItem;
 
@@ -33,6 +38,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _captionItems;
             set => Set(ref _captionItems, value);
+        }
+
+        public bool HasVideo
+        {
+            get => _hasVideo;
+            set => Set(ref _hasVideo, value);
+        }
+
+        public void Update(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
+        {
+            var captionItems = captions?.Select(caption => new CaptionElementItemViewModel(caption)).ToList();
+
+            VideoItem = video != null ? new VideoItemViewModel(video) : null;
+            CaptionAssetItem = captionAsset != null ? new CaptionAssetItemViewModel(captionAsset) : null;
+            CaptionItems = captionItems;
+            Url = linkUrl;
+
+            HasVideo = video != null;
         }
     }
 }

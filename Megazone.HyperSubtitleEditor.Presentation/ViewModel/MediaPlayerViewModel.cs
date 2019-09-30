@@ -217,8 +217,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        // TODO : Video 를 받아 처리하도록 개선 필요.
         public bool IsLocalFile { get; set; }
-
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;

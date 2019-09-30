@@ -17,6 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         private readonly WorkBarViewModel _workBar;
         private readonly IBrowser _browser;
         private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly WorkBarViewModel _workBarViewModel;
 
         public SaveCommand()
         {
@@ -24,6 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             _workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            _workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
         }
 
         public bool CanExecute(object parameter)
@@ -38,9 +40,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             {
                 // 게시하기.
                 _browser.Main.LoadingManager.Show();
-                var uploadInputPath = await _subtitleViewModel.WorkContext.GetUploadInputPathAsync();
+                var uploadInputPath = await _workBarViewModel.GetUploadInputPathAsync();
                 _browser.Main.LoadingManager.Hide();
-                _subtitleViewModel.WorkContext.SetUploadInputPath(uploadInputPath);
+                _workBarViewModel.SetUploadInputPath(uploadInputPath);
                 if (string.IsNullOrEmpty(uploadInputPath))
                 {
                     // 메시지 처리.
@@ -52,14 +54,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     return;
                 }
 
-                if (string.IsNullOrEmpty(_subtitleViewModel.WorkContext.OpenedCaptionAsset?.Id))
+                if (string.IsNullOrEmpty(_workBarViewModel.CaptionAssetItem?.Id))
                     _browser.Main.ShowMcmDeployAndAssetCreateDialog();
                 else
                     _browser.Main.ShowMcmDeployDialog();
             }
             else
             {
-                MessageCenter.Instance.Send(new Subtitle.SaveAsMessage(this));
+                // 로컬 파일로 새로 생성할 경우,
+                _browser.Main.ShowMcmDeployAndAssetCreateDialog();
+
+                //MessageCenter.Instance.Send(new Subtitle.SaveAsMessage(this));
             }
         }
 

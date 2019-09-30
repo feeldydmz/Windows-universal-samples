@@ -24,6 +24,8 @@
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -64,7 +66,8 @@
                 </Grid.RowDefinitions>
 
                 <!--Video-->
-                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}">
+                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}"
+                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20" />
@@ -89,7 +92,8 @@
                 </Border>
 
                 <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
-                           Height="1" VerticalAlignment="Bottom" />
+                           Height="1" VerticalAlignment="Bottom" 
+                           Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}"/>
 
                 <!--CaptionAsset Info-->
                 <Grid Grid.Row="1">

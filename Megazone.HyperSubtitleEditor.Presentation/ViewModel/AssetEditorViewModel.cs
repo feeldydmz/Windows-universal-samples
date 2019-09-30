@@ -1,7 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Message;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -11,9 +15,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _assetName;
 
         private ICommand _confirmCommand;
-
         private bool _isBusy = false;
         private ICommand _loadCommand;
+
+        public CaptionAsset CaptionAsset { get; set; }
 
         public string AssetName
         {
@@ -37,6 +42,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _confirmCommand = _confirmCommand ?? new RelayCommand(Confirm, CanConfirm); }
         }
 
+        public Action CloseAction { get; set; }
+
         private bool CanConfirm()
         {
             return true;
@@ -44,10 +51,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Confirm()
         {
+            MessageCenter.Instance.Send(new CloudMedia.CaptionAssetRenameRequestedMessage(this, CaptionAsset, AssetName));
+            CloseAction?.Invoke();
         }
 
         private void Load()
         {
+            AssetName = CaptionAsset?.Name;
         }
     }
 }

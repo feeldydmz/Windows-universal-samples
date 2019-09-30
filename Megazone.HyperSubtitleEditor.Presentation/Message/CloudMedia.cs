@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 
@@ -6,9 +7,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 {
     internal static class CloudMedia
     {
-        internal class CaptionOpenMessage : MessageBase
+        internal class CaptionOpenRequestedMessage : MessageBase
         {
-            public CaptionOpenMessage(object sender, CaptionOpenMessageParameter param) : base(sender)
+            public CaptionOpenRequestedMessage(object sender, CaptionOpenMessageParameter param) : base(sender)
             {
                 Param = param;
             }
@@ -16,14 +17,37 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public CaptionOpenMessageParameter Param { get; }
         }
 
-        internal class VideoOpenMessage : MessageBase
+        internal class VideoOpenRequestedMessage : MessageBase
         {
-            public VideoOpenMessage(object sender, Megazone.Cloud.Media.Domain.Video video) : base(sender)
+            public VideoOpenRequestedMessage(object sender, Video video) : base(sender)
             {
                 VideoParam = video;
             }
 
-            public Megazone.Cloud.Media.Domain.Video VideoParam { get; }
+            public Video VideoParam { get; }
+        }
+
+        internal class DeployRequestedMessage : MessageBase
+        {
+            public DeployRequestedMessage(object sender, DeployRequestedMessageParameter param) : base(sender)
+            {
+                Param = param;
+            }
+
+            public DeployRequestedMessageParameter Param { get; }
+        }
+
+        internal class CaptionAssetRenameRequestedMessage : MessageBase
+        {
+            public CaptionAssetRenameRequestedMessage(object sender, CaptionAsset captionAsset, string name) :
+                base(sender)
+            {
+                CaptionAsset = captionAsset;
+                Name = name;
+            }
+
+            public CaptionAsset CaptionAsset { get; }
+            public string Name { get; }
         }
     }
 }

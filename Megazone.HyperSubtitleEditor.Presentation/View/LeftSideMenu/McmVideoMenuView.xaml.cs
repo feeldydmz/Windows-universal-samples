@@ -27,6 +27,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
                 };
             }
         }
-
     }
 }
