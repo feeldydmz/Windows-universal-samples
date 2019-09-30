@@ -261,14 +261,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
             SelectedPageNo = 1;
-
-            if (!_languageLoader.Languages?.Any() ?? true)
-                await _languageLoader.LoadAsync();
-
-            var languageList = _languageLoader.Languages.ToList();
-            languageList.Insert(0, new LanguageItem(null));
-            Languages = languageList;
-
             _isInitialized = true;
         }
 
@@ -281,6 +273,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
 
             _isLoading = true;
+
+            if (!_languageLoader.Languages?.Any() ?? true)
+                await _languageLoader.LoadAsync();
+
+            var languageList = _languageLoader.Languages.ToList();
+            languageList.Insert(0, new LanguageItem(null));
+            Languages = languageList;
+
             await SearchAsync(Keyword, 0);
             _isLoading = false;
         }

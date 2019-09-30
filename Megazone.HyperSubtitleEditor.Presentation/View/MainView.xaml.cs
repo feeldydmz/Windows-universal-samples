@@ -232,7 +232,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_PUBLISH, // TODO: 다국어
+                Title = Resource.CNT_SAVE, // TODO: 다국어
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
@@ -247,7 +247,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_PUBLISH, // TODO: 다국어
+                Title = Resource.CNT_SAVE, // TODO: 다국어
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
@@ -265,7 +265,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_PUBLISH_CONFIRM, // TODO: 다국어
+                Title = Resource.CNT_CONFIRM, // TODO: 다국어
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,
@@ -324,9 +324,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             if (subtitle.HasTab && subtitle.Tabs.Any(tab=>tab.CheckDirty()))
             {
                 //[resource]
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter("알림",
-                        "편집된 데이터가 있습니다. 저장하지 않는 데이터는 소실됩니다.\n종료하시겠습니까?",
-                        MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
+                var message = "편집 내용이 있습니다. \n작업 중인 자막을 저장하지 않으면 작업된 정보가 모두 사라집니다.\n계속 진행하시겠습니까?";
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter("알림", message, MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
             }
         }
