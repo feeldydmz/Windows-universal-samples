@@ -59,7 +59,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         {
             if (!(sender is ProjectSelectView view)) return;
 
-            var itemsControl = view.FindName("StageItemControl") as ItemsControl;
+            //var itemsControl = view.FindName("StageItemControl") as ItemsControl;
+            var itemsControl = view.FindName("RootStackPanel") as StackPanel;
 
             var itemsControlWidth = itemsControl?.ActualWidth + StageMarginWidth;
 

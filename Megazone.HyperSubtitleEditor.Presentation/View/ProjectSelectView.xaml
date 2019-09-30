@@ -246,24 +246,15 @@
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="88" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="88" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal"
-                                HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBlock Foreground="White" 
-                                   FontWeight="Bold"
-                                   Text="{x:Static resources:Resource.CNT_PROJECT_SELECT_SAGE_TOTAL}"/>
-                        <TextBlock Foreground="#5fa5f0" 
-                                   Margin="5,0,0,0" 
-                                   FontWeight="Bold" 
-                                   Text="{Binding StageTotal}"/>
-                    </StackPanel>
+                    
+                    
                     <Button Grid.Row="1"
                             Grid.Column="0"
                             Background="{DynamicResource Brush_Button_Background_Base_Color}"
@@ -281,47 +272,62 @@
                             Visibility="{Binding Path=IsRightNavigateButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding RightSlideNavigateCommand}" />
 
-                    <ItemsControl x:Name="StageItemControl"
-                                  Grid.Row="1"
-                                  Grid.Column="1"
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <StackPanel x:Name="RootStackPanel" Height="Auto" Width="Auto" HorizontalAlignment="Stretch"></StackPanel>
+                        
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <!--Stage Total Count-->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="12,5,10,5"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Foreground="White" 
+                                           FontWeight="Bold"
+                                           Text="{x:Static resources:Resource.CNT_PROJECT_SELECT_SAGE_TOTAL}"/>
+                                <TextBlock Foreground="#5fa5f0" 
+                                           Margin="5,0,0,0" 
+                                           FontWeight="Bold" 
+                                           Text="{Binding StageTotal}"/>
+                            </StackPanel>
+
+                            <ItemsControl x:Name="StageItemControl"
                                   ItemsSource="{Binding Path=CurrentPageStageItems}"
                                   VerticalAlignment="Top" 
-                                  HorizontalAlignment="Stretch">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"
+                                  HorizontalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel x:Name="StageStackPanel" Orientation="Horizontal"
                                             VerticalAlignment="Top"
                                             HorizontalAlignment="Center"
                                             MaxHeight="300" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
-                                <Grid Margin="15,0,15,0" HorizontalAlignment="Center">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="72" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Border x:Name="Stage_Title_Border"
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type itemVm:StageItemViewModel}">
+                                        <Grid Margin="15,0,15,0" HorizontalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="72" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Border x:Name="Stage_Title_Border"
                                             BorderThickness="1"
                                             BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
-                                            <Grid HorizontalAlignment="Center" 
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                                                    <Grid HorizontalAlignment="Center" 
                                                   VerticalAlignment="Center"
                                                   Margin="18,13,0,12">
-                                                <Ellipse x:Name="Stage_Symbol_Ellipse"
+                                                        <Ellipse x:Name="Stage_Symbol_Ellipse"
                                                          Fill="{StaticResource Brush_ListBoxItem_Stage_Symbol_Color}"
                                                          Height="45"
                                                          Width="45" />
-                                                <TextBlock x:Name="Stage_Symbol_Text"
+                                                        <TextBlock x:Name="Stage_Symbol_Text"
                                                            Text="{Binding Path=SymbolTitle}"
                                                            Margin="1,0,0,2"
                                                            HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
                                                            Foreground="{StaticResource Brush_ListBoxItem_Stage_Symbol_Text_Color}"
                                                            FontSize="22" />
-                                            </Grid>
-                                            <TextBlock Grid.Column="1"
+                                                    </Grid>
+                                                    <TextBlock Grid.Column="1"
                                                        x:Name="Stage_Name_Text"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Stretch"
@@ -330,11 +336,11 @@
                                                        FontWeight="Bold"
                                                        Foreground="{StaticResource Brush_ListBoxItem_Stage_Title_Color}"
                                                        Text="{Binding Path=Name}" />
-                                        </StackPanel>
-                                    </Border>
-                                    <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
+                                                </StackPanel>
+                                            </Border>
+                                            <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
                                             BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
-                                        <ListBox x:Name="ProjectListBox"
+                                                <ListBox x:Name="ProjectListBox"
                                                  ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -343,61 +349,62 @@
                                                  SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}"
                                                  Uid="{Binding Id}"
                                                  Width="340">
-                                            <i:Interaction.Behaviors>
-                                                <mz:ListBoxSelectionChangedCommandBehavior 
+                                                    <i:Interaction.Behaviors>
+                                                        <mz:ListBoxSelectionChangedCommandBehavior 
                                                     Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
                                                     CommandParameter="{Binding Path=SelectedProject}" />
-                                                <behavior:ListboxItemDoubleClickBehavior
+                                                        <behavior:ListboxItemDoubleClickBehavior
                                                     Command="{Binding Path=DataContext.StartProjectCommand, ElementName=Root}"/>
-                                            </i:Interaction.Behaviors>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
-                                                    <DockPanel HorizontalAlignment="Stretch">
-                                                        <TextBlock Text="{Binding Path=Name}"
+                                                    </i:Interaction.Behaviors>
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
+                                                            <DockPanel HorizontalAlignment="Stretch">
+                                                                <TextBlock Text="{Binding Path=Name}"
                                                                    FontWeight="Bold"
                                                                    Margin="15,0,0,0"
                                                                    HorizontalAlignment="Left"
                                                                    VerticalAlignment="Bottom"
                                                                    LineHeight="14" />
-                                                        <TextBlock Text="/"
+                                                                <TextBlock Text="/"
                                                                    Margin="5,0,0,0" />
-                                                        <TextBlock Text="{Binding Path=ProjectId}"
+                                                                <TextBlock Text="{Binding Path=ProjectId}"
                                                                    Margin="5,0,0,0"
                                                                    HorizontalAlignment="Left"
                                                                    VerticalAlignment="Bottom"
                                                                    LineHeight="14"
                                                                    FontSize="11" />
-                                                        <Image x:Name="Check_Image"
+                                                                <Image x:Name="Check_Image"
                                                                Stretch="None"
                                                                Visibility="{Binding Path=IsFocused, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                                                                Margin="0,0,20,0"
                                                                HorizontalAlignment="Right"
                                                                VerticalAlignment="Center"
                                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Border>
-                                </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource NullToFalseNTrue}}" Value="True">
-                                        <Setter TargetName="Stage_Title_Border" Property="BorderBrush" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
-                                        <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
-                                        <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}" Value="{x:Null}">
-                                        <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
-                                        <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
-                                        <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
-                                        <Setter TargetName="Stage_Name_Text" Property="Foreground" Value="{StaticResource Brush_PointColor}" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-
+                                                            </DockPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Border>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource NullToFalseNTrue}}" Value="True">
+                                                <Setter TargetName="Stage_Title_Border" Property="BorderBrush" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}" Value="{x:Null}">
+                                                <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
+                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                                <Setter TargetName="Stage_Name_Text" Property="Foreground" Value="{StaticResource Brush_PointColor}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+                    
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
