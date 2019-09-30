@@ -90,7 +90,7 @@
                                Placement="Bottom">
                             <Border x:Name="shadow" MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                     MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                                <Border x:Name="dropDownBorder" BorderBrush="Red" BorderThickness="1">
+                                <Border x:Name="dropDownBorder" BorderBrush="#FF6e737d" BorderThickness="1">
                                     <ScrollViewer x:Name="DropDownScrollViewer" Background="#FFf0f0f0">
                                         <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled" Margin="3">
                                             <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0"

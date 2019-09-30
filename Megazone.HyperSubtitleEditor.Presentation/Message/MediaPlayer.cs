@@ -34,12 +34,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class OpenMediaFromUrlMessage : MessageBase
         {
-            public OpenMediaFromUrlMessage(object sender, string url) : base(sender)
+            public OpenMediaFromUrlMessage(object sender, string url, bool isLocal) : base(sender)
             {
                 Url = url;
+                IsLocal = isLocal;
             }
 
             public string Url { get; }
+
+            public bool IsLocal { get; }
         }
     }
 }

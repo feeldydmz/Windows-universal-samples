@@ -499,12 +499,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenUrl()
         {
-            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlPath));
+            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlPath, false));
         }
 
         private void OpenFilePath()
         {
-            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, FilePath));
+            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, FilePath, true));
         }
 
         private void ValidCancellationTokenSource()

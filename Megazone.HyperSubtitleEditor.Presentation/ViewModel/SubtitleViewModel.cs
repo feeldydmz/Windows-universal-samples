@@ -804,8 +804,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnOpenMediaFromFilePathRequested(MediaPlayer.OpenMediaFromUrlMessage message)
         {
-            MediaPlayer.InitMedia(message.Url);
-            MediaPlayer.OpenMedia(message.Url, false);
+            MediaPlayer.InitMedia(message.Url, message.IsLocal);
+            //MediaPlayer.OpenMedia(message.Url, false);
         }
 
         private void OnOpenLocalMediaRequested(MediaPlayer.OpenLocalMediaMessage message)
