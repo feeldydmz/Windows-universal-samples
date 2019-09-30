@@ -25,7 +25,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
         public bool IsPreferred { get; }
         public string Language { get; }
         public string Country { get; }
-        public string Kind { get; }
+        public string Kind { get; set; }
         public string Label { get; }
         public string Url { get; set; }
         public string MimeType { get; }
