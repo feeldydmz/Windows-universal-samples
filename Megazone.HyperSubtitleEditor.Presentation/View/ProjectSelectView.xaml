@@ -40,12 +40,16 @@
 
     <Grid Background="{StaticResource Brush_ProjectSelect_Background_Color}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,6,20,6" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Border Grid.Row="0" 
+                    Background="#2f353e"
+                    HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,6,20,6"
                         DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
                         TextBlock.Foreground="Azure" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,0,11,0" VerticalAlignment="Center">
@@ -68,13 +72,13 @@
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"
                     MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_hov.png"
                     DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_dis.png"
-                    Style="{StaticResource Style_TransparentImageButton}" Width="16" Height="14" />
+                    Style="{StaticResource Style_TransparentButton}" Width="16" Height="14" />
             </StackPanel>
 
-            <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
+            <!--<TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_JOB_ID}, StringFormat='{}{0} : '}"
                        Foreground="#FF569af6" FontWeight="Bold" IsHitTestVisible="False" VerticalAlignment="Center"
-                       Visibility="Collapsed" />
-        </StackPanel>
+                       Visibility="Collapsed" />-->
+        </Border>
 
 
         <Border Grid.Row="1" Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
