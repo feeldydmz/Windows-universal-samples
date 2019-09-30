@@ -65,7 +65,7 @@
                     </TextBlock>
 
                     <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                            Command="{Binding Path=OpenVideoInfoPopupCommand}">
+                            Command="{Binding Path=OpenVideoInfoPopupCommand}" Visibility="Collapsed">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_video_info_nor.png" Width="15" Height="15" />
                             <Popup IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=WorkBar.IsOpenVideoInfoPopup}" StaysOpen="False">
@@ -87,6 +87,7 @@
                         </Grid>
                     </Button>
                     <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White" />
+                    <!--<Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>-->
                 </StackPanel>
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
                     <TextBlock DataContext="{Binding Path=SelectedCaptionAssetItem}" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold">
@@ -97,7 +98,7 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding Path=EditAssetNameCommand}">
+                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding Path=EditAssetNameCommand}" Visibility="Collapsed">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png" Width="15" Height="15" />
                         </Grid>
