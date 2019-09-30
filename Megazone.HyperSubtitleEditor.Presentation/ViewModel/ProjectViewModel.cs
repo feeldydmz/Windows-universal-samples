@@ -235,12 +235,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (StageTotal == 0)
                 return false;
 
-            return SelectedStage?.SelectedProject != _signInViewModel.SelectedProject;
+            return true;
+            //return SelectedStage?.SelectedProject != _signInViewModel.SelectedProject;
         }
 
         private async void StartProject()
         {
             Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
+
+            // 현재 작업중인 프로젝트 선택시
+            if (_signInViewModel.SelectedProject == SelectedStage.SelectedProject)
+            {
+                IsProjectViewVisible = false;
+
+                return;
+            }
 
             if (_signInViewModel.SelectedProject != null)
             {
@@ -258,13 +267,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         MessageBoxButton.OKCancel));
 
                     if (result == MessageBoxResult.Cancel) return;
+                }
 
-                    var removeTabs = subtitleViewModel.Tabs.ToList();
+                var removeTabs = subtitleViewModel?.Tabs.ToList();
 
+                if (removeTabs != null)
                     foreach (var tab in removeTabs)
                         MessageCenter.Instance.Send(
                             new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
-                }
             }
 
             _signInViewModel.SelectedStage = SelectedStage;
