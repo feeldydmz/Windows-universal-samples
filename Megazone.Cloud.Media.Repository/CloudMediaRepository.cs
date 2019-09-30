@@ -207,7 +207,7 @@ namespace Megazone.Cloud.Media.Repository
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.Asset.Id}", Method.PATCH)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
-                .AddHeader("projectId", request.ProjectId).AddParameter("version", request.Asset.Version)
+                .AddHeader("projectId", request.ProjectId).AddQueryParameter("version", request.Asset.Version.ToString())
                 .AddJsonString(request.Asset);
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
