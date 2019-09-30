@@ -494,7 +494,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.VideoOpenMessage(this, video));
+            MessageCenter.Instance.Send(new CloudMedia.VideoOpenRequestedMessage(this, video));
         }
 
         private void OpenUrl()

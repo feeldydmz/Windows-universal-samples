@@ -13,13 +13,18 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              Width="514" Height="302"
-             d:DataContext="{d:DesignInstance vm:McmDeployConfirmViewModel}">
+             d:DataContext="{d:DesignInstance vm:McmDeployConfirmViewModel}"
+             x:Name="Root">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -50,7 +55,8 @@
                     </Grid.RowDefinitions>
 
                     <!--Video Info-->
-                    <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}">
+                    <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}" 
+                            Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
@@ -76,7 +82,8 @@
                     </Border>
 
                     <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
-                               Height="1" VerticalAlignment="Bottom" />
+                               Height="1" VerticalAlignment="Bottom" 
+                               Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!--CaptionAsset Info-->
                     <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -141,7 +148,7 @@
                                StrokeThickness="1" />
                 </Grid>
 
-                <Grid Grid.Row="4">
+                <Grid Grid.Row="4" Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />

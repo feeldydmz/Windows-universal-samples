@@ -102,7 +102,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var asset = recentlyItem.CaptionAsset;
             var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
             
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));

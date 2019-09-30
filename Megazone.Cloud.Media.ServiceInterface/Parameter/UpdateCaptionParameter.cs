@@ -1,0 +1,17 @@
+﻿using System.Collections.Generic;
+using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Cloud.Media.ServiceInterface.Model;
+
+namespace Megazone.Cloud.Media.ServiceInterface.Parameter
+{
+    public class UpdateCaptionParameter : GetAssetParameter
+    {
+        public UpdateCaptionParameter(Authorization authorization, string stageId, string projectId,
+            string assetId, IEnumerable<Caption> captions) : base(authorization, stageId, projectId, assetId)
+        {
+            Captions = captions;
+        }
+
+        public IEnumerable<Caption> Captions { get; }
+    }
+}

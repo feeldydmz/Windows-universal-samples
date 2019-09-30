@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -23,11 +24,36 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public AssetEditorView()
         {
             InitializeComponent();
+
         }
+
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
+            CloseWindow();
+        }
 
+        private void CloseWindow()
+        {
+            var window = Window.GetWindow(this);
+            window?.Close();
+        }
+
+        private void AssetEditorView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AssetEditorViewModel viewModel)
+                viewModel.CloseAction = CloseWindow;
+
+            AssetNameTextBox.Focus();
+
+            if (!string.IsNullOrEmpty(AssetNameTextBox.Text))
+                AssetNameTextBox.CaretIndex = AssetNameTextBox.Text.Length;
+        }
+
+        private void AssetEditorView_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AssetEditorViewModel viewModel)
+                viewModel.CloseAction = null;
         }
     }
 }

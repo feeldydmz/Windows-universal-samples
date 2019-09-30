@@ -21,7 +21,8 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<CaptionAssetList> GetCaptionAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter, CancellationToken cancellationToken);
-        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> UpdateCaptionAssetAsync(UpdateCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter, CancellationToken cancellationToken);
         Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter, CancellationToken cancellationToken);
         Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken);
         Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken);

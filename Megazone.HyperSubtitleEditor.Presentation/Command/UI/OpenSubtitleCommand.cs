@@ -10,17 +10,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     public class OpenSubtitleCommand : DependencyObject, ICommand
     {
         private readonly IBrowser _browser;
-        private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly WorkBarViewModel _workBarViewModel;
 
         public OpenSubtitleCommand()
         {
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
-            _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            _workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
         }
 
         public bool CanExecute(object parameter)
         {
-            return _subtitleViewModel?.WorkContext?.CanImportFile() ?? false;
+            return _workBarViewModel.CanImportFile();
         }
 
         public void Execute(object parameter)

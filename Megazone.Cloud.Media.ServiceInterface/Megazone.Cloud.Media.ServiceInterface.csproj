@@ -61,6 +61,7 @@
     <Compile Include="Parameter\GetVideosParameter.cs" />
     <Compile Include="Parameter\UpdateAssetParameter.cs" />
     <Compile Include="Parameter\UpdateCaptionAssetParameter.cs" />
+    <Compile Include="Parameter\UpdateCaptionParameter.cs" />
     <Compile Include="Parameter\UpdateVideoParameter.cs" />
     <Compile Include="Parameter\UploadCaptionFileParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

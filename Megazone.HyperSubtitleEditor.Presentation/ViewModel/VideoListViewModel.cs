@@ -654,7 +654,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
             CloseAction?.Invoke();
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));

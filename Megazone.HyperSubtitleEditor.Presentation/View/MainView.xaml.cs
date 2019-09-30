@@ -256,20 +256,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
-        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions,
-            string linkUrl)
+        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
         {
-            var captionItems = captions?.Select(caption => new CaptionElementItemViewModel(caption)).ToList();
-            var view = new McmDeployConfirmView
-            {
-                DataContext = new McmDeployConfirmViewModel
-                {
-                    VideoItem = new VideoItemViewModel(video),
-                    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset),
-                    CaptionItems = captionItems,
-                    Url = linkUrl
-                }
-            };
+            var viewModel = new McmDeployConfirmViewModel();
+            viewModel.Update(video, captionAsset, captions, linkUrl);
+
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
@@ -278,7 +269,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,
                 Height = 354,
-                Content = view
+                Content = new McmDeployConfirmView
+                {
+                    DataContext = viewModel
+                }
             };
             wnd.ShowDialog();
         }
@@ -289,20 +283,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Application.Current.MainWindow.Title = title;
         }
 
-        public void ShowAssetEditorDialog(bool isNewCreateMode, string assetName = null)
+        public void ShowAssetEditorDialog(CaptionAsset captionAsset = null)
         {
             var view = new AssetEditorView()
             {
                 DataContext = new AssetEditorViewModel()
                 {
-                    AssetName = assetName
+                    CaptionAsset = captionAsset
                 }
             };
 
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = isNewCreateMode ? "에셋 새로 만들기" : "편집",
+                // [resource]
+                Title = captionAsset == null ? "에셋 새로 만들기" : "편집",
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,

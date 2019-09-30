@@ -199,7 +199,7 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Asset);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint)
+            return RestSharpExtension.CreateRestClient(request.Endpoint) 
                 .Execute(restRequest).Convert<TAsset>();
         }
 
@@ -238,6 +238,37 @@ namespace Megazone.Cloud.Media.Repository
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
             if (response.StatusCode == HttpStatusCode.OK) return !response.Content.Contains("errorCode");
             return false;
+        }
+
+        public Caption CreateCaption(CaptionRequest request)
+        {
+            // caption data.
+            /*
+country: "FR"
+kind: "SUB_TITLE"
+label: "불어"
+language: "fr"
+size: 280
+url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
+             */
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements",
+                    Method.POST)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Version.ToString())
+                .AddJsonString(request.Caption);
+
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
+        }
+
+        public bool DeleteCaption(CaptionRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Caption UpdateCaption(CaptionRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         public bool DeleteCaptionAsset(DeleteAssetRequest request)

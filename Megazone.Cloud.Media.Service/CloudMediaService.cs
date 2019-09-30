@@ -88,7 +88,7 @@ namespace Megazone.Cloud.Media.Service
                     "",
                     null,
                     null,
-                    renditionAssetList, 
+                    renditionAssetList,
                     null,
                     null,
                     null);
@@ -97,27 +97,29 @@ namespace Megazone.Cloud.Media.Service
             });
         }
 
-        public async Task<VideoList> GetVideoAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken)
+        public async Task<VideoList> GetVideoAssetsAsync(GetAssetsParameter parameter,
+            CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
                 var response = _cloudMediaRepository.GetAssets<VideoAsset>(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,parameter.SearchConditions));
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,
+                    parameter.SearchConditions));
 
                 Debug.WriteLine("GetAssetsAsync");
 
                 if (response.Assets == null) return null;
 
-                List<Video> videoList = new List<Video>();
+                var videoList = new List<Video>();
                 foreach (var asset in response.Assets)
                 {
-                    Video item = new Video(asset.Id, 
+                    var item = new Video(asset.Id,
                         asset.Name,
                         asset.Type,
-                        asset.Status, 
-                        asset.Duration, 
-                        asset.CreatedAt, 
-                        asset.Version, 
+                        asset.Status,
+                        asset.Duration,
+                        asset.CreatedAt,
+                        asset.Version,
                         asset.Thumbnails?.FirstOrDefault()?.Url,
                         null,
                         null,
@@ -129,7 +131,6 @@ namespace Megazone.Cloud.Media.Service
                     videoList.Add(item);
                 }
 
-                
 
                 return new VideoList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
                     response.TotalCount, videoList);
@@ -147,9 +148,12 @@ namespace Megazone.Cloud.Media.Service
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.Name)), cancellationToken);
         }
 
-        public async Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter,
+            CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(() => _cloudMediaRepository.GetStages(CLOUD_MEDIA_ENDPOINT, parameter.Authorization.AccessToken), cancellationToken);
+            return await Task.Factory.StartNew(
+                () => _cloudMediaRepository.GetStages(CLOUD_MEDIA_ENDPOINT, parameter.Authorization.AccessToken),
+                cancellationToken);
         }
 
         public async Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken)
@@ -210,7 +214,35 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionAssetParameter parameter,
+        public async Task<CaptionAsset> UpdateCaptionAssetAsync(UpdateCaptionAssetParameter parameter,
+            CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var accessToken = parameter.Authorization.AccessToken;
+                var stageId = parameter.StageId;
+                var projectId = parameter.ProjectId;
+                var assetId = parameter.AssetId;
+
+                var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                    stageId, projectId, assetId));
+
+                if (asset == null)
+                    throw new Exception("asset is null");
+
+                var assetName = string.IsNullOrEmpty(parameter.Name) ? asset.Name : parameter.Name;
+
+                var updateAsset = new CaptionAsset(asset.Id, assetName, asset.Status, asset.Type, asset.MediaType,
+                    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, asset.Elements);
+
+                var response = _cloudMediaRepository.UpdateCaptionAsset(
+                    new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId,
+                        updateAsset));
+                return response;
+            }, cancellationToken);
+        }
+
+        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
@@ -248,7 +280,16 @@ namespace Megazone.Cloud.Media.Service
                     }
 
                     if (addList.Any())
+                    {
                         updatingCaptionList.AddRange(addList);
+
+                        // 추가된 자막 파일은 지정된 Asset에 추가한다.
+                        foreach (var caption in addList)
+                        {
+                            _cloudMediaRepository.CreateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                                stageId, projectId, assetId, asset.Version, caption));
+                        }
+                    }
                 }
 
                 var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
