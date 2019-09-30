@@ -155,6 +155,9 @@
                                     <DataTrigger Binding="{Binding TypeString}" Value="DASH">
                                         <Setter Property="Background" Value="#5D8FFF"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding TypeString}" Value="NONE">
+                                        <Setter Property="Background" Value="#5D8FFF"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
 
                             </Style>
@@ -251,6 +254,9 @@
                                                 <Setter Property="Background" Value="#405fff"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding TypeString}" Value="DASH">
+                                                <Setter Property="Background" Value="#5D8FFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TypeString}" Value="NONE">
                                                 <Setter Property="Background" Value="#5D8FFF"/>
                                             </DataTrigger>
                                         </Style.Triggers>

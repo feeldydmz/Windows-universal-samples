@@ -337,6 +337,9 @@
                                                                         <DataTrigger Binding="{Binding Source.Description}" Value="DASH">
                                                                             <Setter Property="Background" Value="#5D8FFF"/>
                                                                         </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="NONE">
+                                                                            <Setter Property="Background" Value="#5D8FFF"/>
+                                                                        </DataTrigger>
                                                                     </Style.Triggers>
 
                                                                 </Style>
