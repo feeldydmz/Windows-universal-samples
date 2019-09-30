@@ -68,7 +68,7 @@
     <!--프로젝트 선택 화면 -->
     <SolidColorBrush x:Key="Brush_Normal_Background_Brush_Color" Color="#FF3d4450" />
     <SolidColorBrush x:Key="Brush_ProjectSelect_Background_Color" Color="#282f37" />
-    <SolidColorBrush x:Key="Brush_ProjectSelect_Border_Brush_Color" Color="#2E353F" />
+    <SolidColorBrush x:Key="Brush_ProjectSelect_Border_Brush_Color" Color="#3E4550" />
     <SolidColorBrush x:Key="Brush_ProjectSelect_Title_Brush_Color" Color="#a0a3aa" />
 
     <SolidColorBrush x:Key="Brush_ListBoxItem_Foreground_Color" Color="#989CA7" />

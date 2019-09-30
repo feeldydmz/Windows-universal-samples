@@ -253,6 +253,7 @@
 
     <Style TargetType="{x:Type ListBoxItem}" x:Key="Style_ListBoxItemProjectSelect"
            BasedOn="{StaticResource Style_ProjectSelect_ListBoxItem}">
+        <Setter Property="BorderThickness" Value="0.5,0.5,0.5,0"/>
         <Setter Property="Height" Value="42" />
         <Setter Property="Foreground" Value="{StaticResource Brush_ListBoxItem_Foreground_Color}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
