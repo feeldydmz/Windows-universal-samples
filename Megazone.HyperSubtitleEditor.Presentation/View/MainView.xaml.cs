@@ -289,6 +289,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Application.Current.MainWindow.Title = title;
         }
 
+        public void ShowAssetEditorDialog(bool isNewCreateMode, string assetName = null)
+        {
+            var view = new AssetEditorView()
+            {
+                DataContext = new AssetEditorViewModel()
+                {
+                    AssetName = assetName
+                }
+            };
+
+            var wnd = new ChildWindow
+            {
+                Owner = Application.Current.MainWindow,
+                Title = isNewCreateMode ? "에셋 새로 만들기" : "편집",
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize,
+                Width = 514,
+                Height = 200,
+                Content = view
+            };
+            wnd.ShowDialog();
+        }
+
         private void MainView_Loaded(object sender, RoutedEventArgs e)
         {
             RootViewContainer.Child = new SubtitleView();

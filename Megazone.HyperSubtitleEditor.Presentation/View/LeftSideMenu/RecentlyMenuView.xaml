@@ -28,7 +28,6 @@
     </UserControl.Resources>
 
     <Grid>
-
         <Border Margin="0, 20, 0, 20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -36,15 +35,13 @@
                     <RowDefinition Height="20" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-
-
                 <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
                 <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type item:RecentlyItem}">
-                            <Button 
+                            <Button Width="350"
                                 Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}" 
                                 CommandParameter="{Binding}">
                                 <Button.Style>
@@ -53,7 +50,6 @@
                                         <Setter Property="SnapsToDevicePixels" Value="True" />
                                         <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
                                         <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
-                                        <Setter Property="Margin" Value="0,5" />
                                         <Setter Property="Padding" Value="0" />
                                         <Setter Property="Background" Value="Transparent" />
                                         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -99,8 +95,9 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <!--<RowDefinition Height="*" />-->
                                     </Grid.RowDefinitions>
 
                                     <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
@@ -130,6 +127,7 @@
 
                                     <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=CaptionAsset.Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=CaptionAsset.Id, StringFormat={}({0})}" VerticalAlignment="Center"/>
+                                    <!--<TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Path=CreatedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />-->
                                 </Grid>
                             </Button>
                         </DataTemplate>
@@ -137,7 +135,5 @@
                 </ItemsControl>
             </Grid>
         </Border>
-
-        
     </Grid>
 </UserControl>

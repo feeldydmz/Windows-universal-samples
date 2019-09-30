@@ -83,12 +83,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             return await _cloudMediaService.GetVideoAsync(
                 new GetVideoParameter(authorization, stageId, projectId, videoId), CancellationToken.None);
         }
-
-        public bool CanDeploy()
-        {
-            return OpenedVideo != null; // && (Captions?.Any() ?? false);
-        }
-
+        
         public Task<Settings> GetMcmSettingAsync()
         {
             var authorization = _signInViewModel.GetAuthorization();

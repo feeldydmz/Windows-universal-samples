@@ -42,10 +42,10 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="1" Visibility="{Binding Path=HasData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+            <Grid Grid.Column="1" Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                 <TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" />
             </Grid>
-            <Grid Grid.Column="1" Visibility="{Binding Path=HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Grid.Column="1" Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="11" />
@@ -90,15 +90,15 @@
                     <!--<Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>-->
                 </StackPanel>
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
-                    <TextBlock DataContext="{Binding Path=SelectedCaptionAssetItem}" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold">
+                    <TextBlock DataContext="{Binding Path=CaptionAssetItem}" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} ({1})">
+                            <MultiBinding StringFormat="{}{0} ({1})" TargetNullValue="Untitle asset">
                                 <Binding Path="Name" />
                                 <Binding Path="Id" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding Path=EditAssetNameCommand}" Visibility="Collapsed">
+                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenAssetEditorCommand}">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png" Width="15" Height="15" />
                         </Grid>

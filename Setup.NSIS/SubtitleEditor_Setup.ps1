@@ -91,7 +91,7 @@ $buildFilePath = "..\Megazone.HyperSubtitleEditor.sln";
 $buildversion = GetVersion;
 $installJoblDir = ".\Install_Files";
 echo "build version : $buildversion";
-$canCodesign = "True";
+$canCodesign = "False";
 
 
 # Build Part...
