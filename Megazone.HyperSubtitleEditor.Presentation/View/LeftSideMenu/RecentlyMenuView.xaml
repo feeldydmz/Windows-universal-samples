@@ -23,6 +23,7 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -39,12 +40,14 @@
 
 
                 <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
-                <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
+                <ItemsControl x:Name="RecentlyItemControl" 
+                              Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type item:RecentlyItem}">
-                            <Button 
+                            <Grid>
+                                <Button 
                                 Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}" 
                                 CommandParameter="{Binding}">
                                 <Button.Style>
@@ -52,7 +55,7 @@
                                         <Setter Property="UseLayoutRounding" Value="True" />
                                         <Setter Property="SnapsToDevicePixels" Value="True" />
                                         <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
-                                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
                                         <Setter Property="Margin" Value="0,5" />
                                         <Setter Property="Padding" Value="0" />
                                         <Setter Property="Background" Value="Transparent" />
@@ -76,7 +79,7 @@
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="BorderBrush" Value="#FFa0a8b6" />
                                                             <Setter Property="Background" Value="#e7e9ee" />
-                                                            <!--<Setter Property="Opacity" Value="0.7" />-->
+                                                            <Setter Property="Opacity" Value="0.7" />
                                                         </Trigger>
                                                         <Trigger Property="IsPressed" Value="True">
                                                             <Setter Property="Background" Value="#10000000" />
@@ -132,9 +135,25 @@
                                     <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=CaptionAsset.Id, StringFormat={}({0})}" VerticalAlignment="Center"/>
                                 </Grid>
                             </Button>
+                                
+                            </Grid>
+                            <DataTemplate.Triggers >
+                                <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=HasItems}" Value = "true">
+                                    <Setter Property="Visibility" Value="Collapsed" TargetName="EmptyListBlock"/>
+                                </DataTrigger>-->
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <TextBlock x:Name="EmptyListBlock"
+                           Grid.Row="2" 
+                           
+                           Foreground="#545871"
+                           Text ="Empty List"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           FontSize="15"
+                           Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
             </Grid>
         </Border>
 
