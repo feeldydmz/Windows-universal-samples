@@ -147,7 +147,7 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter">
+                        <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter" Click="McmRadioButton_OnClick">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:InvokeCommandAction Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.OpenCommand}" />
@@ -275,8 +275,10 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" TextBlock.FontSize="12" TextBlock.FontWeight="Bold" Margin="0,3">
-                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3,3,15,3" />
-                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" />
+                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3,3,15,3" 
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}"/>
+                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" 
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}"/>
                                     </StackPanel>
 
                                     <!--<Button Grid.Column="2" Content="Refresh" ToolTip="Refresh" />-->

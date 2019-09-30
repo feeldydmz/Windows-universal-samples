@@ -35,5 +35,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
                 //radioButton.IsChecked = true;
             }
         }
+
+        private void McmRadioButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (VideoRadioButton.IsChecked != true)
+            {
+                VideoRadioButton.IsChecked = true;
+                VideoRadioButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            }
+        }
     }
 }
