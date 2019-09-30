@@ -229,7 +229,7 @@ namespace Megazone.Cloud.Media.Repository
         {
             var captionAssetList = request.Video.Captions.Select(asset => new VideoAsset(asset.Id)).ToList();
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk",
-                    Method.PATCH)
+                    Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("version", request.Video.Version.ToString())
@@ -279,6 +279,27 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
                 .AddQueryParameter("version", request.Version.ToString());
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
             return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public IEnumerable<CaptionAsset> BulkCaptionAsset(BulkCaptionAssetRequest request)
+        {
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk", Method.POST)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.VideoVersion.ToString())
+                .AddJsonString(request.AssetIds.ToList().Select(id=> new BulkAssetModel(id)));
+
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest)
+                .Convert<IEnumerable<CaptionAsset>>();
+        }
+
+        private class BulkAssetModel
+        {
+            public BulkAssetModel(string assetId)
+            {
+                AssetId = assetId;
+            }
+            public string AssetId { get; }
         }
 
         public class VideoAsset

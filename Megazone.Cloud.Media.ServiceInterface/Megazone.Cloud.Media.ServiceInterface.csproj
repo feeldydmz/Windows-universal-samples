@@ -47,6 +47,7 @@
     <Compile Include="Model\PagingResultModel.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />
+    <Compile Include="Parameter\RegisterCaptionAssetParameter.cs" />
     <Compile Include="Parameter\CreateCaptionAssetParameter.cs" />
     <Compile Include="Parameter\DeleteCaptionAssetParameter.cs" />
     <Compile Include="Parameter\GetLanguageParameter.cs" />

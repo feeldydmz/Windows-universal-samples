@@ -46,7 +46,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="에셋 이름" />
-                <TextBox x:Name="AssetNameTextBox" Grid.Row="2" Text="{Binding Path=AssetName}" />
+                <TextBox x:Name="AssetNameTextBox" Grid.Row="2" Text="{Binding Path=AssetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Grid>
         </Border>
 

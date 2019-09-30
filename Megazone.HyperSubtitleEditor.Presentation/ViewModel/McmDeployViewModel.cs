@@ -125,6 +125,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 ProjectName = _signInViewModel.SelectedProject.Name;
                 VideoItem = _workBarViewModel.VideoItem;
                 CaptionAssetItem = _workBarViewModel.CaptionAssetItem;
+                AssetName = _workBarViewModel.CaptionAssetItem?.Name ?? "Untitle";
 
                 HasVideo = !string.IsNullOrEmpty(_workBarViewModel.VideoItem?.Id);
                 HasCaptionAsset = !string.IsNullOrEmpty(_workBarViewModel.CaptionAssetItem?.Id);

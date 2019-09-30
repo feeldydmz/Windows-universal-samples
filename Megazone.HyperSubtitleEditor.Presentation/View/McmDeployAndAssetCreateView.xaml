@@ -66,34 +66,34 @@
                 </Grid.RowDefinitions>
 
                 <!--Video-->
-                <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}"
-                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="18" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="20" />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="1" Style="{StaticResource Style_VideoBadgeImage}" />
-                        <Grid Grid.Column="3">
+                <Grid Visibility="{Binding Path=HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                       FontWeight="Bold" TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Path=Name}" />
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"
-                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Image Grid.Column="1" Style="{StaticResource Style_VideoBadgeImage}" />
+                            <Grid Grid.Column="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                           FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Path=Name}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"
+                                           HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Border>
+                    </Border>
 
-                <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
-                           Height="1" VerticalAlignment="Bottom" 
-                           Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmDeploy.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}, TargetNullValue=Collapsed, FallbackValue=Collapsed}"/>
+                    <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
+                               Height="1" VerticalAlignment="Bottom" />
+                </Grid>
 
                 <!--CaptionAsset Info-->
                 <Grid Grid.Row="1">

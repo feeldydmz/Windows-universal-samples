@@ -39,7 +39,7 @@
         <Grid Margin="14, 0, 0, 0">
             <Grid Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                 <TextBlock Text="불러오는 중..." VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                <!--<TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />-->
             </Grid>
 
             <Grid Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -94,7 +94,7 @@
                                Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
                 </Grid>
 
-                <Grid Grid.Column="1" Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -105,15 +105,15 @@
                                Text="{Binding Path=Name, TargetNullValue=Untitle, FallbackValue=Untitle}" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold" 
                                DataContext="{Binding Path=CaptionAssetItem}" 
-                               Text="{Binding Path=Id, StringFormat={}({0})}" />
+                               Text="{Binding Path=Id, StringFormat={}({0})}" 
+                               Visibility="{Binding Path=Id, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
                     <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenAssetEditorCommand}" 
-                            Visibility="{Binding Path=CaptionAssetItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" Margin="0,-2,0,-2">
+                            Margin="0,-2,0,-2">
                         <Grid>
                             <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png" Width="15" Height="15" />
                         </Grid>
                     </Button>
                 </Grid>
-
             </Grid>
            
         </Grid>
