@@ -12,6 +12,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
+using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -310,6 +311,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         private void MainView_Loaded(object sender, RoutedEventArgs e)
         {
             RootViewContainer.Child = new SubtitleView();
+
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var browser = Bootstrapper.Container.Resolve<IBrowser>();
+            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+
+            if (subtitle.HasTab && subtitle.Tabs.Any(tab=>tab.CheckDirty()))
+            {
+                //[resource]
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter("알림",
+                        "편집된 데이터가 있습니다. 저장하지 않는 데이터는 소실됩니다.\n종료하시겠습니까?",
+                        MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
+                    e.Cancel = true;
+            }
         }
 
         private class SubtitleViewImpl : ISubtitleView
