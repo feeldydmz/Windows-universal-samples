@@ -374,6 +374,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 //var results = await _cloudMediaService.GetVideosAsync(
                 //    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageIndex),
                 //        conditions), _cancellationTokenSource.Token);
+                if (results == null) return;
 
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(

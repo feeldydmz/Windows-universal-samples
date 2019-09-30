@@ -343,6 +343,8 @@
                                                 <mz:ListBoxSelectionChangedCommandBehavior 
                                                     Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
                                                     CommandParameter="{Binding Path=SelectedProject}" />
+                                                <behavior:ListboxItemDoubleClickBehavior
+                                                    Command="{Binding Path=DataContext.StartProjectCommand, ElementName=Root}"/>
                                             </i:Interaction.Behaviors>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">

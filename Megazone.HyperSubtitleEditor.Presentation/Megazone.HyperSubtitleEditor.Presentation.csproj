@@ -137,6 +137,7 @@
     <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
     <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
     <Compile Include="Behavior\ListBoxDataLoadBehavior.cs" />
+    <Compile Include="Behavior\ListboxItemDoubleClickBehavior.cs" />
     <Compile Include="Behavior\ListBoxSelectionChangedBehaivor.cs" />
     <Compile Include="Behavior\ListViewItemDoubleClickBehavior.cs" />
     <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
