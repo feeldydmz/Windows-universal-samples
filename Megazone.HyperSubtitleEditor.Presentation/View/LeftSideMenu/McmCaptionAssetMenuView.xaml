@@ -34,7 +34,7 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
 
             <system:Double x:Key="ListBoxItemWidth">350</system:Double>
-            <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
+            <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

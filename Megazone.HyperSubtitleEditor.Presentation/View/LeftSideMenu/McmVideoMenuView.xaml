@@ -34,7 +34,7 @@
 
             <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
-            <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
+            <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
 
 
             <Style x:Key="Style_VideoListBoxItem" TargetType="{x:Type ListBoxItem}">

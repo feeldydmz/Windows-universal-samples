@@ -781,7 +781,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="10,4,3,4" />
+        <Setter Property="Padding" Value="0,4,3,4" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
@@ -801,7 +801,7 @@
                                Placement="Bottom">
                             <Border x:Name="shadow" MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                     MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                                <Border x:Name="dropDownBorder" BorderThickness="0">
+                                <Border x:Name="dropDownBorder" BorderThickness="1,1,1,0" BorderBrush="#39393a">
                                     <ScrollViewer x:Name="DropDownScrollViewer" Background="#262f4d">
                                         <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                                             <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0"
@@ -821,10 +821,10 @@
 
                         <Border Grid.Column="0" x:Name="InnerBorder" BorderBrush="#FF34353c" BorderThickness="1,1,0,0"
                                 IsHitTestVisible="False" Visibility="Collapsed">
-                            <!--<Border BorderBrush="{Binding BorderBrush, ElementName=InnerBorder}" Opacity="0.6"
-                                    BorderThickness="1,1,0,0">
-                                <Border BorderBrush="{Binding BorderBrush, ElementName=LastBorder}" Opacity="0.3"
-                                        BorderThickness="1,1,0,0" />
+                            <!--<Border BorderBrush="Red" 
+                                    BorderThickness="1" >
+                                <Border BorderBrush="Red" 
+                                        BorderThickness="1" />
                             </Border>-->
                         </Border>
                         <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}"
