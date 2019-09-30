@@ -22,8 +22,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             typeof(ListBoxSelectionChangedBehavior));
 
 
-        private SignInViewModel SigninViewmodel { get; set; }
-
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
@@ -33,8 +31,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         protected override void OnAttached()
         {
             base.OnAttached();
-
-            SigninViewmodel = Bootstrapper.Container.Resolve<SignInViewModel>();
 
             AssociatedObject.SelectionChanged += AssociatedObjectOnSelectionChanged;
         }

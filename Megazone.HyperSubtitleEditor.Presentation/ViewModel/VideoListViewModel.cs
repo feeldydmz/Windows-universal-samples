@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
+using Megazone.Cloud.Media.ServiceInterface.Model;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
@@ -24,19 +25,20 @@ using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    [Inject(Scope = LifetimeScope.Transient)]
+    [Inject(Scope = LifetimeScope.Singleton)]
     internal class VideoListViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
         private readonly ICloudMediaService _cloudMediaService;
         private readonly SignInViewModel _signInViewModel;
 
+        private ICommand _addDataCommand;
         private ICommand _backCommand;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         private ICommand _captionAssetSectionChangedCommand;
-
         private ICommand _captionSelectionChangedCommand;
+        private ICommand _closeCommand;
         private ICommand _confirmCommand;
 
         private TimeSpan _durationEndTime;
@@ -48,27 +50,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _durationStartTimeChangedCommand;
 
         private ICommand _enterCommand;
+
+        private ICommand _initializeCommand;
         private bool _isBusy;
 
         private bool _isConfirmButtonVisible;
+
+        private bool _isInitialized;
         private bool _isLoading;
 
         private bool _isNextButtonVisible = true;
-
+        private bool _isOpen;
         private bool _isShowCaption;
 
         private string _keyword;
-        private IEnumerable<KeywordType> _keywordTypeItems;
+        private IEnumerable<DisplayItem> _keywordTypeItems;
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
 
-        private ICommand _nextCommand;
+        private ICommand _nextStepCommand;
+
+        private ICommand _openCommand;
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
-        private KeywordType _selectedKeywordType;
-        private int _selectedPageNo;
+        private DisplayItem _selectedKeywordType;
+        private int _selectedPageNo = 1;
 
         private ICommand _selectedPageNoChangedCommand;
         private VideoItemViewModel _selectedVideoItem;
@@ -102,14 +110,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public ICommand InitializeCommand
+        {
+            get { return _initializeCommand = _initializeCommand ?? new RelayCommand(Initialize); }
+        }
+
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
-        public ICommand NextCommand
+        public ICommand AddDataCommand
         {
-            get { return _nextCommand = _nextCommand ?? new RelayCommand(Next, CanNext); }
+            get { return _addDataCommand = _addDataCommand ?? new RelayCommand(AddData); }
+        }
+
+        public ICommand NextStepCommand
+        {
+            get { return _nextStepCommand = _nextStepCommand ?? new RelayCommand(NextStep, CanNextStep); }
         }
 
         public ICommand ConfirmCommand
@@ -229,13 +247,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedPageNo, value);
         }
 
-        public IEnumerable<KeywordType> KeywordTypeItems
+        public IEnumerable<DisplayItem> KeywordTypeItems
         {
             get => _keywordTypeItems;
             set => Set(ref _keywordTypeItems, value);
         }
 
-        public KeywordType SelectedKeywordType
+        public DisplayItem SelectedKeywordType
         {
             get => _selectedKeywordType;
             set => Set(ref _selectedKeywordType, value);
@@ -253,16 +271,68 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isShowCaption, value);
         }
 
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set => Set(ref _isOpen, value);
+        }
 
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
-        private bool CanNext()
+        public ICommand OpenCommand
+        {
+            get { return _openCommand = _openCommand ?? new RelayCommand(Open); }
+        }
+
+        public ICommand CloseCommand
+        {
+            get { return _closeCommand = _closeCommand ?? new RelayCommand(Close); }
+        }
+
+        private async void AddData()
+        {
+            ValidCancellationTokenSource();
+            IsBusy = true;
+
+            try
+            {
+                var conditions = MakeSearchConditions(Keyword, DurationStartTime, DurationEndTime);
+                var nextPageIndex = SelectedPageNo;
+                var countPerPage = 30;
+                var results = await GetVideoListAsync(new Pagination(nextPageIndex, countPerPage), conditions,
+                    _cancellationTokenSource.Token);
+
+                if (results.List.Any())
+                {
+                    if (VideoItems.Any())
+                        foreach (var videoItem in results.List)
+                            VideoItems.Add(new VideoItemViewModel(videoItem));
+                    else
+                        VideoItems = new ObservableCollection<VideoItemViewModel>(
+                            results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
+                            new List<VideoItemViewModel>());
+                    SelectedPageNo += 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private bool CanNextStep()
         {
             return SelectedVideoItem != null;
         }
 
-        private void Next()
+        //TODO: NextStep 대신 caption으로 전환하는 것으로.
+        private void NextStep()
         {
             if (SelectedVideoItem != null) LoadCaptionAsync(SelectedVideoItem);
         }
@@ -290,8 +360,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             SelectedVideoItem?.SelectedCaptionAsset?.SelectAll();
             SelectedVideoItem?.Update();
-            if (SelectedVideoItem?.CaptionItems != null)
-                foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
+            if (SelectedVideoItem?.CaptionAssetItems != null)
+                foreach (var captionAssetItem in SelectedVideoItem.CaptionAssetItems)
                     if (!captionAssetItem.Equals(SelectedVideoItem?.SelectedCaptionAsset))
                         captionAssetItem.Initialize();
             CommandManager.InvalidateRequerySuggested();
@@ -302,32 +372,50 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private async void Load()
+        private void Initialize()
         {
-#if STAGING
-            KeywordTypeItems = new List<KeywordType>
+            _isInitialized = false;
+
+            KeywordTypeItems = new List<DisplayItem>
             {
-                new KeywordType(Resource.CNT_NAME, "title"),
-                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
+                new DisplayItem(Resource.CNT_NAME, "name"),
+                new DisplayItem(Resource.CNT_VIDEO_ID, "id")
             };
-#else
-            KeywordTypeItems = new List<KeywordType>
-            {
-                new KeywordType(Resource.CNT_NAME, "name"),
-                new KeywordType(Resource.CNT_VIDEO_ID, "id")
-            };
-#endif
+
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
+            SelectedPageNo = 1;
+            _isInitialized = true;
+        }
+
+        private void Open()
+        {
+            IsOpen = true;
+        }
+        
+        public void Close()
+        {
+            IsOpen = false;
+            CloseAction?.Invoke();
+        }
+
+        private async void Load()
+        {
+            if (!_isInitialized)
+                Initialize();
+
+            if (_isLoading)
+                return;
 
             _isLoading = true;
             await SearchAsync(Keyword, 0);
             _isLoading = false;
+            IsOpen = true;
         }
 
         private bool CanLoadCaption(VideoItemViewModel videoItem)
         {
-            return true; //videoItem?.CaptionItems?.Any() ?? false;
+            return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
         }
 
         private async void LoadCaptionAsync(VideoItemViewModel videoItem)
@@ -350,7 +438,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (videoItem.CanUpdate)
                 {
-                    videoItem?.CaptionItems?.Clear();
+                    videoItem?.CaptionAssetItems?.Clear();
                     var authorization = _signInViewModel.GetAuthorization();
                     var stageId = _signInViewModel.SelectedStage?.Id;
                     var projectId = _signInViewModel.SelectedStage?.Id;
@@ -360,8 +448,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _cancellationTokenSource.Token);
 
                     videoItem.UpdateSource(result);
-                    if (videoItem.CaptionItems != null)
-                        if (videoItem.CaptionItems is IList<CaptionAssetItemViewModel> list)
+                    if (videoItem.CaptionAssetItems != null)
+                        if (videoItem.CaptionAssetItems is IList<CaptionAssetItemViewModel> list)
                             list.Add(CaptionAssetItemViewModel.Empty);
                 }
             }
@@ -413,19 +501,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (!isPaging)
                 {
+                    SelectedPageNo = 0;
                     TotalCount = 0;
                     VideoItems?.Clear();
                 }
 
                 SelectedVideoItem = null;
-
-                var authorization = _signInViewModel.GetAuthorization();
-                var stageId = _signInViewModel.SelectedStage?.Id;
-                var projectId = _signInViewModel.SelectedProject?.ProjectId;
-
-                var results = await _cloudMediaService.GetVideosAsync(
-                    new GetVideosParameter(authorization, stageId, projectId, new Pagination(pageIndex),
-                        conditions), _cancellationTokenSource.Token);
+                var results = await GetVideoListAsync(new Pagination(pageIndex), conditions,
+                    _cancellationTokenSource.Token);
 
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(
@@ -440,6 +523,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task<VideoList> GetVideoListAsync(Pagination pagination, Dictionary<string, string> conditions,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                var authorization = _signInViewModel.GetAuthorization();
+                var stageId = _signInViewModel.SelectedStage?.Id;
+                var projectId = _signInViewModel.SelectedProject?.ProjectId;
+
+                if (string.IsNullOrEmpty(stageId) || string.IsNullOrEmpty(projectId) ||
+                    string.IsNullOrEmpty(authorization?.AccessToken))
+                    return null;
+
+                return await _cloudMediaService.GetVideosAsync(
+                    new GetVideosParameter(authorization, stageId, projectId, pagination, conditions),
+                    cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return null;
         }
 
         private Dictionary<string, string> MakeSearchConditions(string keyword, TimeSpan startDuration,
@@ -479,12 +587,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (SelectedVideoItem == null)
                 return;
 
-            var captionAssetItem = SelectedVideoItem.CaptionItems.SingleOrDefault(assetItem =>
+            var captionAssetItem = SelectedVideoItem.CaptionAssetItems.SingleOrDefault(assetItem =>
                 assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
 
             if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
             {
-                SelectedVideoItem.CaptionItems?.ToList().ForEach(asset =>
+                SelectedVideoItem.CaptionAssetItems?.ToList().ForEach(asset =>
                 {
                     if (!asset.Equals(captionAssetItem))
                         asset.Initialize();
@@ -502,9 +610,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (IsBusy)
                     return false;
 
-                if (SelectedVideoItem?.CaptionItems?.Any() ?? false)
+                if (SelectedVideoItem?.CaptionAssetItems?.Any() ?? false)
                 {
-                    if (SelectedVideoItem?.SelectedCaptionAsset != null 
+                    if (SelectedVideoItem?.SelectedCaptionAsset != null
                         && SelectedVideoItem.SelectedCaptionAsset.Source == null)
                         return true;
 
@@ -547,24 +655,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList)));
             CloseAction?.Invoke();
+            MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }
 
         private void ValidCancellationTokenSource()
         {
             if (_cancellationTokenSource.IsCancellationRequested)
                 _cancellationTokenSource = new CancellationTokenSource();
-        }
-
-        public class KeywordType
-        {
-            public KeywordType(string display, string key)
-            {
-                Display = display;
-                Key = key;
-            }
-
-            public string Display { get; }
-            public string Key { get; }
         }
     }
 }

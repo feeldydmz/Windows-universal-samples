@@ -10,7 +10,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class VideoItemViewModel : ViewModelBase
     {
-        private IList<CaptionAssetItemViewModel> _captionItems;
+        private IList<CaptionAssetItemViewModel> _captionAssetItems;
 
         private bool _hasSelectedCaption;
         private string _primaryImageUrl;
@@ -22,6 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public VideoItemViewModel(Video video)
         {
+            Source = video;
             Id = video.Id;
             Name = video.Name;
             Description = video.Description;
@@ -33,9 +34,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             HasCaptions = video.Captions?.Any() ?? false;
             PrimaryImageUrl = GetPrimaryImage(video);
-            Source = video;
-
             TotalCaptionCount = video.Captions?.Sum(asset => asset.Elements?.Count() ?? 0) ?? 0;
+            var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
+                       new List<CaptionAssetItemViewModel>();
+            CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
         }
 
         public CaptionAssetItemViewModel SelectedCaptionAsset
@@ -44,10 +46,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _selectedCaptionAsset, value);
         }
 
-        public IList<CaptionAssetItemViewModel> CaptionItems
+        public IList<CaptionAssetItemViewModel> CaptionAssetItems
         {
-            get => _captionItems;
-            set => Set(ref _captionItems, value);
+            get => _captionAssetItems;
+            set => Set(ref _captionAssetItems, value);
         }
 
         public string PrimaryImageUrl
@@ -110,13 +112,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         internal void UpdateSource(Video source)
         {
             Source = source;
-            if (CaptionItems?.Any() ?? false)
-                CaptionItems?.Clear();
-            
+            if (CaptionAssetItems?.Any() ?? false)
+                CaptionAssetItems?.Clear();
+
             var list = source.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
 
-            CaptionItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+            CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
             TotalCaptionCount = list.Sum(asset => asset.Source.Elements?.Count() ?? 0);
             CanUpdate = false;
         }

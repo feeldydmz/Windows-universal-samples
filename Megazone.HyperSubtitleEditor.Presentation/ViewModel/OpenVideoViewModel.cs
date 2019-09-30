@@ -60,7 +60,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isUrlOpenButtonChecked;
 
         private string _keyword;
-        private IEnumerable<VideoListViewModel.KeywordType> _keywordTypeItems;
+        private IEnumerable<DisplayItem> _keywordTypeItems;
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
@@ -69,7 +69,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
-        private VideoListViewModel.KeywordType _selectedKeywordType;
+        private DisplayItem _selectedKeywordType;
         private int _selectedPageNo;
 
         private ICommand _selectedPageNoChangedCommand;
@@ -101,11 +101,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
 
-        public ICommand NextCommand
-        {
-            get { return _nextCommand = _nextCommand ?? new RelayCommand(Next, CanNext); }
-        }
-
         public ICommand ConfirmCommand
         {
             get { return _confirmCommand = _confirmCommand ?? new RelayCommand<IClosable>(Confirm, CanConfirm); }
@@ -114,15 +109,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand SearchCommand
         {
             get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(Search); }
-        }
-
-        public ICommand LoadCaptionCommand
-        {
-            get
-            {
-                return _loadCaptionCommand = _loadCaptionCommand ??
-                                             new RelayCommand<VideoItemViewModel>(LoadCaptionAsync, CanLoadCaption);
-            }
         }
 
         public ICommand RefreshCommand
@@ -203,13 +189,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedPageNo, value);
         }
 
-        public IEnumerable<VideoListViewModel.KeywordType> KeywordTypeItems
+        public IEnumerable<DisplayItem> KeywordTypeItems
         {
             get => _keywordTypeItems;
             set => Set(ref _keywordTypeItems, value);
         }
 
-        public VideoListViewModel.KeywordType SelectedKeywordType
+        public DisplayItem SelectedKeywordType
         {
             get => _selectedKeywordType;
             set => Set(ref _selectedKeywordType, value);
@@ -264,11 +250,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem != null;
         }
 
-        private void Next()
-        {
-            if (SelectedVideoItem != null) LoadCaptionAsync(SelectedVideoItem);
-        }
-
         private async void OnSelectedPageNoChanged(int selectedPageNo)
         {
             if (_isLoading)
@@ -288,22 +269,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 DurationEndTime = TimeSpan.FromSeconds(DurationStartTime.TotalSeconds);
         }
 
-        private void OnCaptionAssetSectionChanged()
-        {
-            SelectedVideoItem?.SelectedCaptionAsset?.SelectAll();
-            SelectedVideoItem?.Update();
-            if (SelectedVideoItem?.CaptionItems != null)
-                foreach (var captionAssetItem in SelectedVideoItem.CaptionItems)
-                    if (!captionAssetItem.Equals(SelectedVideoItem?.SelectedCaptionAsset))
-                        captionAssetItem.Initialize();
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
-        {
-            return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
-        }
-
         private async void Load()
         {
 #if STAGING
@@ -313,10 +278,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
             };
 #else
-            KeywordTypeItems = new List<VideoListViewModel.KeywordType>
+            KeywordTypeItems = new List<DisplayItem>
             {
-                new VideoListViewModel.KeywordType(Resource.CNT_NAME, "name"),
-                new VideoListViewModel.KeywordType(Resource.CNT_VIDEO_ID, "id")
+                new DisplayItem(Resource.CNT_NAME, "name"),
+                new DisplayItem(Resource.CNT_VIDEO_ID, "id")
             };
 #endif
             if (SelectedKeywordType == null)
@@ -330,47 +295,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool CanLoadCaption(VideoItemViewModel videoItem)
         {
             return true; //videoItem?.CaptionItems?.Any() ?? false;
-        }
-
-        private async void LoadCaptionAsync(VideoItemViewModel videoItem)
-        {
-            IsNextButtonVisible = false;
-            IsConfirmButtonVisible = true;
-
-            // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
-            IsBusy = true;
-            try
-            {
-                SetTitleAction?.Invoke($"{Resource.CNT_VIDEO} - {videoItem.Name}");
-                ValidCancellationTokenSource();
-                SelectedVideoItem = videoItem;
-
-                var videoId = videoItem.Id;
-                if (string.IsNullOrEmpty(videoId))
-                    return;
-
-                if (videoItem.CanUpdate)
-                {
-                    videoItem?.CaptionItems?.Clear();
-                    var authorization = _signInViewModel.GetAuthorization();
-                    var stageId = _signInViewModel.SelectedStage?.Id;
-                    var projectId = _signInViewModel.SelectedStage?.Id;
-
-                    var result = await _cloudMediaService.GetVideoAsync(
-                        new GetVideoParameter(authorization, stageId, projectId, videoId),
-                        _cancellationTokenSource.Token);
-
-                    videoItem.UpdateSource(result);
-                    if (videoItem.CaptionItems != null)
-                        if (videoItem.CaptionItems is IList<CaptionAssetItemViewModel> list)
-                            list.Add(CaptionAssetItemViewModel.Empty);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-                CommandManager.InvalidateRequerySuggested();
-            }
         }
 
         private async Task LoadVideoAssetAsync(VideoItemViewModel videoItem)

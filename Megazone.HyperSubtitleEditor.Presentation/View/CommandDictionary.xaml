@@ -4,6 +4,8 @@
     <ui:OpenSubtitleCommand x:Key="OpenSubtitleCommand" />
     <ui:OpenVideoListDialogCommand x:Key="OpenVideoListDialogCommand" />
     <ui:ExportSelectedTabAsVttCommand x:Key="ExportSelectedTabAsVttCommand" />
+    <ui:CreateNewCommand x:Key="CreateNewCommand" />
+    <ui:SaveCommand x:Key="SaveCommand" />
     <ui:CreateNewFileCommand x:Key="CreateNewFileCommand" />
     <ui:ShowSettingsViewCommand x:Key="ShowSettingsViewCommand" />
     <ui:ImportExcelCommand x:Key="OpenExcelFileCommand" />
@@ -51,4 +53,5 @@
     <ui:LogoutCommand x:Key="LogoutCommand" />
     <ui:ShowProjectViewCommand x:Key="ShowProjectViewCommand" />
     <ui:OpenLeftSideMenuCommand x:Key="OpenLeftSideMenuCommand" />
+    <ui:CloseLeftSideMenuCommand x:Key="CloseLeftSideMenuCommand" />
 </ResourceDictionary>

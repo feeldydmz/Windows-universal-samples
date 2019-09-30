@@ -602,7 +602,7 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
     <value>로그 아웃</value>
   </data>
   <data name="CNT_OPEN_FROM_MCM" xml:space="preserve">
-    <value>MCM에서 열기</value>
+    <value>MCM 열기</value>
   </data>
   <data name="CNT_PROJECT_START" xml:space="preserve">
     <value>시작하기</value>
@@ -689,5 +689,23 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   </data>
   <data name="CNT_INPUT_VIDEO_URL_TITLE" xml:space="preserve">
     <value>파일주소로 열기</value>
+  </data>
+  <data name="CNT_ASSET_ID" xml:space="preserve">
+    <value>에셋 ID</value>
+  </data>
+  <data name="CNT_LABEL" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="CNT_ID" xml:space="preserve">
+    <value>아이디</value>
+  </data>
+  <data name="CNT_RECENT_FILE" xml:space="preserve">
+    <value>최근 파일</value>
+  </data>
+  <data name="CNT_SHARE_FILE" xml:space="preserve">
+    <value>공유 파일</value>
+  </data>
+  <data name="CNT_IMPORT_VTT" xml:space="preserve">
+    <value>WebVTT 가져오기</value>
   </data>
 </root>

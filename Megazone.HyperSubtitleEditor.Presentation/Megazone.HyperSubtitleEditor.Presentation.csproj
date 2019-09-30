@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Megazone.HyperSubtitleEditor.Presentation</RootNamespace>
     <AssemblyName>Megazone.HyperSubtitleEditor.Presentation</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -45,9 +45,6 @@
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Toolkit.Wpf.UI.Controls.WebView, Version=5.1.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Toolkit.Wpf.UI.Controls.WebView.5.1.1\lib\net462\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -139,11 +136,14 @@
   <ItemGroup>
     <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
     <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
+    <Compile Include="Behavior\ListBoxDataLoadBehavior.cs" />
     <Compile Include="Behavior\ListBoxSelectionChangedBehaivor.cs" />
     <Compile Include="Behavior\ListViewItemDoubleClickBehavior.cs" />
     <Compile Include="Behavior\MediaButtonPlayBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPlayStateChangedToCommandBehavior.cs" />
     <Compile Include="Behavior\MediaPlayerPositionChangedToCommandBehavior.cs" />
+    <Compile Include="Behavior\CollapseBehavior.cs" />
+    <Compile Include="Behavior\PopupHeightControlBehavior.cs" />
     <Compile Include="Behavior\ProjectSelectBehavior.cs" />
     <Compile Include="Behavior\SubtitleItemsFilterBehavior.cs" />
     <Compile Include="Behavior\VideoElementLogBehavior.cs" />
@@ -155,11 +155,14 @@
     <Compile Include="Command\UI\AdjustTimeCommand.cs" />
     <Compile Include="Command\UI\ApplyItalicToAllTextCommand.cs" />
     <Compile Include="Command\UI\AutoAdjustEndtimesCommand.cs" />
+    <Compile Include="Command\UI\CloseLeftSideMenuCommand.cs" />
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
+    <Compile Include="Command\UI\CreateNewCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />
     <Compile Include="Command\UI\OpenLeftSideMenuCommand.cs" />
+    <Compile Include="Command\UI\SaveCommand.cs" />
     <Compile Include="Command\UI\ShowProjectViewCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />
     <Compile Include="Command\UI\OpenVideoListDialogCommand.cs" />
@@ -216,7 +219,6 @@
     <Compile Include="Excel\ExcelSheetInfo.cs" />
     <Compile Include="Excel\Subtitle.cs" />
     <Compile Include="Excel\TrackFormat.cs" />
-    <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="ITimeSeeker.cs" />
     <Compile Include="Message\CloudMedia.cs" />
     <Compile Include="Message\Excel.cs" />
@@ -232,11 +234,14 @@
     <Compile Include="Message\Subtitle.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\Data\RecentlyItem.cs" />
+    <Compile Include="ViewModel\RecentlyLoader.cs" />
     <Compile Include="Serializable\SubtitleGroup.cs" />
     <Compile Include="Serializable\SubtitleTabItemParser.cs" />
     <Compile Include="Serializable\SubtitleTabItem.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\AddAndEditSubtitleViewModel.cs" />
+    <Compile Include="ViewModel\CaptionAssetListViewModel.cs" />
     <Compile Include="ViewModel\CaptionListViewModel.cs" />
     <Compile Include="ViewModel\CopySubtitleViewModel.cs" />
     <Compile Include="ViewModel\CreateSubtitleViewModelBase.cs" />
@@ -250,12 +255,13 @@
     <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\CaptionAssetItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\CaptionElementItemViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel\DisplayItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\IMediaItem.cs" />
+    <Compile Include="ViewModel\ItemViewModel\LanguageItem.cs" />
     <Compile Include="ViewModel\ItemViewModel\ProjectItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\StageItemViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\VideoItemViewModel.cs" />
-    <Compile Include="ViewModel\Language\Language.cs" />
-    <Compile Include="ViewModel\Language\LanguageLoader.cs" />
+    <Compile Include="ViewModel\LanguageLoader.cs" />
     <Compile Include="ViewModel\LeftSideMenuViewModel.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
@@ -300,6 +306,7 @@
     <Compile Include="View\GoToLineView.xaml.cs">
       <DependentUpon>GoToLineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LanguageItemTemplateSelector.cs" />
     <Compile Include="View\LeftSideMenu\LeftSideMenuView.xaml.cs">
       <DependentUpon>LeftSideMenuView.xaml</DependentUpon>
     </Compile>
@@ -311,6 +318,9 @@
     </Compile>
     <Compile Include="View\LeftSideMenu\MyComputerMenuView.xaml.cs">
       <DependentUpon>MyComputerMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LeftSideMenu\RecentlyMenuView.xaml.cs">
+      <DependentUpon>RecentlyMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainFrameView.xaml.cs">
       <DependentUpon>MainFrameView.xaml</DependentUpon>
@@ -376,6 +386,9 @@
     </Compile>
     <Compile Include="View\VideoListView.xaml.cs">
       <DependentUpon>VideoListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WorkBarView.xaml.cs">
+      <DependentUpon>WorkBarView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -505,6 +518,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\CommonDataTemplete.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\CopySubtitleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -532,6 +549,10 @@
     <Page Include="View\LeftSideMenu\MyComputerMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\RecentlyMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainFrameView.xaml">
       <SubType>Designer</SubType>
@@ -602,6 +623,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\VideoListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WorkBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

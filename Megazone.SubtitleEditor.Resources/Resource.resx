@@ -145,7 +145,7 @@
     <value>All subtitle</value>
   </data>
   <data name="CNT_APPLICATION_NAME" xml:space="preserve">
-    <value>Hyper Subtitle Editor</value>
+    <value>Megazone Cloud Media Caption Editor</value>
   </data>
   <data name="CNT_APPLY" xml:space="preserve">
     <value>Apply</value>
@@ -307,7 +307,7 @@
     <value>JOB ID</value>
   </data>
   <data name="CNT_KIND" xml:space="preserve">
-    <value>Track type</value>
+    <value>Caption type</value>
   </data>
   <data name="CNT_LANGUAGE" xml:space="preserve">
     <value>Language</value>
@@ -601,7 +601,7 @@ Are you going to load a project?</value>
     <value>Log out</value>
   </data>
   <data name="CNT_OPEN_FROM_MCM" xml:space="preserve">
-    <value>Open from MCM</value>
+    <value>Open MCM</value>
   </data>
   <data name="CNT_PROJECT_START" xml:space="preserve">
     <value>Start</value>
@@ -682,5 +682,23 @@ platform, please contact our sales team. We'll assist you with more details.</va
   </data>
   <data name="CNT_INPUT_VIDEO_URL_TITLE" xml:space="preserve">
     <value>Open to URL</value>
+  </data>
+  <data name="CNT_ASSET_ID" xml:space="preserve">
+    <value>Asset ID</value>
+  </data>
+  <data name="CNT_LABEL" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="CNT_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="CNT_RECENT_FILE" xml:space="preserve">
+    <value>Recent file</value>
+  </data>
+  <data name="CNT_SHARE_FILE" xml:space="preserve">
+    <value>Shared file</value>
+  </data>
+  <data name="CNT_IMPORT_VTT" xml:space="preserve">
+    <value>Import a WebVTT</value>
   </data>
 </root>

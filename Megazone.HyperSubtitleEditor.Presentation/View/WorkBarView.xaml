@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.WorkBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Height="42"
+             DataContext="{Binding Path=WorkBar, Source={StaticResource SubtitleViewModelLocator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#262f4d" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1" Visibility="{Binding Path=HasData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                <TextBlock Text="비디오/에셋을 추가해 주세요" VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" />
+            </Grid>
+            <Grid Grid.Column="1" Visibility="{Binding Path=HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="11" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" Width="21" Height="15"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0"
+                               DataContext="{Binding Path=VideoItem}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} ({1})">
+                                <Binding Path="Name" />
+                                <Binding Path="Id" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                            Command="{Binding Path=OpenVideoInfoPopupCommand}">
+                        <Grid>
+                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_video_info_nor.png" Width="15" Height="15" />
+                            <Popup IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=WorkBar.IsOpenVideoInfoPopup}" StaysOpen="False">
+                                <Popup.Resources>
+                                    <Style x:Key="Style_ValueTextBlock" TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </Style>
+                                </Popup.Resources>
+                                <Grid Background="Black" DataContext="{Binding Path=VideoItem.Source}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Style="{StaticResource Style_ValueTextBlock}" Text="Metadata" />
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </Button>
+                    <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White" />
+                </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <TextBlock DataContext="{Binding Path=SelectedCaptionAssetItem}" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} ({1})">
+                                <Binding Path="Name" />
+                                <Binding Path="Id" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <Button Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding Path=EditAssetNameCommand}">
+                        <Grid>
+                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png" Width="15" Height="15" />
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

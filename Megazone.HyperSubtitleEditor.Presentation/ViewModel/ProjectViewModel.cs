@@ -11,7 +11,6 @@ using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -239,7 +238,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedStage?.SelectedProject != _signInViewModel.SelectedProject;
         }
 
-        private void StartProject()
+        private async void StartProject()
         {
             Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
 
@@ -273,7 +272,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsProjectViewVisible = string.IsNullOrEmpty(_signInViewModel.SelectedProject?.ProjectId) ||
                                    string.IsNullOrEmpty(_signInViewModel.SelectedStage?.Id);
 
-            _languageLoader.UpdateLanguageAsync(_signInViewModel.GetAuthorization().AccessToken, SelectedStage.Id, SelectedStage.SelectedProject.ProjectId);
+            await _languageLoader.LoadAsync();
         }
 
         private void SelectProject(ProjectItemViewModel projectItem)

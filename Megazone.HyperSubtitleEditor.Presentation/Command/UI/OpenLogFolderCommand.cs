@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core.Log;
-using Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
@@ -27,10 +27,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         {
             try
             {
-                if (Directory.Exists(this.HyperSubtitleEditorAppDataPath() + "/logs"))
-                    Process.Start(this.HyperSubtitleEditorAppDataPath() + "/logs");
-                else
-                    Process.Start(this.HyperSubtitleEditorAppDataPath());
+                Process.Start(Directory.Exists(this.LogDirPath()) ? this.LogDirPath() : this.AppDataPath());
             }
             catch (Exception ex)
             {

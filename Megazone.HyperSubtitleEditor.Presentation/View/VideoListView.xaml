@@ -14,8 +14,11 @@
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
              x:Name="Root">
     <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Initialized">
+            <i:InvokeCommandAction Command="{Binding Path=InitializeCommand}" />
+        </i:EventTrigger>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.Resources>
@@ -178,10 +181,8 @@
                                                              VerticalAlignment="Top" HorizontalAlignment="Center" />
 
                                                 <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
-                                                    <Image
-                                                        Source="http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/images/thumbnail_no_image_s.png" />
-                                                    <Image
-                                                        Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
+                                                    <Image Source="{StaticResource Bitmap_NoFoundImage}" />
+                                                    <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
                                                 </Grid>
 
                                                 <Grid Grid.Column="2" Margin="20, 0, 0 , 0">
@@ -199,7 +200,7 @@
                                                            HorizontalAlignment="Left" />
 
                                                     <!--캡션 이동 버튼-->
-                                                    <!--<Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0, 1">
+                                                    <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0, 1">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="9" />
@@ -208,7 +209,7 @@
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Text="Caption" HorizontalAlignment="Right" />
-                                                        --><!--<TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />--><!--
+                                                        <TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />
                                                         <TextBlock Grid.Column="2" HorizontalAlignment="Right"
                                                                    Visibility="{Binding Path=HasSelectedCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                             <TextBlock.Text>
@@ -222,7 +223,7 @@
                                                             Grid.Column="4" ToolTip="자막 선택." Width="25" Height="25"
                                                             Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}"
                                                             CommandParameter="{Binding}"
-                                                            DefaultImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_nor.png"
+                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_nor.png"
                                                             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_pres.png"
                                                             MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_hov.png"
                                                             DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_dis.png"
@@ -250,11 +251,11 @@
                                                                 <EventTrigger RoutedEvent="Button.Unloaded">
                                                                     <StopStoryboard
                                                                         BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                                                                    --><!--<RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />--><!--
+                                                                    <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
                                                                 </EventTrigger>
                                                             </mz:ImageButton.Triggers>
                                                         </mz:ImageButton>
-                                                    </Grid>-->
+                                                    </Grid>
 
                                                     <Grid Grid.Row="1" VerticalAlignment="Center"
                                                           HorizontalAlignment="Left">
@@ -347,7 +348,7 @@
                         </StackPanel>
 
                         <ListBox Grid.Row="2" x:Name="AssetListBox"
-                                 ItemsSource="{Binding Path=SelectedVideoItem.CaptionItems}"
+                                 ItemsSource="{Binding Path=SelectedVideoItem.CaptionAssetItems}"
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
@@ -440,7 +441,7 @@
                         <Border Grid.Row="2"
                                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                             <Border
-                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
                                 <TextBlock
                                     Text="Empty Asset List."
                                     VerticalAlignment="Center"
@@ -467,7 +468,7 @@
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
-                        Command="{Binding NextCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Command="{Binding NextStepCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard Name="CaptionBoardOpenStoryboard">

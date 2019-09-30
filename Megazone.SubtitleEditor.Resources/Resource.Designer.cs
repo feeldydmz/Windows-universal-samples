@@ -19,7 +19,7 @@ namespace Megazone.SubtitleEditor.Resources {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resource {
@@ -151,7 +151,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Hyper Subtitle Editor과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Megazone Cloud Media Caption Editor과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_APPLICATION_NAME {
             get {
@@ -165,6 +165,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_APPLY {
             get {
                 return ResourceManager.GetString("CNT_APPLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Asset ID과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ASSET_ID {
+            get {
+                return ResourceManager.GetString("CNT_ASSET_ID", resourceCulture);
             }
         }
         
@@ -646,6 +655,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   ID과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ID {
+            get {
+                return ResourceManager.GetString("CNT_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Import과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_IMPORT {
@@ -669,6 +687,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_IMPORT_PROJECT {
             get {
                 return ResourceManager.GetString("CNT_IMPORT_PROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import a WebVTT과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_IMPORT_VTT {
+            get {
+                return ResourceManager.GetString("CNT_IMPORT_VTT", resourceCulture);
             }
         }
         
@@ -772,11 +799,20 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Track type과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Caption type과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_KIND {
             get {
                 return ResourceManager.GetString("CNT_KIND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Label과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_LABEL {
+            get {
+                return ResourceManager.GetString("CNT_LABEL", resourceCulture);
             }
         }
         
@@ -925,7 +961,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Open from MCM과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Open MCM과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_OPEN_FROM_MCM {
             get {
@@ -1083,6 +1119,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_PUBLISH_CONFIRM {
             get {
                 return ResourceManager.GetString("CNT_PUBLISH_CONFIRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recent file과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_RECENT_FILE {
+            get {
+                return ResourceManager.GetString("CNT_RECENT_FILE", resourceCulture);
             }
         }
         
@@ -1308,6 +1353,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_SETTING_VIDEO_PLAYER {
             get {
                 return ResourceManager.GetString("CNT_SETTING_VIDEO_PLAYER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Shared file과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_SHARE_FILE {
+            get {
+                return ResourceManager.GetString("CNT_SHARE_FILE", resourceCulture);
             }
         }
         

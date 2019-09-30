@@ -2,9 +2,9 @@
 
 ; HM NIS Edit Wizard helper defines
 !define VersionHeader ".\Assembly_Version.nsh"
-!define PROCESS_NAME "HyperSubtitleEditor.exe"
-!define PRODUCT_NAME "Hyper Subtitle Editor"
-#!define PRODUCT_VERSION "0.5.0.4973
+!define PROCESS_NAME "MegazoneCloudMediaCaptionEditor.exe"
+!define PRODUCT_NAME "Megazone Cloud Media Caption Editor"
+#!define PRODUCT_VERSION "1.0.0.0
 !define PRODUCT_PUBLISHER "Megazone"
 !define PRODUCT_WEB_SITE "http://www.megazone.com"
 !define MCM_WEB_SITE "https://console.media.megazone.io"
@@ -14,7 +14,6 @@
 !define COMPANY_NAME "Megazone"
 
 !addplugindir "Plugins"
-
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
 !include "LangFile.nsh"
@@ -75,7 +74,6 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-;OutFile "Hyper-SubtitleEditor-Setup-${PRODUCT_VERSION}.exe"
 OutFile "Setup.exe"
 InstallDir "$PROGRAMFILES64\${COMPANY_NAME}\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
@@ -267,7 +265,7 @@ FunctionEnd
     Pop ${result} ; The exit code
 !macroend
 
-; HyperBrowser.exe Process Runtime check.
+; Process Runtime check.
 Function CheckProcessRuntime
   Var /GLOBAL processFound
   StrCpy $processFound "1"
@@ -347,7 +345,7 @@ SHCTX or SHELL_CONTEXT
 !define REGISTRY_REGKEY_InstalledVersion "Version"         #설치버전 정보
 
 ; Custom Url Scheme
-!define CUSTOM_URL_SCHEME_REGISTRY_SUBKEY "Megazone.HyperSubtitleEditor.v1"
+!define CUSTOM_URL_SCHEME_REGISTRY_SUBKEY "Megazone.CloudMediaCaptionEditor.v1"
 
 ; 레지스트리 등록.
 Function WriteRegistry
@@ -362,12 +360,22 @@ Function WriteRegistry
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_Culture}" "$RegValue_Culture"
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstallPath}" $INSTDIR
   WriteRegStr "HKLM" "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstalledVersion}" "${PRODUCT_VERSION}"
+
+  # .net framework > WebBrowser emulator version 수정. .Net WebBrowser 컨트롤은 기본적으로 IE7을 기준으로 렌더링함.
+  # IE7에서는 HTML5 대응이 안되, 메가존 로그인 페이지가 랜더링 되지 않음. IE 버전을 올려서, HTML5에 대응하도록 수정함.
+  # HTML5 대응하기 위한 최소 IE 버전은 IE10 이다.
+  # 참고자료 : https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/general-info/ee330730(v=vs.85)?redirectedfrom=MSDN#browser_emulation
+  # 32bit
+  WriteRegDWORD "HKLM" "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "${PROCESS_NAME}" 10001
+  # 64bit
+  WriteRegDWORD "HKLM" "SOFTWARE\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "${PROCESS_NAME}" 10001
   
   # register custom url scheme.
   WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}" "URL protocol" ""
   WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell" "" "open"
   WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell\open" "" "command"
   WriteRegStr "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}\shell\open\command" "" '"$INSTDIR\${PROCESS_NAME}" "%1"'
+  
 FunctionEnd
 
 ;----------------------------------------------------------------------
@@ -529,7 +537,7 @@ FunctionEnd
 
 Section "MainSection" SEC01
   # Chcek .Net Framework version and install.
-  !insertmacro CheckNetFramework 461
+  !insertmacro CheckNetFramework 462
 
   Var /GLOBAL InstalledPath
   ReadRegStr $InstalledPath HKLM "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstallPath}"
@@ -551,35 +559,19 @@ Section "MainSection" SEC01
   ;SetOverwrite try
   SetOverwrite on
 
-  File "Install_Files\CommonServiceLocator.dll"
+  File "Install_Files\MegazoneCloudMediaCaptionEditor.exe"
   File "Install_Files\DocumentFormat.OpenXml.dll"
-  File "Install_Files\HyperSubtitleEditor.exe"
-  File "Install_Files\LGPL_21.txt"
   File "Install_Files\log4net.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Domain.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Repository.dll"
-  File "Install_Files\Megazone.Api.Transcoder.Service.dll"
-  File "Install_Files\Megazone.Api.Transcoder.ServiceInterface.dll"
-  File "Install_Files\Megazone.Cloud.Aws.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Common.Domain.dll"
   File "Install_Files\Megazone.Cloud.Media.Domain.dll"
   File "Install_Files\Megazone.Cloud.Media.Repository.dll"
   File "Install_Files\Megazone.Cloud.Media.Service.dll"
   File "Install_Files\Megazone.Cloud.Media.ServiceInterface.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Domain.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Repository.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.Service.S3.dll"
-  File "Install_Files\Megazone.Cloud.Storage.ServiceInterface.S3.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Domain.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.dll"
-  File "Install_Files\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.dll"
-  File "Install_Files\Megazone.Core.AWS.dll"
   File "Install_Files\Megazone.Core.Client.dll"
   File "Install_Files\Megazone.Core.Debug.dll"
   File "Install_Files\Megazone.Core.dll"
   File "Install_Files\Megazone.Core.IoC.Unity.dll"
   File "Install_Files\Megazone.Core.Log.Log4Net.dll"
+  File "Install_Files\Megazone.Core.RestSharp.dll"
   File "Install_Files\Megazone.Core.Security.dll"
   File "Install_Files\Megazone.Core.VideoTrack.dll"
   File "Install_Files\Megazone.Core.VideoTrack.WebVtt.dll"
@@ -599,10 +591,8 @@ Section "MainSection" SEC01
   File "Install_Files\Megazone.SubtitleEditor.Resources.dll"
   File "Install_Files\Megazone.VideoStudio.Presentation.Common.Infrastructure.dll"
   File "Install_Files\Microsoft.Win32.Primitives.dll"
-  File "Install_Files\Ms-PL.txt"
   File "Install_Files\NAudio.dll"
   File "Install_Files\Newtonsoft.Json.dll"
-  File "Install_Files\PreferedLanguageInfo.json"
   File "Install_Files\RestSharp.dll"
   File "Install_Files\System.AppContext.dll"
   File "Install_Files\System.Console.dll"
@@ -615,6 +605,7 @@ Section "MainSection" SEC01
   File "Install_Files\System.IO.Packaging.dll"
   File "Install_Files\System.Net.Http.dll"
   File "Install_Files\System.Net.Sockets.dll"
+  File "Install_Files\System.Runtime.CompilerServices.Unsafe.dll"
   File "Install_Files\System.Runtime.InteropServices.RuntimeInformation.dll"
   File "Install_Files\System.Security.Cryptography.Algorithms.dll"
   File "Install_Files\System.Security.Cryptography.Encoding.dll"
@@ -623,39 +614,14 @@ Section "MainSection" SEC01
   File "Install_Files\System.Windows.Interactivity.dll"
   File "Install_Files\System.Xml.ReaderWriter.dll"
   File "Install_Files\Unity.Abstractions.dll"
-  File "Install_Files\Unity.Configuration.dll"
   File "Install_Files\Unity.Container.dll"
-  File "Install_Files\Unity.Interception.Configuration.dll"
-  File "Install_Files\Unity.Interception.dll"
-  File "Install_Files\Unity.RegistrationByConvention.dll"
-  File "Install_Files\Unity.ServiceLocation.dll"
+  File "Install_Files\Ms-PL.txt"
+  File "Install_Files\LGPL_21.txt"
+  File "Install_Files\PreferedLanguageInfo.json"
 
   SetOutPath "$INSTDIR\ko-kr"
   File "Install_Files\ko-kr\Megazone.SubtitleEditor.Resources.resources.dll"
 
-/*
-  # 폴더명 수정.
-  # LocalAppData\Megazone\HyperBrowser -> LocalAppData\Megazone\Hyper Browser
-  IfFileExists "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser" GotoExist GotoNotExist
-  GotoExist:
-    IfFileExists "$LOCALAPPDATA\${COMPANY_NAME}\Hyper Browser" CanNotRename CanRename
-    CanNotRename:
-      ; 비정상적인 상황.
-      RMDir /r "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser"
-      goto IntallContinue
-    CanRename:
-      Rename "$LOCALAPPDATA\${COMPANY_NAME}\HyperBrowser" "$LOCALAPPDATA\${COMPANY_NAME}\Hyper Browser"
-      goto IntallContinue
-  GotoNotExist:
-    goto IntallContinue
-  IntallContinue:
-    ; Nothing...
-
-  # ICON Image File copy
-  SetOutPath "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}"
-  File "Resources\ICON_IMAGE\logo.png"
-  File "Resources\ICON_IMAGE\logo_small.png"
-*/
   # Create shortcut in start menu.
   CreateDirectory "$SMPROGRAMS\${COMPANY_NAME}\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${COMPANY_NAME}\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PROCESS_NAME}"
@@ -690,7 +656,7 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
-  WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 0x2A5C
+  WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" 0xC5D7
 SectionEnd
 
 ; Section descriptions
@@ -732,35 +698,20 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\ko-kr\Megazone.SubtitleEditor.Resources.resources.dll"
-  Delete "$INSTDIR\CommonServiceLocator.dll"
+  
+  Delete "$INSTDIR\MegazoneCloudMediaCaptionEditor.exe"
   Delete "$INSTDIR\DocumentFormat.OpenXml.dll"
-  Delete "$INSTDIR\HyperSubtitleEditor.exe"
-  Delete "$INSTDIR\LGPL_21.txt"
   Delete "$INSTDIR\log4net.dll"
-  Delete "$INSTDIR\Megazone.Api.Transcoder.Domain.dll"
-  Delete "$INSTDIR\Megazone.Api.Transcoder.Repository.dll"
-  Delete "$INSTDIR\Megazone.Api.Transcoder.Service.dll"
-  Delete "$INSTDIR\Megazone.Api.Transcoder.ServiceInterface.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Aws.Domain.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Common.Domain.dll"
   Delete "$INSTDIR\Megazone.Cloud.Media.Domain.dll"
   Delete "$INSTDIR\Megazone.Cloud.Media.Repository.dll"
   Delete "$INSTDIR\Megazone.Cloud.Media.Service.dll"
   Delete "$INSTDIR\Megazone.Cloud.Media.ServiceInterface.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Storage.Domain.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Storage.Domain.S3.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Storage.Repository.S3.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Storage.Service.S3.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Storage.ServiceInterface.S3.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Transcoder.Domain.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Transcoder.Domain.ElasticTranscoder.dll"
-  Delete "$INSTDIR\Megazone.Cloud.Transcoder.Repository.ElasticTranscoder.dll"
-  Delete "$INSTDIR\Megazone.Core.AWS.dll"
   Delete "$INSTDIR\Megazone.Core.Client.dll"
   Delete "$INSTDIR\Megazone.Core.Debug.dll"
   Delete "$INSTDIR\Megazone.Core.dll"
   Delete "$INSTDIR\Megazone.Core.IoC.Unity.dll"
   Delete "$INSTDIR\Megazone.Core.Log.Log4Net.dll"
+  Delete "$INSTDIR\Megazone.Core.RestSharp.dll"
   Delete "$INSTDIR\Megazone.Core.Security.dll"
   Delete "$INSTDIR\Megazone.Core.VideoTrack.dll"
   Delete "$INSTDIR\Megazone.Core.VideoTrack.WebVtt.dll"
@@ -780,10 +731,8 @@ Section Uninstall
   Delete "$INSTDIR\Megazone.SubtitleEditor.Resources.dll"
   Delete "$INSTDIR\Megazone.VideoStudio.Presentation.Common.Infrastructure.dll"
   Delete "$INSTDIR\Microsoft.Win32.Primitives.dll"
-  Delete "$INSTDIR\Ms-PL.txt"
   Delete "$INSTDIR\NAudio.dll"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
-  Delete "$INSTDIR\PreferedLanguageInfo.json"
   Delete "$INSTDIR\RestSharp.dll"
   Delete "$INSTDIR\System.AppContext.dll"
   Delete "$INSTDIR\System.Console.dll"
@@ -796,6 +745,7 @@ Section Uninstall
   Delete "$INSTDIR\System.IO.Packaging.dll"
   Delete "$INSTDIR\System.Net.Http.dll"
   Delete "$INSTDIR\System.Net.Sockets.dll"
+  Delete "$INSTDIR\System.Runtime.CompilerServices.Unsafe.dll"
   Delete "$INSTDIR\System.Runtime.InteropServices.RuntimeInformation.dll"
   Delete "$INSTDIR\System.Security.Cryptography.Algorithms.dll"
   Delete "$INSTDIR\System.Security.Cryptography.Encoding.dll"
@@ -804,12 +754,10 @@ Section Uninstall
   Delete "$INSTDIR\System.Windows.Interactivity.dll"
   Delete "$INSTDIR\System.Xml.ReaderWriter.dll"
   Delete "$INSTDIR\Unity.Abstractions.dll"
-  Delete "$INSTDIR\Unity.Configuration.dll"
   Delete "$INSTDIR\Unity.Container.dll"
-  Delete "$INSTDIR\Unity.Interception.Configuration.dll"
-  Delete "$INSTDIR\Unity.Interception.dll"
-  Delete "$INSTDIR\Unity.RegistrationByConvention.dll"
-  Delete "$INSTDIR\Unity.ServiceLocation.dll"
+  Delete "$INSTDIR\Ms-PL.txt"
+  Delete "$INSTDIR\LGPL_21.txt"
+  Delete "$INSTDIR\PreferedLanguageInfo.json"
 
   RMDir "$INSTDIR\ko-kr"
   RMDir /r "$INSTDIR"
@@ -819,7 +767,12 @@ Section Uninstall
   DeleteRegKey "HKLM" "${PRODUCT_DIR_REGKEY}"
   DeleteRegKey "HKLM" "${PRODUCT_REGISTRY_SUBKEY}"
   DeleteRegKey "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}"
-
+  DeleteRegKey "HKCR" "${CUSTOM_URL_SCHEME_REGISTRY_SUBKEY}"
+  # 32bit
+  DeleteRegValue "HKLM" "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "${PROCESS_NAME}"
+  # 64bit
+  DeleteRegValue "HKLM" "SOFTWARE\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" "${PROCESS_NAME}"
+  
   # Delete user file.
   ${If} $CheckState <> 0
     Delete "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}\*.*"

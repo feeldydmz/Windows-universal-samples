@@ -10,10 +10,10 @@ using Megazone.Core.VideoTrack.Model;
 using Megazone.Core.Windows.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
-using Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI

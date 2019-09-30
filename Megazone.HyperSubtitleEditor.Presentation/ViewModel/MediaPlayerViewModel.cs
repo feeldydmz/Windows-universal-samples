@@ -17,8 +17,8 @@ using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Control.VideoPlayer;
 using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
-using Megazone.HyperSubtitleEditor.Presentation.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
 
@@ -331,8 +331,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private string GetTempThumbnailFilePath(string fullPath, bool isLocalFile = false)
         {
-            var folderPath = this.GetTempFolderPath();
-            if (folderPath == null) return null;
+            var folderPath = this.TempFolder();
+            if (folderPath == null)
+                return null;
+
             var fileHeader = Guid.NewGuid().ToString() + DateTime.UtcNow.DateTimeToEpoch();
             if (isLocalFile)
             {

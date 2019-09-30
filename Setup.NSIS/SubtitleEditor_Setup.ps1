@@ -81,8 +81,11 @@ Function RunBuild([string] $BuildPath, [string] $BuildMode, [string] $Version) {
 #$buildMode = "RELEASE"
 #$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Release";
 
-$buildMode = "STAGING"
-$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Staging";
+#$buildMode = "STAGING"
+#$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Staging";
+
+$buildMode = "DEBUG"
+$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Debug";
 
 $buildFilePath = "..\Megazone.HyperSubtitleEditor.sln";
 $buildversion = GetVersion;
@@ -194,10 +197,10 @@ if ($canCodesign.Equals("True")) {
 # Rename setup file name...
 #{
     #$stageName = "Staging"; // Staging이면 'Staging'으로 설정, 릴리즈배포버전에서는 공백으로 처리.
-    $outputSetup = "Hyper-Subtitle-Editor-Setup-" + $buildversion + ".exe";
+    $outputSetup = "Megazone-Cloud-Media-Caption-Editor-Setup-" + $buildversion + ".exe";
 
     if($buildMode.Equals("STAGING")) {
-        $outputSetup = "Hyper-Subtitle-Editor-Setup-" + $buildversion + "-Staging.exe";
+        $outputSetup = "Megazone-Cloud-Media-Caption-Editor-Setup-" + $buildversion + "-Staging.exe";
     }
 
     if (Test-Path .\$outputSetup) {

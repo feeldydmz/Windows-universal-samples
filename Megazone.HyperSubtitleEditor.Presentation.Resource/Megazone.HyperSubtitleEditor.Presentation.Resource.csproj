@@ -296,16 +296,35 @@
     <Resource Include="Image\img_error_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\img_Video_Replace_Act.png" />
-    <Resource Include="Image\img_Video_Replace_Hov.png" />
+    <Resource Include="Image\img_open_close.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\img_video_selected.png" />
+    <Resource Include="Image\img_btn_noun_refresh.png" />
+    <Resource Include="Image\img_btn_search.png" />
+    <Resource Include="Image\thumbnail_no_image_s.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\img_Combo_Dropdown_hov.png" />
-    <Resource Include="Image\img_Combo_Dropdown_nor.png" />
-    <Resource Include="Image\img_Combo_Dropdown_act.png" />
+    <Resource Include="Image\img_video_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_icon_video_info_nor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_btn_edit_nor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_icon_vtt_small.png" />
+    <Resource Include="Image\img_ico_excel_small.png" />
+    <Resource Include="Image\img_ico_mcm_small.png" />
+    <Resource Include="Image\img_ico_projet_file_small.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Image\img_Combo_Dropdown_act.png" />
+    <Content Include="Image\img_Combo_Dropdown_hov.png" />
+    <Content Include="Image\img_Combo_Dropdown_nor.png" />
+    <Content Include="Image\img_Video_Replace_Act.png" />
+    <Content Include="Image\img_Video_Replace_Hov.png" />
+    <Content Include="Image\img_video_selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

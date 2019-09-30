@@ -4,7 +4,6 @@ using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
@@ -52,7 +51,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             return !string.IsNullOrEmpty(FilePath) &&
                    !string.IsNullOrEmpty(Label) &&
-                   !string.IsNullOrEmpty(SelectedLanguageItemViewModel?.LanguageCode);
+                   !string.IsNullOrEmpty(SelectedLanguage?.LanguageCode);
         }
 
         protected override void OnConfirm()
@@ -67,8 +66,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         Kind = SelectedSubtitleKind,
                         Label = Label,
                         Text = text,
-                        LanguageCode = SelectedLanguageItemViewModel.LanguageCode,
-                        CountryCode = SelectedLanguageItemViewModel.CountryCode
+                        LanguageCode = SelectedLanguage.LanguageCode,
+                        CountryCode = SelectedLanguage.CountryCode
                     }));
             }
             catch (Exception ex)

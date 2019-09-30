@@ -40,46 +40,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
-        //public async Task<Mpd> ParseMpdAsync(string url)
-        //{
-        //    //string url = renditionAsset.Urls?.FirstOrDefault();
-
-        //    //if (url.IsNullOrEmpty())
-        //    //    return renditionAsset;
-
-        //    string xmlString = await Task.Run(() => GetMpdContentAsync(url));
-
-        //    var serializer = new XmlSerializer(typeof(Mpd));
-          
-        //    using (TextReader reader = new StringReader(xmlString))
-        //    {
-        //        var obj = serializer.Deserialize(reader);
-
-        //        Mpd mpdObj = obj as Mpd;
-
-        //        //renditionAsset.Duration = Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration).TotalSeconds;
-
-
-
-        //        //Mpd.ToTimeSpan(mpdObj.MediaPresentationDuration);
-        //        return mpdObj;
-        //    }
-        //}
-
-        //private async Task<string> GetMpdContentAsync(string url)
-        //{
-        //    string xmlStr = "";
-
-        //    using (var wc = new WebClient())
-        //    {
-        //        xmlStr = wc.DownloadString(url);
-        //    }
-        //    Debug.WriteLine(xmlStr);
-
-
-        //    return xmlStr;
-        //}
-        
         public Video OpenedVideo { get; private set; }
         public CaptionAsset OpenedCaptionAsset { get; private set; }
         public string UploadInputPath { get; private set; }

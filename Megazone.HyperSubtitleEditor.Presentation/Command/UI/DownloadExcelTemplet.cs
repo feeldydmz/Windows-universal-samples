@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core.Log;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Megazone.VideoStudio.Presentation.Common.Infrastructure.Extension;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI

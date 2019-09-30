@@ -6,26 +6,23 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     internal abstract class CreateSubtitleViewModelBase : ViewModelBase
     {
-        private readonly LanguageLoader _languageLoader;
         protected readonly ILogger Logger;
         private string _label;
-        private IList<LanguageItemViewModel> _languages;
+        private IList<LanguageItem> _languages;
         private ICommand _onConfirmCommand;
-        private LanguageItemViewModel _selectedLanguageItemViewModel;
+        private LanguageItem _selectedLanguage;
         private CaptionKind _selectedSubtitleKind;
         private IList<CaptionKind> _subtitleKinds;
 
         protected CreateSubtitleViewModelBase(ILogger logger, LanguageLoader languageLoader)
         {
             Logger = logger;
-            _languageLoader = languageLoader;
 
             _subtitleKinds = new List<CaptionKind>
             {
@@ -33,22 +30,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionKind.Caption,
                 CaptionKind.Chapter
             };
-            _languages = new List<LanguageItemViewModel>();
-
-            var languages = _languageLoader.Languages;
-
-            foreach (var item in languages.ToList())
-                Languages.Add(new LanguageItemViewModel
-                {
-                    LanguageCode = item.Alpha2,
-                    CountryCode = item.CountryInfo.Alpha2,
-                    CountryName = item.CountryInfo.Name
-                });
-
-            var result = Languages.Where(i => i.LanguageCode.Equals("en"));
-
-            SelectedLanguageItemViewModel = result.ToList().FirstOrDefault();
+            
             SelectedSubtitleKind = CaptionKind.Subtitle;
+
+            Languages = languageLoader.Languages?.ToList();
+            SelectedLanguage = Languages
+                ?.Where(language => language.LanguageCode?.ToLower().Equals("en") ?? false).FirstOrDefault();
         }
 
         public string Label
@@ -59,16 +46,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public Action CloseAction { protected get; set; }
 
-        public IList<LanguageItemViewModel> Languages
+        public IList<LanguageItem> Languages
         {
             get => _languages;
             set => Set(ref _languages, value);
         }
 
-        public LanguageItemViewModel SelectedLanguageItemViewModel
+        public LanguageItem SelectedLanguage
         {
-            get => _selectedLanguageItemViewModel;
-            set => Set(ref _selectedLanguageItemViewModel, value);
+            get => _selectedLanguage;
+            set => Set(ref _selectedLanguage, value);
         }
 
         public IList<CaptionKind> SubtitleKinds

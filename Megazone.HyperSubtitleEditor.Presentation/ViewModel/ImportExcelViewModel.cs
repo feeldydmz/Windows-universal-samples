@@ -8,7 +8,6 @@ using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Language;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
@@ -85,8 +84,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     continue;
 
                 if (string.IsNullOrEmpty(item.Label) ||
-                    string.IsNullOrEmpty(item.SelectedLanguageItemViewModel?.LanguageCode) ||
-                    string.IsNullOrEmpty(item.SelectedLanguageItemViewModel?.CountryCode))
+                    string.IsNullOrEmpty(item.SelectedLanguage?.LanguageCode) ||
+                    string.IsNullOrEmpty(item.SelectedLanguage?.CountryCode))
                     return;
 
 
@@ -94,8 +93,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     SheetName = item.SheetName,
                     Label = item.Label,
-                    LanguageCode = item.SelectedLanguageItemViewModel.LanguageCode,
-                    CountryCode = item.SelectedLanguageItemViewModel.CountryCode,
+                    LanguageCode = item.SelectedLanguage.LanguageCode,
+                    CountryCode = item.SelectedLanguage.CountryCode,
                     CaptionKind = item.SelectedSubtitleKind,
                     TrackFormat = TrackFormat.WebVtt
                 });
@@ -132,19 +131,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 foreach (var sheetInfo in infos)
-                    Sheets.Add(new ImportExcelItemViewModel(_languageLoader)
+                {
+                    var excelItemViewModel = new ImportExcelItemViewModel(_languageLoader)
                     {
                         IsChecked = true, // 기본값이 체크되어 있는 형태.
                         SheetName = sheetInfo.SheetName,
                         Label = sheetInfo.Label,
-                        SelectedLanguageItemViewModel =
-                            new LanguageItemViewModel
-                            {
-                                LanguageCode = sheetInfo.LanguageCode ?? string.Empty,
-                                CountryCode = sheetInfo.CountryCode ?? string.Empty
-                            },
                         SelectedSubtitleKind = sheetInfo.CaptionKind
-                    });
+                    };
+                    
+                    excelItemViewModel.SelectedLanguage = excelItemViewModel.Languages.SingleOrDefault(language =>
+                        language.LanguageCode.Equals(sheetInfo.LanguageCode) &&
+                        language.CountryCode.Equals(sheetInfo.CountryCode));
+
+                    Sheets.Add(excelItemViewModel);
+                }
             }
             catch (Exception)
             {

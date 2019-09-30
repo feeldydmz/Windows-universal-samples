@@ -11,7 +11,6 @@ namespace Megazone.Cloud.Media.Domain
             Name = name;
         }
 
-
         public string Code { get; }
         public string Name { get; }
     }

@@ -11,6 +11,7 @@
              xmlns:config="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
+             xmlns:views="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              mc:Ignorable="d" Background="White"
              d:DesignHeight="600" d:DesignWidth="900"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Subtitle}">
@@ -292,7 +293,6 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
-            <i:InvokeCommandAction Command="{Binding Path=WorkBar.LoadCommand, Source={StaticResource SubtitleViewModelLocator}}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Unloaded">
             <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
@@ -303,7 +303,7 @@
         <Grid.RowDefinitions>
             <!--툴바 영역-->
             <RowDefinition Height="63" />
-            <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="2.2*" />
             <RowDefinition Height="Auto" />
             <!--"StartTime:" 부분이 딱 보일만큼의 높이로 MinHeight 설정. 스크롤 없이 자막 세줄이보일만큼 기본 Height 설정-->
@@ -343,8 +343,8 @@
                     </Style>
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal" Margin="5,0">
-                    <Button Content="열기" Command="{StaticResource OpenLeftSideMenuCommand}" Style="{x:Null}" />
-                    <Button Command="{StaticResource LoadGroupFileCommand}">
+                    <!--<Button Command="{StaticResource LoadGroupFileCommand}">-->
+                    <Button Command="{StaticResource OpenLeftSideMenuCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -355,7 +355,9 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_OPEN}" />
                         </Grid>
                     </Button>
-                    <Button Command="{StaticResource SaveGroupCommand}">
+
+                    <!--<Button Command="{StaticResource SaveGroupCommand}">-->
+                    <Button Command="{StaticResource SaveCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -412,8 +414,8 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
                         </Grid>
                     </Button>
-                    <Rectangle />
-                    <Grid Margin="0,5">
+                    <Rectangle Visibility="Collapsed"/>
+                    <Grid Margin="0,5" Visibility="Collapsed">
                         <CheckBox x:Name="OpenVideoButton">
                             <CheckBox.Style>
                                 <Style TargetType="{x:Type CheckBox}">
@@ -492,8 +494,8 @@
                             </Border>
                         </Popup>
                     </Grid>
-                    <Rectangle />
-                    <Button Command="{StaticResource DeployCommand}">
+                    <Rectangle Visibility="Collapsed"/>
+                    <Button Command="{StaticResource DeployCommand}" Visibility="Collapsed">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -546,42 +548,8 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1" DataContext="{Binding Path=WorkBar, Source={StaticResource SubtitleViewModelLocator}}">
-            <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <TextBlock Text="Untitled" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <Button Content="편집" Style="{x:Null}" />
-                </StackPanel>
-            </Grid>
-            <Grid Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="18" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <!--
-                아이콘
-                <Image />-->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" DataContext="{Binding Path=VideoItem}">
-                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} ({1})">
-                                <Binding Path="Name" />
-                                <Binding Path="Id" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    
-                    <Button Content="정보" Style="{x:Null}" />
-                    <TextBlock Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding Path=SelectedCaptionAsset.Name}" VerticalAlignment="Center" Margin="0,0,5,0" />
-                    <Button Content="편집" Style="{x:Null}" />
-                </StackPanel>
-            </Grid>
+        <Grid Grid.Row="1">
+            <views:WorkBarView />
         </Grid>
 
         <Grid Grid.Row="2">
@@ -1027,8 +995,8 @@
                     <i:Interaction.Behaviors>
                         <mz:ListBoxScrollBehavior
                             ListBoxScroll="{Binding ElementName=RootGrid, Path=DataContext.ListBoxScroll, Mode=OneWayToSource}" />
-                        <behavior:SubtitleItemsFilterBehavior
-                            FilterText="{Binding Path=Text, ElementName=SearchInputTextBox, UpdateSourceTrigger=PropertyChanged}" />
+                        <!--<behavior:SubtitleItemsFilterBehavior
+                            FilterText="{Binding Path=Text, ElementName=SearchInputTextBox, UpdateSourceTrigger=PropertyChanged}" />-->
                         <mz:BindableSelectedItemsBehavior
                             SelectedItems="{Binding SelectedRows, FallbackValue={x:Null}, TargetNullValue={x:Null}, Mode=OneWayToSource}" />
                         <behavior:ListViewItemDoubleClickBehavior
@@ -1298,16 +1266,13 @@
                                     </Style>
                                 </UniformGrid.Resources>
                                 <!--<Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenVideoListDialogCommand}" />-->
-                                <Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
-                                        Command="{StaticResource OpenSubtitleCommand}" />
+                                        Command="{StaticResource OpenSubtitleCommand}" />-->
                                 <Button Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0"
                                         Command="{StaticResource AddTabCommand}" />
                             </UniformGrid>
                         </Grid>
                     </Grid>
                 </Border>
-
             </Grid>
 
             <!--그리드 스플리터-->
