@@ -278,7 +278,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <!--Stage Total Count-->
                             <StackPanel Orientation="Horizontal"
-                                        Margin="12,5,10,5"
+                                        Margin="12,5,10,8"
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <TextBlock Foreground="White" 
                                            FontWeight="Bold"
@@ -351,10 +351,10 @@
                                                  Width="340">
                                                     <i:Interaction.Behaviors>
                                                         <mz:ListBoxSelectionChangedCommandBehavior 
-                                                    Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
-                                                    CommandParameter="{Binding Path=SelectedProject}" />
+                                                            Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
+                                                            CommandParameter="{Binding Path=SelectedProject}" />
                                                         <behavior:ListboxItemDoubleClickBehavior
-                                                    Command="{Binding Path=DataContext.StartProjectCommand, ElementName=Root}"/>
+                                                            Command="{Binding Path=DataContext.StartProjectCommand, ElementName=Root}"/>
                                                     </i:Interaction.Behaviors>
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
