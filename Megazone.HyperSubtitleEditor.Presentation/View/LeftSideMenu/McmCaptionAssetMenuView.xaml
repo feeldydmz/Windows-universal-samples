@@ -34,7 +34,7 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
 
             <system:Double x:Key="ListBoxItemWidth">350</system:Double>
-            <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
+            <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -47,11 +47,17 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
+
+                <!--구분선-->
+                <Rectangle Grid.Row="0" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
+
                 <!--검색 패널-->
-                <Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}">
+                <Grid Grid.Row="1" Margin="{StaticResource LayoutLeftMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -163,8 +169,11 @@
                     </Grid>
                 </Grid>
 
+                <!--구분선-->
+                <Rectangle Grid.Row="2" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
+
                 <!--Caption 검색 결과-->
-                <Border Grid.Row="1">
+                <Border Grid.Row="3">
                     <Grid>
                         <ListBox x:Name="AssetListBox"
                                  ItemsSource="{Binding Path=CaptionAssetItems}"
@@ -280,7 +289,7 @@
                     </Grid>
                 </Border>
 
-                <Grid Grid.Row="2" Margin="0,0,20,0">
+                <Grid Grid.Row="4" Margin="0,0,20,0">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Style.Triggers>

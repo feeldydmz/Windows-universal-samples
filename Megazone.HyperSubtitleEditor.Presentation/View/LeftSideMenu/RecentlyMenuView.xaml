@@ -23,6 +23,7 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -36,7 +37,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
-                <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
+                <ItemsControl x:Name="RecentlyItemControl" Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
@@ -133,6 +134,15 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <TextBlock x:Name="EmptyListBlock"
+                           Grid.Row="2" 
+                           
+                           Foreground="#545871"
+                           Text ="Empty List"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           FontSize="15"
+                           Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
             </Grid>
         </Border>
     </Grid>

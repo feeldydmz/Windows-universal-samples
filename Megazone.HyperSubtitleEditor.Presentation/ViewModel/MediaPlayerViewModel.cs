@@ -166,7 +166,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 Debug.WriteLine($"media url : {url}");
 
-                OpenMedia(url, false, _currentResolution);
+                OpenMedia(url, IsLocalFile, _currentResolution);
             }
         }
 
@@ -218,9 +218,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         // TODO : Video 를 받아 처리하도록 개선 필요.
+        public bool IsLocalFile { get; set; }
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
+            IsLocalFile = isLocalFile;
 
             VideoResolutionsByType = WorkContext.VideoResolutionsByType;
             VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;
@@ -276,8 +278,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //    Resolutions = VideoResolutionsByType.First().Value?.Keys;
         //}
 
-        public void InitMedia(string filePath)
+        public void InitMedia(string filePath, bool isLocal)
         {
+            IsLocalFile = isLocal;
+
             var videoHeaderData = GetVideoHeaderData(filePath);
 
             if (videoHeaderData != null && videoHeaderData.MpegDashStreamIndex != null)
