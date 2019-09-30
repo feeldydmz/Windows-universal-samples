@@ -61,7 +61,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             }
             else
             {
-                MessageCenter.Instance.Send(new Subtitle.SaveAsMessage(this));
+                // 로컬 파일로 새로 생성할 경우,
+                _browser.Main.ShowMcmDeployAndAssetCreateDialog();
+
+                //MessageCenter.Instance.Send(new Subtitle.SaveAsMessage(this));
             }
         }
 
