@@ -57,7 +57,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Load()
         {
-            AssetName = CaptionAsset?.Name;
+            AssetName = CaptionAsset?.Name ?? "Untitle";
         }
     }
 }

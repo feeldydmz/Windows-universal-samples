@@ -345,17 +345,30 @@ namespace Megazone.Cloud.Media.Service
             // 캡션 추가.
             return await Task.Factory.StartNew(() =>
             {
-#if DEBUG
                 var result = _cloudMediaRepository.UpdateVideoCaptions(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
                     parameter.Video));
                 return result ? parameter.Video : null;
-#else
-                var response = _cloudMediaRepository.UpdateVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+
+
+                // API 변경 전.
+                //var response = _cloudMediaRepository.UpdateVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                //    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
+                //    parameter.Video));
+                //return response;
+
+            }, cancellationToken);
+        }
+
+        // 비디오에 CaptionAsset을 등록한다.
+        public async Task<IEnumerable<CaptionAsset>> RegisterCaptionAssetAsync(RegisterCaptionAssetParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var results = _cloudMediaRepository.BulkCaptionAsset(new BulkCaptionAssetRequest(CLOUD_MEDIA_ENDPOINT,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
-                    parameter.Video));
-                return response;
-#endif
+                    parameter.VideoVersion, parameter.AssetIds));
+                return results;
             }, cancellationToken);
         }
 

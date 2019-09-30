@@ -21,6 +21,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         {
             if (DataContext is VideoListViewModel vm)
             {
+                vm.OnLoadAction = () =>
+                {
+                    CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                };
+
                 vm.CloseAction = () =>
                 {
                     CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));

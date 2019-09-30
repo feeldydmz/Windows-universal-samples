@@ -277,6 +277,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isOpen, value);
         }
 
+        public Action OnLoadAction { get; set; }
         public Action CloseAction { get; set; }
         public Action<string> SetTitleAction { get; set; }
 
@@ -407,6 +408,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (_isLoading)
                 return;
 
+            OnLoadAction?.Invoke();
             _isLoading = true;
             await SearchAsync(Keyword, 0);
             _isLoading = false;

@@ -31,5 +31,6 @@ namespace Megazone.Cloud.Media.Domain
         Settings GetSetting(SettingRequest request);
         UploadResult UploadCaptionFile(UploadCaptionRequest request);
         string Read(Uri fileUri);
+        IEnumerable<CaptionAsset> BulkCaptionAsset(BulkCaptionAssetRequest request);
     }
 }

@@ -27,6 +27,8 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken);
         Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken);
         Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter, CancellationToken cancellationToken);
+        // 비디오에 CaptionAsset을 등록한다.
+        Task<IEnumerable<CaptionAsset>> RegisterCaptionAssetAsync(RegisterCaptionAssetParameter parameter, CancellationToken cancellationToken);
         Task<Settings> GetSettingsAsync(GetSettingsParameter parameter, CancellationToken cancellationToken);
         Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
