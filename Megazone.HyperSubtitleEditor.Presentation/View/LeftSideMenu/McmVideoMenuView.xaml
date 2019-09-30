@@ -35,6 +35,144 @@
             <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
             <Thickness x:Key="LayoutLeftMargin">20,10,0,10</Thickness>
+
+
+            <Style x:Key="Style_VideoListBoxItem" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <!--<Setter Property="Background" Value="{DynamicResource Brush_ListItemBackground}" />-->
+                <Setter Property="Background" Value="#f4f6f8" />
+                <Setter Property="Padding" Value="10,0" />
+                <Setter Property="Foreground" Value="#FF222222" />
+                <Setter Property="BorderBrush" Value="#FFcdd2da" />
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="True">
+                                <Grid x:Name="PART_ContentArea">
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Rectangle x:Name="PART_Select" Fill="#FF61a5ef" Opacity="0.3" Visibility="Hidden"
+                                       IsHitTestVisible="False" />
+                                    <Rectangle x:Name="PART_Over" Fill="White" Opacity="1" RadiusX="1"
+                                       RadiusY="1" Visibility="Hidden" IsHitTestVisible="False" />
+                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                                    <Rectangle x:Name="PART_Line" Height="1" Fill="{TemplateBinding BorderBrush}"
+                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                       UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
+                                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                                    <Rectangle x:Name="KeyboardFocusedObject" Stroke="{DynamicResource Brush_PointColor}"
+                                       StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <!--<Setter Property="Visibility" Value="Visible" TargetName="KeyboardFocusedObject" />-->
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible" TargetName="PART_Over" />
+                                </MultiTrigger>
+                                <!--아이템은 선택도 안되고 리스트는 언포커스-->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                        <Condition Property="IsSelected" Value="False" />
+                                    </MultiTrigger.Conditions>
+                                    <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
+                                    <!--<Setter Property="Foreground" Value="#FF9eaabb" />-->
+                                </MultiTrigger>
+                                <!--선택되고 리스트는 언포커스-->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                        <Condition Property="IsSelected" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <!--<Setter Property="Opacity" Value="0.75" TargetName="PART_ContentArea" />-->
+                                    <!--Selection 표시 안함.-->
+                                    <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
+                                    <Setter Property="Background" Value="White" />
+                                </MultiTrigger>
+                                <!--선택되고 리스트도 포커스드-->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                        <Condition Property="IsSelected" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
+                                    <Setter Property="Background" Value="White" />
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.4" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Style_LayoutButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Foreground" Value="#FF222222" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="2" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <Grid>
+                                    <Rectangle x:Name="PART_Over" Fill="#F5F7FB" Visibility="Hidden"
+                                               IsHitTestVisible="False" />
+
+                                    <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                                    <Setter Property="Visibility" Value="Visible" TargetName="PART_Over" />
+                                    <!--<Setter Property="Opacity" Value="0.7" />-->
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#10000000" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -137,7 +275,7 @@
                                     </Grid>
                                 </Button>
 
-                                <Rectangle Grid.Column="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}"
+                                <Rectangle Grid.Column="1" Fill="#dfe3ee"
                                            Width="1" Height="15" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
 
                                 <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}" 
@@ -152,10 +290,7 @@
                         </Grid>
 
                         <!--구분선-->
-                        <Rectangle Grid.Row="0" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}"  Height="1" VerticalAlignment="Top" />
-
-                        <!--구분선-->
-                        <!--<Rectangle Grid.Row="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}"  Height="1" />-->
+                        <Rectangle Grid.Row="0" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
 
                         <!--페이징-->
                         <Grid Grid.Row="2" Margin="{StaticResource LayoutLeftMargin}" Visibility="Collapsed">
@@ -168,7 +303,7 @@
                         <Grid Grid.Row="4">
                             <ListBox x:Name="VideoListBox" ItemsSource="{Binding Path=VideoItems}"
                                      SelectedItem="{Binding Path=SelectedVideoItem}"
-                                     ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
+                                     ItemContainerStyle="{StaticResource Style_VideoListBoxItem}"
                                      VirtualizingPanel.IsVirtualizing="True"
                                      VirtualizingPanel.VirtualizationMode="Standard">
                                 <i:Interaction.Behaviors>
@@ -177,7 +312,7 @@
                                 </i:Interaction.Behaviors>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
-                                        <Border Height="{StaticResource VideoListBoxItemHeight}" Width="{StaticResource VideoListBoxItemWidth}">
+                                        <Border Height="{StaticResource VideoListBoxItemHeight}" Width="358">
                                             <Grid Margin="0, 15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="10" />
@@ -226,44 +361,43 @@
 
                                                 <!--캡션 이동 버튼-->
                                                 <Grid Grid.Column="5" VerticalAlignment="Center">
-                                                    <mz:ImageButton ToolTip="자막 선택." Width="25" Height="25"
-                                                            Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}"
-                                                            CommandParameter="{Binding}"
-                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_nor.png"
-                                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_pres.png"
-                                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_hov.png"
-                                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_caption_dis.png"
-                                                            Style="{StaticResource Style_TransparentImageButton}"
-                                                            VerticalAlignment="Top">
-                                                        <mz:ImageButton.Triggers>
-                                                            <EventTrigger RoutedEvent="Button.Click">
-                                                                <BeginStoryboard Name="CaptionBoardOpenStoryboard">
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation
-                                                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                                            Duration="0:0:0.3" From="350" To="0"
-                                                                            SpeedRatio="1"
-                                                                            FillBehavior="HoldEnd" />
-                                                                        <DoubleAnimation
-                                                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                                            Storyboard.TargetProperty="Opacity"
-                                                                            BeginTime="0:0:0"
-                                                                            Duration="0:0:0.3" From="0" To="1"
-                                                                            FillBehavior="HoldEnd" />
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </EventTrigger>
-                                                        </mz:ImageButton.Triggers>
-                                                    </mz:ImageButton>
+                                                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12" />
                                                 </Grid>
+
+
+                                                <Button Grid.ColumnSpan="6" Grid.Column="0"
+                                                        Style="{StaticResource Style_IconMenuButton}"
+                                                        Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}"
+                                                        CommandParameter="{Binding}" Opacity="0.01" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                    <Button.Triggers>
+                                                        <EventTrigger RoutedEvent="Button.Click">
+                                                            <BeginStoryboard Name="CaptionBoardOpenStoryboard">
+                                                                <Storyboard>
+                                                                    <DoubleAnimation
+                                                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                        Duration="0:0:0.3" From="350" To="0"
+                                                                        SpeedRatio="1"
+                                                                        FillBehavior="HoldEnd" />
+                                                                    <DoubleAnimation
+                                                                        Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                                                        Storyboard.TargetProperty="Opacity"
+                                                                        BeginTime="0:0:0"
+                                                                        Duration="0:0:0.3" From="0" To="1"
+                                                                        FillBehavior="HoldEnd" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </Button.Triggers>
+                                                </Button>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
 
-                            <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1" />
+                            <!--구분선-->
+                            <Rectangle Grid.Row="0" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
 
                             <Grid Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                                 <TextBlock Text="Empty Video List." VerticalAlignment="Center"
@@ -285,116 +419,118 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="14" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <!--비디오 정보 박스 -->
-                        <Border Grid.Row="0" Margin="0, 15">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Border>
-                                    <mz:ImageButton x:Name="CaptionBackButton"
-                                        ToolTip="{x:Static resources:Resource.CNT_BACKWARD}" Width="18" Height="14" Margin="20,0,6,0"
-                                        Command="{Binding Path=BackCommand}"
-                                        NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_nor.png"
-                                        PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_pres.png"
-                                        MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_hov.png"
-                                        DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_back_arrow_dis.png"
-                                        Style="{StaticResource Style_TransparentImageButton}">
-                                        <mz:ImageButton.Triggers>
-                                            <EventTrigger RoutedEvent="Button.Click">
-                                                <BeginStoryboard Name="CaptionBoardCloseStoryboard">
-                                                    <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                            Duration="0:0:0.3" To="350"
-                                                            AccelerationRatio="0.7"
-                                                            SpeedRatio="1" />
-                                                        <DoubleAnimation
-                                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                            Storyboard.TargetProperty="Opacity"
-                                                            BeginTime="0:0:0.1"
-                                                            Duration="0:0:0.2" From="1" To="0"
-                                                            FillBehavior="HoldEnd" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger>
-                                        </mz:ImageButton.Triggers>
-                                    </mz:ImageButton>
-                                </Border>
-                                <Grid Grid.Column="1" DataContext="{Binding Path=SelectedVideoItem}"
-                                      Height="{StaticResource VideoListBoxItemHeight}" Width="{StaticResource VideoListBoxItemWidth}">
+                        <Border Grid.Row="0" Margin="0, 0">
+                            <Button x:Name="CaptionBackButton" Command="{Binding Path=BackCommand}" Style="{StaticResource Style_LayoutButton}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="Button.Click">
+                                        <BeginStoryboard Name="CaptionBoardCloseStoryboard">
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                    Duration="0:0:0.3" To="350"
+                                                    AccelerationRatio="0.7"
+                                                    SpeedRatio="1" />
+                                                <DoubleAnimation
+                                                    Storyboard.Target="{Binding ElementName=CaptionBorder}"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.1"
+                                                    Duration="0:0:0.2" From="1" To="0"
+                                                    FillBehavior="HoldEnd" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+
+                                <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="68" />
-                                        <ColumnDefinition Width="20" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="5" />
                                         <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-
-                                    <!--대표이미지-->
-                                    <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
-                                        <Image Source="{StaticResource Bitmap_NoFoundImage}" />
-                                        <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
-                                    </Grid>
-
-                                    <!--비디오 정보-->
-                                    <Grid Grid.Column="3" VerticalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="3" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="3" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-
-                                        <Image Style="{StaticResource Style_VideoBadgeImage}" HorizontalAlignment="Left" />
-
-                                        <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="3" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
-                                            <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat='{}({0})'}" />
+                                    <Border>
+                                        <Grid>
+                                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_left.png" Width="12" Height="12" 
+                                               Margin="20,0,6,0"
+                                               VerticalAlignment="Center"/>
                                         </Grid>
-                                        <TextBlock Grid.Row="4" 
+                                    </Border>
+                                    <Grid Grid.Column="1" DataContext="{Binding Path=SelectedVideoItem}"
+                                      Height="{StaticResource VideoListBoxItemHeight}" Width="{StaticResource VideoListBoxItemWidth}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="68" />
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--대표이미지-->
+                                        <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
+                                            <Image Source="{StaticResource Bitmap_NoFoundImage}" />
+                                            <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
+                                        </Grid>
+
+                                        <!--비디오 정보-->
+                                        <Grid Grid.Column="3" VerticalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="3" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="3" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource Style_VideoBadgeImage}" HorizontalAlignment="Left" />
+
+                                            <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="3" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Path=Id, StringFormat='{}({0})'}" />
+                                            </Grid>
+                                            <TextBlock Grid.Row="4" 
                                                    Text="{Binding Path=Duration, StringFormat={}Duration - {0:hh':'mm':'ss}}"
                                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                        </Grid>
                                     </Grid>
+
+                                    
+                                    
                                 </Grid>
-                            </Grid>
+                            </Button>
                         </Border>
 
                         <!--구분선-->
-                        <Rectangle Grid.Row="0" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}"  Height="1" VerticalAlignment="Top" />
+                        <Rectangle Grid.Row="0" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
 
                         <!--구분선-->
-                        <Rectangle Grid.Row="1" Fill="{StaticResource Brush_LightGraySeparatorLineBrush}"  Height="1" />
+                        <Rectangle Grid.Row="1" Fill="#dfe3ee"  Height="1" VerticalAlignment="Bottom" />
 
                         <ListBox Grid.Row="2" x:Name="AssetListBox"
                                  ItemsSource="{Binding Path=SelectedVideoItem.CaptionAssetItems}"
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
-                                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                                 ItemContainerStyle="{StaticResource Style_VideoListBoxItem}">
                             <i:Interaction.Behaviors>
                                 <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
-                                    <Border Width="{StaticResource VideoListBoxItemWidth}">
+                                    <Border Width="360">
                                         <Grid Margin="0, 15">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="10" />
                                                 <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="19" />
+                                                <ColumnDefinition Width="0" />
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -458,7 +594,7 @@
                                                                           Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
                                                                           CommandParameter="{Binding}" />
                                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}">
+                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}" HorizontalAlignment="Right">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                             <MultiBinding.Bindings>
@@ -510,7 +646,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
+                <!--<Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
                         Command="{Binding NextStepCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
@@ -536,10 +672,10 @@
                             <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
                         </EventTrigger>
                     </Button.Triggers>
-                </Button>
+                </Button>-->
 
                 <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="{Binding Path=IsConfirmButtonVisible}" 
-                        Visibility="{Binding Path=IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        
                         Command="{Binding ConfirmCommand}" />
             </Grid>
         </Border>

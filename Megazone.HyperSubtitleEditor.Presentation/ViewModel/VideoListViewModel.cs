@@ -612,19 +612,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (SelectedVideoItem?.CaptionAssetItems?.Any() ?? false)
                 {
-                    if (SelectedVideoItem?.SelectedCaptionAsset != null
-                        && SelectedVideoItem.SelectedCaptionAsset.Source == null)
-                        return true;
+                    //if (SelectedVideoItem?.SelectedCaptionAsset != null
+                    //    && SelectedVideoItem.SelectedCaptionAsset.Source == null)
+                    //    return true;
 
-                    if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
-                        return SelectedVideoItem.SelectedCaptionCount > 0;
-                    return false;
+                    //if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
+                    //    return SelectedVideoItem.SelectedCaptionCount > 0;
+                    //return false;
+
+                    return SelectedVideoItem?.SelectedCaptionAsset != null;
                 }
 
                 return false;
             }
 
-            return !IsBusy && SelectedVideoItem != null;
+            return false;
         }
 
         private void Confirm()
