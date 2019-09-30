@@ -16,7 +16,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    [Inject(Scope = LifetimeScope.Transient)]
+    [Inject(Scope = LifetimeScope.Singleton)]
     internal class McmDeployViewModel : ViewModelBase
     {
         private readonly SignInViewModel _signInViewModel;

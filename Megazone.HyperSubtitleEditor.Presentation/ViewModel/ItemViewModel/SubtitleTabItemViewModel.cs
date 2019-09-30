@@ -98,8 +98,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         }
 
         public bool IsDeployedOnce { get; private set; }
-
-        public Caption Caption { get; }
+        public Caption Caption { get; set; }
         public string VideoId { get; set; }
         public string CaptionAssetId { get; set; }
         public string FilePath { get; set; }

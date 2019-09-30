@@ -12,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private CaptionAssetItemViewModel _captionAssetItem;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
 
-        private bool _hasVideo;
+        private bool _hasLink;
         private string _url;
         private VideoItemViewModel _videoItem;
 
@@ -40,10 +40,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _captionItems, value);
         }
 
-        public bool HasVideo
+        public bool HasLink
         {
-            get => _hasVideo;
-            set => Set(ref _hasVideo, value);
+            get => _hasLink;
+            set => Set(ref _hasLink, value);
         }
 
         public void Update(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
@@ -55,7 +55,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CaptionItems = captionItems;
             Url = linkUrl;
 
-            HasVideo = video != null;
+            HasLink = !string.IsNullOrEmpty(linkUrl);
         }
     }
 }

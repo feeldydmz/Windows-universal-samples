@@ -44,7 +44,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="자막 게시가 완료되었습니다." />
+                <TextBlock Text="자막 저장이 완료되었습니다." />
 
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
@@ -56,7 +56,7 @@
 
                     <!--Video Info-->
                     <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}" 
-                            Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
@@ -83,7 +83,7 @@
 
                     <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
                                Height="1" VerticalAlignment="Bottom" 
-                               Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!--CaptionAsset Info-->
                     <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -148,7 +148,7 @@
                                StrokeThickness="1" />
                 </Grid>
 
-                <Grid Grid.Row="4" Visibility="{Binding ElementName=Root, Path=DataContext.HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Grid.Row="4" Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />

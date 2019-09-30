@@ -1501,7 +1501,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   에셋 이름/종류 기입 후 게시할 자막을 선택해주세요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   에셋 이름/종류 기입 후 저장할 자막을 선택해주세요.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_DEPLOY_AND_CREATE_ASSET_GUIDE {
             get {

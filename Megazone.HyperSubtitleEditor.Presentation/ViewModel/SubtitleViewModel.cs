@@ -1023,7 +1023,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var caption in captionList)
                     try
                     {
-                        if (!string.IsNullOrEmpty(caption.Url) && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute))
+                        if (!string.IsNullOrEmpty(caption.Url)) // && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute)
                         {
                             var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
                             dic.Add(caption.Id, text);

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DocumentFormat.OpenXml.Bibliography;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -19,6 +20,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
@@ -303,13 +305,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 VideoItem = new VideoItemViewModel(video);
                             if (captionAsset != null)
                                 CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                            HasWorkData = true;
+                            IsOnlineData = true;
+
+                            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                            foreach (var tab in subtitle.Tabs)
+                            {
+                                var newCaption = captionAsset?.Elements?.FirstOrDefault(caption => caption.Label.Equals(tab.Name));
+                                if (newCaption != null)
+                                    ((SubtitleTabItemViewModel)tab).Caption = newCaption;
+                            }
 
                             var linkUrl = (video != null) ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
                             _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset, message.Param.Captions.ToList(), linkUrl);
                         }
                         else
                             // [resource]
-                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "게시를 실패하였습니다.\n관리자에게 문의하십시오.",
+                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "저장을 실패하였습니다.\n관리자에게 문의하십시오.",
                                 MessageBoxButton.OK));
                     });
             }
@@ -469,7 +481,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var url = caption.Url;
             if (string.IsNullOrEmpty(url))
                 return
-                    $"{caption.Label}_{caption.Language}_{caption.Country}_{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}.vtt";
+                    $"{caption.Label}_{caption.Language}_{caption.Country}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.vtt";
 
             var lastSlashIndex = url.LastIndexOf('/');
 
