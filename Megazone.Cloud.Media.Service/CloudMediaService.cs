@@ -69,6 +69,73 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
+        public async Task<Video> GetVideoAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var response = _cloudMediaRepository.GetAsset<RenditionAsset>(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
+
+                var renditionAssetList = new List<RenditionAsset> {response};
+
+                var video = new Video(response.Id,
+                    response.Name,
+                    response.Type,
+                    response.Status,
+                    response.Duration,
+                    response.CreatedAt,
+                    response.Version,
+                    "",
+                    null,
+                    null,
+                    renditionAssetList, 
+                    null,
+                    null,
+                    null);
+
+                return video;
+            });
+        }
+
+        public async Task<VideoList> GetVideoAssetsAsync(GetAssetsParameter parameter, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var response = _cloudMediaRepository.GetAssets<VideoAsset>(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
+                    parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,parameter.SearchConditions));
+
+                Debug.WriteLine("GetAssetsAsync");
+
+                List<Video> videoList = new List<Video>();
+                foreach (var asset in response.Assets)
+                {
+                    Video item = new Video(asset.Id, 
+                        asset.Name,
+                        asset.Type,
+                        asset.Status, 
+                        asset.Duration, 
+                        asset.CreatedAt, 
+                        asset.Version, 
+                        asset.Thumbnails?.FirstOrDefault()?.Url,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+
+                    videoList.Add(item);
+                }
+
+                
+
+                return new VideoList(parameter.Pagination.Offset, parameter.Pagination.LimitPerPage,
+                    response.TotalCount, videoList);
+                //return response.Assets.FirstOrDefault();
+
+                //return !response.MediaType?.ToUpper().Equals("VIDEO") ?? false ? null : response;
+            }, cancellationToken);
+        }
 
         public async Task<ProjectListResponse> GetProjectsAsync(GetProjectsParameter parameter,
             CancellationToken cancellationToken)

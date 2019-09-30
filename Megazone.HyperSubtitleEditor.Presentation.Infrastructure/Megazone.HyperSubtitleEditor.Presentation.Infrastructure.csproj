@@ -61,6 +61,7 @@
     <Compile Include="Browser\AdjustTimeRange.cs" />
     <Compile Include="Browser\AdjustTimeWay.cs" />
     <Compile Include="Browser\IBrowser.cs" />
+    <Compile Include="Browser\IClosable.cs" />
     <Compile Include="Browser\IMainView.cs" />
     <Compile Include="Browser\ISubtitleView.cs" />
     <Compile Include="Command\CloseWindowCommand.cs" />

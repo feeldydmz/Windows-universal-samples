@@ -38,6 +38,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 new PropertyMetadata(
                     (s, e) => { ((MediaPlayerView) s).OnMediaSourceProperty((string) e.OldValue); }));
 
+        public static readonly DependencyProperty StreamIndexProperty =
+            DependencyProperty.Register("StreamIndex", typeof(int), typeof(MediaPlayerView),
+                new PropertyMetadata(
+                    (s, e) => { ((MediaPlayerView)s).OnStreamIndexProperty((int)e.OldValue); }));
+
         public static readonly DependencyProperty HasAudioOnlyProperty =
             DependencyProperty.Register("HasAudioOnly", typeof(bool), typeof(MediaPlayerView),
                 new PropertyMetadata(false));
@@ -137,6 +142,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             set => SetValue(MediaSourceProperty, value);
         }
 
+        public int StreamIndex
+        {
+            get => (int)GetValue(StreamIndexProperty);
+            set => SetValue(StreamIndexProperty, value);
+        }
+
         public bool HasAudioOnly
         {
             get => (bool) GetValue(HasAudioOnlyProperty);
@@ -155,6 +166,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 StopMedia();
         }
 
+        private void OnStreamIndexProperty(int oldValue)
+        {
+            StopMedia();
+        }
+
         public event Action<decimal> OnPositionChanged;
 
         private void OnPlayOrPauseRequested(MediaPlayer.PlayOrPauseMessage message)
@@ -162,7 +178,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             if (VideoElement.IsPlaying)
                 PauseMedia();
             else
-                PlayMedia(MediaSource);
+                PlayMedia(MediaSource, StreamIndex);
         }
 
         private void MediaPlayerView_OnLoaded(object sender, RoutedEventArgs e)
@@ -211,7 +227,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void MediaPlaybackButton_Checked(object sender, RoutedEventArgs e)
         {
-            PlayMedia(MediaSource);
+            PlayMedia(MediaSource, StreamIndex);
         }
 
         private void OnPlayStateChanged(MediaPlayStates playState)
@@ -267,7 +283,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         #region Media Control Func
 
-        private void PlayMedia(string mediaSource = null)
+        private void PlayMedia(string mediaSource = null, int streamIndex = 0)
         {
             if (VideoElement == null)
                 return;
@@ -281,9 +297,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                     VideoElement.Stop();
 
                 if (string.IsNullOrEmpty(VideoElement.Source))
+                {
                     VideoElement.Source = mediaSource;
+                }
                 else if (!VideoElement.Source.Equals(mediaSource))
+                {
                     VideoElement.Source = mediaSource;
+                }
+
+                if (!VideoElement.StreamIndex.Equals(streamIndex))
+                {
+                    VideoElement.StreamIndex = streamIndex;
+                }
             }
 
             if (VideoElement.CanPlay)

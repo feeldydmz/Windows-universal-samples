@@ -249,6 +249,7 @@
     <Compile Include="ViewModel\Data\MediaDataLoader.cs" />
     <Compile Include="ViewModel\Data\McmWorkContext.cs" />
     <Compile Include="ViewModel\Data\MediaKind.cs" />
+    <Compile Include="ViewModel\Data\VideoResolutionInfo.cs" />
     <Compile Include="ViewModel\FindAndReplaceViewModel.cs" />
     <Compile Include="ViewModel\GoToLineViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel\AssetItemViewModel.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="ViewModel\LeftSideMenuViewModel.cs" />
     <Compile Include="ViewModel\McmDeployConfirmViewModel.cs" />
     <Compile Include="ViewModel\McmDeployViewModel.cs" />
+    <Compile Include="ViewModel\OpenVideoViewModel.cs" />
     <Compile Include="ViewModel\ProjectViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />

@@ -42,14 +42,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _positionChangedCommand;
 
         private IEnumerable<MediaKind> _videoTypes;
-        private IEnumerable<int> _resolutions;
-        private int _currentResolution;
+        private IEnumerable<VideoResolutionInfo> _resolutions;
+        private VideoResolutionInfo _currentResolution;
         private MediaKind _currentVideoType;
 
         private int _seekCount;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
         private MediaHeaderData _videoData;
+        private int _streamIndex;
 
         public MediaPlayerViewModel(Action<decimal> onMediaPositionChanged,
             Action<MediaPlayStates> onMediaPlayStateChanged)
@@ -91,6 +92,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _mediaSource;
             set => Set(ref _mediaSource, value);
+        }
+
+        public int StreamIndex
+        {
+            get => _streamIndex;
+            set => Set(ref _streamIndex, value);
         }
 
         public MediaTimeSeeker TimeSeeker
@@ -140,22 +147,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 VideoUrlOfResolutions = VideoResolutionsByType[_currentVideoType];
                 Resolutions = VideoUrlOfResolutions.Keys;
-                CurrentResolution = Resolutions.First();
+
+                if(!Resolutions.IsNullOrEmpty())
+                    CurrentResolution = Resolutions.First();
             }
         }
 
-        public int CurrentResolution
+        public VideoResolutionInfo CurrentResolution
         {
             get => _currentResolution;
             set
             {
                 Set(ref _currentResolution, value);
 
+                if (_currentResolution == null) return;
+
                 var url = VideoUrlOfResolutions[_currentResolution];
 
                 Debug.WriteLine($"media url : {url}");
 
-                OpenMedia(url, false);
+                OpenMedia(url, false, _currentResolution);
             }
         }
 
@@ -165,15 +176,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _videoTypes, value);
         }
 
-        public IEnumerable<int> Resolutions
+        public IEnumerable<VideoResolutionInfo> Resolutions
         {
             get => _resolutions;
             set => Set(ref _resolutions, value);
         }
 
-        public Dictionary<int, string> VideoUrlOfResolutions { get; private set; }
+        public Dictionary<VideoResolutionInfo, string> VideoUrlOfResolutions { get; private set; }
 
-        public Dictionary<MediaKind, Dictionary<int, string>> VideoResolutionsByType { get; private set; }
+        public Dictionary<MediaKind, Dictionary<VideoResolutionInfo, string>> VideoResolutionsByType { get; private set; }
 
         private McmWorkContext WorkContext { get; set; }
 
@@ -206,31 +217,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public Mpd ParseMpd(string url)
-        {
-            //string url = renditionAsset.Urls?.FirstOrDefault();
-
-            //if (url.IsNullOrEmpty())
-            //    return renditionAsset;
-            string xmlString = "";
-
-            using (var wc = new WebClient())
-            {
-                xmlString = wc.DownloadString(url);
-            }
-
-            var serializer = new XmlSerializer(typeof(Mpd));
-
-            using (TextReader reader = new StringReader(xmlString))
-            {
-                var obj = serializer.Deserialize(reader);
-
-                Mpd parseMpd = obj as Mpd;
-
-                return parseMpd;
-            }
-        }
-
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
@@ -239,50 +225,108 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;
 
             VideoTypes = VideoResolutionsByType.Keys;
-            Resolutions = VideoResolutionsByType.First().Value?.Keys;
-
-            var dashRenditionAsset = mcmWorkContext.OpenedVideo.Sources.FirstOrDefault(asset => asset.Type.ToUpper().Equals("DASH"));
-            if (dashRenditionAsset != null)
-            {
-                var dashDictionary = VideoResolutionsByType.Single(x=>x.Key.Type == MediaKind.TYPE.Dash).Value;
-
-                var mpdUrl = dashRenditionAsset.Urls?.FirstOrDefault();
-                //var mpdUrl = "https://dash.akamaized.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd";
-
-                if (!mpdUrl.IsNullOrEmpty())
-                {
-                    var lastIndex = mpdUrl.LastIndexOf("/");
-                    var baseUrl = mpdUrl.Substring(0, lastIndex);
-                    var mpd = ParseMpd(mpdUrl);
-
-                    var period = mpd.Period.FirstOrDefault();
-                    foreach (var adaptationSetNode in period.AdaptationSet)
-                    {
-                        if (adaptationSetNode.MimeType.Equals("video/mp4"))
-                        {
-                            foreach (var node in adaptationSetNode.Representation)
-                            {
-                                if (!dashDictionary.ContainsKey(node.Height))
-                                    dashDictionary.Add(node.Height, $"{baseUrl}/{node.BaseUrl}");
-                            }
-                        }
-                    }
-                }
-            }
+            //Resolutions = VideoResolutionsByType.First().Value?.Keys.OrderByDescending(resolution=>resolution);
 
             CurrentVideoType = VideoTypes.First();
-            //if (Resolutions != null) CurrentResolution = Resolutions.First();
 
             MediaSource = mcmWorkContext.VideoMediaUrl;
         }
 
-        public void OpenMedia(string firstFilePath, bool isLocalFile)
+        // url을 입력해서 동영상을 열때 사용
+        //public void InitMedia(string urlPath, bool isLocalFile)
+        //{
+        //    MediaSource = urlPath;
+
+        //    if (!MediaSource.IsNullOrEmpty())
+        //    {
+        //        var dashHeaderData = GetVideoHeaderData(MediaSource);
+
+        //        if (dashHeaderData == null) return;
+
+        //        VideoResolutionsByType = new Dictionary<string, Dictionary<int, string>>();
+        //        VideoUrlOfResolutions = new Dictionary<int, string>();
+
+        //        if (dashHeaderData.MpegDashStreamIndex != null)
+        //        {
+        //            foreach (var item in dashHeaderData?.MpegDashStreamIndex)
+        //            {
+        //                var index = item.Key;
+        //                var height = item.Value;
+        //                if (!VideoUrlOfResolutions.ContainsKey(height))
+        //                    VideoUrlOfResolutions.Add(height, MediaSource);
+        //            }
+
+        //            VideoResolutionsByType.Add("DASH", VideoUrlOfResolutions);
+
+        //        }
+        //        else
+        //        {
+
+        //            var height = (int)(dashHeaderData.VideoFrameSize.Height);
+
+        //            if (!VideoUrlOfResolutions.ContainsKey(height))
+        //                VideoUrlOfResolutions.Add(height, MediaSource);
+
+        //            VideoResolutionsByType.Add(dashHeaderData.VideoKindName, VideoUrlOfResolutions);
+        //        }
+        //    }
+
+        //    VideoTypes = VideoResolutionsByType.Keys;
+        //    Resolutions = VideoResolutionsByType.First().Value?.Keys;
+        //}
+
+        public void InitMedia(string filePath)
         {
-            Debug.WriteLine($"media url : {firstFilePath}");
+            var videoHeaderData = GetVideoHeaderData(filePath);
 
+            if (videoHeaderData != null && videoHeaderData.MpegDashStreamIndex != null)
+            {
+                VideoResolutionsByType = new Dictionary<MediaKind, Dictionary<VideoResolutionInfo, string>>();
+                var resolutionItem = new Dictionary<VideoResolutionInfo, string>();
 
+                var codec = videoHeaderData.VideoCodec.Split('_').Last();
+
+                foreach (var item in videoHeaderData.MpegDashStreamIndex)
+                {
+                    resolutionItem.Add(new VideoResolutionInfo(item.Value.Width, item.Value.Height, codec), filePath);
+                }
+
+                VideoResolutionsByType.Add(new MediaKind(videoHeaderData.VideoKindName.ToUpper(), filePath), resolutionItem);
+
+                VideoTypes = VideoResolutionsByType.Keys;
+                //Resolutions = VideoResolutionsByType.First().Value?.Keys.OrderByDescending(resolution=>resolution);
+
+                CurrentVideoType = VideoTypes.First();
+
+                //MediaSource = filePath;
+            }
+        }
+
+        public void OpenMedia(String firstFilePath, bool isLocalFile, VideoResolutionInfo resolution = null)
+        {
             MediaSource = firstFilePath;
-            LoadMediaItem(firstFilePath, isLocalFile);
+            
+            var videoHeaderData = GetVideoHeaderData(firstFilePath);
+
+            if (!isLocalFile)
+            {
+                //MPEG-DASH 재생 해상도의 인덱스를 구한다
+                if (videoHeaderData?.MpegDashStreamIndex != null && resolution != null)
+                {
+                    try
+                    {
+                        var indexValue =
+                            videoHeaderData.MpegDashStreamIndex.Single(item => item.Value.Height.Equals(resolution.Height));
+                        StreamIndex = indexValue.Key;
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        _logger.Error.Write(ex.Message);
+                    }
+                }
+            }
+
+            LoadMediaItem(firstFilePath, isLocalFile, videoHeaderData);
         }
 
         private string GetTempThumbnailFilePath(string fullPath, bool isLocalFile = false)
@@ -315,7 +359,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SetMediaHeaderData(null);
         }
 
-        private void LoadMediaItem(string fullPath, bool isLocalFile)
+        private MediaHeaderData GetVideoHeaderData(string fullPath)
+        {
+            var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
+            {
+                Url = fullPath,
+                IsRequestThumbnail = false
+            }, _cancellationTokenSource);
+
+            return videoData;
+        }
+
+
+        private void LoadMediaItem(string fullPath, bool isLocalFile, MediaHeaderData videoData)
         {
             ThumbnailSource = null;
             SetMediaHeaderData(null);
@@ -324,11 +380,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 try
                 {
-                    var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
-                    {
-                        Url = fullPath,
-                        IsRequestThumbnail = false
-                    }, _cancellationTokenSource);
+                    //var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
+                    //{
+                    //    Url = fullPath,
+                    //    IsRequestThumbnail = false
+                    //}, _cancellationTokenSource);
                     if (videoData != null)
                     {
                         var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter

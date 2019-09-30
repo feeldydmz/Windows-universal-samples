@@ -548,19 +548,23 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1">
-            <views:WorkBarView />
-        </Grid>
-
         <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="400" MinWidth="300" MaxWidth="800" />
+                <ColumnDefinition Width="2*" MinWidth="300" MaxWidth="800" />
             </Grid.ColumnDefinitions>
 
+            <Grid Grid.Row="0">
+                <views:WorkBarView Panel.ZIndex="999" />
+            </Grid>
+
             <!--좌측 > 자막 편집 영역-->
-            <Grid>
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
                     <!--<RowDefinition Height="Auto"/>-->
@@ -1276,11 +1280,11 @@
             </Grid>
 
             <!--그리드 스플리터-->
-            <GridSplitter Grid.Column="1" Style="{StaticResource Style_VerticalGridSplitter}" />
-            <Rectangle Grid.Column="1" Height="1" VerticalAlignment="Top" Fill="#FFa6adba" IsHitTestVisible="False" />
+            <GridSplitter Grid.RowSpan="2" Grid.Column="1" Style="{StaticResource Style_VerticalGridSplitter}" />
+            <Rectangle Grid.RowSpan="2" Grid.Column="1" Height="1" VerticalAlignment="Top" Fill="#FFa6adba" IsHitTestVisible="False" />
 
             <!--우측 > 비디오 플레이어 영역-->
-            <Grid x:Name="VideoPlayerGrid" Grid.Column="2" DataContext="{Binding MediaPlayer}">
+            <Grid x:Name="VideoPlayerGrid" Grid.RowSpan="2" Grid.Column="2" DataContext="{Binding MediaPlayer}">
                 <i:Interaction.Behaviors>
                     <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
                 </i:Interaction.Behaviors>
@@ -1288,10 +1292,11 @@
                     <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <local:MediaPlayerView Grid.Row="1"
+                <local:MediaPlayerView Grid.Row="0"
                                        Grid.RowSpan="2"
                                        HasAudioOnly="{Binding HasAudioOnly}"
                                        MediaSource="{Binding MediaSource}"
+                                       StreamIndex="{Binding StreamIndex}"
                                        NaturalDuration="{Binding NaturalDuration}"
                                        ThumbnailSource="{Binding ThumbnailSource}"
                                        TimeSeeker="{Binding TimeSeeker}"
@@ -1312,7 +1317,7 @@
             </Grid>
 
             <!-- 우측 > 영상이 임포트 되지 않은 경우 노출되는 가이드 영역. Visiblity 걸려야 함-->
-            <Border Background="Black" Grid.Column="2"
+            <Border Background="Black" Grid.RowSpan="2" Grid.Column="2"
                     Visibility="{Binding MediaPlayer.MediaSource, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
                 <Grid Height="260" Background="#FF181a1c">
                     <i:Interaction.Behaviors>

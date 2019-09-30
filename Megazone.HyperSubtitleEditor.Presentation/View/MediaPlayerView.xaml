@@ -21,6 +21,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -125,15 +126,165 @@
                 </Style.BasedOn>
             </Style>
 
+            <ControlTemplate x:Key="MyDropDownCustomStyle" TargetType="ComboBoxItem">
+                <StackPanel Orientation="Horizontal" 
+                            Background="#151a2f"
+                            MinHeight="40">
+                    <!-- Binds directly to the item data, you can change this depending on your data source -->
+                    <Border Height="17"
+                            Width="60" 
+                            CornerRadius="2"
+                            Margin="10,0,10,0">
+                        <TextBlock x:Name="TypeBox" 
+                                   FontSize="12"
+                                   Foreground="White"
+                                   FontWeight="ExtraBold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   Text="{Binding TypeString}"/>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TypeString}" Value="HLS">
+                                        <Setter Property="Background" Value="#8660d9"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TypeString}" Value="MP4">
+                                        <Setter Property="Background" Value="#405fff"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TypeString}" Value="DASH">
+                                        <Setter Property="Background" Value="#5D8FFF"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TypeString}" Value="NONE">
+                                        <Setter Property="Background" Value="#5D8FFF"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                            </Style>
+                        </Border.Style>
+                        </Border>
+
+                        <TextBlock x:Name="UrlBox"
+                                   Width="Auto" 
+                                   FontSize="11"
+                                   Background="Transparent"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="0,0,10,0"
+                                   Text="{Binding Url}"/>
+
+                    <Image x:Name="SelectedVideoImage"
+                           Visibility="Collapsed"
+                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_selected.png"
+                           Margin="0,0,10,0"/>
+                </StackPanel>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Visibility" Value="Visible" TargetName="SelectedVideoImage"/>
+                        <Setter Property="Foreground" Value="#7d89a3" TargetName="UrlBox"/>
+                        <Setter Property="Foreground" Value="#7d89a3" TargetName="TypeBox"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="Black"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <Grid>
+        <!--<Border BorderThickness="0,0,0,1" Background="Black" 
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
+                    Width="Auto"
+                    ToolTip="{Binding ElementName=MediaPlayer, Path=MediaSource}">-->
+
+
+        <Grid Background="#262f4d" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Column="0"
+                          HorizontalAlignment="Stretch"
+                          Style="{StaticResource Style_ComboBoxVideoType}"
+                          ItemsSource="{Binding Path=VideoTypes}"
+                          SelectedItem="{Binding Path=CurrentVideoType}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Template" Value="{StaticResource MyDropDownCustomStyle}"/>
+                            <!--<Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" TargetName="SelectedVideoImage"/>
+                                </Trigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModelData:MediaKind}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Height="17"
+                                    CornerRadius="2"
+                                    Margin="10,0,10,0">
+                                <TextBlock FontSize="12"
+                                           Foreground="White"
+                                           FontWeight="ExtraBold"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Text="{Binding TypeString}"/>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TypeString}" Value="HLS">
+                                                <Setter Property="Background" Value="#8660d9"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TypeString}" Value="MP4">
+                                                <Setter Property="Background" Value="#405fff"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TypeString}" Value="DASH">
+                                                <Setter Property="Background" Value="#5D8FFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TypeString}" Value="NONE">
+                                                <Setter Property="Background" Value="#5D8FFF"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+
+                            <TextBlock Grid.Column="1"
+                                       TextTrimming="CharacterEllipsis"
+                                       Text="{Binding Url}"/>
+                        </Grid>
+                    </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ComboBox>
+
+            <Button Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    Foreground="White"
+                    Style="{StaticResource Style_ImageVideoOpenButton}"
+                    Command="{StaticResource ShowOpenVideoAddressWindowCommand}">
+            </Button>
+        </Grid>
+        <!--</Border>-->
+
+        <Grid Grid.Row="1">
             <mz:VideoElement x:Name="VideoElement" LoadedBehavior="Manual"
                              BufferingSeconds="{Binding ElementName=MediaPlayer, Path=BufferingSeconds, Mode=OneWay}"
                              PlaybackReadyTimeOut="{Binding ElementName=MediaPlayer, Path=PlaybackReadyTimeOut, Mode=OneWay}"
@@ -224,41 +375,15 @@
                 </Grid>
             </Grid>
 
-            <Border BorderThickness="0,0,0,1" Background="Black" VerticalAlignment="Top"
-                    ToolTip="{Binding ElementName=MediaPlayer, Path=MediaSource}">
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-
-                    <ComboBox Width="Auto" 
-                              Background="Transparent"
-                              Foreground="White"
-                              BorderThickness="0"
-                              BorderBrush="Transparent"
-                              ItemsSource="{Binding Path=VideoTypes}"
-                              SelectedItem="{Binding Path=CurrentVideoType}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewModelData:MediaKind}">
-                                <WrapPanel>
-                                    <TextBlock Width="60" 
-                                               HorizontalAlignment="Center"
-                                               Margin="16,0,0,0"
-                                               Text="{Binding TypeString}"/>
-                                    <TextBlock Width="auto" 
-                                               Text="{Binding Url}"/>
-                                </WrapPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-            </Border>
+            
         </Grid>
 
-        <Border Grid.Row="1" BorderBrush="#FFbec4ce" BorderThickness="0,1,0,0">
+        <Border Grid.Row="2" BorderBrush="#FFbec4ce" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="47" />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
@@ -343,7 +468,14 @@
                           BorderThickness="0"
                           BorderBrush="Transparent"
                           ItemsSource="{Binding Path=Resolutions}"
-                          SelectedItem="{Binding Path=CurrentResolution}"/>
+                          SelectedItem="{Binding Path=CurrentResolution}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayString}" 
+                                       HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <!--볼륨 슬라이더-->
                 <StackPanel Grid.Column="3" Margin="0,0,10,0" Orientation="Horizontal" VerticalAlignment="Center">

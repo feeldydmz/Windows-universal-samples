@@ -17,7 +17,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Unknown,
             Hls,
             Mpeg,
-            Dash
+            Dash,
+            File
         }
 
         public TYPE Type { get; set; }
@@ -32,13 +33,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     case TYPE.None:
                         return "None";
                     case TYPE.Unknown:
-                        return "Unknown";
+                        return "None";
                     case TYPE.Hls:
                         return "HLS";
                     case TYPE.Mpeg:
                         return "MP4";
                     case TYPE.Dash:
                         return "DASH";
+                    case TYPE.File:
+                        return "FILE";
                     default:
                         return "";
                 }
@@ -59,11 +62,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 case "DASH":
                     Type = TYPE.Dash;
                     break;
+                case "MPEG":
                 case "MP4":
                     Type = TYPE.Mpeg;
                     break;
                 case "HLS":
                     Type = TYPE.Hls;
+                    break;
+                case "FILE":
+                    Type = TYPE.File;
                     break;
                 default:
                     Type = TYPE.Unknown;

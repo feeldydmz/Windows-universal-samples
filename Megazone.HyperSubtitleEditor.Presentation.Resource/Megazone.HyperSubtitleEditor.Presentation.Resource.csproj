@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\img_Search.png" />
+    <Resource Include="Image\img_video_replace_nor.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Megazone.Core\Megazone.Core.Windows.Control.Buttons\Megazone.Core.Windows.Control.Buttons.csproj">
@@ -320,6 +321,12 @@
   <ItemGroup>
     <Resource Include="Image\img_btn_arrow_left.png" />
     <Resource Include="Image\img_btn_arrow_right.png" />
+    <Resource Include="Image\img_Combo_Dropdown_act.png" />
+    <Resource Include="Image\img_Combo_Dropdown_hov.png" />
+    <Resource Include="Image\img_Combo_Dropdown_nor.png" />
+    <Resource Include="Image\img_Video_Replace_Act.png" />
+    <Resource Include="Image\img_Video_Replace_Hov.png" />
+    <Resource Include="Image\img_video_selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

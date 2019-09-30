@@ -54,6 +54,7 @@
     <Compile Include="Assets\Rendition.cs" />
     <Compile Include="Assets\RenditionAsset.cs" />
     <Compile Include="Assets\ThumbnailAsset.cs" />
+    <Compile Include="Assets\VideoAsset.cs" />
     <Compile Include="Assets\VideoSetting.cs" />
     <Compile Include="AuthorizationRequest.cs" />
     <Compile Include="AuthorizationResponse.cs" />
