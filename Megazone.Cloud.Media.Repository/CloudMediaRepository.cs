@@ -268,7 +268,14 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public Caption UpdateCaption(CaptionRequest request)
         {
-            throw new NotImplementedException();
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/{request.Caption.Id}",
+                    Method.PATCH)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Version.ToString())
+                .AddJsonString(request.Caption);
+
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
         }
 
         public bool DeleteCaptionAsset(DeleteAssetRequest request)

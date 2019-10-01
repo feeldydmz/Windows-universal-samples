@@ -41,7 +41,7 @@ namespace Megazone.HyperSubtitleEditor.View
 
 
             //var obj = this.New(() => new Object());
-            this.Watch();
+            //this.Watch();
 #endif
         }
 

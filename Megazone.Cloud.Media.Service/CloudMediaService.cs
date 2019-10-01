@@ -292,13 +292,20 @@ namespace Megazone.Cloud.Media.Service
                     }
                 }
 
+                foreach (var caption in updatingCaptionList)
+                {
+                    var response = _cloudMediaRepository.UpdateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                        accessToken, stageId, projectId, assetId, asset.Version, caption));
+                }
+
                 var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
                     asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
 
-                var response = _cloudMediaRepository.UpdateCaptionAsset(new AssetRequest<CaptionAsset>(
-                    CLOUD_MEDIA_ENDPOINT,
-                    accessToken, stageId, projectId, assetId, updateAsset));
-                return response;
+                //var response = _cloudMediaRepository.UpdateCaptionAsset(new AssetRequest<CaptionAsset>(
+                //    CLOUD_MEDIA_ENDPOINT,
+                //    accessToken, stageId, projectId, assetId, updateAsset));
+
+                return updateAsset;
             }, cancellationToken);
         }
 

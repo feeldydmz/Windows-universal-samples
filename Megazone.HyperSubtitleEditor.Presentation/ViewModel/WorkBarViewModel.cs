@@ -492,7 +492,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string GetTextBy(Caption caption)
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            var tabItem = subtitleVm.Tabs.Single(tab => tab.Name.Equals(caption.Label));
+            var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country) && (tab.Caption.Id?.Equals(caption.Id) ?? false));
             var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);
@@ -505,8 +505,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (setting != null)
             {
-                var s3Path = setting.Asset?.InputStoragePrefix?.Value;
-                var folderPath = setting.Asset?.InputStoragePath?.Value;
+                var s3Path = setting.Asset?.OutputStoragePrefix?.Value;
+                var folderPath = setting.Asset?.OutputStoragePath?.Value;
                 if (!string.IsNullOrEmpty(s3Path))
                     uploadTargetPath = $"{s3Path}{folderPath}";
 
