@@ -344,7 +344,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 #elif DEBUG
                 var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop
 #else
-                var hostUrl = "https://console.media.megazone.io";  // Production
+                //var hostUrl = "https://console.media.megazone.io";  // Production
+                var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop
 #endif
                 return string.IsNullOrEmpty(video?.Id)
                     ? string.Empty
@@ -358,7 +359,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 #elif DEBUG
                 var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop
 #else
-                var hostUrl = "https://console.media.megazone.io";  // Production
+                //var hostUrl = "https://console.media.megazone.io";  // Production
+                var hostUrl = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop
 #endif
                 return string.IsNullOrEmpty(captionAsset?.Id)
                     ? string.Empty
@@ -492,7 +494,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string GetTextBy(Caption caption)
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country) && (tab.Caption.Id?.Equals(caption.Id) ?? false));
+            var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country) && (tab.Caption?.Id==caption.Id));
             var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);

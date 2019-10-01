@@ -78,14 +78,14 @@ Function RunBuild([string] $BuildPath, [string] $BuildMode, [string] $Version) {
 
 
 # 빌드 조건 설정.
-#$buildMode = "RELEASE"
-#$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Release";
+$buildMode = "RELEASE"
+$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Release";
 
 #$buildMode = "STAGING"
 #$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Staging";
 
-$buildMode = "DEBUG"
-$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Debug";
+#$buildMode = "DEBUG"
+#$releaseBuildDir = "..\Megazone.HyperSubtitleEditor\bin\Debug";
 
 $buildFilePath = "..\Megazone.HyperSubtitleEditor.sln";
 $buildversion = GetVersion;

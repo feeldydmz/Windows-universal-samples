@@ -50,7 +50,7 @@ namespace Megazone.HyperSubtitleEditor
 
             //InitializeMcmData(new string[] { "megazone.hypersubtitleeditor.v1://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/contents?stageId=mz-cm-v1&projectId=mz-cm-v1&videoId=1310&assetId=5910&captionIds='1,2,3,4,5,6'" });
 #else
-            InitializeAppContext(e.Args);
+            //InitializeAppContext(e.Args);
             InitializeMcmData(e.Args);
 #endif
         }

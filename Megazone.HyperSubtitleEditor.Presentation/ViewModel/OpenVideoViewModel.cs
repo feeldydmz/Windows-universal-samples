@@ -271,19 +271,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void Load()
         {
-#if STAGING
-            KeywordTypeItems = new List<KeywordType>
-            {
-                new KeywordType(Resource.CNT_NAME, "title"),
-                new KeywordType(Resource.CNT_VIDEO_ID, "videoId")
-            };
-#else
             KeywordTypeItems = new List<DisplayItem>
             {
                 new DisplayItem(Resource.CNT_NAME, "name"),
                 new DisplayItem(Resource.CNT_VIDEO_ID, "id")
             };
-#endif
+
             if (SelectedKeywordType == null)
                 SelectedKeywordType = KeywordTypeItems.First();
 
@@ -398,18 +391,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!string.IsNullOrEmpty(keyword))
                 conditions.Add(SelectedKeywordType.Key, keyword);
 
-#if STAGING
-            if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
-            {
-                var startValue = startDuration.TotalMilliseconds;
-                var endValue = endDuration.TotalSeconds > startDuration.TotalSeconds
-                    ? endDuration.TotalMilliseconds
-                    : startDuration.TotalMilliseconds + 999;
-
-                conditions.Add("beginDuration", $"{startValue}");
-                conditions.Add("endDuration", $"{endValue}");
-            }
-#else
             if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
             {
                 var startTime = startDuration.TotalMilliseconds;
@@ -419,7 +400,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         : startDuration.TotalMilliseconds + 999;
                 conditions.Add("duration", $"{startTime}~{endTime}");
             }
-#endif
             conditions.Add("mediaTypes", "VIDEO");
 
             return conditions;

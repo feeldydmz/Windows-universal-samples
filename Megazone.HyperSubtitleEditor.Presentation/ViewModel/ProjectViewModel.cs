@@ -448,9 +448,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var emptyProjectStages = new List<StageItemViewModel>();
 
-#if STAGING
-                emptyProjectStages.AddRange(StageItems.Where(stage => !stage.ProjectItems?.Any() ?? true).ToList());
-#else
                 foreach (var stageItem in StageItems)
                 {
                     var projects = await _cloudMediaService.GetProjectsAsync(
@@ -467,8 +464,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         .Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
                     stageItem.ProjectItems = projectItems;
                 }
-
-#endif
 
                 foreach (var item in emptyProjectStages) StageItems.Remove(item);
 

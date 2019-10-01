@@ -29,8 +29,14 @@ namespace Megazone.Cloud.Media.Service
         private const string UPLOAD_HOST_ENDPOINT =
             "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
 #else
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
-        private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
+        //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
+        //private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
+
+        private const string CLOUD_MEDIA_ENDPOINT =
+            "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
+
+        private const string UPLOAD_HOST_ENDPOINT =
+            "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
 #endif
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;

@@ -559,18 +559,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!string.IsNullOrEmpty(keyword))
                 conditions.Add(SelectedKeywordType.Key, keyword);
 
-#if STAGING
-            if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
-            {
-                var startValue = startDuration.TotalMilliseconds;
-                var endValue = endDuration.TotalSeconds > startDuration.TotalSeconds
-                    ? endDuration.TotalMilliseconds
-                    : startDuration.TotalMilliseconds + 999;
-
-                conditions.Add("beginDuration", $"{startValue}");
-                conditions.Add("endDuration", $"{endValue}");
-            }
-#else
             if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
             {
                 var startTime = startDuration.TotalMilliseconds;
@@ -580,7 +568,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         : startDuration.TotalMilliseconds + 999;
                 conditions.Add("duration", $"{startTime}~{endTime}");
             }
-#endif
             return conditions;
         }
 
