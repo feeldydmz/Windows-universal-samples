@@ -235,49 +235,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MediaSource = mcmWorkContext.VideoMediaUrl;
         }
 
-        // url을 입력해서 동영상을 열때 사용
-        //public void InitMedia(string urlPath, bool isLocalFile)
-        //{
-        //    MediaSource = urlPath;
-
-        //    if (!MediaSource.IsNullOrEmpty())
-        //    {
-        //        var dashHeaderData = GetVideoHeaderData(MediaSource);
-
-        //        if (dashHeaderData == null) return;
-
-        //        VideoResolutionsByType = new Dictionary<string, Dictionary<int, string>>();
-        //        VideoUrlOfResolutions = new Dictionary<int, string>();
-
-        //        if (dashHeaderData.MpegDashStreamIndex != null)
-        //        {
-        //            foreach (var item in dashHeaderData?.MpegDashStreamIndex)
-        //            {
-        //                var index = item.Key;
-        //                var height = item.Value;
-        //                if (!VideoUrlOfResolutions.ContainsKey(height))
-        //                    VideoUrlOfResolutions.Add(height, MediaSource);
-        //            }
-
-        //            VideoResolutionsByType.Add("DASH", VideoUrlOfResolutions);
-
-        //        }
-        //        else
-        //        {
-
-        //            var height = (int)(dashHeaderData.VideoFrameSize.Height);
-
-        //            if (!VideoUrlOfResolutions.ContainsKey(height))
-        //                VideoUrlOfResolutions.Add(height, MediaSource);
-
-        //            VideoResolutionsByType.Add(dashHeaderData.VideoKindName, VideoUrlOfResolutions);
-        //        }
-        //    }
-
-        //    VideoTypes = VideoResolutionsByType.Keys;
-        //    Resolutions = VideoResolutionsByType.First().Value?.Keys;
-        //}
-
         public void InitMedia(string filePath, bool isLocal)
         {
             IsLocalFile = isLocal;
@@ -299,11 +256,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 VideoResolutionsByType.Add(new MediaKind(videoHeaderData.VideoKindName.ToUpper(), filePath), resolutionItem);
 
                 VideoTypes = VideoResolutionsByType.Keys;
-                //Resolutions = VideoResolutionsByType.First().Value?.Keys.OrderByDescending(resolution=>resolution);
 
                 CurrentVideoType = VideoTypes.First();
-
-                //MediaSource = filePath;
             }
         }
 

@@ -269,12 +269,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     if (result == MessageBoxResult.Cancel) return;
                 }
 
-                var removeTabs = subtitleViewModel?.Tabs.ToList();
-
-                if (removeTabs != null)
-                    foreach (var tab in removeTabs)
-                        MessageCenter.Instance.Send(
-                            new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
+                MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
             }
 
             _signInViewModel.SelectedStage = SelectedStage;

@@ -445,6 +445,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnPlayForwardByHalfSecondRequested);
 
             MessageCenter.Instance.Regist<Subtitle.AdjustTimeMessage>(AdjustTime);
+            MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
+        }
+
+        private void OnProjectChanged(ProjectSelect.ProjectChangeMessage message)
+        {
+            var removeTabs = Tabs.ToList();
+
+            if (removeTabs != null)
+                foreach (var tab in removeTabs)
+                {
+                    CloseTab(tab as SubtitleTabItemViewModel);
+                }
+
+            if (MediaPlayer.MediaSource != null)
+                MediaPlayer.RemoveMediaItem();
+
+            var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            workBarViewModel.Initialize();
         }
 
         private void UnregisterMessageHandlers()
@@ -489,6 +507,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnPlayForwardByHalfSecondRequested);
 
             MessageCenter.Instance.Unregist<Subtitle.AdjustTimeMessage>(AdjustTime);
+            MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
         }
 
         public void OnAutoAdjustEndtimesRequested(Subtitle.AutoAdjustEndtimesMessage message)
@@ -961,9 +980,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (!string.IsNullOrEmpty(video?.Name))
                 _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
-
-            //if (!requestedMessage.Param.Captions?.Any() ?? true)
-            //    return;
 
             _browser.Main.LoadingManager.Show();
 

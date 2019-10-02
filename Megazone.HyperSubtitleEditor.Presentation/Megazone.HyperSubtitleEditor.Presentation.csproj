@@ -230,6 +230,7 @@
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />
     <Compile Include="Message\Parameter\CaptionOpenMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
+    <Compile Include="Message\ProjectSelect.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
     <Compile Include="Message\Subtitle.cs" />

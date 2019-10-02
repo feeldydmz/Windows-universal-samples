@@ -137,7 +137,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public string UploadInputPath { get; private set; }
 
-        private void Initialize()
+        public void Initialize()
         {
             IsOnlineData = false;
             HasWorkData = false;
