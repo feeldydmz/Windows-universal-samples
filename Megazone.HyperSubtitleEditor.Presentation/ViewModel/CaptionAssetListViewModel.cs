@@ -445,6 +445,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (SelectedCaptionAssetItem != captionAssetItem)
                     SelectedCaptionAssetItem = captionAssetItem;
             }
+
+            var isAnySeleted = captionAssetItem.Elements?.Any(element => element.IsSelected == true);
+
+            if (isAnySeleted == false)
+            {
+                SelectedCaptionAssetItem = null;
+            }
         }
 
         private bool CanConfirm()
