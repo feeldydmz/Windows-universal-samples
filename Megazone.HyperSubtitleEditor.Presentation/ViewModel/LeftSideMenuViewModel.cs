@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -112,6 +113,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             _recentlyLoader.Load();
             RecentlyItems = _recentlyLoader.GetRecentlyItems().ToList();
+
+            Debug.WriteLine("---LoadRecently---");
+
+            foreach (var recentlyItem in RecentlyItems)
+            {
+                Debug.WriteLine($"{recentlyItem.Video?.Name}");
+            }
         }
 
         private void Load()

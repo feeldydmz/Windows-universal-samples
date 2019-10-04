@@ -12,10 +12,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     {
         private RecentlyItem()
         {
-            CreatedTime = DateTime.UtcNow;
+            //CreatedTime = DateTime.UtcNow;
         }
         [JsonProperty]
-        public DateTime CreatedTime { get; }
+        public DateTime CreatedTime { get; private set; }
         [JsonProperty]
         public string StageId { get; private set; }
         [JsonProperty]
@@ -53,6 +53,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     ProjectId = _signIn.SelectedProject?.ProjectId,
                     IsOnLine = true,
                     Video = _video,
+                    CreatedTime = DateTime.UtcNow,
                     CaptionAsset = _captionAsset,
                     Captions = _captions
                 };
