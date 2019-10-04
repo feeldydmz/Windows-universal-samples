@@ -77,7 +77,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var toRemove = new HashSet<RecentlyItem>();
 
                 // 기존 최근 열린 작업내용에 있다면 갱신
-                if (item.Video == null && item.CaptionAsset != null)
+                if (item.Video != null && item.CaptionAsset != null)
+                {
+                    // 비디오 저장시
+                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.Video?.Id == item.Video?.Id && recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
+                    {
+                        toRemove.Add(recentlyItem);
+                    }
+                }
+                else if (item.Video == null && item.CaptionAsset != null)
                 {
                     // 캡션에셋 저장시
                     foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
@@ -85,7 +93,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         toRemove.Add(recentlyItem);
                     }
                 }
-                else
+                else if (item.Video != null && item.CaptionAsset == null)
                 {
                     // 비디오 저장시
                     foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.Video?.Id == item.Video?.Id))
@@ -93,6 +101,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         toRemove.Add(recentlyItem);
                     }
                 }
+                
 
                 if (toRemove.Count() != 0)
                 {
