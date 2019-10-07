@@ -244,7 +244,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
 
             // 현재 작업중인 프로젝트 선택시
-            if (_signInViewModel.SelectedProject == SelectedStage.SelectedProject)
+            if (_signInViewModel.SelectedProject == SelectedStage?.SelectedProject)
             {
                 IsProjectViewVisible = false;
 

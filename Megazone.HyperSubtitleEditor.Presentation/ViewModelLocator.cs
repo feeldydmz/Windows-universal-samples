@@ -33,5 +33,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public LeftSideMenuViewModel LeftSideMenu => Bootstrapper.Container.Resolve<LeftSideMenuViewModel>();
         public OpenVideoViewModel OpenVideoAsset => Bootstrapper.Container.Resolve<OpenVideoViewModel>();
         public AssetEditorViewModel AssetEditor => Bootstrapper.Container.Resolve<AssetEditorViewModel>();
+        public MetadataViewModel MetaData => Bootstrapper.Container.Resolve<MetadataViewModel>();
     }
 }

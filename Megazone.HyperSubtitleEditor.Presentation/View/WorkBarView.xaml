@@ -69,26 +69,11 @@
                         <TextBlock Grid.Column="1" FontWeight="Bold" VerticalAlignment="Center" Margin="3,0,0,0"
                                    DataContext="{Binding Path=VideoItem}" Text="{Binding Path=Id, StringFormat={}({0})}" /> 
                     </Grid>
-                    <Button Grid.Column="3" Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center" Command="{Binding Path=OpenVideoInfoPopupCommand}" Visibility="Collapsed">
-                        <Grid>
-                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_video_info_nor.png" Width="15" Height="15" />
-                            <Popup IsOpen="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=WorkBar.IsOpenVideoInfoPopup}" StaysOpen="False">
-                                <Popup.Resources>
-                                    <Style x:Key="Style_ValueTextBlock" TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                    </Style>
-                                </Popup.Resources>
-                                <Grid Background="Black" DataContext="{Binding Path=VideoItem.Source}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Style="{StaticResource Style_ValueTextBlock}" Text="Metadata" />
-                                </Grid>
-                            </Popup>
-                        </Grid>
+                    <Button Grid.Column="3" 
+                            Style="{StaticResource Style_MetadataButton}" 
+                            VerticalAlignment="Center" 
+                            Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.OpenVideoInfoPopupCommand}" 
+                            Visibility="Visible">
                     </Button>
                     <TextBlock Grid.Column="4" Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White" />
                 </Grid>

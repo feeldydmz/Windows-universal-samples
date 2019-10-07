@@ -570,6 +570,9 @@
                     <!--<RowDefinition Height="Auto"/>-->
                     <RowDefinition />
                 </Grid.RowDefinitions>
+
+
+
                 <!--탭 목록-->
                 <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
                 <Border Grid.Row="0" Margin="0,-4,0,0">
@@ -990,7 +993,9 @@
                     </Grid>
                 </Border>
 
-                <ListView x:Name="SubtitleListView" Grid.Row="1" Margin="0,4,0,0" BorderThickness="0,1,0,0"
+                
+                <ListView x:Name="SubtitleListView" Grid.Row="1" 
+                          Margin="0,4,0,0" BorderThickness="0,1,0,0"
                           BorderBrush="#FF5e6671"
                           SelectionMode="Extended" DataContext="{Binding SelectedTab}"
                           ContextMenu="{StaticResource ContextMenuSubtitleBlank}"
@@ -1277,6 +1282,14 @@
                         </Grid>
                     </Grid>
                 </Border>
+
+                <Border Grid.Row="0" Grid.RowSpan="2" 
+                        Width="350" 
+                        HorizontalAlignment="Left"
+                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.IsOpenVideoInfoPopup, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <views:MetadataView/>
+                </Border>
+
             </Grid>
 
             <!--그리드 스플리터-->

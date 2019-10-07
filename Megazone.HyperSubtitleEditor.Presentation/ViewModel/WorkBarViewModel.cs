@@ -51,7 +51,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadCommand;
 
         private ICommand _openAssetEditorCommand;
-        private ICommand _openVideoInfoPopupCommand;
         private ICommand _unloadCommand;
         private VideoItemViewModel _videoItem;
 
@@ -119,15 +118,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand UnloadCommand
         {
             get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
-        }
-
-        public ICommand OpenVideoInfoPopupCommand
-        {
-            get
-            {
-                return _openVideoInfoPopupCommand =
-                    _openVideoInfoPopupCommand ?? new RelayCommand(() => { IsOpenVideoInfoPopup = true; });
-            }
         }
 
         public ICommand OpenAssetEditorCommand
