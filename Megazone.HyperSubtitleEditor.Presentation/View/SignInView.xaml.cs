@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedProperty;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -9,9 +12,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
     /// </summary>
     public partial class SignInView : UserControl
     {
+        public Action CloseAction;
+
         public SignInView()
         {
             InitializeComponent();
+
+            if (this.DataContext is SignInViewModel dataContext) dataContext.CloseAction = CloseControl;
+
             WebBrowser.Navigated += WebBrowser_Navigated;
         }
 
@@ -19,6 +27,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             Error.HideScriptErrors(WebBrowser, true);
         }
+
+        public void CloseControl()
+        {
+            WebBrowser.ClearValue(WebBrowserAttachedProperty.NavigatingCommandProperty);
+            WebBrowser.ClearValue(WebBrowserAttachedProperty.UriSourceProperty);
+
+            WebBrowser.Dispose();
+
+            CloseAction?.Invoke();
+        }
+        
     }
 
     public class Error

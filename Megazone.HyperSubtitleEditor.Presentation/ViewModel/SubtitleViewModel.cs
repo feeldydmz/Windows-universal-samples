@@ -342,6 +342,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MessageCenter.Instance.Send(new SubtitleView.ScrollIntoObjectMessage(this, addedRow));
         }
 
+        private void ClearCurrentPositionText()
+        {
+            MediaPlayer.CurrentPositionText = new List<IText>();
+        }
+
         private void OnValidateRequested(SubtitleTabItemViewModel tab)
         {
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
@@ -461,8 +466,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (MediaPlayer.MediaSource != null)
                 MediaPlayer.RemoveMediaItem();
 
+            
+
             var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             workBarViewModel.Initialize();
+
+            ClearCurrentPositionText();
         }
 
         private void UnregisterMessageHandlers()
@@ -975,6 +984,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var captionAsset = requestedMessage.Param.Asset;
             var captionList = requestedMessage.Param.Captions?.ToList() ?? new List<Caption>();
 
+            ClearCurrentPositionText();
 
             WorkContext = new McmWorkContext(video, captionAsset);
 

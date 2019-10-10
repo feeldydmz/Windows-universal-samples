@@ -6,7 +6,9 @@
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="MainFrameView_OnLoaded"
+             Unloaded="MainFrameView_OnUnloaded">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
@@ -19,9 +21,7 @@
                 Visibility="{Binding Path=IsProjectViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <view:ProjectSelectView />
         </Border>
-        <Border DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=SignIn}"
-                Visibility="{Binding Path=IsSignIn, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-            <view:SignInView />
-        </Border>
+
+        <Grid x:Name="SignInGrid" />
     </Grid>
 </UserControl>

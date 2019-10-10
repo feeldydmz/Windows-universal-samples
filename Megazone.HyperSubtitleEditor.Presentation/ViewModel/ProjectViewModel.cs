@@ -424,6 +424,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             StageItems = null;
             CurrentPageStageItems = null;
             SelectedStage = null;
+
+            MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
         }
 
         private async void LoadStageProject(SignIn.LoadStageProjectMessage message)

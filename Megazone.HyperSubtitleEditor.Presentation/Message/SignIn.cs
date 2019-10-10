@@ -12,6 +12,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
         }
 
+        internal class CreateSignInViewMessage : MessageBase
+        {
+            public CreateSignInViewMessage(object sender) : base(sender)
+            {
+            }
+        }
+
         internal class LoadStageProjectMessage : MessageBase
         {
             public LoadStageProjectMessage(object sender, UserProfile userProfile) : base(sender)

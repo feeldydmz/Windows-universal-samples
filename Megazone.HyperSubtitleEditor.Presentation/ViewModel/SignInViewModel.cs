@@ -16,7 +16,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -31,7 +30,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private Authorization _authorization;
         private bool _isAutoLogin;
         private bool _isBusy;
-        private bool _isSignIn;
         private ICommand _loadCommand;
         private string _loginId;
         private ICommand _navigatingCommand;
@@ -73,12 +71,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedProject, value);
         }
 
-        public bool IsSignIn
-        {
-            get => _isSignIn;
-            set => Set(ref _isSignIn, value);
-        }
-
         public bool IsAutoLogin
         {
             get => _isAutoLogin;
@@ -102,6 +94,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isBusy;
             set => Set(ref _isBusy, value);
         }
+
+        public Action CloseAction { get; set; }
 
         public ICommand LoadCommand
         {
@@ -143,13 +137,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void Logout()
         {
-            IsSignIn = false;
             SelectedProject = null;
             SelectedStage = null;
 
+            //프로젝트 선택 화면 초기화
             MessageCenter.Instance.Send(new SignIn.LogoutMessage(this));
+            //view 로그인 화면 생성
+            MessageCenter.Instance.Send(new SignIn.CreateSignInViewMessage(this));
 
-            SetSourceUri(AuthorizationRepository.LOGIN_URL);
+            //SetSourceUri(AuthorizationRepository.LOGIN_URL);
         }
 
         private async void LoginByAuthorizationCodeAsync(string code)
@@ -179,7 +175,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 // 유저 인증 실패 401
                 if (user == null)
                 {
-                    IsSignIn = false;
                     IsBusy = false;
                     SetSourceUri(AuthorizationRepository.LOGIN_URL);
                     return;
@@ -187,9 +182,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 UserName = user.Name;
                 LoginId = user.Username;
-                IsSignIn = true;
 
                 MessageCenter.Instance.Send(new SignIn.LoadStageProjectMessage(this, user));
+
+                CloseAction?.Invoke();
             }
             catch (Exception e)
             {
@@ -259,7 +255,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             else
             {
                 SetSourceUri(AuthorizationRepository.LOGIN_URL);
-                IsSignIn = false;
             }
         }
 
