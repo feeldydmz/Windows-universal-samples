@@ -1085,6 +1085,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.Main.LoadingManager.Hide();
         }
 
+        private string CheckConflictLabel(string label)
+        {
+            var result = label;
+            var count = 1;
+
+            while (Tabs.Any(x => x.Name == result))
+            {
+                if (count == 100)
+                {
+                    break;
+                }
+
+                result = $"{label}_{count++}";
+            }
+
+            return result;
+        }
+
         private void OnFileOpened(Subtitle.FileOpenedMessage message)
         {
             var param = message.Param;
@@ -1093,9 +1111,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             _subtitleListItemValidator.IsEnabled = false;
 
+            var label = CheckConflictLabel(param.Label);
+            
             var subtitles = _subtitleService.Load(param.Text, TrackFormat.WebVtt);
             var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
-            var newTab = new SubtitleTabItemViewModel(param.Label,
+            var newTab = new SubtitleTabItemViewModel(label,
                 OnRowCollectionChanged,
                 OnValidateRequested,
                 OnTabSelected,

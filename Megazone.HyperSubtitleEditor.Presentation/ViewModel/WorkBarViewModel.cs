@@ -311,9 +311,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             foreach (var caption in message.Param.Captions.ToList())
                             {
                                 var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-                                var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country) && (tab.Caption?.Id == caption.Id));
-                                tabItem.SetAsDeployed();
+                                var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country));
+                                tabItem?.SetAsDeployed();
                             }
+                            
 
                             _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset, message.Param.Captions.ToList(), linkUrl);
                         }

@@ -287,13 +287,13 @@ namespace Megazone.Cloud.Media.Service
 
                     if (addList.Any())
                     {
-                        updatingCaptionList.AddRange(addList);
-
                         // 추가된 자막 파일은 지정된 Asset에 추가한다.
                         foreach (var caption in addList)
                         {
-                            _cloudMediaRepository.CreateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                            var newCaption = _cloudMediaRepository.CreateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                                 stageId, projectId, assetId, asset.Version, caption));
+
+                            updatingCaptionList.Add(newCaption);
                         }
                     }
                 }
