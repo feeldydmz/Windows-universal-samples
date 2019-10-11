@@ -389,6 +389,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _isInitialized = true;
         }
 
+        public void ClearSearchParameter()
+        {
+            Keyword = "";
+            DurationStartTime = TimeSpan.FromSeconds(0);
+            DurationEndTime = TimeSpan.FromSeconds(0);
+        }
+
         private void Open()
         {
             IsOpen = true;

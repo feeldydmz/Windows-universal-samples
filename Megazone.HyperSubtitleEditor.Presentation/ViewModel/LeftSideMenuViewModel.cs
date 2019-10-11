@@ -80,6 +80,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
         }
 
+        private ICommand _RefreshCommand;
+
+        public ICommand RefreshCommand
+        {
+            get { return _RefreshCommand = _RefreshCommand ?? new RelayCommand(Refresh); }
+        }
+
+        private void Refresh()
+        {
+            var videoListViewModel = Bootstrapper.Container.Resolve<VideoListViewModel>();
+            var captionAssetListViewModel = Bootstrapper.Container.Resolve<CaptionAssetListViewModel>();
+
+            videoListViewModel.ClearSearchParameter();
+            videoListViewModel.LoadCommand?.Execute(null);
+
+            captionAssetListViewModel.ClearSearchParameter();
+            captionAssetListViewModel.LoadCommand?.Execute(null);
+        }
+
         private void OpenRecently(RecentlyItem recentlyItem)
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();

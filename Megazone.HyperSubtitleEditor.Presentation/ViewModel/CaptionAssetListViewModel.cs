@@ -27,7 +27,7 @@ using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
-    [Inject(Scope = LifetimeScope.Transient)]
+    [Inject(Scope = LifetimeScope.Singleton)]
     internal class CaptionAssetListViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
@@ -262,6 +262,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedKeywordType = KeywordTypeItems.First();
             SelectedPageNo = 1;
             _isInitialized = true;
+        }
+
+        public void ClearSearchParameter()
+        {
+            Keyword = "";
+            SelectedCaptionKindItem = null;
+            Label = "";
+            SelectedLanguage = null;
         }
 
         private async void Load()

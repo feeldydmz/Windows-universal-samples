@@ -12,7 +12,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     {
         private RecentlyItem()
         {
-            //CreatedTime = DateTime.UtcNow;
+  
         }
         [JsonProperty]
         public DateTime CreatedTime { get; private set; }
@@ -32,6 +32,38 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         public string LocalFileFullPath { get; private set; }
         [JsonProperty]
         public string Format { get; private set; }
+
+        [JsonProperty]
+        public string FirstName { get; private set; }
+
+        private string _firstId;
+        private string _secondId;
+
+        [JsonProperty]
+        public string FirstId
+        {
+            get => _firstId;
+            private set
+            {
+                _firstId = value;
+
+                if (_firstId == "0")
+                    _firstId = "";
+            }
+        }
+        [JsonProperty]
+        public string SecondName { get; private set; }
+
+        [JsonProperty]
+        public string SecondId {
+            get => _secondId;
+            private set
+            {
+                _secondId = value;
+                if (_secondId == "0")
+                    _secondId = "";
+            }
+        }
 
         public class OnlineRecentlyCreator
         {
@@ -57,6 +89,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     CaptionAsset = _captionAsset,
                     Captions = _captions
                 };
+
+                if (recently.Video == null && recently.CaptionAsset != null)
+                {
+                    recently.FirstName = recently.CaptionAsset.Name;
+                    recently.FirstId = $"({recently.CaptionAsset.Id})";
+
+                    recently.SecondName = "";
+                    recently.SecondId = "";
+                }
+                else if (recently.Video != null && recently.CaptionAsset == null)
+                {
+                    recently.FirstName = recently.Video.Name;
+                    recently.FirstId = $"({recently.Video.Id})";
+
+                    recently.SecondName = "";
+                    recently.SecondId = "";
+                }
+                else if (recently.Video != null && recently.CaptionAsset != null)
+                {
+                    recently.FirstName = recently.Video.Name;
+                    recently.FirstId = $"({recently.Video.Id})";
+
+                    recently.SecondName = recently.CaptionAsset.Name;
+                    recently.SecondId = $"({recently.CaptionAsset.Id})";
+                }
+
                 return recently;
             }
 

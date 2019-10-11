@@ -265,7 +265,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Border Grid.Row="0" Padding="20,8" Background="{StaticResource Brush_CommonBackground}">
+                            <Border Grid.Row="0" Padding="20,0,0,0" Background="{StaticResource Brush_CommonBackground}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -274,13 +274,29 @@
                                         <ColumnDefinition Width="8" />
                                     </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" TextBlock.FontSize="12" TextBlock.FontWeight="Bold" Margin="0,3">
-                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" GroupName="McmMenuGroup" IsChecked="True" Margin="3,3,15,3" 
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" TextBlock.FontSize="12" TextBlock.FontWeight="Bold" Margin="0,3">
+                                        <RadioButton x:Name="VideoRadioButton" Content="VIDEO" 
+                                                     GroupName="McmMenuGroup" 
+                                                     IsChecked="True" 
+                                                     Margin="3,3,15,3" 
                                                      Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}"/>
-                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" GroupName="McmMenuGroup" Margin="3" 
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}"/>
-                                    </StackPanel>
+                                        <RadioButton x:Name="AssetRadioButton" Content="ASSET" 
+                                                     GroupName="McmMenuGroup"
+                                                     Margin="3" 
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}"
+                                                     />
 
+                                    </StackPanel>
+                                    <Button  Grid.Column="2" 
+                                             Style="{StaticResource Style_IconMenuButton}" 
+                                             ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                             Command="{Binding RefreshCommand}">
+                                        <Grid>
+                                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_refresh_nor.png" 
+                                                   Width="33" 
+                                                   Height="33"/>
+                                        </Grid>
+                                    </Button>
                                     <!--<Button Grid.Column="2" Content="Refresh" ToolTip="Refresh" />-->
                                 </Grid>
                             </Border>

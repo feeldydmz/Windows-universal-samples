@@ -433,7 +433,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.Target="{Binding ElementName=CaptionBorder}"
                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                    Duration="0:0:0.3" To="350"
+                                                    Duration="0:0:0.3" To="400"
                                                     AccelerationRatio="0.7"
                                                     SpeedRatio="1" />
                                                 <DoubleAnimation
