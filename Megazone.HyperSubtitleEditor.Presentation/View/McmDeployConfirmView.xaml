@@ -56,7 +56,7 @@
 
                     <!--Video Info-->
                     <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}" 
-                            Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding ElementName=Root, Path=DataContext.IsVideoInfoVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20" />
