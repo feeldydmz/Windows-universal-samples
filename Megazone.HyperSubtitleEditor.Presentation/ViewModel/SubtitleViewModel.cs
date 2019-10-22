@@ -508,7 +508,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
             MessageCenter.Instance.Unregist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
             MessageCenter.Instance.Unregist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
-            MessageCenter.Instance.Regist<Subtitle.LoadTabsMessage>(OnGroupFileLoaded);
+            MessageCenter.Instance.Unregist<Subtitle.LoadTabsMessage>(OnGroupFileLoaded);
             MessageCenter.Instance.Unregist<Subtitle.InsertRowAtCurrentMediaPositionMessage>(
                 OnInsertRowAtCurrentMediaPositionRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.PlayBackByHalfSecondMessage>(OnPlayBackByHalfSecondRequested);
