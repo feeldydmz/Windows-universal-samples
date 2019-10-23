@@ -51,14 +51,14 @@
                 <StackPanel Orientation="Horizontal">
                     <RadioButton x:Name="UrlOpenButton" 
                                  IsChecked="{Binding IsUrlOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_URL_TITLE}"/>
+                                 Content="{x:Static resources:Resource.CNT_OPEN_URL}"/>
                     <RadioButton x:Name="FileOpenButton" 
                                  IsChecked="{Binding IsFileOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_FILE_TITLE}" 
+                                 Content="{x:Static resources:Resource.CNT_OPEN_VIDEO}" 
                                  Margin="10,0,0,0"/>
                     <RadioButton x:Name="McmOpenButton" 
                                  IsChecked="{Binding IsMcmOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_INPUT_VIDEO_MCM_TITLE}" 
+                                 Content="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" 
                                  Margin="10,0,0,0"/>
                 </StackPanel>
 

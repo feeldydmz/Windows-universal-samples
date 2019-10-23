@@ -602,7 +602,7 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
     <value>로그 아웃</value>
   </data>
   <data name="CNT_OPEN_FROM_MCM" xml:space="preserve">
-    <value>MCM 열기</value>
+    <value>온라인 열기</value>
   </data>
   <data name="CNT_PROJECT_START" xml:space="preserve">
     <value>시작하기</value>

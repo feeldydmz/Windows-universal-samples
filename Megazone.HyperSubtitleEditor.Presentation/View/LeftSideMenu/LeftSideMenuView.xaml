@@ -184,7 +184,9 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
+                                <TextBlock Grid.Column="1" 
+                                           FontSize="11"
+                                           Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
                                 <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
                             </Grid>
                         </RadioButton>
@@ -242,7 +244,9 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
+                                <TextBlock Grid.Column="1" 
+                                           FontSize="11"
+                                           Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
                                 <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
                             </Grid>
                         </RadioButton>

@@ -10,6 +10,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:domain="clr-namespace:Megazone.Cloud.Media.Domain;assembly=Megazone.Cloud.Media.Domain"
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:custom="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList}" 
@@ -35,6 +36,39 @@
 
             <system:Double x:Key="ListBoxItemWidth">350</system:Double>
             <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
+
+            <Style x:Key="style_placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Grid>
+                                <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                         x:Name="textSource" 
+                                         Background="Transparent" 
+                                         Panel.ZIndex="2" 
+                                         Foreground="#333333"/>
+                                <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Padding" Value="3,0,0,0"/>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                    <Setter Property="Foreground" Value="#333333"/>
+                                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -67,7 +101,7 @@
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="3" />
+                            <ColumnDefinition Width="5" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -81,7 +115,9 @@
                         </Grid.RowDefinitions>
 
                         <!--키워드 검색-->
-                        <ComboBox Grid.Column="0" Grid.Row="0" Width="80" 
+                        <ComboBox Grid.Column="0" Grid.Row="0" 
+                                  Width="90" 
+                                  Foreground="#333333"
                                   ItemsSource="{Binding Path=KeywordTypeItems}"
                                   SelectedItem="{Binding Path=SelectedKeywordType}">
                             <ComboBox.ItemTemplate>
@@ -91,7 +127,7 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <TextBox Grid.Column="2" Grid.Row="0" x:Name="KeywordTextBox"
-                                         Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
+                                 Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Behaviors>
                                 <mz:KeyEventToRunCommandBehavior 
                                             Command="{Binding Path=EnterCommand}"
@@ -101,24 +137,32 @@
                         </TextBox>
 
                         <!--Kind 검색-->
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static resources:Resource.CNT_KIND}" 
-                                   VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left"/>
+                        <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static resources:Resource.CNT_KIND}" 
+                                   VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left"/>-->
 
-                        <ComboBox Grid.Column="2" Grid.Row="2" 
-                                  ItemsSource="{Binding Path=CaptionKindItems}" 
-                                  SelectedItem="{Binding Path=SelectedCaptionKindItem}">
-                            <ComboBox.ItemTemplate>
+
+                        <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
+                                                  MyItemsSource="{Binding Path=CaptionKindItems}"
+                                                  MySelectedItem="{Binding Path=SelectedCaptionKindItem}"
+                                                  DefaultText="{x:Static resources:Resource.CNT_KIND}"
+                                                  Foreground="#333333">
+                            <custom:PlaceholdCombobox.MyDataTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:DisplayItem}">
                                     <TextBlock Text="{Binding Path=Display}" />
                                 </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            </custom:PlaceholdCombobox.MyDataTemplate>
+                        </custom:PlaceholdCombobox>
 
                         <!--Label 검색-->
-                        <TextBlock Grid.Column="0" Grid.Row="4" Text="{x:Static resources:Resource.CNT_LABEL}" VerticalAlignment="Center" TextAlignment="Center"
+                        <TextBlock Grid.Column="0" Grid.Row="4" 
+                                   VerticalAlignment="Center" 
+                                   TextAlignment="Center"
+                                   Text="{x:Static resources:Resource.CNT_LABEL}" 
                                    HorizontalAlignment="Left"/>
 
-                        <TextBox Grid.Column="2" Grid.Row="4" x:Name="LabelTextBox"
+                        <TextBox x:Name="LabelTextBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" 
+                                 Style="{StaticResource style_placeHolder}"
+                                 Tag="{x:Static resources:Resource.CNT_LABEL}"
                                  Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Behaviors>
                                 <mz:KeyEventToRunCommandBehavior 
@@ -128,42 +172,43 @@
                             </i:Interaction.Behaviors>
                         </TextBox>
 
-                        <!--Language 검색-->
-                        <TextBlock Grid.Column="0" Grid.Row="6" Text="{x:Static resources:Resource.CNT_LANGUAGE}" VerticalAlignment="Center" TextAlignment="Center"
-                                   HorizontalAlignment="Left"/>
-
-                        <ComboBox Grid.Column="2" Grid.Row="6" ItemsSource="{Binding Path=Languages}"
-                                  SelectedItem="{Binding Path=SelectedLanguage}" 
-                                  ItemTemplateSelector="{StaticResource LanguageItemTemplateSelector}" />
+                        <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" 
+                                                  
+                                                  MyItemsSource="{Binding Path=Languages}"
+                                                  MySelectedItem="{Binding Path=SelectedLanguage}"
+                                                  MyDataTemplateSelector="{StaticResource LanguageItemTemplateSelector}"
+                                                  DefaultText="{x:Static resources:Resource.CNT_LANGUAGE}"
+                                                  Foreground="#333333"/>
                     </Grid>
 
                     <!--검색버튼-->
-                    <Grid Grid.Column="1" Grid.Row="0" Margin="10,17,18,0" VerticalAlignment="Top">
+                    <Grid Grid.Column="1" Grid.Row="0" Margin="10,0,35,0" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="4" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}" 
-                                        ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding Path=SearchCommand}" 
-                                        CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
+                                Margin="0"
+                                ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Command="{Binding Path=RefreshCommand}" >
                             <Grid>
-                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search.png" Width="14.7" Height="14.7"/>
+                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png" Width="25" Height="25"/>
                             </Grid>
                         </Button>
 
-                        <Rectangle Grid.Column="1" Fill="{StaticResource Brush_GrayBoxBorderBrush}"
-                                           Width="1" Height="15" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
-
                         <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}" 
-                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding Path=RefreshCommand}" >
+                                Margin="0"
+                                ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Command="{Binding Path=SearchCommand}" 
+                                CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
                             <Grid>
-                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png" Width="13" Height="13"/>
+                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png" Width="25" Height="25"/>
                             </Grid>
                         </Button>
                     </Grid>

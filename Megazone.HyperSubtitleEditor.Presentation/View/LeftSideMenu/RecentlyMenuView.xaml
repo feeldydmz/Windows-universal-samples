@@ -136,7 +136,6 @@
                 </ItemsControl>
                 <TextBlock x:Name="EmptyListBlock"
                            Grid.Row="2" 
-                           
                            Foreground="#545871"
                            Text ="Empty List"
                            HorizontalAlignment="Center"

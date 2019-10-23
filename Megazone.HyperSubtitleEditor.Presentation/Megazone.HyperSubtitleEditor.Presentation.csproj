@@ -326,6 +326,9 @@
     <Compile Include="View\LeftSideMenu\MyComputerMenuView.xaml.cs">
       <DependentUpon>MyComputerMenuView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LeftSideMenu\PlaceholdCombobox.xaml.cs">
+      <DependentUpon>PlaceholdCombobox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LeftSideMenu\RecentlyMenuView.xaml.cs">
       <DependentUpon>RecentlyMenuView.xaml</DependentUpon>
     </Compile>
@@ -563,6 +566,10 @@
     <Page Include="View\LeftSideMenu\MyComputerMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LeftSideMenu\PlaceholdCombobox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\LeftSideMenu\RecentlyMenuView.xaml">
       <SubType>Designer</SubType>

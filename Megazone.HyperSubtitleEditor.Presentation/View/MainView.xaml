@@ -222,8 +222,15 @@
                           Command="{StaticResource OpenLogFolderCommand}" />
             </MenuItem>
             <MenuItem Header="{x:Static resources:Resource.CNT_VIDEO}">
-                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}"
-                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_URL}"
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_URL}"/>
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_VIDEO}"
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_VIDEO}"/>
+                <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"/>
                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
                           Command="{StaticResource OpenVideoListDialogCommand}" />-->
             </MenuItem>

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu.PlaceholdCombobox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="100"
+             x:Name="customComboBox">
+    <UserControl.Resources>
+        <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter"/>
+        <!--<cnvrt:InverseNullVisibilityConverter x:Key="invNullVisibleConverter" />-->
+    </UserControl.Resources>
+    <Grid>
+        <ComboBox x:Name="comboBox"
+                  Margin="0"
+                  ItemsSource="{Binding ElementName=customComboBox, Path=MyItemsSource}"
+                  SelectedItem="{Binding ElementName=customComboBox, Path=MySelectedItem}"
+                  HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                  ItemTemplate="{Binding ElementName=customComboBox, Path=MyDataTemplate}"
+                  ItemTemplateSelector ="{Binding ElementName=customComboBox, Path=MyDataTemplateSelector}"
+                  Foreground="#333333">
+        </ComboBox>
+        <Label HorizontalAlignment="Left" 
+               VerticalAlignment="Center"
+               Margin="0,0,20,0"
+               Foreground="#333333"
+               IsHitTestVisible="False"
+               Content="{Binding ElementName=customComboBox, Path=DefaultText}"
+               Visibility="{Binding ElementName=customComboBox, Path=MySelectedItem, Converter={StaticResource NullToVisibleNCollapsedConverter}}"/>
+
+    </Grid>
+</UserControl>

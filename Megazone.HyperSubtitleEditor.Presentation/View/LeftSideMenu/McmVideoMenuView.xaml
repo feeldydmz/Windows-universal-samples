@@ -195,15 +195,16 @@
                         <!--검색 패널-->
                         <Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <!--검색항목-->
-                            <Grid Grid.Column="0">
+                            <Grid Grid.Column="0" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="3" />
+                                    <ColumnDefinition Width="4" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -217,11 +218,13 @@
                                           SelectedItem="{Binding Path=SelectedKeywordType}" MaxWidth="90" Width="90">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Display}" />
+                                            <TextBlock Text="{Binding Path=Display}" Foreground="#333333"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <TextBox Grid.Column="2" Grid.Row="0" x:Name="KeywordTextBox"
+                                         Width="175"
+                                         HorizontalAlignment="Left"
                                          Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
                                         <mz:KeyEventToRunCommandBehavior 
@@ -232,7 +235,49 @@
                                 </TextBox>
 
                                 <!--Duration 검색-->
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Duration" VerticalAlignment="Center" TextAlignment="Center"
+                                <Grid Grid.ColumnSpan="3" Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle Grid.Column="0" Grid.ColumnSpan="2"
+                                               Fill="White"
+                                               Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1"
+                                               RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch" />
+                                    <TextBlock Text="Duration" 
+                                               VerticalAlignment="Center" 
+                                               TextAlignment="Center"
+                                               HorizontalAlignment="Center" 
+                                               Margin="10,0,0,0"
+                                               Foreground="#333333"/>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
+                                        <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False" Foreground="#333333">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TimeChanged">
+                                                    <i:InvokeCommandAction
+                                                    Command="{Binding Path=DurationStartTimeChangedCommand}"
+                                                    CommandParameter="{Binding}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </mz:TimeSpinner>
+
+                                        <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0" Foreground="#333333"/>
+
+                                        <mz:TimeSpinner Time="{Binding Path=DurationEndTime}" IsShowMilliseconds="False" Foreground="#333333">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TimeChanged">
+                                                    <i:InvokeCommandAction
+                                                    Command="{Binding Path=DurationEndTimeChangedCommand}"
+                                                    CommandParameter="{Binding}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </mz:TimeSpinner>
+                                    </StackPanel>
+                                    
+                                </Grid>
+                                <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="Duration" VerticalAlignment="Center" TextAlignment="Center"
                                            HorizontalAlignment="Left"/>
 
                                 <StackPanel x:Name="DurationPanel" Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
@@ -255,35 +300,36 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </mz:TimeSpinner>
-                                </StackPanel>
+                                </StackPanel>-->
                             </Grid>
 
-                            <Grid Grid.Column="1" Grid.Row="0"  Margin="10,0,12,0">
+                            <Grid Grid.Column="1" Grid.Row="0"  Margin="8,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="18" />
+                                    <ColumnDefinition Width="4" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}" 
-                                        ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding Path=SearchCommand}" 
-                                        CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
+                                        Margin="0"
+                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding Path=RefreshCommand}" >
                                     <Grid>
-                                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search.png" Width="14.7" Height="14.7"/>
+                                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png" Width="25" Height="25"/>
                                     </Grid>
                                 </Button>
 
-                                <Rectangle Grid.Column="1" Fill="#dfe3ee"
-                                           Width="1" Height="15" VerticalAlignment="Stretch" HorizontalAlignment="Center" />
-
                                 <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}" 
-                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding Path=RefreshCommand}" >
+                                        Margin="0"
+                                        ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding Path=SearchCommand}" 
+                                        CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
                                     <Grid>
-                                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png" Width="13" Height="13"/>
+                                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png" Width="25" Height="25"/>
                                     </Grid>
                                 </Button>
                             </Grid>

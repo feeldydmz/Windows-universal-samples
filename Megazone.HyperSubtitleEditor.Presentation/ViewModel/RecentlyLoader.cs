@@ -14,7 +14,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class RecentlyLoader
     {
-        private const int MaxSize = 20;
+        private const int MaxSize = 10;
         private readonly ILogger _logger;
         private readonly SignInViewModel _signInViewModel;
         private List<RecentlyItem> _recentlyItems = new List<RecentlyItem>();
