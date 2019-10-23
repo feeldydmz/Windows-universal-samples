@@ -189,12 +189,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             return new AdjustTimeWay(wnd.Time, wnd.Range, wnd.Behavior);
         }
 
-        public void ShowOpenVideoAddressWindow()
+        public void ShowOpenVideoAddressWindow(string openTypeString)
         {
             var wnd = new OpenVideoAddressWindow
             {
                 Owner = Application.Current.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                OpenTypeString =  openTypeString
             };
             wnd.ShowDialog();
         }

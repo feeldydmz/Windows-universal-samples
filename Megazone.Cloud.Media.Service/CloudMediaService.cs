@@ -114,7 +114,7 @@ namespace Megazone.Cloud.Media.Service
 
                 Debug.WriteLine("GetAssetsAsync");
 
-                if (response.Assets == null) return null;
+                if (response?.Assets == null) return null;
 
                 var videoList = new List<Video>();
                 foreach (var asset in response.Assets)

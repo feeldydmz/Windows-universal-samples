@@ -14,6 +14,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
     /// </summary>
     public partial class OpenVideoAddressWindow : Window, IClosable
     {
+        public string OpenTypeString { get; set; }
+
         public OpenVideoAddressWindow()
         {
             InitializeComponent();
@@ -26,6 +28,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             WindowStartupLocation = WindowStartupLocation.Manual;
 
             this.Top -= 150;
+
+
+            if (OpenTypeString == Resource.CNT_OPEN_URL)
+            {
+                UrlOpenButton.IsChecked = true;
+            }
+            else if (OpenTypeString == Resource.CNT_OPEN_VIDEO)
+            {
+                FileOpenButton.IsChecked = true;
+            }
+            else if (OpenTypeString == Resource.CNT_OPEN_FROM_MCM)
+            {
+                McmOpenButton.IsChecked = true;
+            }
+
+
         }
 
         private void UrlTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
