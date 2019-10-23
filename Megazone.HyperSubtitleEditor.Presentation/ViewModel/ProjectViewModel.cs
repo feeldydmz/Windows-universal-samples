@@ -151,21 +151,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isLoadingProjectPage, value);
         }
 
-        public ICommand StartProjectCommand
-        {
-            get
-            {
-                return _startProjectCommand =
-                    _startProjectCommand ?? new RelayCommand(StartProject, CanStartProject);
-            }
-        }
+        //public ICommand StartProjectCommand
+        //{
+        //    get
+        //    {
+        //        return _startProjectCommand =
+        //            _startProjectCommand ?? new RelayCommand(StartProject, CanStartProject);
+        //    }
+        //}
 
         public ICommand SelectProjectCommand
         {
             get
             {
+                //return _selectProjectCommand =
+                //    _selectProjectCommand ?? new RelayCommand<ProjectItemViewModel>(SelectProject);
                 return _selectProjectCommand =
-                    _selectProjectCommand ?? new RelayCommand<ProjectItemViewModel>(SelectProject);
+                    _selectProjectCommand ?? new RelayCommand<ProjectItemViewModel>(StartProject);
             }
         }
 
@@ -239,19 +241,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //return SelectedStage?.SelectedProject != _signInViewModel.SelectedProject;
         }
 
-        private async void StartProject()
+        private async void StartProject(ProjectItemViewModel projectItem)
         {
             Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
 
+            var workingProject = _signInViewModel.SelectedProject;
+
             // 현재 작업중인 프로젝트 선택시
-            if (_signInViewModel.SelectedProject == SelectedStage?.SelectedProject)
+            //if (_signInViewModel.SelectedProject == SelectedStage?.SelectedProject)
+            if (workingProject == projectItem)
             {
                 IsProjectViewVisible = false;
 
                 return;
             }
 
-            if (_signInViewModel.SelectedProject != null)
+            // workingProject 에 값이 있다는건 프로젝트 변경을 의미
+            if (workingProject != null)
             {
                 var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
@@ -266,37 +272,46 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         "프로젝트가 변경됩니다.\r\n이 작업으로 인해 기존 양식의 데이터를 손실 할 수 있습니다.\r\n\r\n계속하시겠습니까?",
                         MessageBoxButton.OKCancel));
 
-                    if (result == MessageBoxResult.Cancel) return;
+                    if (result == MessageBoxResult.Cancel) 
+                        return;
                 }
+
+                workingProject.IsSelected = false;
 
                 MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
             }
 
+            projectItem.IsSelected = true;
+
+            SelectedStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
+
             _signInViewModel.SelectedStage = SelectedStage;
-            _signInViewModel.SelectedProject = SelectedStage.SelectedProject;
+
+            _signInViewModel.SelectedProject = projectItem;
+
             IsProjectViewVisible = string.IsNullOrEmpty(_signInViewModel.SelectedProject?.ProjectId) ||
                                    string.IsNullOrEmpty(_signInViewModel.SelectedStage?.Id);
 
             await _languageLoader.LoadAsync();
         }
 
-        private void SelectProject(ProjectItemViewModel projectItem)
-        {
-            if (!_selectionsChangedFlag)
-            {
-                if (StageItems == null) return;
+        //private void SelectProject(ProjectItemViewModel projectItem)
+        //{
+        //    if (!_selectionsChangedFlag)
+        //    {
+        //        if (StageItems == null) return;
 
-                _selectionsChangedFlag = true;
+        //        _selectionsChangedFlag = true;
 
-                SelectedStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
+        //        SelectedStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
 
-                foreach (var stage in StageItems)
-                    if (!stage.Equals(SelectedStage))
-                        if (stage.SelectedProject != null)
-                            stage.SelectedProject = null;
-                _selectionsChangedFlag = false;
-            }
-        }
+        //        foreach (var stage in StageItems)
+        //            if (!stage.Equals(SelectedStage))
+        //                if (stage.SelectedProject != null)
+        //                    stage.SelectedProject = null;
+        //        _selectionsChangedFlag = false;
+        //    }
+        //}
 
         private void OnStagePerPageNumberChanged(int obj)
         {
@@ -334,6 +349,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var stageItem =
                 StageItems.SingleOrDefault(stage => stage.Id.Equals(_signInViewModel.SelectedProject.StageId));
+
+
             if (stageItem != null)
                 stageItem.SelectedProject = _signInViewModel.SelectedProject;
         }

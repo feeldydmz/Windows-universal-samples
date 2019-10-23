@@ -353,34 +353,76 @@
                                                         <mz:ListBoxSelectionChangedCommandBehavior 
                                                             Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
                                                             CommandParameter="{Binding Path=SelectedProject}" />
-                                                        <behavior:ListboxItemDoubleClickBehavior
-                                                            Command="{Binding Path=DataContext.StartProjectCommand, ElementName=Root}"/>
                                                     </i:Interaction.Behaviors>
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
-                                                            <DockPanel HorizontalAlignment="Stretch">
+                                                            <Grid>
+                                                            <Grid HorizontalAlignment="Stretch">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="10"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
                                                                 <TextBlock Text="{Binding Path=Name}"
+                                                                           Grid.Column="0"
                                                                    FontWeight="Bold"
                                                                    Margin="15,0,0,0"
                                                                    HorizontalAlignment="Left"
                                                                    VerticalAlignment="Bottom"
                                                                    LineHeight="14" />
                                                                 <TextBlock Text="/"
+                                                                           VerticalAlignment="Bottom"
+                                                                           Grid.Column="1"
                                                                    Margin="5,0,0,0" />
                                                                 <TextBlock Text="{Binding Path=ProjectId}"
+                                                                           Grid.Column="2"
                                                                    Margin="5,0,0,0"
                                                                    HorizontalAlignment="Left"
                                                                    VerticalAlignment="Bottom"
+                                                                   TextTrimming="CharacterEllipsis"
                                                                    LineHeight="14"
                                                                    FontSize="11" />
-                                                                <Image x:Name="Check_Image"
-                                                               Stretch="None"
-                                                               Visibility="{Binding Path=IsFocused, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
-                                                               Margin="0,0,20,0"
-                                                               HorizontalAlignment="Right"
-                                                               VerticalAlignment="Center"
-                                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
-                                                            </DockPanel>
+
+                                                                <Image x:Name="CheckImage"
+                                                                       Grid.Column="3"
+                                                                       Stretch="None"
+                                                                       Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                       Margin="0,0,12,0"
+                                                                       HorizontalAlignment="Right"
+                                                                       VerticalAlignment="Center"
+                                                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
+
+                                                                <StackPanel x:Name="HoverPanel"
+                                                                                Grid.Column="3"
+                                                                                Orientation="Horizontal"
+                                                                                HorizontalAlignment="Right"
+                                                                                VerticalAlignment="Center"
+                                                                                Visibility="{Binding Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
+                                                                        <mz:ImageButton 
+                                                                        Command="{StaticResource LogoutCommand}" 
+                                                                        ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                                                                        Background="{StaticResource Brush_ImageButton_Background_Color}"
+                                                                        NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                                                        PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                                                        MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                                                        DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                                                        Style="{StaticResource Style_TransparentImageButton}" 
+                                                                        Width="25" 
+                                                                        Height="25" 
+                                                                        Margin="10,0,0,0"/>
+
+                                                                        <Rectangle Height="18" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
+
+                                                                        <Image x:Name="LeftArrowImage"
+                                                                           Stretch="None"
+                                                                           Margin="0,0,5,0"
+                                                                           HorizontalAlignment="Right"
+                                                                           VerticalAlignment="Center"
+                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-key.png" />
+                                                                    </StackPanel>
+                                                                </Grid>
+                                                            </Grid>
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>
@@ -429,10 +471,10 @@
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource Style_Slider_ProjectSelect}" />
-                    <Button Grid.Column="3" HorizontalAlignment="Center"
+                    <!--<Button Grid.Column="3" HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
-                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />
+                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />-->
                 </Grid>
             </Grid>
         </Border>

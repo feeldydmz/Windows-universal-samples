@@ -335,6 +335,10 @@
     <Resource Include="Image\img_refresh_hov.png" />
     <Resource Include="Image\img_refresh_nor.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\img_left-arrow-key.png" />
+    <Resource Include="Image\img_set_default_btn_nor.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

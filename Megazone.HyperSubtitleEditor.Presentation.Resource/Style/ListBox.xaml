@@ -205,7 +205,7 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Foreground" Value="#a0a3aa"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"></Setter>
                         </MultiTrigger>
                         <!--선택되고 리스트는 언포커스-->
                         <MultiTrigger>
