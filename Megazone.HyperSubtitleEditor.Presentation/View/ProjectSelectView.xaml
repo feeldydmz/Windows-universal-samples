@@ -357,7 +357,8 @@
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type itemVm:ProjectItemViewModel}">
                                                             <Grid>
-                                                            <Grid HorizontalAlignment="Stretch">
+                                                                <Grid HorizontalAlignment="Stretch"
+                                                                      Height="25">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="Auto"/>
                                                                     <ColumnDefinition Width="10"/>
@@ -369,17 +370,17 @@
                                                                    FontWeight="Bold"
                                                                    Margin="15,0,0,0"
                                                                    HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Bottom"
+                                                                   VerticalAlignment="Center"
                                                                    LineHeight="14" />
                                                                 <TextBlock Text="/"
-                                                                           VerticalAlignment="Bottom"
+                                                                           VerticalAlignment="Center"
                                                                            Grid.Column="1"
                                                                    Margin="5,0,0,0" />
                                                                 <TextBlock Text="{Binding Path=ProjectId}"
                                                                            Grid.Column="2"
                                                                    Margin="5,0,0,0"
                                                                    HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Bottom"
+                                                                   VerticalAlignment="Center"
                                                                    TextTrimming="CharacterEllipsis"
                                                                    LineHeight="14"
                                                                    FontSize="11" />
@@ -387,42 +388,106 @@
                                                                 <Image x:Name="CheckImage"
                                                                        Grid.Column="3"
                                                                        Stretch="None"
-                                                                       Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                       Visibility="Collapsed"
                                                                        Margin="0,0,12,0"
                                                                        HorizontalAlignment="Right"
                                                                        VerticalAlignment="Center"
                                                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
 
-                                                                <StackPanel x:Name="HoverPanel"
+                                                                    <StackPanel x:Name="DeselectHovPanel"
                                                                                 Grid.Column="3"
                                                                                 Orientation="Horizontal"
                                                                                 HorizontalAlignment="Right"
                                                                                 VerticalAlignment="Center"
-                                                                                Visibility="{Binding Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
+                                                                                Visibility="Collapsed">
                                                                         <mz:ImageButton 
-                                                                        Command="{StaticResource LogoutCommand}" 
-                                                                        ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
-                                                                        Background="{StaticResource Brush_ImageButton_Background_Color}"
-                                                                        NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                                                        PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                                                        MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                                                        DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                                                        Style="{StaticResource Style_TransparentImageButton}" 
-                                                                        Width="25" 
-                                                                        Height="25" 
-                                                                        Margin="10,0,0,0"/>
+                                                                            Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
+                                                                            CommandParameter="{Binding}"
+                                                                            ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                                                            Background="Transparent"
+                                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
+                                                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
+                                                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
+                                                                            Style="{StaticResource Style_TransparentImageButton}" 
+                                                                            Width="25" 
+                                                                            Height="25" 
+                                                                            Margin="10,0,0,0"/>
 
-                                                                        <Rectangle Height="18" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
+                                                                        <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
 
-                                                                        <Image x:Name="LeftArrowImage"
+                                                                        <Image
                                                                            Stretch="None"
                                                                            Margin="0,0,5,0"
                                                                            HorizontalAlignment="Right"
                                                                            VerticalAlignment="Center"
                                                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-key.png" />
                                                                     </StackPanel>
+
+                                                                    <StackPanel x:Name="SelectHovPanel"
+                                                                                Grid.Column="3"
+                                                                                Orientation="Horizontal"
+                                                                                HorizontalAlignment="Right"
+                                                                                VerticalAlignment="Center"
+                                                                                Visibility="Collapsed">
+                                                                        <mz:ImageButton 
+                                                                            Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
+                                                                            ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                                                            Background="Transparent"
+                                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png"
+                                                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_act.png"
+                                                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_hov.png"
+                                                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_dis.png"
+                                                                            Style="{StaticResource Style_TransparentImageButton}" 
+                                                                            Width="25" 
+                                                                            Height="25" 
+                                                                            Margin="10,0,0,0"/>
+
+                                                                        <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
+
+                                                                        <Image
+                                                                           Stretch="None"
+                                                                           Margin="0,0,5,0"
+                                                                           HorizontalAlignment="Right"
+                                                                           VerticalAlignment="Center"
+                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-active.png" />
+                                                                    </StackPanel>
                                                                 </Grid>
                                                             </Grid>
+                                                            <DataTemplate.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsSelected}" Value="True"/>
+                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible" TargetName="SelectHovPanel"></Setter>
+                                                                </MultiDataTrigger>
+
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
+                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible" TargetName="DeselectHovPanel"></Setter>
+                                                                </MultiDataTrigger>
+
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
+                                                                        <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible" TargetName="SelectHovPanel"></Setter>
+                                                                </MultiDataTrigger>
+
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsSelected}" Value="True"/>
+                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="False"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible" TargetName="CheckImage"></Setter>
+                                                                </MultiDataTrigger>
+
+                                                            </DataTemplate.Triggers>
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>

@@ -182,7 +182,7 @@
                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                        UseLayoutRounding="{TemplateBinding UseLayoutRounding}"
                                        VerticalAlignment="Bottom" IsHitTestVisible="False" />
-                            <Rectangle x:Name="KeyboardFocusedObject" Stroke="{DynamicResource Brush_PointColor}"
+                            <Rectangle x:Name="KeyboardFocusedObject" Stroke="Transparent"
                                        StrokeThickness="1" IsHitTestVisible="False" Visibility="Collapsed" />
                         </Grid>
                     </Border>

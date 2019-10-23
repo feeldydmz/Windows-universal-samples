@@ -48,7 +48,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _config = ConfigHolder.Current;
 
             UriSource = "about:blank";
-            _authorization = ReadSavedAuthorization();
+            _authorization = LoadAuthorization();
         }
 
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.dat";
@@ -213,7 +213,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private Authorization ReadSavedAuthorization()
+        private Authorization LoadAuthorization()
         {
             try
             {

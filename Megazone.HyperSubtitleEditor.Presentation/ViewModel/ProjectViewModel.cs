@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -14,8 +15,10 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
+using Newtonsoft.Json;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -25,13 +28,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private readonly IBrowser _browser;
         private readonly ICloudMediaService _cloudMediaService;
+        private readonly LanguageLoader _languageLoader;
         private readonly ILogger _logger;
         private readonly SignInViewModel _signInViewModel;
-        private readonly LanguageLoader _languageLoader;
 
         private ICommand _closeCommand;
         private int _currentPageNumber;
         private IEnumerable<StageItemViewModel> _currentPageStageItems;
+        private ProjectItemViewModel _defaultProject;
         private bool _hasRegisteredMessageHandlers;
         private bool _isBusy;
         private bool _isCancelButtonVisible;
@@ -48,6 +52,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private StageItemViewModel _selectedStage;
         private bool _selectionsChangedFlag;
         private ICommand _selectProjectCommand;
+        private ICommand _setDefaultProjectCommand;
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
         private int _stageTotal;
@@ -55,7 +60,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private int _totalPage;
         private ICommand _unloadCommand;
 
-        public ProjectViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger, SignInViewModel signInViewModel, LanguageLoader languageLoader)
+        public ProjectViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger,
+            SignInViewModel signInViewModel, LanguageLoader languageLoader)
         {
             _browser = browser;
             _cloudMediaService = cloudMediaService;
@@ -64,6 +70,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel = signInViewModel;
             CurrentPageNumber = 1;
         }
+
+        internal string DefaultProjectInfoFilePath => $"{Path.GetTempPath()}subtitleDefaultInfo.dat";
 
         public bool IsProjectViewVisible
         {
@@ -75,6 +83,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _selectedStage;
             set => Set(ref _selectedStage, value);
+        }
+
+        public ProjectItemViewModel DefaultProject
+        {
+            get => _defaultProject;
+            set => Set(ref _defaultProject, value);
         }
 
         public List<StageItemViewModel> StageItems
@@ -200,10 +214,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ICommand RightSlideNavigateCommand
         {
-            get
-            {
-                return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(NavigateRight);
-            }
+            get { return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(NavigateRight); }
         }
 
         public bool IsBusy
@@ -222,14 +233,79 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
         }
 
+        public ICommand SetDefaultProjectCommand
+        {
+            get
+            {
+                return _setDefaultProjectCommand =
+                    _setDefaultProjectCommand ?? new RelayCommand<ProjectItemViewModel>(SaveDefaultProject);
+            }
+        }
+
+        private void SaveDefaultProject(ProjectItemViewModel projectItemViewModel)
+        {
+            if (projectItemViewModel == null) return;
+
+            var item = new DefaultProjectItem
+            {
+                StageId = projectItemViewModel.StageId,
+                ProjectId = projectItemViewModel.ProjectId
+            };
+
+            var profileData = JsonConvert.SerializeObject(item);
+
+            File.WriteAllText(DefaultProjectInfoFilePath, profileData);
+        }
+
+        private DefaultProjectItem LoadDefaultProject()
+        {
+            try
+            {
+                if (!File.Exists(DefaultProjectInfoFilePath))
+                    return null;
+
+                var profileData = File.ReadAllText(DefaultProjectInfoFilePath);
+                return JsonConvert.DeserializeObject<DefaultProjectItem>(profileData);
+            }
+            catch (FileNotFoundException e)
+            {
+                _logger.Error.Write(e);
+            }
+
+            return null;
+        }
+
+
         private void Load()
         {
             RegisterMessageHandlers();
         }
 
+
         private void Unload()
         {
             UnregisterMessageHandlers();
+        }
+
+        private void SetDefaultProject()
+        {
+            var defaultProject = LoadDefaultProject();
+
+            if (defaultProject == null) return;
+
+            var stageItem = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
+
+            //SelectedStage = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
+
+            DefaultProject =
+                stageItem?.ProjectItems.Single(project => project.ProjectId.Equals(defaultProject.ProjectId));
+
+            if (DefaultProject != null)
+            {
+                DefaultProject.IsSelected = true;
+
+                stageItem.SelectedProject = DefaultProject;
+            }
         }
 
         private bool CanStartProject()
@@ -243,8 +319,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void StartProject(ProjectItemViewModel projectItem)
         {
-            Console.WriteLine($@"StagePerPageNumber : {StagePerPageNumber}");
-
             var workingProject = _signInViewModel.SelectedProject;
 
             // 현재 작업중인 프로젝트 선택시
@@ -272,14 +346,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         "프로젝트가 변경됩니다.\r\n이 작업으로 인해 기존 양식의 데이터를 손실 할 수 있습니다.\r\n\r\n계속하시겠습니까?",
                         MessageBoxButton.OKCancel));
 
-                    if (result == MessageBoxResult.Cancel) 
+                    if (result == MessageBoxResult.Cancel)
                         return;
                 }
 
-                workingProject.IsSelected = false;
 
                 MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
             }
+
+            // workingProject 값이 있다는 것은 프로젝트 재선택이라는 뜻
+            if (workingProject == null)
+                DefaultProject.IsSelected = false;
+            else
+                workingProject.IsSelected = false;
 
             projectItem.IsSelected = true;
 
@@ -294,24 +373,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             await _languageLoader.LoadAsync();
         }
-
-        //private void SelectProject(ProjectItemViewModel projectItem)
-        //{
-        //    if (!_selectionsChangedFlag)
-        //    {
-        //        if (StageItems == null) return;
-
-        //        _selectionsChangedFlag = true;
-
-        //        SelectedStage = StageItems.Single(stage => stage.Id.Equals(projectItem.StageId));
-
-        //        foreach (var stage in StageItems)
-        //            if (!stage.Equals(SelectedStage))
-        //                if (stage.SelectedProject != null)
-        //                    stage.SelectedProject = null;
-        //        _selectionsChangedFlag = false;
-        //    }
-        //}
 
         private void OnStagePerPageNumberChanged(int obj)
         {
@@ -481,6 +542,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 foreach (var item in emptyProjectStages) StageItems.Remove(item);
 
+                SetDefaultProject();
                 //// Test Data 
 
                 //var firstItem = StageItems.First();
