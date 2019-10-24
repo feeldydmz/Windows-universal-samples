@@ -986,6 +986,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             ClearCurrentPositionText();
 
+            var metaDataViewmodel = Bootstrapper.Container.Resolve<MetadataViewModel>();
+            metaDataViewmodel.Close();
+
             WorkContext = new McmWorkContext(video, captionAsset);
 
             if (!string.IsNullOrEmpty(video?.Name))

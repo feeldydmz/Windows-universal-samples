@@ -56,7 +56,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _openVideoInfoPopupCommand =
-                    _openVideoInfoPopupCommand ?? new RelayCommand(OpenMetaData);
+                    _openVideoInfoPopupCommand ?? new RelayCommand(Open);
             }
         }
 
@@ -65,9 +65,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _closeVideoInfoPopupCommand =
-                    _closeVideoInfoPopupCommand ?? new RelayCommand(() => { IsOpenVideoInfoPopup = false; });
+                    _closeVideoInfoPopupCommand ?? new RelayCommand(Close);
             }
         }
+
+       
 
 
         public string Status
@@ -124,12 +126,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _renditions, value);
         }
 
-        public void OpenMetaData()
+        public void Open()
         {
             Status = _workBarViewModel.VideoItem.Status ?? "None";
 
             MediaType = "";
 
+            Renditions?.Clear();
 
             if (_workBarViewModel.VideoItem?.Source?.Sources != null)
                 foreach (var renditionAsset in _workBarViewModel.VideoItem.Source.Sources)
@@ -159,6 +162,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     }
 
             IsOpenVideoInfoPopup = true;
+        }
+
+        public void Close()
+        {
+            IsOpenVideoInfoPopup = false;
         }
 
         private string ConvertBitRateToString(double bitRate)

@@ -165,6 +165,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public async void RefreshAuthorizationAsync()
+        {
+            try
+            {
+                var auth = await _cloudMediaService.RefreshByRefreshCodeAsync(_authorization.RefreshToken, _authorization.AccessToken, CancellationToken.None);
+
+                //if (string.IsNullOrEmpty(_authorization?.AccessToken))
+                //    return;
+
+                //OpenProjectViewAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error.Write(ex);
+            }
+
+        }
+
         private async void OpenProjectViewAsync()
         {
             try

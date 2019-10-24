@@ -75,6 +75,18 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
+        public async Task<Authorization> RefreshByRefreshCodeAsync(string refreshCode, string accessCode, CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var authorizationResponse =
+                    _authorizationRepository.RefreshAccessCode(new AuthorizationRequest(string.Empty, accessCode, refreshCode));
+
+                return new Authorization(authorizationResponse?.AccessToken, authorizationResponse?.RefreshToken,
+                    authorizationResponse?.Expires);
+            }, cancellationToken);
+        }
+
         public async Task<Video> GetVideoAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>

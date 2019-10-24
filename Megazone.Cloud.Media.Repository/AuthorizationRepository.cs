@@ -49,6 +49,39 @@ namespace Megazone.Cloud.Media.Repository
             return exResult.Convert<AuthorizationResponse>();
         }
 
+
+        public AuthorizationResponse RefreshAccessCode(AuthorizationRequest request)
+        {
+            // 사용자 인증.
+            // 인증 URL : https://oauth.megazone.io/oauth/token
+            var clientAuthorization = GetClientAuthorization();
+            var content =
+                $"refresh_token={request.Code}&grant_type=refresh_token&access_Token={request.Password}";
+
+            var restRequest = new RestRequest("oauth/token", Method.POST)
+                //var restRequest = new RestRequest("v1/token", Method.GET)
+                .AddHeader("Authorization", $"Basic {clientAuthorization}")
+                .AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
+
+            var exResult = RestSharpExtension.CreateRestClient($"https://{Domain}").Execute(restRequest);
+
+
+            //// TODO 나중에 Get 방식으로 받는 코드로 교체
+            //var restRequest = new RestRequest("v1/token", Method.GET)
+            //    .AddHeader("origin", "https://console.media.megazone.io")
+            //    .AddQueryParameter("code", requestCode)
+            //    .AddQueryParameter("platform", "native");
+
+            //var exResult = RestSharpExtension.CreateRestClient("https://api.media.megazone.io").Execute(restRequest);
+
+            //Debug.WriteLine(exResult.StatusCode.ToString());
+
+            //return exResult.Convert<AuthorizationResponse>();
+
+
+            return exResult.Convert<AuthorizationResponse>();
+        }
+
         public MeResponse GetMe(MeRequest request)
         {
             // API : https://api.media.megazone.io/v1/me

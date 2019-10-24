@@ -13,6 +13,8 @@ namespace Megazone.Cloud.Media.ServiceInterface
     {
         Task<Authorization> LoginAsync(string userName, string password, CancellationToken cancellationToken);
         Task<Authorization> LoginByAuthorizationCodeAsync(string code, CancellationToken cancellationToken);
+
+        Task<Authorization> RefreshByRefreshCodeAsync(string refreshCode, string accessCode, CancellationToken cancellationToken);
         Task<UserProfile> GetUserAsync(Authorization authorization, CancellationToken cancellationToken);
         Task<ProjectListResponse> GetProjectsAsync(GetProjectsParameter parameter, CancellationToken cancellationToken);
         Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter, CancellationToken cancellationToken);

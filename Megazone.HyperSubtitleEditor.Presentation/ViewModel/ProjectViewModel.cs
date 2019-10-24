@@ -165,14 +165,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isLoadingProjectPage, value);
         }
 
-        //public ICommand StartProjectCommand
-        //{
-        //    get
-        //    {
-        //        return _startProjectCommand =
-        //            _startProjectCommand ?? new RelayCommand(StartProject, CanStartProject);
-        //    }
-        //}
+        public ICommand StartProjectCommand
+        {
+            get
+            {
+                return _startProjectCommand =
+                    _startProjectCommand ?? new RelayCommand(Execute);
+            }
+        }
+
+        private void Execute()
+        {
+            _signInViewModel.RefreshAuthorizationAsync();
+        }
 
         public ICommand SelectProjectCommand
         {
@@ -356,7 +361,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // workingProject 값이 있다는 것은 프로젝트 재선택이라는 뜻
             if (workingProject == null)
-                DefaultProject.IsSelected = false;
+            {
+                if (DefaultProject != null) DefaultProject.IsSelected = false;
+            }
             else
                 workingProject.IsSelected = false;
 

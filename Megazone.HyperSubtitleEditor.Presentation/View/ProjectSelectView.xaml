@@ -514,7 +514,7 @@
                     </Grid>
                     
                 </Grid>
-                <Grid Grid.Row="2">
+                <!--<Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="150" />
@@ -537,11 +537,12 @@
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource Style_Slider_ProjectSelect}" />
-                    <!--<Button Grid.Column="3" HorizontalAlignment="Center"
+                    <Button Grid.Column="3" 
+                            HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
-                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />-->
-                </Grid>
+                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />
+                </Grid>-->
             </Grid>
         </Border>
     </Grid>

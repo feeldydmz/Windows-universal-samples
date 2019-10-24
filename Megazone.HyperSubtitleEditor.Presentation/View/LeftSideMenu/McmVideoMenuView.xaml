@@ -522,9 +522,6 @@
                                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Left" />
                                         </Grid>
                                     </Grid>
-
-                                    
-                                    
                                 </Grid>
                             </Button>
                         </Border>
