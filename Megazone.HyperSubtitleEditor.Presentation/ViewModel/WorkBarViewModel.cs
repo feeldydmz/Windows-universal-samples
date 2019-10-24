@@ -171,6 +171,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnFileOpened(Subtitle.FileOpenedMessage message)
         {
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
+
+            
+
+            CaptionAssetItem = new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null, null));
+
             HasWorkData = true;
         }
 
@@ -545,7 +550,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public bool CanImportFile()
         {
-            return VideoItem != null && CaptionAssetItem != null;
+            return VideoItem != null || CaptionAssetItem != null;
         }
 
         public async Task<CaptionAsset> GetCaptionAssetAsync(string captionAssetId)

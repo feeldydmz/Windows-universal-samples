@@ -22,6 +22,7 @@
     <SolidColorBrush x:Key="Brush_HeaderAreaBackBrush" Color="#FFf5f7fa" />
 
 
+
     <!--성공 등의 녹색 컬러-->
     <SolidColorBrush x:Key="Brush_GreenForeground" Color="#FF39b966" />
     <!--실패 등의 레드 컬러-->
@@ -93,6 +94,7 @@
 
     <!--구분선/Border 외곽선 컬러-->
     <SolidColorBrush x:Key="Brush_Border_Outer_Line_Color" Color="#FFc4cbd5" />
+
 
     <GridLength x:Key="GridLength_HeaderAreaHeight">40</GridLength>
 

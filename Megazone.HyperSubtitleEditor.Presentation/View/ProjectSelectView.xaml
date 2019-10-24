@@ -66,7 +66,8 @@
                                TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>
                 <mz:ImageButton 
-                    Command="{StaticResource LogoutCommand}" ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                    Command="{StaticResource LogoutCommand}" 
+                    ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
                     Background="{StaticResource Brush_ImageButton_Background_Color}"
                     NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
                     PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_pres.png"

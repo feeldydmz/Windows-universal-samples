@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="400"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData}">
@@ -15,15 +16,24 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <Thickness x:Key="ContentMargin">0,6,0,0</Thickness>
+
             <Style x:Key="CaptionText" TargetType="TextBlock">
                 <Setter Property="Foreground" Value="#A4A5A6"/>
-                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="FontSize" Value="11"/>
             </Style>
             <Style x:Key="ContentText" TargetType="TextBlock">
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="10"/>
-                <Setter Property="Margin" Value="0,4,0,0"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Margin" Value="{StaticResource ContentMargin}"/>
+            </Style>
+            <Style x:Key="StatusContentText" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Margin" Value="{StaticResource ContentMargin}"/>
+                <Setter Property="Foreground" Value="#2E9812"/>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -36,40 +46,55 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Metadata" 
-                       FontSize ="10" 
+                       FontSize ="11" 
                        Foreground="White" 
                        VerticalAlignment="Center"
-                       Margin="17,0,0,0"/>
-            <Button Grid.Column="1" Content="X" 
-                       FontSize ="20" 
-                       FontStretch="Normal"
-                       Background="Transparent"
-                       Foreground="#B7B7B7" 
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Command="{Binding CloseVideoInfoPopupCommand}"
-                       />
+                       Margin="17,4,0,0"/>
+
+            <mz:ImageButton Grid.Column="1" 
+                Command="{Binding CloseVideoInfoPopupCommand}" 
+                ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                Style="{StaticResource Style_TransparentImageButton}"
+                NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                Margin="0"
+                Width="20" Height="20" />
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#3b3b3b" BorderThickness="1" />
         </Grid>
 
         <!--Column 1-->
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
             <TextBlock Text="Status" Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Status}" Style="{StaticResource ContentText}"/>
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Width="8" 
+                         Height="8" 
+                         Fill="#2E9812" 
+                         VerticalAlignment="Center"
+                         Margin="0,6,5,0"/>
+                <TextBlock Text="{Binding Status}" 
+                           Style="{StaticResource StatusContentText}"/>
+            </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
@@ -97,11 +122,10 @@
             <ItemsControl ItemsSource="{Binding Renditions}"
                           Foreground="White"
                           FontWeight="Bold"
-                          FontSize="10"
-                          Margin="0,4,0,0">
+                          FontSize="12"
+                          Margin="{StaticResource ContentMargin}">
             </ItemsControl>
         </StackPanel>
-
 
         <!--Column 3-->
         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
@@ -118,7 +142,5 @@
             <TextBlock Text="Tags" Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Tags}" Style="{StaticResource ContentText}"/>
         </StackPanel>
-
-
     </Grid>
 </UserControl>
