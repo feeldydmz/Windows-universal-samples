@@ -268,15 +268,21 @@
                                                 <Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}"
-                                                               FontWeight="Bold" MaxWidth="255"
-                                                               TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock Grid.Column="0" 
+                                                               Text="{Binding Path=Name}"
+                                                               FontWeight="Bold" 
+                                                               MaxWidth="120"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding Path=Name}"
+                                                               />
                                                     <TextBlock Grid.Column="1"
                                                                Text="{Binding Path=Id, StringFormat='{}({0})'}"
                                                                Margin="3,0" 
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding Path=Id, StringFormat='{}({0})'}"
                                                                Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
                                                 </Grid>
                                             </Grid>
@@ -298,8 +304,9 @@
                                                                           IsChecked="{Binding Path=IsSelected}"
                                                                           Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
                                                                           CommandParameter="{Binding}" />
-                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}">
+                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Label}" TextTrimming="CharacterEllipsis"
+                                                                           ToolTip="{Binding Path=Label}"/>
+                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}" Margin="14,0,0,0">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                             <MultiBinding.Bindings>

@@ -365,12 +365,16 @@
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding Path=Name}"
-                                                                   FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                                                        <TextBlock Grid.Column="0" 
+                                                                   Text="{Binding Path=Name}"
+                                                                   FontWeight="Bold" 
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   ToolTip="{Binding Path=Name}"
                                                                    />
                                                         <TextBlock Grid.Column="1"
                                                                    Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                                                   Margin="3,0" />
+                                                                   Margin="3,0" 
+                                                                   ToolTip="{Binding Path=Id, StringFormat='{}({0})'}"/>
                                                     </Grid>
                                                     <Grid Grid.Row="2" VerticalAlignment="Center">
                                                         <TextBlock
