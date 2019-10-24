@@ -64,7 +64,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Metadata" 
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TITLE}"  
                        FontSize ="11" 
                        Foreground="White" 
                        VerticalAlignment="Center"
@@ -85,7 +85,8 @@
 
         <!--Column 1-->
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <TextBlock Text="Status" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_STATUS}" 
+                       Style="{StaticResource CaptionText}"/>
             <StackPanel Orientation="Horizontal">
                 <Ellipse Width="8" 
                          Height="8" 
@@ -98,27 +99,32 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="Duration" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_DURATION}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Duration}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical">
-            <TextBlock Text="Media Type" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_MEDIATYPE}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding MediaType}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Vertical">
-            <TextBlock Text="Name" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_NAME}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Name}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical">
-            <TextBlock Text="Job ID" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_JOBID}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding JobId}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="6" Orientation="Vertical">
-            <TextBlock Text="Renditions" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_RENDITIONS}" 
+                       Style="{StaticResource CaptionText}"/>
             <ItemsControl ItemsSource="{Binding Renditions}"
                           Foreground="White"
                           FontWeight="Bold"
@@ -129,17 +135,20 @@
 
         <!--Column 3-->
         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
-            <TextBlock Text="Categories" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_CATEGORIES}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Categories}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="Attributions" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_ATTRIBUTIONS}" 
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Attributions}" Style="{StaticResource ContentText}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="3" Grid.Row="3" Orientation="Vertical">
-            <TextBlock Text="Tags" Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TAGS}"  
+                       Style="{StaticResource CaptionText}"/>
             <TextBlock Text="{Binding Tags}" Style="{StaticResource ContentText}"/>
         </StackPanel>
     </Grid>

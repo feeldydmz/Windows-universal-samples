@@ -245,7 +245,7 @@
                                                Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1"
                                                RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch"
                                                VerticalAlignment="Stretch" />
-                                    <TextBlock Text="Duration" 
+                                    <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}" 
                                                VerticalAlignment="Center" 
                                                TextAlignment="Center"
                                                HorizontalAlignment="Center" 
@@ -275,32 +275,7 @@
                                             </i:Interaction.Triggers>
                                         </mz:TimeSpinner>
                                     </StackPanel>
-                                    
                                 </Grid>
-                                <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="Duration" VerticalAlignment="Center" TextAlignment="Center"
-                                           HorizontalAlignment="Left"/>
-
-                                <StackPanel x:Name="DurationPanel" Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-                                    <mz:TimeSpinner Time="{Binding Path=DurationStartTime}" IsShowMilliseconds="False">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="TimeChanged">
-                                                <i:InvokeCommandAction
-                                                    Command="{Binding Path=DurationStartTimeChangedCommand}"
-                                                    CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </mz:TimeSpinner>
-                                    <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0" />
-                                    <mz:TimeSpinner Time="{Binding Path=DurationEndTime}" IsShowMilliseconds="False">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="TimeChanged">
-                                                <i:InvokeCommandAction
-                                                    Command="{Binding Path=DurationEndTimeChangedCommand}"
-                                                    CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </mz:TimeSpinner>
-                                </StackPanel>-->
                             </Grid>
 
                             <Grid Grid.Column="1" Grid.Row="0"  Margin="8,0,0,0">
@@ -446,11 +421,10 @@
                             <Rectangle Grid.Row="0" Fill="#dfe3ee"  Height="1" VerticalAlignment="Top" />
 
                             <Grid Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                <TextBlock Text="Empty Video List." VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                           VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
-                                <!--<TextBlock Text="Searching..." VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
                             </Grid>
                         </Grid>
                     </Grid>
@@ -654,7 +628,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <TextBlock Text="Empty Caption List."
+                                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                                            Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
                                                            VerticalAlignment="Center" HorizontalAlignment="Center"
                                                            TextAlignment="Center" />
@@ -670,7 +644,7 @@
                             <Border
                                 Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
                                 <TextBlock
-                                    Text="Empty Asset List."
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />

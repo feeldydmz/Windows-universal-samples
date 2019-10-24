@@ -313,7 +313,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <TextBlock Text="Empty Caption List."
+                                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                                            Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
                                                            VerticalAlignment="Center" HorizontalAlignment="Center"
                                                            TextAlignment="Center" />
@@ -326,7 +326,7 @@
 
                         <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                             <TextBlock
-                                Text="Empty Asset List."
+                                Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />

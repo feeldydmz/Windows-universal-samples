@@ -704,4 +704,55 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="MSG_SET_AS_DEFAULT" xml:space="preserve">
     <value>Set as default</value>
   </data>
+  <data name="CNT_CAPTION" xml:space="preserve">
+    <value>Caption</value>
+  </data>
+  <data name="CNT_LEFT_SIDE_MENU_ASSET" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="CNT_LEFT_SIDE_MENU_VIDEO" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="CNT_VIDEO_META_ATTRIBUTIONS" xml:space="preserve">
+    <value>Attributions</value>
+  </data>
+  <data name="CNT_VIDEO_META_CATEGORIES" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="CNT_VIDEO_META_DURATION" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="CNT_VIDEO_META_JOBID" xml:space="preserve">
+    <value>Job ID</value>
+  </data>
+  <data name="CNT_VIDEO_META_MEDIATYPE" xml:space="preserve">
+    <value>Media Type</value>
+  </data>
+  <data name="CNT_VIDEO_META_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CNT_VIDEO_META_RENDITIONS" xml:space="preserve">
+    <value>Renditions</value>
+  </data>
+  <data name="CNT_VIDEO_META_STATUS" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="CNT_VIDEO_META_TAGS" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="CNT_VIDEO_META_TITLE" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="MSG_EMPTY_LIST" xml:space="preserve">
+    <value>Empty {0} List.</value>
+  </data>
+  <data name="CNT_OPEN_RECENTLY_FILE" xml:space="preserve">
+    <value>Open Recently File</value>
+  </data>
+  <data name="CNT_VIDEO_LIST" xml:space="preserve">
+    <value>Video List</value>
+  </data>
+  <data name="MSG_LOADING" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
 </root>

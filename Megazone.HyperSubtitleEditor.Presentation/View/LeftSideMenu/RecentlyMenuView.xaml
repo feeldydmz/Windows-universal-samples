@@ -36,7 +36,7 @@
                     <RowDefinition Height="20" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="최근 파일 열기" Margin="20, 0"/>
+                <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}" Margin="20, 0"/>
                 <ItemsControl x:Name="RecentlyItemControl" Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
@@ -128,7 +128,6 @@
 
                                     <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=SecondName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=SecondId}" VerticalAlignment="Center"/>
-                                    <!--<TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Path=CreatedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />-->
                                 </Grid>
                             </Button>
                         </DataTemplate>
@@ -137,7 +136,7 @@
                 <TextBlock x:Name="EmptyListBlock"
                            Grid.Row="2" 
                            Foreground="#545871"
-                           Text ="Empty List"
+                           Text="{Binding Source={x:Null}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            FontSize="15"

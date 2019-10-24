@@ -241,6 +241,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Caption과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CAPTION {
+            get {
+                return ResourceManager.GetString("CNT_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Max length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_CAPTION_MAX_LENGTH {
@@ -826,6 +835,24 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Asset과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_LEFT_SIDE_MENU_ASSET {
+            get {
+                return ResourceManager.GetString("CNT_LEFT_SIDE_MENU_ASSET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Video과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_LEFT_SIDE_MENU_VIDEO {
+            get {
+                return ResourceManager.GetString("CNT_LEFT_SIDE_MENU_VIDEO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Load all tracks과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_LOAD_ALL_CAPTIONS {
@@ -975,6 +1002,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_OPEN_IN_JOB {
             get {
                 return ResourceManager.GetString("CNT_OPEN_IN_JOB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Open Recently File과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_OPEN_RECENTLY_FILE {
+            get {
+                return ResourceManager.GetString("CNT_OPEN_RECENTLY_FILE", resourceCulture);
             }
         }
         
@@ -1465,6 +1501,105 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Video List과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_LIST {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Attributions과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_ATTRIBUTIONS {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_ATTRIBUTIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Categories과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_CATEGORIES {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_CATEGORIES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Duration과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_DURATION {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_DURATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Job ID과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_JOBID {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_JOBID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Media Type과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_MEDIATYPE {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_MEDIATYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_NAME {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Renditions과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_RENDITIONS {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_RENDITIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_STATUS {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_STATUS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Tags과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_TAGS {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_TAGS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Metadata과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_TITLE {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   View log folder과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_VIEW_LOG_FOLDERE {
@@ -1585,6 +1720,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Empty {0} List.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_EMPTY_LIST {
+            get {
+                return ResourceManager.GetString("MSG_EMPTY_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Error occurred during play.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_ERROR_TRYING_TO_PLAY {
@@ -1663,6 +1807,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_LOAD_GROUP_FILE {
             get {
                 return ResourceManager.GetString("MSG_LOAD_GROUP_FILE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Loading...과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_LOADING {
+            get {
+                return ResourceManager.GetString("MSG_LOADING", resourceCulture);
             }
         }
         

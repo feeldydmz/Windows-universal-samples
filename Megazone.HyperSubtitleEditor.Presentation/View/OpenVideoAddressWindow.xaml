@@ -185,7 +185,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Duration" VerticalAlignment="Center" TextAlignment="Center"
+                                <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}" VerticalAlignment="Center" TextAlignment="Center"
                                            HorizontalAlignment="Center" Margin="10,0,0,0" />
 
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
@@ -380,7 +380,8 @@
 
                             <Grid
                                 Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                <TextBlock Text="Empty Video List." VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                           VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                             </Grid>
