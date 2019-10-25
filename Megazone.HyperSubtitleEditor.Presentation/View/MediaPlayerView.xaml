@@ -229,12 +229,14 @@
                           HorizontalAlignment="Stretch"
                           Style="{StaticResource Style_ComboBoxVideoType}"
                           ItemsSource="{Binding Path=VideoTypes}"
+                          ToolTip="{Binding Path=SelectedItem.Url,ElementName=TypeUrlList}"
                           SelectedItem="{Binding Path=CurrentVideoType}">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
                             <Setter Property="Template" Value="{StaticResource MyDropDownCustomStyle}"/>
                             <Setter Property="BorderBrush" Value="Red" />
                             <Setter Property="BorderThickness" Value="1" />
+                            
                         <!--<Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Visibility" Value="Visible" TargetName="SelectedVideoImage"/>
@@ -245,12 +247,12 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewModelData:MediaKind}">
-                        <Grid>
+                        <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Height="17"
+                            <Border Height="17" 
                                     CornerRadius="2"
                                     Margin="10,0,10,0">
                                 <TextBlock FontSize="12"

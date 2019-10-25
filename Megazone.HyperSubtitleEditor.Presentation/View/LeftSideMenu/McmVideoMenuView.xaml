@@ -335,7 +335,7 @@
                                 </i:Interaction.Behaviors>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
-                                        <Border Height="{StaticResource VideoListBoxItemHeight}" Width="358">
+                                        <Border Height="{StaticResource VideoListBoxItemHeight}" Width="358" ToolTip="{Binding Path=Name}">
                                             <Grid Margin="0, 15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="10" />
@@ -371,12 +371,10 @@
                                                                    Text="{Binding Path=Name}"
                                                                    FontWeight="Bold" 
                                                                    TextTrimming="CharacterEllipsis"
-                                                                   ToolTip="{Binding Path=Name}"
                                                                    />
                                                         <TextBlock Grid.Column="1"
                                                                    Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                                                   Margin="3,0" 
-                                                                   ToolTip="{Binding Path=Id, StringFormat='{}({0})'}"/>
+                                                                   Margin="3,0"/>
                                                     </Grid>
                                                     <Grid Grid.Row="2" VerticalAlignment="Center">
                                                         <TextBlock
