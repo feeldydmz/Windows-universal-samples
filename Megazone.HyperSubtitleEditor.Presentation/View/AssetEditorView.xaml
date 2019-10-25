@@ -45,7 +45,7 @@
                     <RowDefinition Height="11"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="에셋 이름" />
+                <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_ASSET_NAME}" />
                 <TextBox x:Name="AssetNameTextBox" Grid.Row="2" Text="{Binding Path=AssetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Grid>
         </Border>

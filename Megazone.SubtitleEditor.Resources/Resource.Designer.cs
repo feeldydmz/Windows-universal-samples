@@ -880,6 +880,24 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Make New Asset과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_MAKE_NEW_ASSET {
+            get {
+                return ResourceManager.GetString("CNT_MAKE_NEW_ASSET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Make New Caption과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_MAKE_NEW_CAPTION {
+            get {
+                return ResourceManager.GetString("CNT_MAKE_NEW_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Max length per row과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_MAX_LENGTH_PER_ROW {
@@ -930,6 +948,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_NAME {
             get {
                 return ResourceManager.GetString("CNT_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   New과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_NEW {
+            get {
+                return ResourceManager.GetString("CNT_NEW", resourceCulture);
             }
         }
         
@@ -1159,7 +1186,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Recent file과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Recent File과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_RECENT_FILE {
             get {
@@ -1393,7 +1420,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Shared file과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Shared File과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_SHARE_FILE {
             get {

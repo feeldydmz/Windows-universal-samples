@@ -562,14 +562,6 @@
                                                                                            HorizontalAlignment="Center"/>
                                                                                 </Border>
                                                                             </Grid>
-                                                                            <!--<Popup.Triggers>
-                                                                                    <MultiTrigger>
-                                                                                        <MultiTrigger.Conditions>
-                                                                                            <Condition Property="{Binding IsDefault}" Value="True"/>
-                                                                                        </MultiTrigger.Conditions>
-                                                                                        <Setter Property=""/>
-                                                                                    </MultiTrigger>
-                                                                                </Popup.Triggers>-->
                                                                         </Popup>
 
                                                                         <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />

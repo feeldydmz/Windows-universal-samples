@@ -4,6 +4,7 @@ using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.SubtitleEditor.Resources;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
@@ -22,7 +23,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private CaptionAssetItemViewModel()
         {
-            Name = "캡션 새로 만들기";
+            
+            Name = Resource.CNT_MAKE_NEW_CAPTION;
         }
 
         public CaptionAssetItemViewModel(CaptionAsset asset)

@@ -222,9 +222,11 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <TextBox Grid.Column="2" Grid.Row="0" x:Name="KeywordTextBox"
-                                         Width="175"
-                                         HorizontalAlignment="Left"
+                                <TextBox Grid.Column="1" 
+                                         Grid.ColumnSpan="2" 
+                                         Grid.Row="0" 
+                                         x:Name="KeywordTextBox"
+                                         HorizontalAlignment="Stretch"
                                          Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
                                         <mz:KeyEventToRunCommandBehavior 

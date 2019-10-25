@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using Megazone.Core.Log;
 using Megazone.Core.Windows;
@@ -18,7 +20,11 @@ namespace Megazone.HyperSubtitleEditor
 
         public App()
         {
+
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+
             new Bootstrapper().Initialize();
+
             var logger = Bootstrapper.Container.Resolve<ILogger>();
             _unhandledExceptionDelegator = new UnhandledExceptionDelegator(
                 this,

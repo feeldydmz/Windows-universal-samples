@@ -693,10 +693,10 @@ platform, please contact our sales team. We'll assist you with more details.</va
     <value>ID</value>
   </data>
   <data name="CNT_RECENT_FILE" xml:space="preserve">
-    <value>Recent file</value>
+    <value>Recent File</value>
   </data>
   <data name="CNT_SHARE_FILE" xml:space="preserve">
-    <value>Shared file</value>
+    <value>Shared File</value>
   </data>
   <data name="CNT_IMPORT_VTT" xml:space="preserve">
     <value>Import a WebVTT</value>
@@ -754,5 +754,14 @@ platform, please contact our sales team. We'll assist you with more details.</va
   </data>
   <data name="MSG_LOADING" xml:space="preserve">
     <value>Loading...</value>
+  </data>
+  <data name="CNT_NEW" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="CNT_MAKE_NEW_ASSET" xml:space="preserve">
+    <value>Make New Asset</value>
+  </data>
+  <data name="CNT_MAKE_NEW_CAPTION" xml:space="preserve">
+    <value>Make New Caption</value>
   </data>
 </root>

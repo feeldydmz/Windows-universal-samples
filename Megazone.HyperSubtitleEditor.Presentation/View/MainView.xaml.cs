@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Megazone.Cloud.Media.Domain;
@@ -46,7 +48,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_SETTING, // TODO: 다국어
+                Title = Resource.CNT_SETTING, 
                 //SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
                 Content = view,
@@ -63,7 +65,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_IMPORT_EXCEL, // TODO: 다국어
+                Title = Resource.CNT_IMPORT_EXCEL,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -81,7 +83,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_OPEN_CAPTION_FILE, // TODO: 다국어
+                Title = Resource.CNT_OPEN_CAPTION_FILE,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -146,7 +148,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_FIND, // TODO: 다국어
+                Title = Resource.CNT_FIND, 
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -168,7 +170,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_REPLACE, // TODO: 다국어
+                Title = Resource.CNT_REPLACE, 
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -233,7 +235,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_SAVE, // TODO: 다국어
+                Title = Resource.CNT_SAVE,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
@@ -248,7 +250,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_SAVE, // TODO: 다국어
+                Title = Resource.CNT_SAVE, 
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
@@ -266,7 +268,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_CONFIRM, // TODO: 다국어
+                Title = Resource.CNT_CONFIRM, 
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,
@@ -299,7 +301,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             {
                 Owner = Application.Current.MainWindow,
                 // [resource]
-                Title = captionAsset == null ? "에셋 새로 만들기" : "편집",
+                Title = captionAsset == null ? Resource.CNT_MAKE_NEW_ASSET : Resource.CNT_EDIT,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,
@@ -326,7 +328,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             {
                 //[resource]
                 var message = "편집 내용이 있습니다. \n작업 중인 자막을 저장하지 않으면 작업된 정보가 모두 사라집니다.\n계속 진행하시겠습니까?";
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter("알림", message, MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, message, MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
             }
         }
@@ -341,7 +343,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 var window = new ChildWindow
                 {
                     Owner = Application.Current.MainWindow,
-                    Title = Resource.CNT_GO_TO_CAPTION_NUMBER, // TODO: 다국어
+                    Title = Resource.CNT_GO_TO_CAPTION_NUMBER,
                     ResizeMode = ResizeMode.NoResize,
                     Width = 1200,
                     Height = 900,

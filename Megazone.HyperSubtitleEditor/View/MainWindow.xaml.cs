@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core.Debug.Extension;
@@ -16,7 +18,7 @@ namespace Megazone.HyperSubtitleEditor.View
             Application.Current.MainWindow = this;
 
             InitializeComponent();
-
+            
 #if DEBUG
             ConsoleBuilder.Create()
                 .View(
