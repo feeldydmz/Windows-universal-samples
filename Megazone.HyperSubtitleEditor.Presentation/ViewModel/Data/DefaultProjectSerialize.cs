@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
     [Serializable]
-    class DefaultProjectItem
+    class DefaultProjectSerialize
     {
-        public DefaultProjectItem()
+        public DefaultProjectSerialize()
         {
         }
 

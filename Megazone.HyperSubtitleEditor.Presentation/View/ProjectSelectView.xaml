@@ -35,6 +35,142 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:NullToFalseNTrue x:Key="NullToFalseNTrue"/>
+
+            <Style x:Key="Style_DefaultSetButtonForSelect" TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <!--<Setter Property="ImagePosition" Value="Left" />-->
+                <!--<Setter Property="BorderThickness" Value="1" />-->
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <!--<Setter Property="Padding" Value="1" />-->
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
+                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <Grid x:Name="ImageContainer">
+                                        <Image x:Name="DefaultImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png" 
+                                               Stretch="UniformToFill" />
+                                        <Image x:Name="DisabledImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_dis.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                        <Image x:Name="PressedImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_act.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                        <Image x:Name="MouseOverImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_hov.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                    </Grid>
+                                    <ContentPresenter x:Name="contentPresenter" Focusable="False"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!--<Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>-->
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Visible" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <!--<Setter Property="TextElement.Foreground" TargetName="contentPresenter"
+                                    Value="{StaticResource Button.Disabled.Foreground}" />-->
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Visible" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style x:Key="Style_DefaultSetButtonForDeselect" TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
+                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <Grid x:Name="ImageContainer">
+                                        <Image x:Name="DefaultImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png" 
+                                               Stretch="UniformToFill" />
+                                        <Image x:Name="DisabledImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                        <Image x:Name="PressedImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                        <Image x:Name="MouseOverImage" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png" 
+                                               Visibility="Hidden" Stretch="UniformToFill" />
+                                    </Grid>
+                                    <ContentPresenter x:Name="contentPresenter" Focusable="False"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!--<Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>-->
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Visible" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <!--<Setter Property="TextElement.Foreground" TargetName="contentPresenter"
+                                    Value="{StaticResource Button.Disabled.Foreground}" />-->
+                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="DisabledImage" Value="Visible" />
+                                    <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -368,23 +504,23 @@
                                                                     </Grid.ColumnDefinitions>
                                                                 <TextBlock Text="{Binding Path=Name}"
                                                                            Grid.Column="0"
-                                                                   FontWeight="Bold"
-                                                                   Margin="15,0,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Center"
-                                                                   LineHeight="14" />
+                                                                           FontWeight="Bold"
+                                                                           Margin="15,0,0,0"
+                                                                           HorizontalAlignment="Left"
+                                                                           VerticalAlignment="Center"
+                                                                           LineHeight="14" />
                                                                 <TextBlock Text="/"
                                                                            VerticalAlignment="Center"
                                                                            Grid.Column="1"
                                                                    Margin="5,0,0,0" />
-                                                                <TextBlock Text="{Binding Path=ProjectId}"
+                                                                    <TextBlock Text="{Binding Path=ProjectId}"
                                                                            Grid.Column="2"
-                                                                   Margin="5,0,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Center"
-                                                                   TextTrimming="CharacterEllipsis"
-                                                                   LineHeight="14"
-                                                                   FontSize="11" />
+                                                                           Margin="5,0,0,0"
+                                                                           HorizontalAlignment="Left"
+                                                                           VerticalAlignment="Center"
+                                                                           TextTrimming="CharacterEllipsis"
+                                                                           LineHeight="14"
+                                                                           FontSize="11" />
 
                                                                 <Image x:Name="CheckImage"
                                                                        Grid.Column="3"
@@ -401,22 +537,42 @@
                                                                                 HorizontalAlignment="Right"
                                                                                 VerticalAlignment="Center"
                                                                                 Visibility="Collapsed">
-                                                                        <mz:ImageButton 
-                                                                            Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
-                                                                            CommandParameter="{Binding}"
-                                                                            ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
-                                                                            Background="Transparent"
-                                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
-                                                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
-                                                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
-                                                                            Style="{StaticResource Style_TransparentImageButton}" 
-                                                                            Width="25" 
-                                                                            Height="25" 
-                                                                            Margin="10,0,0,0"/>
+                                                                        <Button x:Name="DefaultSetButton"  Style="{StaticResource Style_DefaultSetButtonForDeselect}" 
+                                                                                Margin="10,0,0,0"
+                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
+                                                                                CommandParameter="{Binding}">
+                                                                            
+                                                                            
+                                                                        </Button>
+
+                                                                        <Popup x:Name="DefaultPopup" Width="100" 
+                                                                               Height="28" 
+                                                                               PlacementTarget="{Binding ElementName=DefaultSetButton}"
+                                                                               Placement="Bottom"
+                                                                               Focusable="False"
+                                                                               StaysOpen="True"
+                                                                               HorizontalOffset="-75"
+                                                                               VerticalOffset="2">
+                                                                            <Grid Background="{StaticResource Brush_Normal_Background_Brush_Color}">
+                                                                                <Border BorderThickness="1" BorderBrush="#444b56">
+
+                                                                                <TextBlock Text="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}" 
+                                                                                           Foreground="White"
+                                                                                           VerticalAlignment="Center"
+                                                                                           HorizontalAlignment="Center"/>
+                                                                                </Border>
+                                                                            </Grid>
+                                                                            <!--<Popup.Triggers>
+                                                                                    <MultiTrigger>
+                                                                                        <MultiTrigger.Conditions>
+                                                                                            <Condition Property="{Binding IsDefault}" Value="True"/>
+                                                                                        </MultiTrigger.Conditions>
+                                                                                        <Setter Property=""/>
+                                                                                    </MultiTrigger>
+                                                                                </Popup.Triggers>-->
+                                                                        </Popup>
 
                                                                         <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
-
                                                                         <Image
                                                                            Stretch="None"
                                                                            Margin="0,0,5,0"
@@ -431,19 +587,13 @@
                                                                                 HorizontalAlignment="Right"
                                                                                 VerticalAlignment="Center"
                                                                                 Visibility="Collapsed">
-                                                                        <mz:ImageButton 
-                                                                            Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
-                                                                            ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
-                                                                            Background="Transparent"
-                                                                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png"
-                                                                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_act.png"
-                                                                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_hov.png"
-                                                                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_dis.png"
-                                                                            Style="{StaticResource Style_TransparentImageButton}" 
-                                                                            Width="25" 
-                                                                            Height="25" 
-                                                                            Margin="10,0,0,0"/>
 
+                                                                        <Button Style="{StaticResource Style_DefaultSetButtonForSelect}" 
+                                                                                Margin="10,0,0,0"
+                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
+                                                                                CommandParameter="{Binding}">
+                                                                        </Button>
+                                                                        
                                                                         <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
 
                                                                         <Image
@@ -482,6 +632,15 @@
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
+                                                                        <Condition Binding="{Binding IsDefault}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="IsOpen" Value="True" TargetName="DefaultPopup"></Setter>
+                                                                </MultiDataTrigger>
+
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
                                                                         <Condition Binding="{Binding IsSelected}" Value="True"/>
                                                                         <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="False"/>
                                                                     </MultiDataTrigger.Conditions>
@@ -514,7 +673,7 @@
                     </Grid>
                     
                 </Grid>
-                <!--<Grid Grid.Row="2">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="150" />
@@ -537,12 +696,26 @@
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource Style_Slider_ProjectSelect}" />
-                    <Button Grid.Column="3" 
+                    <!--<Button Grid.Column="3" 
                             HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
-                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />
-                </Grid>-->
+                            Content="{x:Static resources:Resource.CNT_PROJECT_START}" />-->
+                    <!--<mz:ImageButton Grid.Column="3" 
+                        Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
+                        ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                        Background="Transparent"
+                        NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                        PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
+                        MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
+                        DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
+                        Style="{StaticResource Style_TransparentImageButton}" 
+                        Width="25" 
+                        Height="25" 
+                        Margin="10,0,0,0"/>-->
+
+                    
+                </Grid>
             </Grid>
         </Border>
     </Grid>

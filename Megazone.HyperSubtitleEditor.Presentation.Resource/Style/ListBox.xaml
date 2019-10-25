@@ -190,23 +190,24 @@
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="Visibility" Value="Visible" TargetName="KeyboardFocusedObject" />
                         </Trigger>
-                        <!--<Trigger Property="IsFocused" Value="False">
-                            <Setter Property="IsSelected" Value="False"/>
-                        </Trigger>-->
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="#333a44"></Setter>
-                        </MultiTrigger>
                         <!--아이템은 선택도 안되고 리스트는 언포커스-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                                 <Condition Property="IsSelected" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Foreground" Value="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"></Setter> 
                         </MultiTrigger>
+
+                        <!--마우스 오버-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#333a44"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
+                        </MultiTrigger>
+                        
                         <!--선택되고 리스트는 언포커스-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
