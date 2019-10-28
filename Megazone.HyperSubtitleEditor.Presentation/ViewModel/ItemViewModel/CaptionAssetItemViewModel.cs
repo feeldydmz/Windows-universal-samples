@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
             Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(element)).ToList();
-            Kind = asset.Elements?.FirstOrDefault()?.Kind;
+            Kind = asset.Elements?.FirstOrDefault()?.Kind??"Untitle";
         }
 
         public CaptionAsset Source { get; }
