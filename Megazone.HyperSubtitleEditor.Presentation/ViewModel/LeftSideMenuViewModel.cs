@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -32,7 +33,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _loadRecentlyCommand;
 
-        private IEnumerable<RecentlyItem> _recentlyItems;
+        private List<RecentlyItem> _recentlyItems;
         private ICommand _unloadCommand;
 
         public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader, VideoListViewModel videoList)
@@ -48,7 +49,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isOpen, value);
         }
 
-        public IEnumerable<RecentlyItem> RecentlyItems
+        public List<RecentlyItem> RecentlyItems
         {
             get => _recentlyItems;
             set => Set(ref _recentlyItems, value);
@@ -131,14 +132,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void LoadRecently()
         {
             _recentlyLoader.Load();
-            RecentlyItems = _recentlyLoader.GetRecentlyItems().ToList();
+            var tempList = _recentlyLoader.GetRecentlyItems().ToList();
 
-            Debug.WriteLine("---LoadRecently---");
+            var removeItems = new List<RecentlyItem>();
 
-            foreach (var recentlyItem in RecentlyItems)
+            foreach (var recentlyItem in tempList)
             {
-                Debug.WriteLine($"{recentlyItem.Video?.Name}");
+                if (recentlyItem.FirstName.IsNullOrEmpty() && recentlyItem.SecondName.IsNullOrEmpty())
+                {
+                    removeItems.Add(recentlyItem);
+                }
+
             }
+
+            foreach (var removeItem in removeItems)
+            {
+                tempList.Remove(removeItem);
+            }
+
+            RecentlyItems = tempList;
         }
 
         private void Load()

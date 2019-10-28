@@ -21,7 +21,7 @@ namespace Megazone.Cloud.Media.Repository
         {
             // 사용자 인증.
             // 인증 URL : https://oauth.megazone.io/oauth/token
-            var clientAuthorization = GetClientAuthorization();
+            var clientAuthorization = GetClientAuthorization(); 
             var content =
                 $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.media.megazone.io/megaone/login";
 
