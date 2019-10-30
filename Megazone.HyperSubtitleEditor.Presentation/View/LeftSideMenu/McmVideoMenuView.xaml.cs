@@ -14,22 +14,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
         {
             InitializeComponent();
 
-            this.Loaded += McmVideoMenuView_Loaded;
+            Loaded += McmVideoMenuView_Loaded;
         }
 
-        private void McmVideoMenuView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void McmVideoMenuView_Loaded(object sender, RoutedEventArgs e)
         {
             if (DataContext is VideoListViewModel vm)
             {
-                vm.OnLoadAction = () =>
-                {
-                    CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                };
+                vm.OnLoadAction = () => { CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); };
 
-                vm.CloseAction = () =>
-                {
-                    CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                };
+                vm.CloseAction = () => { CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); };
             }
         }
     }

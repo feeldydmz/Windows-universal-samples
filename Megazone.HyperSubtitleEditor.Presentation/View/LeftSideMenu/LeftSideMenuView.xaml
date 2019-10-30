@@ -24,12 +24,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <mz:StringToUpperConverter x:Key="StringToUpperConverter"/>
+            <mz:StringToUpperConverter x:Key="StringToUpperConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -48,83 +50,105 @@
                 </Grid.RowDefinitions>
 
                 <Grid HorizontalAlignment="Left" Margin="17, 12">
-                    <Button Command="{StaticResource CloseLeftSideMenuCommand}" Margin="0,0,0,0" Style="{StaticResource Style_IconMenuButton}">
+                    <Button Command="{StaticResource CloseLeftSideMenuCommand}" Margin="0,0,0,0"
+                            Style="{StaticResource Style_IconMenuButton}">
                         <Grid>
-                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_open_close.png" Width="26" Height="26"/>
+                            <Image
+                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_open_close.png"
+                                Width="26" Height="26" />
                         </Grid>
                     </Button>
                 </Grid>
 
-                <Border Grid.Row="2" >
+                <Border Grid.Row="2">
                     <StackPanel Style="{x:Null}">
                         <StackPanel.Resources>
                             <Style x:Key="FocusVisual">
                                 <Setter Property="Control.Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                            <Rectangle Margin="2" SnapsToDevicePixels="true"
+                                                       Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                                       StrokeThickness="1" StrokeDashArray="1 2" />
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
-                            <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#FFFFFFFF"/>
-                            <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#FF707070"/>
+                            <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#FF707070" />
                             <Style x:Key="OptionMarkFocusVisual">
                                 <Setter Property="Control.Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                            <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true"
+                                                       Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                                       StrokeThickness="1" StrokeDashArray="1 2" />
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
-                            <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF"/>
-                            <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
-                            <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121"/>
-                            <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6"/>
-                            <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC"/>
-                            <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070"/>
-                            <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF"/>
-                            <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
-                            <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121"/>
+                            <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF" />
+                            <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF" />
+                            <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121" />
+                            <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6" />
+                            <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC" />
+                            <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070" />
+                            <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF" />
+                            <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD" />
+                            <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121" />
 
                             <Style x:Key="Style_MenuRadioButton" TargetType="{x:Type RadioButton}">
-                                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-                                <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+                                <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}" />
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                                <Setter Property="BorderThickness" Value="1" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type RadioButton}">
-                                            <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                                            <Grid x:Name="templateRoot" Background="Transparent"
+                                                  SnapsToDevicePixels="True">
                                                 <Border x:Name="PART_ButtonBorder" />
-                                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                <ContentPresenter x:Name="contentPresenter" Focusable="False"
+                                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  RecognizesAccessKey="True"
+                                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="HasContent" Value="true">
-                                                    <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
-                                                    <Setter Property="Padding" Value="4,-1,0,0"/>
+                                                    <Setter Property="FocusVisualStyle"
+                                                            Value="{StaticResource OptionMarkFocusVisual}" />
+                                                    <Setter Property="Padding" Value="4,-1,0,0" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.MouseOver.Background}"/>
+                                                    <Setter Property="Background" TargetName="PART_ButtonBorder"
+                                                            Value="{StaticResource RadioButton.MouseOver.Background}" />
                                                     <!--<Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.MouseOver.Border}"/>-->
-                                                    <Setter Property="Background" TargetName="PART_ButtonBorder" Value="#f2f4f6"/>
+                                                    <Setter Property="Background" TargetName="PART_ButtonBorder"
+                                                            Value="#f2f4f6" />
                                                 </Trigger>
                                                 <Trigger Property="IsEnabled" Value="false">
-                                                    <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Disabled.Background}"/>
-                                                    <Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Disabled.Border}"/>
+                                                    <Setter Property="Background" TargetName="PART_ButtonBorder"
+                                                            Value="{StaticResource RadioButton.Disabled.Background}" />
+                                                    <Setter Property="BorderBrush" TargetName="PART_ButtonBorder"
+                                                            Value="{StaticResource RadioButton.Disabled.Border}" />
                                                 </Trigger>
                                                 <Trigger Property="IsPressed" Value="true">
-                                                    <Setter Property="Background" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Pressed.Background}"/>
-                                                    <Setter Property="BorderBrush" TargetName="PART_ButtonBorder" Value="{StaticResource RadioButton.Pressed.Border}"/>
+                                                    <Setter Property="Background" TargetName="PART_ButtonBorder"
+                                                            Value="{StaticResource RadioButton.Pressed.Background}" />
+                                                    <Setter Property="BorderBrush" TargetName="PART_ButtonBorder"
+                                                            Value="{StaticResource RadioButton.Pressed.Border}" />
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="true">
-                                                    <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="1"/>
-                                                    <Setter Property="Background" TargetName="PART_ButtonBorder" Value="#e5e9ec"/>
+                                                    <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="1" />
+                                                    <Setter Property="Background" TargetName="PART_ButtonBorder"
+                                                            Value="#e5e9ec" />
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="{x:Null}">
-                                                    <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="0.56"/>
+                                                    <Setter Property="Opacity" TargetName="PART_ButtonBorder"
+                                                            Value="0.56" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -148,11 +172,14 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter" Click="McmRadioButton_OnClick">
+                        <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup"
+                                     MouseEnter="OnMouseEnter" Click="McmRadioButton_OnClick">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.OpenCommand}" />
-                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" />
+                                    <i:InvokeCommandAction
+                                        Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.OpenCommand}" />
+                                    <i:InvokeCommandAction
+                                        Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <RadioButton.Triggers>
@@ -185,13 +212,16 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" 
+                                <TextBlock Grid.Column="1"
                                            FontSize="11"
                                            Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
-                                <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
+                                <Image Grid.Column="2"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton x:Name="ShareRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter" Visibility="Collapsed">
+                        <RadioButton x:Name="ShareRadioButton" GroupName="LeftSideMainMenuGroup"
+                                     MouseEnter="OnMouseEnter" Visibility="Collapsed">
                             <Grid Width="90">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="17" />
@@ -199,10 +229,13 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_SHARE_FILE}" />
-                                <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
+                                <Image Grid.Column="2"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton x:Name="MyComputerRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter" Visibility="Collapsed">
+                        <RadioButton x:Name="MyComputerRadioButton" GroupName="LeftSideMainMenuGroup"
+                                     MouseEnter="OnMouseEnter" Visibility="Collapsed">
                             <Grid Width="90">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="17" />
@@ -210,10 +243,13 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1" Text="내 컴퓨터" />
-                                <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
+                                <Image Grid.Column="2"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
-                        <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup" MouseEnter="OnMouseEnter"
+                        <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup"
+                                     MouseEnter="OnMouseEnter"
                                      Command="{Binding Path=LoadRecentlyCommand}">
                             <RadioButton.Triggers>
                                 <EventTrigger RoutedEvent="RadioButton.Checked">
@@ -245,10 +281,12 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" 
+                                <TextBlock Grid.Column="1"
                                            FontSize="11"
                                            Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
-                                <Image Grid.Column="2" Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png" Width="12" Height="12"/>
+                                <Image Grid.Column="2"
+                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
                     </StackPanel>
@@ -256,11 +294,11 @@
             </Grid>
 
             <Border Grid.Column="1" MaxWidth="392" BorderBrush="#dfe3ee" BorderThickness="1,0,0,0" Background="#f4f6f8">
-                
+
                 <Grid>
                     <!-- [Media Cloud Media] -->
                     <Border x:Name="McmBorder" RenderTransformOrigin=".5,.5"
-                        Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding ElementName=McmRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Border.RenderTransform>
                             <TranslateTransform />
                         </Border.RenderTransform>
@@ -270,7 +308,8 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Border Grid.Row="0" Padding="20,0,0,0" Background="{StaticResource Brush_CommonBackground}">
+                            <Border Grid.Row="0" Padding="20,0,0,0"
+                                    Background="{StaticResource Brush_CommonBackground}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -279,39 +318,42 @@
                                         <ColumnDefinition Width="8" />
                                     </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" TextBlock.FontSize="12" TextBlock.FontWeight="Bold" Margin="0,3">
-                                        <RadioButton x:Name="VideoRadioButton" 
-                                                     Content="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, Converter={StaticResource StringToUpperConverter}}" 
-                                                     GroupName="McmMenuGroup" 
-                                                     IsChecked="True" 
-                                                     Margin="3,3,15,3" 
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}"/>
-                                        <RadioButton x:Name="AssetRadioButton" 
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center"
+                                                TextBlock.FontSize="12" TextBlock.FontWeight="Bold" Margin="0,3">
+                                        <RadioButton x:Name="VideoRadioButton"
+                                                     Content="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, Converter={StaticResource StringToUpperConverter}}"
+                                                     GroupName="McmMenuGroup"
+                                                     IsChecked="True"
+                                                     Margin="3,3,15,3"
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" />
+                                        <RadioButton x:Name="AssetRadioButton"
                                                      Content="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, Converter={StaticResource StringToUpperConverter}}"
                                                      GroupName="McmMenuGroup"
-                                                     Margin="3" 
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}"
-                                                     />
+                                                     Margin="3"
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}" />
 
                                     </StackPanel>
-                                    <Button  Grid.Column="2" 
-                                             Style="{StaticResource Style_IconMenuButton}" 
-                                             ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                             Command="{Binding RefreshCommand}">
+                                    <Button Grid.Column="2"
+                                            Style="{StaticResource Style_IconMenuButton}"
+                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                            Command="{Binding RefreshCommand}">
                                         <Grid>
-                                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_refresh_nor.png" 
-                                                   Width="33" 
-                                                   Height="33"/>
+                                            <Image
+                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_refresh_nor.png"
+                                                Width="33"
+                                                Height="33" />
                                         </Grid>
                                     </Button>
                                 </Grid>
                             </Border>
 
-                            <Border Grid.Row="1" Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Grid.Row="1"
+                                    Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <leftMenuView:McmVideoMenuView />
                             </Border>
 
-                            <Border Grid.Row="1" Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Grid.Row="1"
+                                    Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <leftMenuView:McmCaptionAssetMenuView />
                             </Border>
                         </Grid>
@@ -319,14 +361,14 @@
 
                     <!-- [내 컴퓨터] -->
                     <Border x:Name="MyComputerBorder" RenderTransformOrigin=".5,.5"
-                        Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding ElementName=MyComputerRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <leftMenuView:MyComputerMenuView />
                     </Border>
 
 
                     <!-- [최근 파일] -->
                     <Border x:Name="RecentlyFileListBorder" RenderTransformOrigin=".5,.5"
-                        Visibility="{Binding ElementName=RecentlyRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding ElementName=RecentlyRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <leftMenuView:RecentlyMenuView />
                     </Border>
                 </Grid>

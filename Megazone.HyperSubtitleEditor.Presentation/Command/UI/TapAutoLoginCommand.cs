@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Unity;
 

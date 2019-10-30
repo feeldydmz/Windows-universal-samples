@@ -23,7 +23,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private CaptionAssetItemViewModel()
         {
-            
             Name = Resource.CNT_MAKE_NEW_CAPTION;
         }
 
@@ -44,7 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
             Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(element)).ToList();
-            Kind = asset.Elements?.FirstOrDefault()?.Kind??"Untitle";
+            Kind = asset.Elements?.FirstOrDefault()?.Kind ?? "Untitle";
         }
 
         public CaptionAsset Source { get; }
@@ -75,6 +74,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _kind, value);
         }
 
+        public static CaptionAssetItemViewModel Empty => new CaptionAssetItemViewModel();
+
         public void Initialize()
         {
             Elements?.ToList().ForEach(element => element.IsSelected = false);
@@ -86,8 +87,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 foreach (var element in Elements)
                     element.IsSelected = true;
         }
-
-        public static CaptionAssetItemViewModel Empty => new CaptionAssetItemViewModel();
-        
     }
 }

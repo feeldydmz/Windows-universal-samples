@@ -16,7 +16,7 @@
         Title="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}" ResizeMode="NoResize"
         DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=OpenVideoAsset}"
         SizeToContent="Height">
-    
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
@@ -43,27 +43,27 @@
         <Border Style="{StaticResource Style_PopupContentAreaBorder}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
+
                 <StackPanel Orientation="Horizontal">
-                    <RadioButton x:Name="UrlOpenButton" 
+                    <RadioButton x:Name="UrlOpenButton"
                                  IsChecked="{Binding IsUrlOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_OPEN_URL}"/>
-                    <RadioButton x:Name="FileOpenButton" 
+                                 Content="{x:Static resources:Resource.CNT_OPEN_URL}" />
+                    <RadioButton x:Name="FileOpenButton"
                                  IsChecked="{Binding IsFileOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_OPEN_VIDEO}" 
-                                 Margin="10,0,0,0"/>
-                    <RadioButton x:Name="McmOpenButton" 
+                                 Content="{x:Static resources:Resource.CNT_OPEN_VIDEO}"
+                                 Margin="10,0,0,0" />
+                    <RadioButton x:Name="McmOpenButton"
                                  IsChecked="{Binding IsMcmOpenButtonChecked}"
-                                 Content="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" 
-                                 Margin="10,0,0,0"/>
+                                 Content="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
+                                 Margin="10,0,0,0" />
                 </StackPanel>
 
                 <!--URL주소로 열기-->
-                <Border Grid.Row="1" 
+                <Border Grid.Row="1"
                         Visibility="{Binding IsChecked, ElementName=UrlOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                         BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
                         MinHeight="120"
@@ -76,17 +76,17 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.ColumnSpan="2" TextAlignment="Left"
                                    Text="{x:Static resources:Resource.CNT_INPUT_VIDEO_URL_PATH}" TextWrapping="Wrap"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center" />
                         <Grid Grid.Row="1" MinHeight="30">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="UrlTextBox" 
-                                     TextChanged="UrlTextBox_OnTextChanged" 
-                                     Margin="0,0,5,0" 
+                            <TextBox x:Name="UrlTextBox"
+                                     TextChanged="UrlTextBox_OnTextChanged"
+                                     Margin="0,0,5,0"
                                      Height="24"
-                                     Text="{Binding UrlPath, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding UrlPath, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <!--<Border x:Name="ErrorMessageBorder" Grid.Row="2" BorderBrush="Red" BorderThickness="1"
                                 Visibility="Collapsed"
@@ -100,7 +100,7 @@
 
 
                 <!--내컴퓨터에서 열기-->
-                <Border Grid.Row="1" 
+                <Border Grid.Row="1"
                         Visibility="{Binding IsChecked, ElementName=FileOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                         BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1"
                         MinHeight="120"
@@ -121,10 +121,10 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="FilePathTextBox" 
-                                     Margin="0,0,5,0" 
+                            <TextBox x:Name="FilePathTextBox"
+                                     Margin="0,0,5,0"
                                      Height="24"
-                                     Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" />
                             <Button Grid.Column="1" Style="{StaticResource Style_IconLabelButton}"
                                     Content="{x:Static resources:Resource.CNT_FIND}" Click="OpenButton_OnClick" />
                         </Grid>
@@ -139,9 +139,9 @@
 
 
                 <!--MCM에서 열기-->
-                <Border Grid.Row="1" 
+                <Border Grid.Row="1"
                         Visibility="{Binding IsChecked, ElementName=McmOpenButton, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" 
+                        BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}"
                         BorderThickness="1"
                         Padding="20,10">
 
@@ -150,7 +150,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="34" />
-                            <RowDefinition/>
+                            <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -185,7 +185,8 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}" VerticalAlignment="Center" TextAlignment="Center"
+                                <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}" VerticalAlignment="Center"
+                                           TextAlignment="Center"
                                            HorizontalAlignment="Center" Margin="10,0,0,0" />
 
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
@@ -270,7 +271,8 @@
                                      SelectedItem="{Binding Path=SelectedVideoItem}"
                                      ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
                                      VirtualizingPanel.IsVirtualizing="True"
-                                     VirtualizingPanel.VirtualizationMode="Standard">
+                                     VirtualizingPanel.VirtualizationMode="Standard"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemViewModel:VideoItemViewModel">
                                         <Border Width="515" Height="98">
@@ -306,9 +308,9 @@
                                                     <Grid Grid.Row="0" VerticalAlignment="Center"
                                                           HorizontalAlignment="Stretch">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
                                                         <!--<Image Grid.Column="0" 
                                                                Style="{StaticResource Style_VideoBadgeImage}"
@@ -316,29 +318,40 @@
 
                                                         <Border Grid.Column="1"
                                                                 CornerRadius="2"
-                                                                Width ="60"
+                                                                Width="60"
                                                                 Height="17">
                                                             <TextBlock FontSize="12"
                                                                        Foreground="White"
                                                                        FontWeight="ExtraBold"
                                                                        HorizontalAlignment="Center"
                                                                        VerticalAlignment="Center"
-                                                                       Text="{Binding Source.Description}">
-                                                            </TextBlock>
+                                                                       Text="{Binding Source.Description}" />
                                                             <Border.Style>
                                                                 <Style TargetType="Border">
                                                                     <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="HLS">
-                                                                            <Setter Property="Background" Value="#8660d9"/>
+                                                                        <DataTrigger
+                                                                            Binding="{Binding Source.Description}"
+                                                                            Value="HLS">
+                                                                            <Setter Property="Background"
+                                                                                    Value="#8660d9" />
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="MP4">
-                                                                            <Setter Property="Background" Value="#405fff"/>
+                                                                        <DataTrigger
+                                                                            Binding="{Binding Source.Description}"
+                                                                            Value="MP4">
+                                                                            <Setter Property="Background"
+                                                                                    Value="#405fff" />
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="DASH">
-                                                                            <Setter Property="Background" Value="#5D8FFF"/>
+                                                                        <DataTrigger
+                                                                            Binding="{Binding Source.Description}"
+                                                                            Value="DASH">
+                                                                            <Setter Property="Background"
+                                                                                    Value="#5D8FFF" />
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Source.Description}" Value="NONE">
-                                                                            <Setter Property="Background" Value="#5D8FFF"/>
+                                                                        <DataTrigger
+                                                                            Binding="{Binding Source.Description}"
+                                                                            Value="NONE">
+                                                                            <Setter Property="Background"
+                                                                                    Value="#5D8FFF" />
                                                                         </DataTrigger>
                                                                     </Style.Triggers>
 
@@ -380,15 +393,16 @@
 
                             <Grid
                                 Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                                <TextBlock
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                             </Grid>
                         </Grid>
 
                         <Border Grid.Row="0"
-                                Grid.RowSpan="4" 
+                                Grid.RowSpan="4"
                                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Control x:Name="LoadingProgressView"
                                      Background="White"
@@ -409,12 +423,12 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="OpenButton" 
-                        Grid.Column="1" 
+                <Button x:Name="OpenButton"
+                        Grid.Column="1"
                         Content="{x:Static resources:Resource.CNT_OPEN}"
-                        IsDefault="True" 
+                        IsDefault="True"
                         Command="{Binding ConfirmCommand}"
-                        CommandParameter="{Binding ElementName=OpenVideoWindow}"/>
+                        CommandParameter="{Binding ElementName=OpenVideoWindow}" />
                 <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}" IsCancel="True" />
             </Grid>
         </Border>

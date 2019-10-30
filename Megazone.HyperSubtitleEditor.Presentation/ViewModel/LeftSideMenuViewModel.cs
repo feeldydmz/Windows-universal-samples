@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -23,9 +22,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class LeftSideMenuViewModel : ViewModelBase
     {
+        private readonly IBrowser _browser;
         private readonly RecentlyLoader _recentlyLoader;
         private readonly VideoListViewModel _videoList;
-        private readonly IBrowser _browser;
         private ICommand _closeCommand;
         private bool _hasRegisteredMessageHandlers;
         private bool _isOpen;
@@ -33,7 +32,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _loadRecentlyCommand;
 
+        private ICommand _openRecentlyCommand;
+
         private List<RecentlyItem> _recentlyItems;
+
+        private ICommand _RefreshCommand;
         private ICommand _unloadCommand;
 
         public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader, VideoListViewModel videoList)
@@ -75,13 +78,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _loadRecentlyCommand = _loadRecentlyCommand ?? new RelayCommand(LoadRecently); }
         }
 
-        private ICommand _openRecentlyCommand;
         public ICommand OpenRecentlyCommand
         {
             get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
         }
-
-        private ICommand _RefreshCommand;
 
         public ICommand RefreshCommand
         {
@@ -125,7 +125,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
-            
+
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }
 
@@ -137,18 +137,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var removeItems = new List<RecentlyItem>();
 
             foreach (var recentlyItem in tempList)
-            {
                 if (recentlyItem.FirstName.IsNullOrEmpty() && recentlyItem.SecondName.IsNullOrEmpty())
-                {
                     removeItems.Add(recentlyItem);
-                }
 
-            }
-
-            foreach (var removeItem in removeItems)
-            {
-                tempList.Remove(removeItem);
-            }
+            foreach (var removeItem in removeItems) tempList.Remove(removeItem);
 
             RecentlyItems = tempList;
         }

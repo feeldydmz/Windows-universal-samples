@@ -82,7 +82,8 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
                                            FontWeight="Bold" TextTrimming="CharacterEllipsis"
                                            ToolTip="{Binding Path=Name}" />
                                 <TextBlock Grid.Column="1" Text="{Binding Path=Id, StringFormat={}({0})}"
@@ -153,7 +154,9 @@
                                                                Text="{Binding Path=Language, StringFormat={}[{0}]}"
                                                                HorizontalAlignment="Right"
                                                                Foreground="{StaticResource Brush_PointColor}" />-->
-                                                    <TextBlock Grid.Column="1" Foreground="{StaticResource Brush_PointColor}" HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                               Foreground="{StaticResource Brush_PointColor}"
+                                                               HorizontalAlignment="Right">
                                                         <TextBlock.Text>
                                                             <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                 <MultiBinding.Bindings>

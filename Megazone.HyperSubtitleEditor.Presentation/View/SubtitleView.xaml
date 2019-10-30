@@ -414,7 +414,7 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
                         </Grid>
                     </Button>
-                    <Rectangle Visibility="Collapsed"/>
+                    <Rectangle Visibility="Collapsed" />
                     <Grid Margin="0,5" Visibility="Collapsed">
                         <CheckBox x:Name="OpenVideoButton">
                             <CheckBox.Style>
@@ -494,7 +494,7 @@
                             </Border>
                         </Popup>
                     </Grid>
-                    <Rectangle Visibility="Collapsed"/>
+                    <Rectangle Visibility="Collapsed" />
                     <Button Command="{StaticResource DeployCommand}" Visibility="Collapsed">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -550,8 +550,8 @@
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Height="40" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
@@ -876,11 +876,11 @@
                                                 </Grid>
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                                                             TextBlock.FontWeight="Bold">
-                                                    <TextBlock VerticalAlignment="Center" >
+                                                    <TextBlock VerticalAlignment="Center">
                                                         <TextBlock.Text>
                                                             <MultiBinding StringFormat="{}[{0}-{1}]">
-                                                                <Binding Path="LanguageCode"/>
-                                                                <Binding Path="CountryCode"/>
+                                                                <Binding Path="LanguageCode" />
+                                                                <Binding Path="CountryCode" />
                                                             </MultiBinding>
                                                         </TextBlock.Text>
                                                     </TextBlock>
@@ -1030,8 +1030,8 @@
                     </Grid>
                 </Border>
 
-                
-                <ListView x:Name="SubtitleListView" Grid.Row="1" 
+
+                <ListView x:Name="SubtitleListView" Grid.Row="1"
                           Margin="0,4,0,0" BorderThickness="0,1,0,0"
                           BorderBrush="#FF5e6671"
                           SelectionMode="Extended" DataContext="{Binding SelectedTab}"
@@ -1320,7 +1320,7 @@
                     </Grid>
                 </Border>
 
-                <Border x:Name="MetaDataBorder" 
+                <Border x:Name="MetaDataBorder"
                         Grid.Row="0" Grid.RowSpan="2"
                         Margin="0,0,0,0"
                         Width="355"
@@ -1329,28 +1329,29 @@
                     <Border.RenderTransform>
                         <TranslateTransform X="0" />
                     </Border.RenderTransform>
-                        <views:MetadataView/>
-                        <Border.Style>
+                    <views:MetadataView />
+                    <Border.Style>
                         <Style TargetType="{x:Type Border}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=MetaData.IsOpenVideoInfoPopup, Source={StaticResource SubtitleViewModelLocator}}"
-                                             Value="True">
+                                <DataTrigger
+                                    Binding="{Binding Path=MetaData.IsOpenVideoInfoPopup, Source={StaticResource SubtitleViewModelLocator}}"
+                                    Value="True">
                                     <DataTrigger.EnterActions>
-                                    <BeginStoryboard Name="OPenMetadataStoryboard">
-                                        <Storyboard>
-                                            <DoubleAnimation
-                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                Duration="0:0:0.1" 
-                                                From="-400"
-                                                To="0"
-                                                FillBehavior="HoldEnd" />
-                                            <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:0.4" From="0.3" To="1"
-                                                FillBehavior="HoldEnd" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
+                                        <BeginStoryboard Name="OPenMetadataStoryboard">
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                    Duration="0:0:0.1"
+                                                    From="-400"
+                                                    To="0"
+                                                    FillBehavior="HoldEnd" />
+                                                <DoubleAnimation
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    Duration="0:0:0.4" From="0.3" To="1"
+                                                    FillBehavior="HoldEnd" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -1360,7 +1361,8 @@
 
             <!--그리드 스플리터-->
             <GridSplitter Grid.RowSpan="2" Grid.Column="1" Style="{StaticResource Style_VerticalGridSplitter}" />
-            <Rectangle Grid.RowSpan="2" Grid.Column="1" Height="1" VerticalAlignment="Top" Fill="#FFa6adba" IsHitTestVisible="False" />
+            <Rectangle Grid.RowSpan="2" Grid.Column="1" Height="1" VerticalAlignment="Top" Fill="#FFa6adba"
+                       IsHitTestVisible="False" />
 
             <!--우측 > 비디오 플레이어 영역-->
             <Grid x:Name="VideoPlayerGrid" Grid.RowSpan="2" Grid.Column="2" DataContext="{Binding MediaPlayer}">
@@ -1368,7 +1370,7 @@
                     <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
                 </i:Interaction.Behaviors>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}"/>
+                    <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <local:MediaPlayerView Grid.Row="0"

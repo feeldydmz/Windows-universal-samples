@@ -30,15 +30,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var stageId = _signInViewModel.SelectedStage?.Id;
             var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
-            var reuslt = _recentlyItems.Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId))
+            var reuslt = _recentlyItems
+                .Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId))
                 .OrderByDescending(recently => recently.CreatedTime);
 
             Debug.WriteLine("---GetRecentlyItems---");
 
             foreach (var recentlyItem in reuslt)
-            {
                 Debug.WriteLine($"{recentlyItem.Video?.Name}, Time : {recentlyItem.CreatedTime}");
-            }
 
             return reuslt.ToList();
             //return _recentlyItems
@@ -78,35 +77,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 // 기존 최근 열린 작업내용에 있다면 갱신
                 if (item.Video != null && item.CaptionAsset != null)
-                {
                     // 비디오 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.Video?.Id == item.Video?.Id && recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
-                    {
+                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
+                        recentlyItem.Video?.Id == item.Video?.Id &&
+                        recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
                         toRemove.Add(recentlyItem);
-                    }
-                }
                 else if (item.Video == null && item.CaptionAsset != null)
-                {
                     // 캡션에셋 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
-                    {
+                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
+                        recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
                         toRemove.Add(recentlyItem);
-                    }
-                }
                 else if (item.Video != null && item.CaptionAsset == null)
-                {
                     // 비디오 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem => recentlyItem.Video?.Id == item.Video?.Id))
-                    {
+                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
+                        recentlyItem.Video?.Id == item.Video?.Id))
                         toRemove.Add(recentlyItem);
-                    }
-                }
-                
 
-                if (toRemove.Count() != 0)
-                {
-                    _recentlyItems.RemoveAll(toRemove.Contains);
-                }
+
+                if (toRemove.Count() != 0) _recentlyItems.RemoveAll(toRemove.Contains);
 
                 _recentlyItems.Add(item);
 

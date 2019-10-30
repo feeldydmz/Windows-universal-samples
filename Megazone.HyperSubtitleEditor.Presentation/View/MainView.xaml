@@ -116,7 +116,7 @@
                 <!--<MenuItem Header="새 파일" Command="{StaticResource CreateNewFileCommand}" />-->
                 <!--<MenuItem Header="저장" Command="{StaticResource SaveCommand}" />
                 <MenuItem Header="다른 이름으로 저장" Command="{StaticResource SaveAsCommand}" />-->
-                
+
                 <MenuItem Header="{x:Static resources:Resource.CNT_NEW}"
                           Command="{StaticResource CreateNewCommand}" />
                 <Separator />
@@ -156,7 +156,7 @@
                 <MenuItem Header="{x:Static resources:Resource.CNT_COPY_CAPTION}"
                           Command="{StaticResource CopyTabCommand}" />
                 <Separator />
-                
+
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXIT}" InputGestureText="Alt+F4"
                           Command="{StaticResource ExitApplicationCommand}" />
             </MenuItem>
@@ -223,14 +223,14 @@
             </MenuItem>
             <MenuItem Header="{x:Static resources:Resource.CNT_VIDEO}">
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_URL}"
-                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
-                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_URL}"/>
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}"
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_URL}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_VIDEO}"
-                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
-                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_VIDEO}"/>
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}"
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_VIDEO}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
-                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}" 
-                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"/>
+                          Command="{StaticResource ShowOpenVideoAddressWindowCommand}"
+                          CommandParameter="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
                           Command="{StaticResource OpenVideoListDialogCommand}" />-->
             </MenuItem>
@@ -276,7 +276,8 @@
                     Background="#2e353f" Foreground="White" Style="{StaticResource Style_TransparentImageButton}" />-->
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,14,0">
-                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
+                    <Image
+                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_id_nor.png" />
                     <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center"
                                TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>
@@ -302,12 +303,12 @@
         <!--컨텐츠 영역-->
         <Border Grid.Row="2" x:Name="RootViewContainer" Background="#FF292f37" />
 
-        <Border Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Left" 
+        <Border Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Left"
                 Visibility="{Binding Path=LeftSideMenu.IsOpen, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             <leftmenu:LeftSideMenuView MaxWidth="496" MinWidth="103">
                 <i:Interaction.Behaviors>
-                    <behaviors:CollapseBehavior 
+                    <behaviors:CollapseBehavior
                         IsVisible="{Binding Path=LeftSideMenu.IsOpen, Mode=TwoWay, Source={StaticResource SubtitleViewModelLocator}}" />
                 </i:Interaction.Behaviors>
             </leftmenu:LeftSideMenuView>

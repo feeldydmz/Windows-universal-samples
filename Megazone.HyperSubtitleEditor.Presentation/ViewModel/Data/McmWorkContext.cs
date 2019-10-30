@@ -15,13 +15,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
             VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
             if (VideoUrlOfResolutions?.Count == 0)
-            {
                 VideoMediaUrl = VideoResolutionsByType?.FirstOrDefault().Key.Url;
-            }
             else
-            {
                 VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
-            }
             CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 

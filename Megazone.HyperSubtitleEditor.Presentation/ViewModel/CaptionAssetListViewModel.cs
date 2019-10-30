@@ -43,6 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
         private ICommand _enterCommand;
+        private ICommand _initializeCommand;
         private bool _isBusy;
         private bool _isConfirmButtonVisible;
         private bool _isInitialized;
@@ -52,7 +53,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _label;
 
         private IEnumerable<LanguageItem> _languages;
-        private ICommand _initializeCommand;
         private ICommand _loadCommand;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -98,6 +98,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _initializeCommand = _initializeCommand ?? new RelayCommand(Initialize); }
         }
+
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
@@ -240,7 +241,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedCaptionAssetItem?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
             _isInitialized = false;
             KeywordTypeItems = new List<DisplayItem>
@@ -277,7 +278,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!_isInitialized)
                 Initialize();
 
-            if(_isLoading)
+            if (_isLoading)
                 return;
 
             _isLoading = true;
@@ -334,6 +335,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedCaptionAssetItem = null;
                 var results = await GetCaptionAssetListAsync(new Pagination(pageIndex), conditions,
                     _cancellationTokenSource.Token);
+
+                if (results == null) return;
 
                 TotalCount = results.TotalCount;
                 CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(
@@ -454,12 +457,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     SelectedCaptionAssetItem = captionAssetItem;
             }
 
-            var isAnySeleted = captionAssetItem.Elements?.Any(element => element.IsSelected == true);
+            var isAnySeleted = captionAssetItem.Elements?.Any(element => element.IsSelected);
 
-            if (isAnySeleted == false)
-            {
-                SelectedCaptionAssetItem = null;
-            }
+            if (isAnySeleted == false) SelectedCaptionAssetItem = null;
         }
 
         private bool CanConfirm()

@@ -18,7 +18,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadedCommand;
         private ICommand _openSubtitleFileCommand;
 
-        public OpenSubtitleViewModel(ILogger logger, FileManager fileManager, LanguageLoader languageLoader) : base(logger, languageLoader)
+        public OpenSubtitleViewModel(ILogger logger, FileManager fileManager, LanguageLoader languageLoader) : base(
+            logger, languageLoader)
         {
             _fileManager = fileManager;
         }

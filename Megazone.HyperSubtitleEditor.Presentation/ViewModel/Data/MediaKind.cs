@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
+﻿namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
-
     public class MediaKind
     {
         public enum TYPE
@@ -19,33 +10,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Mpeg,
             Dash,
             File
-        }
-
-        public TYPE Type { get; set; }
-        public string Url { get; set; }
-
-        public string TypeString
-        {
-            get
-            {
-                switch (Type)
-                {
-                    case TYPE.None:
-                        return "None";
-                    case TYPE.Unknown:
-                        return "None";
-                    case TYPE.Hls:
-                        return "HLS";
-                    case TYPE.Mpeg:
-                        return "MP4";
-                    case TYPE.Dash:
-                        return "DASH";
-                    case TYPE.File:
-                        return "FILE";
-                    default:
-                        return "";
-                }
-            }
         }
 
 
@@ -80,5 +44,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Url = url;
         }
 
+        public TYPE Type { get; set; }
+        public string Url { get; set; }
+
+        public string TypeString
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case TYPE.None:
+                        return "None";
+                    case TYPE.Unknown:
+                        return "None";
+                    case TYPE.Hls:
+                        return "HLS";
+                    case TYPE.Mpeg:
+                        return "MP4";
+                    case TYPE.Dash:
+                        return "DASH";
+                    case TYPE.File:
+                        return "FILE";
+                    default:
+                        return "";
+                }
+            }
+        }
     }
 }

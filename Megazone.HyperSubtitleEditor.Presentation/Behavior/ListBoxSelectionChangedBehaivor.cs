@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Unity;
 
 //using Megazone.Core.Windows.Xaml.Behaviors.Primitives;
 
@@ -21,10 +14,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             typeof(ICommand),
             typeof(ListBoxSelectionChangedBehavior));
 
+        private static ListBox _currentListBox;
+
 
         public ICommand Command
         {
-            get => (ICommand)GetValue(CommandProperty);
+            get => (ICommand) GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
         }
 
@@ -42,19 +37,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             AssociatedObject.SelectionChanged -= AssociatedObjectOnSelectionChanged;
         }
 
-        private static ListBox _currentListBox;
-
         private void AssociatedObjectOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBox = sender as ListBox;
 
             if (_currentListBox != null)
-            {
                 if (listBox != null && !_currentListBox.Uid.Equals(listBox.Uid))
-                {
                     _currentListBox.SelectedItem = null;
-                }
-            }
 
             _currentListBox = listBox;
 

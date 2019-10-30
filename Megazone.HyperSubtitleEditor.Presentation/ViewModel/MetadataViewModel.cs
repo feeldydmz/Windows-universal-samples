@@ -12,6 +12,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     public class MetadataViewModel : ViewModelBase
     {
         private static readonly string[] suffixes = {"bps", "Kbps", "Mbps", "Gbps", "Tbps", "Pbps"};
+
+        private readonly WorkBarViewModel _workBarViewModel;
         private string _attributions;
         private string _categories;
         private ICommand _closeVideoInfoPopupCommand;
@@ -26,8 +28,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private string _status;
         private string _tags;
-
-        private readonly WorkBarViewModel _workBarViewModel;
 
         internal MetadataViewModel(WorkBarViewModel workBarViewModel)
         {
@@ -68,8 +68,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _closeVideoInfoPopupCommand ?? new RelayCommand(Close);
             }
         }
-
-       
 
 
         public string Status

@@ -42,7 +42,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public LanguageItem SelectedLanguage
         {
             get => _selectedLanguage;
-            set=> Set(ref _selectedLanguage, value);
+            set => Set(ref _selectedLanguage, value);
         }
 
         public IList<CaptionKind> SubtitleKinds

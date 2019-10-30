@@ -3,9 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
-using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Unity;
 
@@ -13,10 +11,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
     public class SaveCommand : DependencyObject, ICommand
     {
-        private readonly FileManager _fileManager;
-        private readonly WorkBarViewModel _workBar;
         private readonly IBrowser _browser;
+        private readonly FileManager _fileManager;
         private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly WorkBarViewModel _workBar;
         private readonly WorkBarViewModel _workBarViewModel;
 
         public SaveCommand()

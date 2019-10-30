@@ -6,7 +6,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
     public class CaptionOpenMessageParameter
     {
-        public CaptionOpenMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions, bool isOnline)
+        public CaptionOpenMessageParameter(Video video, CaptionAsset asset, IEnumerable<Caption> captions,
+            bool isOnline)
         {
             Video = video;
             Asset = asset;

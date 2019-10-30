@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.MetadataView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="400"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData}">
     <UserControl.Resources>
@@ -19,137 +19,136 @@
             <Thickness x:Key="ContentMargin">0,6,0,0</Thickness>
 
             <Style x:Key="CaptionText" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="#A4A5A6"/>
-                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Foreground" Value="#A4A5A6" />
+                <Setter Property="FontSize" Value="11" />
             </Style>
             <Style x:Key="ContentText" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Margin" Value="{StaticResource ContentMargin}"/>
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="{StaticResource ContentMargin}" />
             </Style>
             <Style x:Key="StatusContentText" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Margin" Value="{StaticResource ContentMargin}"/>
-                <Setter Property="Foreground" Value="#2E9812"/>
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="{StaticResource ContentMargin}" />
+                <Setter Property="Foreground" Value="#2E9812" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="#191A1C">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="34"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="34" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TITLE}"  
-                       FontSize ="11" 
-                       Foreground="White" 
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TITLE}"
+                       FontSize="11"
+                       Foreground="White"
                        VerticalAlignment="Center"
-                       Margin="17,4,0,0"/>
+                       Margin="17,4,0,0" />
 
-            <mz:ImageButton Grid.Column="1" 
-                Command="{Binding CloseVideoInfoPopupCommand}" 
-                ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
-                Style="{StaticResource Style_TransparentImageButton}"
-                NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
-                PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
-                MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
-                DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
-                Margin="0"
-                Width="20" Height="20" />
+            <mz:ImageButton Grid.Column="1"
+                            Command="{Binding CloseVideoInfoPopupCommand}"
+                            ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
+                            Style="{StaticResource Style_TransparentImageButton}"
+                            NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                            PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                            MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                            DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
+                            Margin="0"
+                            Width="20" Height="20" />
             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#3b3b3b" BorderThickness="1" />
         </Grid>
 
         <!--Column 1-->
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_STATUS}" 
-                       Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_STATUS}"
+                       Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal">
-                <Ellipse Width="8" 
-                         Height="8" 
-                         Fill="#2E9812" 
+                <Ellipse Width="8"
+                         Height="8"
+                         Fill="#2E9812"
                          VerticalAlignment="Center"
-                         Margin="0,6,5,0"/>
-                <TextBlock Text="{Binding Status}" 
-                           Style="{StaticResource StatusContentText}"/>
+                         Margin="0,6,5,0" />
+                <TextBlock Text="{Binding Status}"
+                           Style="{StaticResource StatusContentText}" />
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_DURATION}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Duration}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_DURATION}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding Duration}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_MEDIATYPE}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding MediaType}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_MEDIATYPE}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding MediaType}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_NAME}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Name}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_NAME}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding Name}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_JOBID}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding JobId}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_JOBID}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding JobId}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="6" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_RENDITIONS}" 
-                       Style="{StaticResource CaptionText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_RENDITIONS}"
+                       Style="{StaticResource CaptionText}" />
             <ItemsControl ItemsSource="{Binding Renditions}"
                           Foreground="White"
                           FontWeight="Bold"
                           FontSize="12"
-                          Margin="{StaticResource ContentMargin}">
-            </ItemsControl>
+                          Margin="{StaticResource ContentMargin}" />
         </StackPanel>
 
         <!--Column 3-->
         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_CATEGORIES}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Categories}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_CATEGORIES}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding Categories}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_ATTRIBUTIONS}" 
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Attributions}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_ATTRIBUTIONS}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding Attributions}" Style="{StaticResource ContentText}" />
         </StackPanel>
 
         <StackPanel Grid.Column="3" Grid.Row="3" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TAGS}"  
-                       Style="{StaticResource CaptionText}"/>
-            <TextBlock Text="{Binding Tags}" Style="{StaticResource ContentText}"/>
+            <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_TAGS}"
+                       Style="{StaticResource CaptionText}" />
+            <TextBlock Text="{Binding Tags}" Style="{StaticResource ContentText}" />
         </StackPanel>
     </Grid>
 </UserControl>

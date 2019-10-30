@@ -16,6 +16,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register("CommandParameter", typeof(object), typeof(ListBoxDataLoadBehavior));
 
+        private DateTime _callTime;
+
         private ScrollViewer _scrollViewer;
 
         public ICommand Command
@@ -65,13 +67,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             }
         }
 
-        private DateTime _callTime;
         private void _scrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (DateTime.Now.Subtract(_callTime).TotalMilliseconds > 100)
             {
                 _callTime = DateTime.Now;
-                Debug.WriteLine($"{e.ExtentHeight - (e.VerticalOffset + e.ViewportHeight)}, VerticalChange: {e.VerticalChange}");
+                Debug.WriteLine(
+                    $"{e.ExtentHeight - (e.VerticalOffset + e.ViewportHeight)}, VerticalChange: {e.VerticalChange}");
                 if (e.ExtentHeight > 0 && e.VerticalOffset > 0)
                     if (e.ExtentHeight - (e.VerticalOffset + e.ViewportHeight + e.VerticalChange) < 2)
                         Command?.Execute(CommandParameter);

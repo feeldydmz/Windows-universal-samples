@@ -41,7 +41,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public static readonly DependencyProperty StreamIndexProperty =
             DependencyProperty.Register("StreamIndex", typeof(int), typeof(MediaPlayerView),
                 new PropertyMetadata(
-                    (s, e) => { ((MediaPlayerView)s).OnStreamIndexProperty((int)e.OldValue); }));
+                    (s, e) => { ((MediaPlayerView) s).OnStreamIndexProperty((int) e.OldValue); }));
 
         public static readonly DependencyProperty HasAudioOnlyProperty =
             DependencyProperty.Register("HasAudioOnly", typeof(bool), typeof(MediaPlayerView),
@@ -144,7 +144,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public int StreamIndex
         {
-            get => (int)GetValue(StreamIndexProperty);
+            get => (int) GetValue(StreamIndexProperty);
             set => SetValue(StreamIndexProperty, value);
         }
 
@@ -297,18 +297,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                     VideoElement.Stop();
 
                 if (string.IsNullOrEmpty(VideoElement.Source))
-                {
                     VideoElement.Source = mediaSource;
-                }
-                else if (!VideoElement.Source.Equals(mediaSource))
-                {
-                    VideoElement.Source = mediaSource;
-                }
+                else if (!VideoElement.Source.Equals(mediaSource)) VideoElement.Source = mediaSource;
 
-                if (!VideoElement.StreamIndex.Equals(streamIndex))
-                {
-                    VideoElement.StreamIndex = streamIndex;
-                }
+                if (!VideoElement.StreamIndex.Equals(streamIndex)) VideoElement.StreamIndex = streamIndex;
             }
 
             if (VideoElement.CanPlay)

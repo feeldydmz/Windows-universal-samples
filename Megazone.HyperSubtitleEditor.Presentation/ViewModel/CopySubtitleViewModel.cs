@@ -43,7 +43,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Set(ref _selectedTab, value);
                 Label = value.Name + Resource.CNT_COPY;
                 SelectedLanguage =
-                    Languages.Where(i => i.LanguageCode.Equals(value.LanguageCode) && i.CountryCode.Equals(value.CountryCode))
+                    Languages.Where(i =>
+                            i.LanguageCode.Equals(value.LanguageCode) && i.CountryCode.Equals(value.CountryCode))
                         .ToList()
                         .FirstOrDefault();
                 SelectedSubtitleKind = value.Kind;
@@ -65,7 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     Kind = SelectedSubtitleKind,
                     Label = Label,
                     LanguageCode = SelectedLanguage.LanguageCode,
-                    CountryCode =  SelectedLanguage.CountryCode,
+                    CountryCode = SelectedLanguage.CountryCode,
                     Rows = Rows
                 }));
             }

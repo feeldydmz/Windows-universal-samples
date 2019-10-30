@@ -20,7 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
                 MyComputerRadioButton.IsChecked = false;
             };
         }
-        
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             McmRadioButton.IsChecked = false;

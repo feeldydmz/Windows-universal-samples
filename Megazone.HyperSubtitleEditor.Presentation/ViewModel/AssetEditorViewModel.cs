@@ -15,7 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _assetName;
 
         private ICommand _confirmCommand;
-        private bool _isBusy = false;
+        private readonly bool _isBusy = false;
         private ICommand _loadCommand;
 
         public CaptionAsset CaptionAsset { get; set; }
@@ -51,7 +51,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Confirm()
         {
-            MessageCenter.Instance.Send(new CloudMedia.CaptionAssetRenameRequestedMessage(this, CaptionAsset, AssetName));
+            MessageCenter.Instance.Send(
+                new CloudMedia.CaptionAssetRenameRequestedMessage(this, CaptionAsset, AssetName));
             CloseAction?.Invoke();
         }
 

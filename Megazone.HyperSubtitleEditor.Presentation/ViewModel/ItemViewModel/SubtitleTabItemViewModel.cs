@@ -26,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly Action<SubtitleTabItemViewModel> _rowCollectionChangedAction;
         private readonly IList<ISubtitleListItemViewModel> _rows;
         private readonly Action<SubtitleTabItemViewModel> _validateAction;
+        private string _countryCode;
         private IList<SubtitleItem> _datasheet;
 
         private bool _ignoreCollectionChanged;
@@ -37,7 +38,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isSelected;
         private CaptionKind _kind;
         private string _languageCode;
-        private string _countryCode;
         private string _name;
         private ISubtitleListItemViewModel _selectedRow;
 

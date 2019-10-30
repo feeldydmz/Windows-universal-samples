@@ -56,7 +56,7 @@ namespace Megazone.Cloud.Media.Repository
             // 인증 URL : https://oauth.megazone.io/oauth/token
             var clientAuthorization = GetClientAuthorization();
             var content =
-                $"refresh_token={request.Code}&grant_type=refresh_token&access_Token={request.Password}";
+                $"refresh_token={request.Code}&grant_type=refresh_token";
 
             var restRequest = new RestRequest("oauth/token", Method.POST)
                 //var restRequest = new RestRequest("v1/token", Method.GET)

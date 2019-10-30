@@ -14,8 +14,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -65,9 +67,7 @@
                                   IsEnabled="{Binding Path=CanSelectSubtitleKind}" />
                         <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"
                                   SelectedItem="{Binding Path=SelectedLanguage, UpdateSourceTrigger=PropertyChanged}"
-                                  ItemTemplate="{StaticResource LanguageDataTemplate}">
-                            
-                        </ComboBox>
+                                  ItemTemplate="{StaticResource LanguageDataTemplate}" />
                         <TextBox Grid.Column="1" Grid.Row="4"
                                  Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" />
 

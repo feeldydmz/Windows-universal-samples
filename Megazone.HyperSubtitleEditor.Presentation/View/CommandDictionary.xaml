@@ -49,7 +49,7 @@
     <ui:ShowApplicationInfoCommand x:Key="ShowApplicationInfoCommand" />
     <ui:DownloadExcelTemplet x:Key="DownloadExcelTemplet" />
     <ui:AutoAdjustEndtimesCommand x:Key="AutoAdjustEndtimesCommand" />
-    <ui:TapAutoLoginCommand x:Key="TapAutoLoginCommand"/>
+    <ui:TapAutoLoginCommand x:Key="TapAutoLoginCommand" />
     <ui:LogoutCommand x:Key="LogoutCommand" />
     <ui:ShowProjectViewCommand x:Key="ShowProjectViewCommand" />
     <ui:OpenLeftSideMenuCommand x:Key="OpenLeftSideMenuCommand" />

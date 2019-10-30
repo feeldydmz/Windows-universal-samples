@@ -55,7 +55,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Video Info-->
-                    <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}" 
+                    <Border Height="39" Background="#FFf4f6f8" DataContext="{Binding Path=VideoItem}"
                             Visibility="{Binding ElementName=Root, Path=DataContext.IsVideoInfoVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -82,8 +82,8 @@
                     </Border>
 
                     <Rectangle Grid.Row="0" Stroke="{StaticResource Brush_Border_Outer_Line_Color}" StrokeThickness="1"
-                               Height="1" VerticalAlignment="Bottom" 
-                               Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Height="1" VerticalAlignment="Bottom"
+                               Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     <!--CaptionAsset Info-->
                     <Border Grid.Row="1" Height="39" DataContext="{Binding Path=CaptionAssetItem}">
@@ -148,7 +148,8 @@
                                StrokeThickness="1" />
                 </Grid>
 
-                <Grid Grid.Row="4" Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Grid.Row="4"
+                      Visibility="{Binding ElementName=Root, Path=DataContext.HasLink, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />

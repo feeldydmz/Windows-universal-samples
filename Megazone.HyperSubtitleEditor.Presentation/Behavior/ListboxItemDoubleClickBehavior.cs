@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interactivity;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Megazone.Core.Windows.Extension;
-
+using System.Windows.Interactivity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 {
@@ -20,14 +13,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 
         public ICommand Command
         {
-            get => (ICommand)GetValue(CommandProperty);
+            get => (ICommand) GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            
+
             AssociatedObject.PreviewMouseDoubleClick += AssociatedObjectOnPreviewMouseDoubleClick;
         }
 

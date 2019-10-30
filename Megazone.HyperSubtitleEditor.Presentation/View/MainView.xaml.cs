@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Megazone.Cloud.Media.Domain;
@@ -12,7 +10,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
 
@@ -48,7 +45,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_SETTING, 
+                Title = Resource.CNT_SETTING,
                 //SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize,
                 Content = view,
@@ -148,7 +145,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_FIND, 
+                Title = Resource.CNT_FIND,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -170,7 +167,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_REPLACE, 
+                Title = Resource.CNT_REPLACE,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 500,
                 Height = 600,
@@ -197,7 +194,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             {
                 Owner = Application.Current.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                OpenTypeString =  openTypeString
+                OpenTypeString = openTypeString
             };
             wnd.ShowDialog();
         }
@@ -250,7 +247,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_SAVE, 
+                Title = Resource.CNT_SAVE,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 600,
@@ -260,7 +257,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
-        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl)
+        public void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions,
+            string linkUrl)
         {
             var viewModel = new McmDeployConfirmViewModel();
             viewModel.Update(video, captionAsset, captions, linkUrl);
@@ -268,7 +266,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                Title = Resource.CNT_CONFIRM, 
+                Title = Resource.CNT_CONFIRM,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 Width = 514,
@@ -289,9 +287,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public void ShowAssetEditorDialog(CaptionAsset captionAsset = null)
         {
-            var view = new AssetEditorView()
+            var view = new AssetEditorView
             {
-                DataContext = new AssetEditorViewModel()
+                DataContext = new AssetEditorViewModel
                 {
                     CaptionAsset = captionAsset
                 }
@@ -319,16 +317,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             var browser = Bootstrapper.Container.Resolve<IBrowser>();
             var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
-            if (subtitle.HasTab && subtitle.Tabs.Any(tab=>tab.CheckDirty()))
+            if (subtitle.HasTab && subtitle.Tabs.Any(tab => tab.CheckDirty()))
             {
                 //[resource]
                 var message = "편집 내용이 있습니다. \n작업 중인 자막을 저장하지 않으면 작업된 정보가 모두 사라집니다.\n계속 진행하시겠습니까?";
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, message, MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, message,
+                        MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
             }
         }

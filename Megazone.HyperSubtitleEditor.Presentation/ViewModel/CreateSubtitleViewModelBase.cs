@@ -30,7 +30,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionKind.Caption,
                 CaptionKind.Chapter
             };
-            
+
             SelectedSubtitleKind = CaptionKind.Subtitle;
 
             Languages = languageLoader.Languages?.ToList();

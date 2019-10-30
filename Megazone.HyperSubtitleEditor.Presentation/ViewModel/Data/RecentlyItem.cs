@@ -10,34 +10,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     [Serializable]
     public sealed class RecentlyItem
     {
-        private RecentlyItem()
-        {
-  
-        }
-        [JsonProperty]
-        public DateTime CreatedTime { get; private set; }
-        [JsonProperty]
-        public string StageId { get; private set; }
-        [JsonProperty]
-        public string ProjectId { get; private set; }
-        [JsonProperty]
-        public bool IsOnLine { get; private set; }
-        [JsonProperty]
-        public Video Video { get; private set; }
-        [JsonProperty]
-        public CaptionAsset CaptionAsset { get; private set; }
-        [JsonProperty]
-        public IEnumerable<Caption> Captions { get; private set; }
-        [JsonProperty]
-        public string LocalFileFullPath { get; private set; }
-        [JsonProperty]
-        public string Format { get; private set; }
-
-        [JsonProperty]
-        public string FirstName { get; private set; }
-
         private string _firstId;
         private string _secondId;
+
+        [JsonProperty] public DateTime CreatedTime { get; private set; }
+
+        [JsonProperty] public string StageId { get; private set; }
+
+        [JsonProperty] public string ProjectId { get; private set; }
+
+        [JsonProperty] public bool IsOnLine { get; private set; }
+
+        [JsonProperty] public Video Video { get; private set; }
+
+        [JsonProperty] public CaptionAsset CaptionAsset { get; private set; }
+
+        [JsonProperty] public IEnumerable<Caption> Captions { get; private set; }
+
+        [JsonProperty] public string LocalFileFullPath { get; private set; }
+
+        [JsonProperty] public string Format { get; private set; }
+
+        [JsonProperty] public string FirstName { get; private set; }
 
         [JsonProperty]
         public string FirstId
@@ -51,11 +45,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     _firstId = "";
             }
         }
-        [JsonProperty]
-        public string SecondName { get; private set; }
+
+        [JsonProperty] public string SecondName { get; private set; }
 
         [JsonProperty]
-        public string SecondId {
+        public string SecondId
+        {
             get => _secondId;
             private set
             {
@@ -67,10 +62,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public class OnlineRecentlyCreator
         {
+            private readonly SignInViewModel _signIn;
             private CaptionAsset _captionAsset;
             private IEnumerable<Caption> _captions;
             private Video _video;
-            private readonly SignInViewModel _signIn;
 
             public OnlineRecentlyCreator()
             {

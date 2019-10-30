@@ -50,7 +50,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             TabId = tabItem.Id;
             Label = tabItem.Name;
-            SelectedLanguage = Languages.Where(i => i.LanguageCode.Equals(tabItem.LanguageCode) && i.CountryCode.Equals(tabItem.CountryCode))
+            SelectedLanguage = Languages.Where(i =>
+                    i.LanguageCode.Equals(tabItem.LanguageCode) && i.CountryCode.Equals(tabItem.CountryCode))
                 .ToList()
                 .FirstOrDefault();
             SelectedSubtitleKind = tabItem.Kind;

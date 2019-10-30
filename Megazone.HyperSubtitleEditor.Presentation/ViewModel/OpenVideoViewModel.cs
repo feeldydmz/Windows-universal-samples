@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -16,11 +15,9 @@ using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
-using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -39,11 +36,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _durationEndTimeChangedCommand;
 
+        private ICommand _enterCommand;
+
         private TimeSpan _durationStartTime;
 
         private ICommand _durationStartTimeChangedCommand;
 
-        private ICommand _enterCommand;
+        private string _filePath;
+
         private bool _isBusy;
 
         private bool _isConfirmButtonVisible;
@@ -55,17 +55,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool _isNextButtonVisible = true;
 
-        private bool _isShowCaption;
-
         private bool _isUrlOpenButtonChecked;
 
         private string _keyword;
         private IEnumerable<DisplayItem> _keywordTypeItems;
 
-        private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
 
-        private ICommand _nextCommand;
 
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
@@ -76,6 +72,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private VideoItemViewModel _selectedVideoItem;
 
         private int _totalCount;
+
+        private string _urlPath;
         private IList<VideoItemViewModel> _videoItems;
 
         public OpenVideoViewModel(IBrowser browser, ICloudMediaService cloudMediaService,
@@ -133,6 +131,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return _durationEndTimeChangedCommand =
                     _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged);
             }
+        }
+        public ICommand EnterCommand
+        {
+            get { return _enterCommand = _enterCommand ?? new RelayCommand<string>(Enter); }
         }
 
         public bool IsNextButtonVisible
@@ -225,15 +227,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isMcmOpenButtonChecked, value);
         }
 
-        private string _filePath;
-
         public string FilePath
         {
             get => _filePath;
             set => Set(ref _filePath, value);
         }
-
-        private string _urlPath;
 
         public string UrlPath
         {
@@ -400,6 +398,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         : startDuration.TotalMilliseconds + 999;
                 conditions.Add("duration", $"{startTime}~{endTime}");
             }
+
             conditions.Add("mediaTypes", "VIDEO");
 
             return conditions;
@@ -408,25 +407,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool CanConfirm(IClosable window)
         {
-            if (IsUrlOpenButtonChecked == true)
+            if (IsUrlOpenButtonChecked)
             {
                 if (UrlPath.IsNotNullAndAny())
                     return true;
             }
-            else if (IsFileOpenButtonChecked == true)
+            else if (IsFileOpenButtonChecked)
             {
                 if (FilePath.IsNotNullAndAny())
                     return true;
             }
-            else if (IsMcmOpenButtonChecked == true)
+            else if (IsMcmOpenButtonChecked)
             {
                 if (IsBusy)
                     return false;
 
-                if (SelectedVideoItem != null)
-                {
-                    return true;
-                }
+                if (SelectedVideoItem != null) return true;
 
                 return false;
             }

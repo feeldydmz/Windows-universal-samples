@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -13,9 +14,9 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
-
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -27,7 +28,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ConfigHolder _config;
         private readonly ILogger _logger;
 
-        private Authorization _authorization;
+        private AuthorizationInfo _authorization;
         private bool _isAutoLogin;
         private bool _isBusy;
         private ICommand _loadCommand;
@@ -48,7 +49,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _config = ConfigHolder.Current;
 
             UriSource = "about:blank";
-            _authorization = LoadAuthorization();
+//            _authorization = LoadAuthorization();
         }
 
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.dat";
@@ -127,12 +128,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SaveAuthorization();
         }
 
-        public Authorization GetAuthorization()
+        public AuthorizationInfo GetAuthorization()
         {
+            if (CheckExpireTime())
+            {
+                RefreshAuthorizationAsync();
+            }
             // 유효성 검사.
             // 유효한 토큰인지 확인한다.
             // 유효하지 않다면, refresh token을 받도록 exception을 낸다.
             return _authorization;
+        }
+
+        public void SetAuthorization(Authorization authorization)
+        {
+            int expireTimeForSec = int.Parse(authorization.Expires) - 60;
+
+            _authorization = new AuthorizationInfo(authorization.AccessToken, authorization.RefreshToken, authorization.Expires, DateTime.Now.AddSeconds(expireTimeForSec));
         }
 
         public void Logout()
@@ -152,10 +164,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                _authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
+                var authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
-                if (string.IsNullOrEmpty(_authorization?.AccessToken))
+                // accessToken 이 Expire 되기 1분전에 미리 받아오기
+
+                if (string.IsNullOrEmpty(authorization?.AccessToken))
                     return;
+
+                SetAuthorization(authorization);
 
                 OpenProjectViewAsync();
             }
@@ -164,23 +180,35 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _logger.Error.Write(ex);
             }
         }
+        
+//        private DateTime ExpireTimeForAccessToken { get; set; }
+
+        public bool CheckExpireTime()
+        {
+            if (_authorization != null && _authorization.ExpiresTime < DateTime.Now)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public async void RefreshAuthorizationAsync()
         {
             try
             {
-                var auth = await _cloudMediaService.RefreshByRefreshCodeAsync(_authorization.RefreshToken, _authorization.AccessToken, CancellationToken.None);
+                var refreshAuthorization = await _cloudMediaService.RefreshByRefreshCodeAsync(_authorization.RefreshToken,
+                    _authorization.AccessToken, CancellationToken.None);
+                
+                if (string.IsNullOrEmpty(refreshAuthorization?.AccessToken))
+                    return;
 
-                //if (string.IsNullOrEmpty(_authorization?.AccessToken))
-                //    return;
-
-                //OpenProjectViewAsync();
+                SetAuthorization(refreshAuthorization);
             }
             catch (Exception ex)
             {
                 _logger.Error.Write(ex);
             }
-
         }
 
         private async void OpenProjectViewAsync()
@@ -220,7 +248,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898(_password);
+                 var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898(_password);
 
                 File.WriteAllText(AuthorizationFilePath, profileData);
             }
@@ -231,7 +259,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private Authorization LoadAuthorization()
+        private AuthorizationInfo LoadAuthorization()
         {
             try
             {
@@ -239,9 +267,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return null;
 
                 var profileData = File.ReadAllText(AuthorizationFilePath);
-                return JsonConvert.DeserializeObject<Authorization>(profileData.DecryptWithRfc2898(_password));
+
+                return JsonConvert.DeserializeObject<AuthorizationInfo>(profileData.DecryptWithRfc2898(_password));
             }
-            catch (FileNotFoundException e)
+            catch (Exception e)
             {
                 _logger.Error.Write(e);
             }
@@ -266,14 +295,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
             }
 
+            _authorization = LoadAuthorization();
+
             if (_authorization != null)
-            {
                 OpenProjectViewAsync();
-            }
             else
-            {
                 SetSourceUri(AuthorizationRepository.LOGIN_URL);
-            }
         }
 
         public void NavigateToProject(string code)

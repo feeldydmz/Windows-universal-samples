@@ -13,7 +13,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             DependencyProperty.Register("StargeWidthMargin", typeof(int),
                 typeof(ProjectSelectBehavior));
 
-        public static readonly DependencyProperty StageWidthProperty = 
+        public static readonly DependencyProperty StageWidthProperty =
             DependencyProperty.Register("StageWidth", typeof(int),
                 typeof(ProjectSelectBehavior));
 
@@ -25,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 
         public int StageMarginWidth
         {
-            get => (int)GetValue(StageMarginWidthProperty);
+            get => (int) GetValue(StageMarginWidthProperty);
             set => SetValue(StageMarginWidthProperty, value);
         }
 

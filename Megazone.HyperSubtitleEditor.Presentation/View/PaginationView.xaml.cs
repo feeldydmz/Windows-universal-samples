@@ -90,13 +90,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public bool IsPreviousDotVisible
         {
-            get => (bool)GetValue(IsPreviousDotVisibleProperty);
+            get => (bool) GetValue(IsPreviousDotVisibleProperty);
             set => SetValue(IsPreviousDotVisibleProperty, value);
         }
 
         public bool IsNextDotVisible
         {
-            get => (bool)GetValue(IsNextDotVisibleProperty);
+            get => (bool) GetValue(IsNextDotVisibleProperty);
             set => SetValue(IsNextDotVisibleProperty, value);
         }
 

@@ -400,7 +400,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsOpen = true;
         }
-        
+
         public void Close()
         {
             IsOpen = false;
@@ -519,6 +519,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var results = await GetVideoListAsync(new Pagination(pageIndex), conditions,
                     _cancellationTokenSource.Token);
 
+                if (results == null) return;
+
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(
                     results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
@@ -575,6 +577,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         : startDuration.TotalMilliseconds + 999;
                 conditions.Add("duration", $"{startTime}~{endTime}");
             }
+
             return conditions;
         }
 
@@ -607,7 +610,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return false;
 
                 if (SelectedVideoItem?.CaptionAssetItems?.Any() ?? false)
-                {
                     //if (SelectedVideoItem?.SelectedCaptionAsset != null
                     //    && SelectedVideoItem.SelectedCaptionAsset.Source == null)
                     //    return true;
@@ -617,7 +619,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     //return false;
 
                     return SelectedVideoItem?.SelectedCaptionAsset != null;
-                }
 
                 return false;
             }

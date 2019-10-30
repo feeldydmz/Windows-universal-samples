@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.AssetEditorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:view="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=AssetEditor}"
              Width="450" Height="155"
@@ -42,11 +42,12 @@
             <Grid Background="{StaticResource Brush_CommonBackground}" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition Height="11"/>
+                    <RowDefinition Height="11" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_ASSET_NAME}" />
-                <TextBox x:Name="AssetNameTextBox" Grid.Row="2" Text="{Binding Path=AssetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <TextBox x:Name="AssetNameTextBox" Grid.Row="2"
+                         Text="{Binding Path=AssetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Grid>
         </Border>
 
@@ -64,7 +65,8 @@
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True" Command="{Binding ConfirmCommand}" />
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
+                        Command="{Binding ConfirmCommand}" />
 
                 <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
                         Click="CancelButton_OnClick" />

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DocumentFormat.OpenXml.Bibliography;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -20,7 +18,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
-using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
@@ -172,9 +169,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
 
-            
 
-            CaptionAssetItem = new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null, null));
+            CaptionAssetItem =
+                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
+                    null));
 
             HasWorkData = true;
         }
@@ -221,7 +219,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             else
             {
-                CaptionAssetItem = new CaptionAssetItemViewModel(new CaptionAsset(null, assetName, null, null, null, null, 0, 0, null, null));
+                CaptionAssetItem =
+                    new CaptionAssetItemViewModel(new CaptionAsset(null, assetName, null, null, null, null, 0, 0, null,
+                        null));
             }
         }
 
@@ -306,27 +306,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
                             foreach (var tab in subtitle.Tabs)
                             {
-                                var newCaption = captionAsset?.Elements?.FirstOrDefault(caption => caption.Label.Equals(tab.Name));
+                                var newCaption =
+                                    captionAsset?.Elements?.FirstOrDefault(caption => caption.Label.Equals(tab.Name));
                                 if (newCaption != null)
-                                    ((SubtitleTabItemViewModel)tab).Caption = newCaption;
+                                    ((SubtitleTabItemViewModel) tab).Caption = newCaption;
                             }
 
-                            var linkUrl = (video != null) ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
+                            var linkUrl = video != null ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
 
                             foreach (var caption in message.Param.Captions.ToList())
                             {
                                 var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-                                var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country));
+                                var tabItem = subtitleVm.Tabs.SingleOrDefault(tab =>
+                                    tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) &&
+                                    tab.CountryCode.Equals(caption.Country));
                                 tabItem?.SetAsDeployed();
                             }
-                            
 
-                            _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset, message.Param.Captions.ToList(), linkUrl);
+
+                            _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset,
+                                message.Param.Captions.ToList(), linkUrl);
                         }
                         else
                             // [resource]
-                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, "저장을 실패하였습니다.\n관리자에게 문의하십시오.",
+                        {
+                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR,
+                                "저장을 실패하였습니다.\n관리자에게 문의하십시오.",
                                 MessageBoxButton.OK));
+                        }
                     });
             }
             catch (Exception e)
@@ -373,7 +380,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
 
-        public async Task DeployAsync(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, Action<bool, Video, CaptionAsset> finishAction)
+        public async Task DeployAsync(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions,
+            Action<bool, Video, CaptionAsset> finishAction)
         {
             var captionList = captions?.ToList() ?? new List<Caption>();
             if (!captionList.Any())
@@ -414,6 +422,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             new GetVideoParameter(authorization, stageId, projectId, video.Id), CancellationToken.None);
 
                         #region Video Update.
+
                         //if (originalVideo != null)
                         //{
                         //    var captionAssetList = originalVideo.Captions.ToList();
@@ -444,6 +453,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         //    finishAction?.Invoke(true, updatedVideo, createAsset);
                         //    return;
                         //} 
+
                         #endregion
 
                         // 업데이트가 아니라, 추가된 Asset만 비디오에 등록한다.
@@ -451,7 +461,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         var version = originalVideo.Version;
                         var assetList = new List<string> {createAsset.Id};
                         var registeredCaptionAssets = await _cloudMediaService.RegisterCaptionAssetAsync(
-                            new RegisterCaptionAssetParameter(authorization, stageId, projectId, videoId, version, assetList),
+                            new RegisterCaptionAssetParameter(authorization, stageId, projectId, videoId, version,
+                                assetList),
                             CancellationToken.None);
 
                         finishAction?.Invoke(registeredCaptionAssets.Any(), originalVideo, createAsset);
@@ -461,17 +472,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     finishAction?.Invoke(true, video, createAsset);
                     return;
                 }
-                else
-                {
-                    var updatedCaption = await _cloudMediaService.UpdateCaptionAsync(
-                        new UpdateCaptionParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
-                        CancellationToken.None);
 
-                    //Debug.Assert(updatedCaption != null, "updatedCaption is null.");
-                    
-                    finishAction?.Invoke(!string.IsNullOrEmpty(updatedCaption?.Id), video, updatedCaption);
-                    return;
-                }
+                var updatedCaption = await _cloudMediaService.UpdateCaptionAsync(
+                    new UpdateCaptionParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
+                    CancellationToken.None);
+
+                //Debug.Assert(updatedCaption != null, "updatedCaption is null.");
+
+                finishAction?.Invoke(!string.IsNullOrEmpty(updatedCaption?.Id), video, updatedCaption);
+                return;
             }
             catch (Exception e)
             {
@@ -479,7 +488,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             finishAction?.Invoke(false, video, captionAsset);
-            return;
         }
 
         private string GetFileName(Caption caption)
@@ -498,7 +506,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string GetTextBy(Caption caption)
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            var tabItem = subtitleVm.Tabs.SingleOrDefault(tab => tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) && tab.CountryCode.Equals(caption.Country) && (tab.Caption?.Id==caption.Id));
+            var tabItem = subtitleVm.Tabs.SingleOrDefault(tab =>
+                tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) &&
+                tab.CountryCode.Equals(caption.Country) && tab.Caption?.Id == caption.Id);
             var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);

@@ -237,6 +237,7 @@
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AssetEditorViewModel.cs" />
+    <Compile Include="ViewModel\Data\AuthorizationInfo.cs" />
     <Compile Include="ViewModel\Data\DefaultProjectSerialize.cs" />
     <Compile Include="ViewModel\MetadataViewModel.cs" />
     <Compile Include="ViewModel\Data\RecentlyItem.cs" />

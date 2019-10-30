@@ -50,7 +50,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadCommand;
         private ICommand _rightNavigateCommand;
         private StageItemViewModel _selectedStage;
-        private bool _selectionsChangedFlag;
         private ICommand _selectProjectCommand;
         private ICommand _setDefaultProjectCommand;
         private List<StageItemViewModel> _stageItems;
@@ -170,13 +169,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _startProjectCommand =
-                    _startProjectCommand ?? new RelayCommand(Execute);
+                    _startProjectCommand ?? new RelayCommand(RefreshTest);
             }
-        }
-
-        private void Execute()
-        {
-            _signInViewModel.RefreshAuthorizationAsync();
         }
 
         public ICommand SelectProjectCommand
@@ -246,7 +240,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _setDefaultProjectCommand ?? new RelayCommand<ProjectItemViewModel>(SetDefaultProject);
             }
         }
-        
+
+        private void RefreshTest()
+        {
+            _signInViewModel.RefreshAuthorizationAsync();
+        }
+
 
         private void Load()
         {
@@ -330,7 +329,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (workingProject != null)
                 workingProject.IsSelected = false;
 
-            if (DefaultProject != null) 
+            if (DefaultProject != null)
                 DefaultProject.IsSelected = false;
 
             projectItem.IsSelected = true;

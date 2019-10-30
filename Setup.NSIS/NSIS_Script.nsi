@@ -52,7 +52,10 @@
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\${PROCESS_NAME}"
+;!define MUI_FINISHPAGE_RUN "$INSTDIR\${PROCESS_NAME}"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_TEXT "Start a shortcut"
+!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
 !define MUI_PAGE_CUSTOMFUNCTION_SHOW "FinishShowCallback"
 !insertmacro MUI_PAGE_FINISH
 
@@ -102,6 +105,12 @@ LicenseData $(license)
 ; Utility Function Start---------------------------------------------------
 
 ; Version Compare Macro ---------------------------------------------------
+Function LaunchLink
+  ;RequestExecutionLevel user
+  ;ExecShell "runas" "$INSTDIR\${PROCESS_NAME}"
+  ExecShell "open" "$SMPROGRAMS\${COMPANY_NAME}\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk"
+FunctionEnd
+
 Function VersionCompare
 	!define VersionCompare `!insertmacro VersionCompareCall`
 

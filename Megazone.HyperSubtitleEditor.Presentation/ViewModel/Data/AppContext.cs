@@ -61,10 +61,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             public class Creator
             {
                 private string _assetId;
+                private IEnumerable<string> _captionIds;
                 private string _projectId;
                 private string _stageId;
                 private string _videoId;
-                private IEnumerable<string> _captionIds;
 
                 public McmData Create()
                 {

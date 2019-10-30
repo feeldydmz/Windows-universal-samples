@@ -139,7 +139,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         Label = sheetInfo.Label,
                         SelectedSubtitleKind = sheetInfo.CaptionKind
                     };
-                    
+
                     excelItemViewModel.SelectedLanguage = excelItemViewModel.Languages.SingleOrDefault(language =>
                         language.LanguageCode.Equals(sheetInfo.LanguageCode) &&
                         language.CountryCode.Equals(sheetInfo.CountryCode));

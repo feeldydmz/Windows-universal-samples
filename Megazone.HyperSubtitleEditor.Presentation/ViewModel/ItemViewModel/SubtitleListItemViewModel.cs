@@ -16,8 +16,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly Action _onDisplayTextChangedAction;
         private readonly Action _validateAction;
 
-        private static WebVttParser WebVttParser { get; } = new WebVttParser();
-
         private string _cueSettingData;
         private string _displayText;
         private TimeSpan _duration;
@@ -58,6 +56,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _isInitializing = false;
             AnalyzeText(Duration, Texts);
         }
+
+        private static WebVttParser WebVttParser { get; } = new WebVttParser();
 
         public string CueSettingData
         {

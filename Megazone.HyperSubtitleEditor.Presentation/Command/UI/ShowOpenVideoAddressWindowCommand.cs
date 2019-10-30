@@ -18,10 +18,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             var openTypeString = "";
-            if (parameter is string paramString)
-            {
-                openTypeString = paramString;
-            }
+            if (parameter is string paramString) openTypeString = paramString;
 
             Browser.Main.ShowOpenVideoAddressWindow(openTypeString);
         }

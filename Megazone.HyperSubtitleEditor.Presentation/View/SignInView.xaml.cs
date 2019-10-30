@@ -18,7 +18,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             InitializeComponent();
 
-            if (this.DataContext is SignInViewModel dataContext) dataContext.CloseAction = CloseControl;
+            if (DataContext is SignInViewModel dataContext) dataContext.CloseAction = CloseControl;
 
             WebBrowser.Navigated += WebBrowser_Navigated;
         }
@@ -37,7 +37,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
             CloseAction?.Invoke();
         }
-        
     }
 
     public class Error

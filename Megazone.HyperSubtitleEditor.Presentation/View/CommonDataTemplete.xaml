@@ -32,7 +32,7 @@
         </Grid>
     </DataTemplate>
 
-    <view:LanguageItemTemplateSelector 
+    <view:LanguageItemTemplateSelector
         x:Key="LanguageItemTemplateSelector"
         EmptyDataTemplate="{StaticResource EmptyDataTemplate}"
         DataTemplate="{StaticResource LanguageDataTemplate}" />

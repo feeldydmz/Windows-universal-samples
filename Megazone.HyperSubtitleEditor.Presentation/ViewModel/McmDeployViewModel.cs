@@ -225,10 +225,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var captionAsset = CaptionAssetItem?.Source ?? CreateCaptionAsset();
                 var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
 
-                foreach (var caption in selectedCaptionList)
-                {
-                    caption.Kind = SelectedSubtitleKind.ToString().ToUpper();
-                }
+                foreach (var caption in selectedCaptionList) caption.Kind = SelectedSubtitleKind.ToString().ToUpper();
 
                 MessageCenter.Instance.Send(new CloudMedia.DeployRequestedMessage(this,
                     new DeployRequestedMessageParameter(video, captionAsset, selectedCaptionList)));

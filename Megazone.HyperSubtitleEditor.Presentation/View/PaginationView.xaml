@@ -86,7 +86,7 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        
+
         <mz:ImageButton
             Grid.Column="4" x:Name="NextButton" Click="NextButton_OnClick"
             NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arr_right_nor.png"

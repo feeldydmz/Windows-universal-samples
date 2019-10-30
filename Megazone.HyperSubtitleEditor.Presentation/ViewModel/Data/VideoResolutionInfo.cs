@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Drawing.Charts;
-
-namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
+﻿namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
     public class VideoResolutionInfo
     {
@@ -15,6 +8,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             Height = height;
             Codec = codec;
         }
+
         public int Width { get; set; }
         public int Height { get; set; }
         public string Codec { get; set; }

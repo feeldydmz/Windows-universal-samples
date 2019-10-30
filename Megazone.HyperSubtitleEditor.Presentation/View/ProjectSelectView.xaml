@@ -23,7 +23,8 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <i:Interaction.Behaviors>
-        <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" StageWidth="340" StageMarginWidth="30" />
+        <behavior:ProjectSelectBehavior Command="{Binding StagePerPageNumberChangedCommand}" StageWidth="340"
+                                        StageMarginWidth="30" />
     </i:Interaction.Behaviors>
 
     <UserControl.Resources>
@@ -34,7 +35,7 @@
                 <ResourceDictionary Source="CommandDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue"/>
+            <mz:NullToFalseNTrue x:Key="NullToFalseNTrue" />
 
             <Style x:Key="Style_DefaultSetButtonForSelect" TargetType="{x:Type Button}">
                 <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
@@ -50,28 +51,28 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
-                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
+                                    Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                                 <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid x:Name="ImageContainer">
-                                        <Image x:Name="DefaultImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png" 
+                                        <Image x:Name="DefaultImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png"
                                                Stretch="UniformToFill" />
-                                        <Image x:Name="DisabledImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_dis.png" 
+                                        <Image x:Name="DisabledImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_dis.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
-                                        <Image x:Name="PressedImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_act.png" 
+                                        <Image x:Name="PressedImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_act.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
-                                        <Image x:Name="MouseOverImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_hov.png" 
+                                        <Image x:Name="MouseOverImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_hov.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
                                     </Grid>
                                     <ContentPresenter x:Name="contentPresenter" Focusable="False"
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                      Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 </Grid>
                             </Border>
                             <ControlTemplate.Triggers>
@@ -117,28 +118,28 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
-                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="true"
+                                    Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                                 <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid x:Name="ImageContainer">
-                                        <Image x:Name="DefaultImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png" 
+                                        <Image x:Name="DefaultImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
                                                Stretch="UniformToFill" />
-                                        <Image x:Name="DisabledImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png" 
+                                        <Image x:Name="DisabledImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
-                                        <Image x:Name="PressedImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png" 
+                                        <Image x:Name="PressedImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
-                                        <Image x:Name="MouseOverImage" 
-                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png" 
+                                        <Image x:Name="MouseOverImage"
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
                                                Visibility="Hidden" Stretch="UniformToFill" />
                                     </Grid>
                                     <ContentPresenter x:Name="contentPresenter" Focusable="False"
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                      Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 </Grid>
                             </Border>
                             <ControlTemplate.Triggers>
@@ -176,13 +177,13 @@
 
     <Grid Background="{StaticResource Brush_ProjectSelect_Background_Color}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" 
-                    Background="#2f353e"
-                    HorizontalAlignment="Stretch">
+        <Border Grid.Row="0"
+                Background="#2f353e"
+                HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0,6,20,6"
@@ -201,8 +202,8 @@
                     <TextBlock Text="{Binding Path=LoginId}" Foreground="White" VerticalAlignment="Center"
                                TextAlignment="Center" Margin="7,0,0,0" />
                 </StackPanel>
-                <mz:ImageButton 
-                    Command="{StaticResource LogoutCommand}" 
+                <mz:ImageButton
+                    Command="{StaticResource LogoutCommand}"
                     ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
                     Background="{StaticResource Brush_ImageButton_Background_Color}"
                     NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_logout_nor.png"
@@ -218,7 +219,8 @@
         </Border>
 
 
-        <Border Grid.Row="1" Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border Grid.Row="1"
+                Visibility="{Binding IsLoadingProjectPage, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Control x:Name="LoadingProgressView"
                      Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Style="{StaticResource Style_IndeterminateControl}"
@@ -371,15 +373,15 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="0,45,0,0">
-                    <TextBlock Foreground="White" 
-                               HorizontalAlignment="Center" 
+                    <TextBlock Foreground="White"
+                               HorizontalAlignment="Center"
                                FontSize="24"
                                Margin="0,0,0,12"
-                               Text="{Binding Path=SignIn.UserName, Source={StaticResource SubtitleViewModelLocator}, StringFormat='{x:Static resources:Resource.MSG_PROJECT_HI_USER}', Mode=TwoWay}"/>
-                    <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" 
-                               HorizontalAlignment="Center" 
+                               Text="{Binding Path=SignIn.UserName, Source={StaticResource SubtitleViewModelLocator}, StringFormat='{x:Static resources:Resource.MSG_PROJECT_HI_USER}', Mode=TwoWay}" />
+                    <TextBlock Foreground="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"
+                               HorizontalAlignment="Center"
                                FontSize="12"
-                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_GUIDE}"/>
+                               Text="{x:Static resources:Resource.MSG_PROJECT_SELECT_PAGE_GUIDE}" />
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -387,11 +389,11 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="88" />
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="88" />
                     </Grid.ColumnDefinitions>
-                    
-                    
+
+
                     <Button Grid.Row="1"
                             Grid.Column="0"
                             Background="{DynamicResource Brush_Button_Background_Base_Color}"
@@ -410,32 +412,32 @@
                             Command="{Binding RightSlideNavigateCommand}" />
 
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <StackPanel x:Name="RootStackPanel" Height="Auto" Width="Auto" HorizontalAlignment="Stretch"></StackPanel>
-                        
+                        <StackPanel x:Name="RootStackPanel" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" />
+
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <!--Stage Total Count-->
                             <StackPanel Orientation="Horizontal"
                                         Margin="12,5,10,8"
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <TextBlock Foreground="White" 
+                                <TextBlock Foreground="White"
                                            FontWeight="Bold"
-                                           Text="{x:Static resources:Resource.CNT_PROJECT_SELECT_SAGE_TOTAL}"/>
-                                <TextBlock Foreground="#5fa5f0" 
-                                           Margin="5,0,0,0" 
-                                           FontWeight="Bold" 
-                                           Text="{Binding StageTotal}"/>
+                                           Text="{x:Static resources:Resource.CNT_PROJECT_SELECT_SAGE_TOTAL}" />
+                                <TextBlock Foreground="#5fa5f0"
+                                           Margin="5,0,0,0"
+                                           FontWeight="Bold"
+                                           Text="{Binding StageTotal}" />
                             </StackPanel>
 
                             <ItemsControl x:Name="StageItemControl"
-                                  ItemsSource="{Binding Path=CurrentPageStageItems}"
-                                  VerticalAlignment="Top" 
-                                  HorizontalAlignment="Center">
+                                          ItemsSource="{Binding Path=CurrentPageStageItems}"
+                                          VerticalAlignment="Top"
+                                          HorizontalAlignment="Center">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel x:Name="StageStackPanel" Orientation="Horizontal"
-                                            VerticalAlignment="Top"
-                                            HorizontalAlignment="Center"
-                                            MaxHeight="300" />
+                                                    VerticalAlignment="Top"
+                                                    HorizontalAlignment="Center"
+                                                    MaxHeight="300" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
@@ -446,49 +448,50 @@
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
                                             <Border x:Name="Stage_Title_Border"
-                                            BorderThickness="1"
-                                            BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
+                                                    BorderThickness="1"
+                                                    BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
-                                                    <Grid HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center"
-                                                  Margin="18,13,0,12">
+                                                    <Grid HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Margin="18,13,0,12">
                                                         <Ellipse x:Name="Stage_Symbol_Ellipse"
-                                                         Fill="{StaticResource Brush_ListBoxItem_Stage_Symbol_Color}"
-                                                         Height="45"
-                                                         Width="45" />
+                                                                 Fill="{StaticResource Brush_ListBoxItem_Stage_Symbol_Color}"
+                                                                 Height="45"
+                                                                 Width="45" />
                                                         <TextBlock x:Name="Stage_Symbol_Text"
-                                                           Text="{Binding Path=SymbolTitle}"
-                                                           Margin="1,0,0,2"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="{StaticResource Brush_ListBoxItem_Stage_Symbol_Text_Color}"
-                                                           FontSize="22" />
+                                                                   Text="{Binding Path=SymbolTitle}"
+                                                                   Margin="1,0,0,2"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Foreground="{StaticResource Brush_ListBoxItem_Stage_Symbol_Text_Color}"
+                                                                   FontSize="22" />
                                                     </Grid>
                                                     <TextBlock Grid.Column="1"
-                                                       x:Name="Stage_Name_Text"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Stretch"
-                                                       Margin="19,0,0,0"
-                                                       FontSize="14"
-                                                       FontWeight="Bold"
-                                                       Foreground="{StaticResource Brush_ListBoxItem_Stage_Title_Color}"
-                                                       Text="{Binding Path=Name}" />
+                                                               x:Name="Stage_Name_Text"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Stretch"
+                                                               Margin="19,0,0,0"
+                                                               FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Foreground="{StaticResource Brush_ListBoxItem_Stage_Title_Color}"
+                                                               Text="{Binding Path=Name}" />
                                                 </StackPanel>
                                             </Border>
                                             <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
-                                            BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
+                                                    BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
                                                 <ListBox x:Name="ProjectListBox"
-                                                 ItemsSource="{Binding Path=ProjectItems}" SelectionMode="Single"
-                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Style="{StaticResource Style_ListBoxProjectSelect}"
-                                                 ItemContainerStyle="{StaticResource Style_ListBoxItemProjectSelect}"
-                                                 SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}"
-                                                 Uid="{Binding Id}"
-                                                 Width="340">
+                                                         ItemsSource="{Binding Path=ProjectItems}"
+                                                         SelectionMode="Single"
+                                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                         Style="{StaticResource Style_ListBoxProjectSelect}"
+                                                         ItemContainerStyle="{StaticResource Style_ListBoxItemProjectSelect}"
+                                                         SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}"
+                                                         Uid="{Binding Id}"
+                                                         Width="340">
                                                     <i:Interaction.Behaviors>
-                                                        <mz:ListBoxSelectionChangedCommandBehavior 
-                                                            Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}" 
+                                                        <mz:ListBoxSelectionChangedCommandBehavior
+                                                            Command="{Binding Path=DataContext.SelectProjectCommand, ElementName=Root}"
                                                             CommandParameter="{Binding Path=SelectedProject}" />
                                                     </i:Interaction.Behaviors>
                                                     <ListBox.ItemTemplate>
@@ -496,40 +499,40 @@
                                                             <Grid>
                                                                 <Grid HorizontalAlignment="Stretch"
                                                                       Height="25">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="10"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto" />
+                                                                        <ColumnDefinition Width="10" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="Auto" />
                                                                     </Grid.ColumnDefinitions>
-                                                                <TextBlock Text="{Binding Path=Name}"
-                                                                           Grid.Column="0"
-                                                                           FontWeight="Bold"
-                                                                           Margin="15,0,0,0"
-                                                                           HorizontalAlignment="Left"
-                                                                           VerticalAlignment="Center"
-                                                                           LineHeight="14" />
-                                                                <TextBlock Text="/"
-                                                                           VerticalAlignment="Center"
-                                                                           Grid.Column="1"
-                                                                   Margin="5,0,0,0" />
+                                                                    <TextBlock Text="{Binding Path=Name}"
+                                                                               Grid.Column="0"
+                                                                               FontWeight="Bold"
+                                                                               Margin="15,0,0,0"
+                                                                               HorizontalAlignment="Left"
+                                                                               VerticalAlignment="Center"
+                                                                               LineHeight="14" />
+                                                                    <TextBlock Text="/"
+                                                                               VerticalAlignment="Center"
+                                                                               Grid.Column="1"
+                                                                               Margin="5,0,0,0" />
                                                                     <TextBlock Text="{Binding Path=ProjectId}"
-                                                                           Grid.Column="2"
-                                                                           Margin="5,0,0,0"
-                                                                           HorizontalAlignment="Left"
-                                                                           VerticalAlignment="Center"
-                                                                           TextTrimming="CharacterEllipsis"
-                                                                           LineHeight="14"
-                                                                           FontSize="11" />
+                                                                               Grid.Column="2"
+                                                                               Margin="5,0,0,0"
+                                                                               HorizontalAlignment="Left"
+                                                                               VerticalAlignment="Center"
+                                                                               TextTrimming="CharacterEllipsis"
+                                                                               LineHeight="14"
+                                                                               FontSize="11" />
 
-                                                                <Image x:Name="CheckImage"
-                                                                       Grid.Column="3"
-                                                                       Stretch="None"
-                                                                       Visibility="Collapsed"
-                                                                       Margin="0,0,12,0"
-                                                                       HorizontalAlignment="Right"
-                                                                       VerticalAlignment="Center"
-                                                                       Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
+                                                                    <Image x:Name="CheckImage"
+                                                                           Grid.Column="3"
+                                                                           Stretch="None"
+                                                                           Visibility="Collapsed"
+                                                                           Margin="0,0,12,0"
+                                                                           HorizontalAlignment="Right"
+                                                                           VerticalAlignment="Center"
+                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
 
                                                                     <StackPanel x:Name="DeselectHovPanel"
                                                                                 Grid.Column="3"
@@ -537,40 +540,44 @@
                                                                                 HorizontalAlignment="Right"
                                                                                 VerticalAlignment="Center"
                                                                                 Visibility="Collapsed">
-                                                                        <Button x:Name="DefaultSetButton"  Style="{StaticResource Style_DefaultSetButtonForDeselect}" 
+                                                                        <Button x:Name="DefaultSetButton"
+                                                                                Style="{StaticResource Style_DefaultSetButtonForDeselect}"
                                                                                 Margin="10,0,0,0"
-                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
-                                                                                CommandParameter="{Binding}">
-                                                                            
-                                                                            
-                                                                        </Button>
+                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
+                                                                                CommandParameter="{Binding}" />
 
-                                                                        <Popup x:Name="DefaultPopup" Width="100" 
-                                                                               Height="28" 
+                                                                        <Popup x:Name="DefaultPopup" Width="100"
+                                                                               Height="28"
                                                                                PlacementTarget="{Binding ElementName=DefaultSetButton}"
                                                                                Placement="Bottom"
                                                                                Focusable="False"
                                                                                StaysOpen="True"
                                                                                HorizontalOffset="-75"
                                                                                VerticalOffset="2">
-                                                                            <Grid Background="{StaticResource Brush_Normal_Background_Brush_Color}">
-                                                                                <Border BorderThickness="1" BorderBrush="#444b56">
+                                                                            <Grid
+                                                                                Background="{StaticResource Brush_Normal_Background_Brush_Color}">
+                                                                                <Border BorderThickness="1"
+                                                                                        BorderBrush="#444b56">
 
-                                                                                <TextBlock Text="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}" 
-                                                                                           Foreground="White"
-                                                                                           VerticalAlignment="Center"
-                                                                                           HorizontalAlignment="Center"/>
+                                                                                    <TextBlock
+                                                                                        Text="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                                                                        Foreground="White"
+                                                                                        VerticalAlignment="Center"
+                                                                                        HorizontalAlignment="Center" />
                                                                                 </Border>
                                                                             </Grid>
                                                                         </Popup>
 
-                                                                        <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
+                                                                        <Rectangle Height="12" Width="1"
+                                                                                   Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"
+                                                                                   Margin="9,0"
+                                                                                   VerticalAlignment="Center" />
                                                                         <Image
-                                                                           Stretch="None"
-                                                                           Margin="0,0,5,0"
-                                                                           HorizontalAlignment="Right"
-                                                                           VerticalAlignment="Center"
-                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-key.png" />
+                                                                            Stretch="None"
+                                                                            Margin="0,0,5,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-key.png" />
                                                                     </StackPanel>
 
                                                                     <StackPanel x:Name="SelectHovPanel"
@@ -580,63 +587,87 @@
                                                                                 VerticalAlignment="Center"
                                                                                 Visibility="Collapsed">
 
-                                                                        <Button Style="{StaticResource Style_DefaultSetButtonForSelect}" 
-                                                                                Margin="10,0,0,0"
-                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}" 
-                                                                                CommandParameter="{Binding}">
-                                                                        </Button>
-                                                                        
-                                                                        <Rectangle Height="12" Width="1" Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}" Margin="9,0" VerticalAlignment="Center" />
+                                                                        <Button
+                                                                            Style="{StaticResource Style_DefaultSetButtonForSelect}"
+                                                                            Margin="10,0,0,0"
+                                                                            Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
+                                                                            CommandParameter="{Binding}" />
+
+                                                                        <Rectangle Height="12" Width="1"
+                                                                                   Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"
+                                                                                   Margin="9,0"
+                                                                                   VerticalAlignment="Center" />
 
                                                                         <Image
-                                                                           Stretch="None"
-                                                                           Margin="0,0,5,0"
-                                                                           HorizontalAlignment="Right"
-                                                                           VerticalAlignment="Center"
-                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-active.png" />
+                                                                            Stretch="None"
+                                                                            Margin="0,0,5,0"
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Center"
+                                                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_left-arrow-active.png" />
                                                                     </StackPanel>
                                                                 </Grid>
                                                             </Grid>
                                                             <DataTemplate.Triggers>
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding IsSelected}" Value="True"/>
-                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="True" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="True" />
                                                                     </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="Visibility" Value="Visible" TargetName="SelectHovPanel"></Setter>
+                                                                    <Setter Property="Visibility" Value="Visible"
+                                                                            TargetName="SelectHovPanel" />
                                                                 </MultiDataTrigger>
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
-                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="False" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="True" />
                                                                     </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="Visibility" Value="Visible" TargetName="DeselectHovPanel"></Setter>
+                                                                    <Setter Property="Visibility" Value="Visible"
+                                                                            TargetName="DeselectHovPanel" />
                                                                 </MultiDataTrigger>
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
-                                                                        <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="False" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="True" />
                                                                     </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="Visibility" Value="Visible" TargetName="SelectHovPanel"></Setter>
+                                                                    <Setter Property="Visibility" Value="Visible"
+                                                                            TargetName="SelectHovPanel" />
                                                                 </MultiDataTrigger>
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True"/>
-                                                                        <Condition Binding="{Binding IsSelected}" Value="False"/>
-                                                                        <Condition Binding="{Binding IsDefault}" Value="True"/>
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="True" />
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="False" />
+                                                                        <Condition Binding="{Binding IsDefault}"
+                                                                                   Value="True" />
                                                                     </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="IsOpen" Value="True" TargetName="DefaultPopup"></Setter>
+                                                                    <Setter Property="IsOpen" Value="True"
+                                                                            TargetName="DefaultPopup" />
                                                                 </MultiDataTrigger>
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding IsSelected}" Value="True"/>
-                                                                        <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="False"/>
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="True" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="False" />
                                                                     </MultiDataTrigger.Conditions>
-                                                                    <Setter Property="Visibility" Value="Visible" TargetName="CheckImage"></Setter>
+                                                                    <Setter Property="Visibility" Value="Visible"
+                                                                            TargetName="CheckImage" />
                                                                 </MultiDataTrigger>
 
                                                             </DataTemplate.Triggers>
@@ -646,16 +677,27 @@
                                             </Border>
                                         </Grid>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource NullToFalseNTrue}}" Value="True">
-                                                <Setter TargetName="Stage_Title_Border" Property="BorderBrush" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
-                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
-                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
+                                            <DataTrigger
+                                                Binding="{Binding SelectedProject, Converter={StaticResource NullToFalseNTrue}}"
+                                                Value="True">
+                                                <Setter TargetName="Stage_Title_Border" Property="BorderBrush"
+                                                        Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill"
+                                                        Value="{StaticResource Brush_Stage_Title_Selected_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground"
+                                                        Value="White" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}" Value="{x:Null}">
-                                                <Setter TargetName="Stage_Title_Border" Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
-                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill" Value="{StaticResource Brush_PointColor}" />
-                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground" Value="White" />
-                                                <Setter TargetName="Stage_Name_Text" Property="Foreground" Value="{StaticResource Brush_PointColor}" />
+                                            <DataTrigger
+                                                Binding="{Binding Source={StaticResource SubtitleViewModelLocator} , Path=McmProjectViewModel.SelectedStage}"
+                                                Value="{x:Null}">
+                                                <Setter TargetName="Stage_Title_Border" Property="Background"
+                                                        Value="{StaticResource Brush_Normal_Background_Brush_Color}" />
+                                                <Setter TargetName="Stage_Symbol_Ellipse" Property="Fill"
+                                                        Value="{StaticResource Brush_PointColor}" />
+                                                <Setter TargetName="Stage_Symbol_Text" Property="Foreground"
+                                                        Value="White" />
+                                                <Setter TargetName="Stage_Name_Text" Property="Foreground"
+                                                        Value="{StaticResource Brush_PointColor}" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -663,7 +705,7 @@
                             </ItemsControl>
                         </StackPanel>
                     </Grid>
-                    
+
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -693,20 +735,20 @@
                             Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_START}" />-->
-                    <!--<mz:ImageButton Grid.Column="3" 
-                        Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
-                        ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
-                        Background="Transparent"
-                        NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                        PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
-                        MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
-                        DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
-                        Style="{StaticResource Style_TransparentImageButton}" 
-                        Width="25" 
-                        Height="25" 
-                        Margin="10,0,0,0"/>-->
+                    <mz:ImageButton Grid.Column="3"
+                                    Command="{Binding StartProjectCommand}"
+                                    ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                    Background="Transparent"
+                                    NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
+                                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
+                                    MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
+                                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
+                                    Style="{StaticResource Style_TransparentImageButton}"
+                                    Width="25"
+                                    Height="25"
+                                    Margin="10,0,0,0" />
 
-                    
+
                 </Grid>
             </Grid>
         </Border>

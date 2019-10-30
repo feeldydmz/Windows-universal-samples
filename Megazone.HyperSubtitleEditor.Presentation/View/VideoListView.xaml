@@ -182,7 +182,8 @@
 
                                                 <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
                                                     <Image Source="{StaticResource Bitmap_NoFoundImage}" />
-                                                    <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
+                                                    <Image
+                                                        Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
                                                 </Grid>
 
                                                 <Grid Grid.Column="2" Margin="20, 0, 0 , 0">
@@ -208,8 +209,11 @@
                                                             <ColumnDefinition Width="9" />
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{x:Static resources:Resource.CNT_CAPTION}" HorizontalAlignment="Right" />
-                                                        <TextBlock Grid.Column="2" Text="{Binding Path=TotalCaptionCount}" HorizontalAlignment="Right" />
+                                                        <TextBlock Text="{x:Static resources:Resource.CNT_CAPTION}"
+                                                                   HorizontalAlignment="Right" />
+                                                        <TextBlock Grid.Column="2"
+                                                                   Text="{Binding Path=TotalCaptionCount}"
+                                                                   HorizontalAlignment="Right" />
                                                         <TextBlock Grid.Column="2" HorizontalAlignment="Right"
                                                                    Visibility="{Binding Path=HasSelectedCaption, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                             <TextBlock.Text>
@@ -251,7 +255,8 @@
                                                                 <EventTrigger RoutedEvent="Button.Unloaded">
                                                                     <StopStoryboard
                                                                         BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                                                                    <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
+                                                                    <RemoveStoryboard
+                                                                        BeginStoryboardName="CaptionBoardOpenStoryboard" />
                                                                 </EventTrigger>
                                                             </mz:ImageButton.Triggers>
                                                         </mz:ImageButton>
@@ -290,10 +295,11 @@
 
                             <Grid
                                 Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                                <TextBlock
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                                 <!--<TextBlock Text="Searching..." VerticalAlignment="Center" HorizontalAlignment="Center"
                                            Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
                             </Grid>
@@ -353,7 +359,8 @@
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
                                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
                             <i:Interaction.Behaviors>
-                                <mz:ListBoxSelectionChangedCommandBehavior Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
+                                <mz:ListBoxSelectionChangedCommandBehavior
+                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
                             </i:Interaction.Behaviors>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
@@ -376,7 +383,8 @@
                                                     <RowDefinition />
                                                 </Grid.RowDefinitions>
                                                 <!--TODO: DataTemplateSelector 이용하는 방식으로-->
-                                                <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                                <StackPanel Orientation="Horizontal"
+                                                            Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                     <Image Style="{StaticResource Style_CaptionBadgeImage}" />
                                                     <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
                                                 </StackPanel>
@@ -392,11 +400,12 @@
                                                                TextTrimming="CharacterEllipsis" />
                                                     <TextBlock Grid.Column="1"
                                                                Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                                               Margin="3,0" 
-                                                               Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
+                                                               Margin="3,0"
+                                                               Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}" />
                                                 </Grid>
                                             </Grid>
-                                            <Grid Grid.Column="3" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                            <Grid Grid.Column="3"
+                                                  Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                 <ItemsControl x:Name="CaptionItemsControl"
                                                               ItemsSource="{Binding Path=Elements}">
                                                     <ItemsControl.ItemTemplate>
@@ -414,7 +423,8 @@
                                                                           Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
                                                                           CommandParameter="{Binding}" />
                                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3" Foreground="{StaticResource Brush_PointColor}">
+                                                                <TextBlock Grid.Column="3"
+                                                                           Foreground="{StaticResource Brush_PointColor}">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}[{0}-{1}]">
                                                                             <MultiBinding.Bindings>
@@ -428,10 +438,11 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                                           Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
-                                                           VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                           TextAlignment="Center" />
+                                                <TextBlock
+                                                    Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                                    Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                                                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    TextAlignment="Center" />
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -443,10 +454,11 @@
                                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                             <Border
                                 Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
-                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+                                <TextBlock
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                             </Border>
                         </Border>
                     </Grid>
@@ -467,8 +479,10 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
-                        Command="{Binding NextStepCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}"
+                        IsDefault="{Binding Path=IsNextButtonVisible}"
+                        Command="{Binding NextStepCommand}"
+                        Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard Name="CaptionBoardOpenStoryboard">
@@ -495,8 +509,10 @@
                     </Button.Triggers>
                 </Button>
 
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="{Binding Path=IsConfirmButtonVisible}"
-                        Command="{Binding ConfirmCommand}" Visibility="{Binding Path=IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_CONFIRM}"
+                        IsDefault="{Binding Path=IsConfirmButtonVisible}"
+                        Command="{Binding ConfirmCommand}"
+                        Visibility="{Binding Path=IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <Button Grid.Column="3" Content="{x:Static resources:Resource.CNT_CANCEL}"
                         Click="CancelButtonBase_OnClick" />

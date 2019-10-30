@@ -33,8 +33,8 @@ using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
-using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 using Unity;
+using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -77,6 +77,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _syncMediaPositionCommand;
         private IList<ISubtitleTabItemViewModel> _tabs;
         private ICommand _unloadCommand;
+        private VideoItemViewModel _videoItem;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -216,8 +217,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _videoItem;
             set => Set(ref _videoItem, value);
-        } 
-        private VideoItemViewModel _videoItem;
+        }
 
         public bool HasTab => Tabs?.Any() ?? false;
 
@@ -459,14 +459,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (removeTabs != null)
                 foreach (var tab in removeTabs)
-                {
                     CloseTab(tab as SubtitleTabItemViewModel);
-                }
 
             if (MediaPlayer.MediaSource != null)
                 MediaPlayer.RemoveMediaItem();
 
-            
 
             var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             workBarViewModel.Initialize();
@@ -1052,7 +1049,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var caption in captionList)
                     try
                     {
-                        if (!string.IsNullOrEmpty(caption.Url)) // && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute)
+                        if (!string.IsNullOrEmpty(caption.Url)
+                        ) // && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute)
                         {
                             var text = await _cloudMediaService.ReadAsync(new Uri(caption.Url), CancellationToken.None);
                             dic.Add(caption.Id, text);
@@ -1095,10 +1093,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             while (Tabs.Any(x => x.Name == result))
             {
-                if (count == 100)
-                {
-                    break;
-                }
+                if (count == 100) break;
 
                 result = $"{label}_{count++}";
             }
@@ -1115,7 +1110,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator.IsEnabled = false;
 
             var label = CheckConflictLabel(param.Label);
-            
+
             var subtitles = _subtitleService.Load(param.Text, TrackFormat.WebVtt);
             var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             var newTab = new SubtitleTabItemViewModel(label,
@@ -1162,7 +1157,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void OnImportExcelFile(Message.Excel.FileImportMessage message)
         {
-            
             _subtitleListItemValidator.IsEnabled = false;
 
             var filePath = message.FilePath;

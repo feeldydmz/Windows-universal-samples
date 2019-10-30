@@ -136,12 +136,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 HasSelectedCaption = false;
             }
 
-            if (!HasSelectedCaption && 
-                SelectedCaptionAsset?.Elements != null && 
+            if (!HasSelectedCaption &&
+                SelectedCaptionAsset?.Elements != null &&
                 SelectedCaptionAsset?.Elements.Count() != 0)
-            {
                 SelectedCaptionAsset = null;
-            }
         }
 
         public void Initialize()

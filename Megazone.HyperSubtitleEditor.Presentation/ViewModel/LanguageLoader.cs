@@ -44,7 +44,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var stageId = _signInViewModel.SelectedStage?.Id;
             var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
-            if (string.IsNullOrEmpty(authorizationAccessToken) || string.IsNullOrEmpty(stageId) || string.IsNullOrEmpty(projectId))
+            if (string.IsNullOrEmpty(authorizationAccessToken) || string.IsNullOrEmpty(stageId) ||
+                string.IsNullOrEmpty(projectId))
                 return new List<LanguageItem>();
 
             var languages = await _cloudMediaService.GetLanguageAsync(

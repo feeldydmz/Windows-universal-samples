@@ -16,7 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             InitializeComponent();
         }
-        
+
         private void OnLogoutRequested(SignIn.CreateSignInViewMessage message)
         {
             CreateSingIn();
@@ -24,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public void CreateSingIn()
         {
-             var signIn = new SignInView();
+            var signIn = new SignInView();
 
             signIn.CloseAction += CloseSingIn;
 

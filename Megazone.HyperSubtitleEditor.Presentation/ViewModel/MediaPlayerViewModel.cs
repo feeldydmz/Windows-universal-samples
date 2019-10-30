@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Xml.Serialization;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Extension;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
@@ -32,6 +29,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private CancellationTokenSource _cancellationTokenSource;
 
         private IList<IText> _currentPositionText;
+        private VideoResolutionInfo _currentResolution;
+        private MediaKind _currentVideoType;
         private ICommand _dropToSetMediaCommand;
         private bool _hasAudioOnly;
         private string _mediaSource;
@@ -40,17 +39,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _playStateChangedCommand;
 
         private ICommand _positionChangedCommand;
-
-        private IEnumerable<MediaKind> _videoTypes;
         private IEnumerable<VideoResolutionInfo> _resolutions;
-        private VideoResolutionInfo _currentResolution;
-        private MediaKind _currentVideoType;
 
         private int _seekCount;
+        private int _streamIndex;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
         private MediaHeaderData _videoData;
-        private int _streamIndex;
+
+        private IEnumerable<MediaKind> _videoTypes;
 
         public MediaPlayerViewModel(Action<decimal> onMediaPositionChanged,
             Action<MediaPlayStates> onMediaPlayStateChanged)
@@ -148,7 +145,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 VideoUrlOfResolutions = VideoResolutionsByType[_currentVideoType];
                 Resolutions = VideoUrlOfResolutions.Keys;
 
-                if(!Resolutions.IsNullOrEmpty())
+                if (!Resolutions.IsNullOrEmpty())
                     CurrentResolution = Resolutions.First();
             }
         }
@@ -184,7 +181,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public Dictionary<VideoResolutionInfo, string> VideoUrlOfResolutions { get; private set; }
 
-        public Dictionary<MediaKind, Dictionary<VideoResolutionInfo, string>> VideoResolutionsByType { get; private set; }
+        public Dictionary<MediaKind, Dictionary<VideoResolutionInfo, string>> VideoResolutionsByType
+        {
+            get;
+            private set;
+        }
 
         private McmWorkContext WorkContext { get; set; }
 
@@ -192,6 +193,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         ///     Binding Mode: One way to source
         /// </summary>
         public decimal CurrentMediaPosition { get; set; }
+
+        // TODO : Video 를 받아 처리하도록 개선 필요.
+        public bool IsLocalFile { get; set; }
 
         private void OnMediaPlayStateChanged(MediaPlayStates state)
         {
@@ -217,8 +221,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        // TODO : Video 를 받아 처리하도록 개선 필요.
-        public bool IsLocalFile { get; set; }
         public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
         {
             WorkContext = mcmWorkContext;
@@ -249,11 +251,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var codec = videoHeaderData.VideoCodec.Split('_').Last();
 
                 foreach (var item in videoHeaderData.MpegDashStreamIndex)
-                {
                     resolutionItem.Add(new VideoResolutionInfo(item.Value.Width, item.Value.Height, codec), filePath);
-                }
 
-                VideoResolutionsByType.Add(new MediaKind(videoHeaderData.VideoKindName.ToUpper(), filePath), resolutionItem);
+                VideoResolutionsByType.Add(new MediaKind(videoHeaderData.VideoKindName.ToUpper(), filePath),
+                    resolutionItem);
 
                 VideoTypes = VideoResolutionsByType.Keys;
 
@@ -261,29 +262,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public void OpenMedia(String firstFilePath, bool isLocalFile, VideoResolutionInfo resolution = null)
+        public void OpenMedia(string firstFilePath, bool isLocalFile, VideoResolutionInfo resolution = null)
         {
             MediaSource = firstFilePath;
-            
+
             var videoHeaderData = GetVideoHeaderData(firstFilePath);
 
             if (!isLocalFile)
-            {
                 //MPEG-DASH 재생 해상도의 인덱스를 구한다
                 if (videoHeaderData?.MpegDashStreamIndex != null && resolution != null)
-                {
                     try
                     {
                         var indexValue =
-                            videoHeaderData.MpegDashStreamIndex.Single(item => item.Value.Height.Equals(resolution.Height));
+                            videoHeaderData.MpegDashStreamIndex.Single(item =>
+                                item.Value.Height.Equals(resolution.Height));
                         StreamIndex = indexValue.Key;
                     }
                     catch (InvalidOperationException ex)
                     {
                         _logger.Error.Write(ex.Message);
                     }
-                }
-            }
 
             LoadMediaItem(firstFilePath, isLocalFile, videoHeaderData);
         }

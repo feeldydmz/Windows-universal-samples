@@ -8,9 +8,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     /// </summary>
     internal class CaptionElementItemViewModel : ViewModelBase
     {
-        private bool _isDraft;
-
         private bool _canDeploy;
+        private bool _isDraft;
         private bool _isPreferred;
         private bool _isSelected;
 

@@ -11,9 +11,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private CaptionAssetItemViewModel _captionAssetItem;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
+        private bool _hasLink;
 
         private bool _isVideoInfoVisibility;
-        private bool _hasLink;
         private string _url;
         private VideoItemViewModel _videoItem;
 

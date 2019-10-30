@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu.RecentlyMenuView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:item="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
              xmlns:leftMenuView="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}">
@@ -17,13 +17,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
-                <ResourceDictionary Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
-            
+
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -36,20 +38,21 @@
                     <RowDefinition Height="20" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}" Margin="20, 0"/>
+                <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}" Margin="20, 0" />
                 <ItemsControl x:Name="RecentlyItemControl" Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type item:RecentlyItem}">
                             <Button Width="350"
-                                Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}" 
-                                CommandParameter="{Binding}">
+                                    Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}"
+                                    CommandParameter="{Binding}">
                                 <Button.Style>
                                     <Style TargetType="Button">
                                         <Setter Property="UseLayoutRounding" Value="True" />
                                         <Setter Property="SnapsToDevicePixels" Value="True" />
-                                        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                        <Setter Property="FocusVisualStyle"
+                                                Value="{DynamicResource Style_DefaultFocusVisual}" />
                                         <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
                                         <Setter Property="Padding" Value="0" />
                                         <Setter Property="Background" Value="Transparent" />
@@ -62,8 +65,8 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type Button}">
-                                                    <Border CornerRadius="2" Background="{TemplateBinding Background}" 
-                                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                                    <Border CornerRadius="2" Background="{TemplateBinding Background}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
                                                             BorderBrush="{TemplateBinding BorderBrush}">
                                                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -102,20 +105,25 @@
                                     </Grid.RowDefinitions>
 
                                     <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
-                                        <Image 
-                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png" Width="16" Height="16"
-                                        Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        <Image
+                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png"
+                                            Width="16" Height="16"
+                                            Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                                        <Image Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                        <Image
+                                            Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                                             <Image.Style>
                                                 <Style TargetType="Image">
-                                                    <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_projet_file_small.jpg"/>
+                                                    <Setter Property="Source"
+                                                            Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_projet_file_small.jpg" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Path=Format}" Value="VTT">
-                                                            <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_vtt_small.png"/>
+                                                            <Setter Property="Source"
+                                                                    Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_vtt_small.png" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Path=Format}" Value="EXCEL">
-                                                            <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_excel_small.png"/>
+                                                            <Setter Property="Source"
+                                                                    Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_excel_small.png" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -123,24 +131,30 @@
                                         </Image>
                                     </Grid>
 
-                                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=FirstName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=FirstId}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=FirstName}"
+                                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                               HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=FirstId}"
+                                               VerticalAlignment="Center" />
 
-                                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=SecondName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=SecondId}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=SecondName}"
+                                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                               HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=SecondId}"
+                                               VerticalAlignment="Center" />
                                 </Grid>
                             </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <TextBlock x:Name="EmptyListBlock"
-                           Grid.Row="2" 
+                           Grid.Row="2"
                            Foreground="#545871"
                            Text="{Binding Source={x:Null}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            FontSize="15"
-                           Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
+                           Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
             </Grid>
         </Border>
     </Grid>
