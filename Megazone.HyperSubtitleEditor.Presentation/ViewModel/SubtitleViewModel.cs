@@ -1041,6 +1041,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.Main.LoadingManager.Hide();
             _subtitleListItemValidator.IsEnabled = true;
             _subtitleListItemValidator.Validate(SelectedTab?.Rows);
+
             CommandManager.InvalidateRequerySuggested();
 
             async Task<Dictionary<string, string>> LoadCaptionTextListAsync()
@@ -1084,6 +1085,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MediaPlayer.InitMedia(WorkContext, false);
 
             _browser.Main.LoadingManager.Hide();
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private string CheckConflictLabel(string label)

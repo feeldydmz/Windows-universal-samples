@@ -282,6 +282,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsLoading = false;
                 _browser.Main.LoadingManager.Hide();
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private async void Deploy(CloudMedia.DeployRequestedMessage message)
