@@ -294,7 +294,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (string.IsNullOrEmpty(videoAssetId))
                 return;
 
-            var authorization = _signInViewModel.GetAuthorization();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage?.Id;
             var projectId = _signInViewModel.SelectedStage?.Id;
 
@@ -354,7 +354,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 SelectedVideoItem = null;
 
-                var authorization = _signInViewModel.GetAuthorization();
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
 

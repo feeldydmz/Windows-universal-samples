@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Repository;
@@ -49,7 +50,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _config = ConfigHolder.Current;
 
             UriSource = "about:blank";
-//            _authorization = LoadAuthorization();
         }
 
         internal string AuthorizationFilePath => $"{Path.GetTempPath()}subtitleAuthorization.dat";
@@ -128,11 +128,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SaveAuthorization();
         }
 
-        public AuthorizationInfo GetAuthorization()
+        public async Task<AuthorizationInfo> GetAuthorizationAsync()
         {
             if (CheckExpireTime())
             {
-                RefreshAuthorizationAsync();
+                await RefreshAuthorizationAsync();
             }
             // 유효성 검사.
             // 유효한 토큰인지 확인한다.
@@ -181,8 +181,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
         
-//        private DateTime ExpireTimeForAccessToken { get; set; }
-
         public bool CheckExpireTime()
         {
             if (_authorization != null && _authorization.ExpiresTime < DateTime.Now)
@@ -193,7 +191,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return false;
         }
 
-        public async void RefreshAuthorizationAsync()
+        public async Task RefreshAuthorizationAsync()
         {
             try
             {
@@ -216,7 +214,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 IsBusy = true;
-                var user = await _cloudMediaService.GetUserAsync(_authorization, CancellationToken.None);
+
+                var authorization = await GetAuthorizationAsync();
+
+                var user = await _cloudMediaService.GetUserAsync(authorization, CancellationToken.None);
 
                 // 유저 인증 실패 401
                 if (user == null)

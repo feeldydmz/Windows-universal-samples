@@ -194,7 +194,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _browser.Main.LoadingManager.Show();
                 try
                 {
-                    var authorization = _signInViewModel.GetAuthorization();
+                    var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                     var stageId = _signInViewModel.SelectedStage?.Id;
                     var projectId = _signInViewModel.SelectedProject?.ProjectId;
                     var assetId = message.CaptionAsset?.Id;
@@ -239,7 +239,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.Main.LoadingManager.Show();
             try
             {
-                var authorization = _signInViewModel.GetAuthorization();
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
                 var videoId = requestedMessage.Param.Video?.Id;
@@ -394,7 +394,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             try
             {
-                var authorization = _signInViewModel.GetAuthorization();
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
                 var uploadInputPath = await GetUploadInputPathAsync();
@@ -548,7 +548,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public Task<Settings> GetMcmSettingAsync()
         {
-            var authorization = _signInViewModel.GetAuthorization();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
             return _cloudMediaService.GetSettingsAsync(new GetSettingsParameter(authorization, stageId, projectId),
@@ -570,7 +570,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (string.IsNullOrEmpty(captionAssetId))
                 return null;
 
-            var authorization = _signInViewModel.GetAuthorization();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
             return await _cloudMediaService.GetCaptionAssetAsync(
@@ -582,7 +582,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (string.IsNullOrEmpty(videoId))
                 return null;
 
-            var authorization = _signInViewModel.GetAuthorization();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
             return await _cloudMediaService.GetVideoAsync(

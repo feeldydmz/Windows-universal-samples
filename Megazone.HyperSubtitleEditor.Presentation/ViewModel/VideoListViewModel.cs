@@ -332,7 +332,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return SelectedVideoItem != null;
         }
 
-        //TODO: NextStep 대신 caption으로 전환하는 것으로.
         private void NextStep()
         {
             if (SelectedVideoItem != null) LoadCaptionAsync(SelectedVideoItem);
@@ -448,7 +447,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (videoItem.CanUpdate)
                 {
                     videoItem?.CaptionAssetItems?.Clear();
-                    var authorization = _signInViewModel.GetAuthorization();
+                    var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                     var stageId = _signInViewModel.SelectedStage?.Id;
                     var projectId = _signInViewModel.SelectedProject.ProjectId;
 
@@ -541,7 +540,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var authorization = _signInViewModel.GetAuthorization();
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
 

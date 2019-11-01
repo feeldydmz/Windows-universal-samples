@@ -55,7 +55,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private List<StageItemViewModel> _stageItems;
         private ICommand _stagePerPageNumberChangedCommand;
         private int _stageTotal;
-        private ICommand _startProjectCommand;
         private int _totalPage;
         private ICommand _unloadCommand;
 
@@ -164,21 +163,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isLoadingProjectPage, value);
         }
 
-        public ICommand StartProjectCommand
-        {
-            get
-            {
-                return _startProjectCommand =
-                    _startProjectCommand ?? new RelayCommand(RefreshTest);
-            }
-        }
-
         public ICommand SelectProjectCommand
         {
             get
             {
-                //return _selectProjectCommand =
-                //    _selectProjectCommand ?? new RelayCommand<ProjectItemViewModel>(SelectProject);
                 return _selectProjectCommand =
                     _selectProjectCommand ?? new RelayCommand<ProjectItemViewModel>(StartProject);
             }
@@ -210,7 +198,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _leftSlideNavigateCommand ?? new RelayCommand<string>(NavigateLeft);
             }
         }
-
         public ICommand RightSlideNavigateCommand
         {
             get { return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(NavigateRight); }
@@ -221,7 +208,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isBusy;
             set => Set(ref _isBusy, value);
         }
-
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
@@ -241,12 +227,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void RefreshTest()
-        {
-            _signInViewModel.RefreshAuthorizationAsync();
-        }
-
-
+        
         private void Load()
         {
             RegisterMessageHandlers();
@@ -487,7 +468,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsProjectViewVisible = true;
 
                 var stages =
-                    await _cloudMediaService.GetStagesAsync(new GetStagesParameter(_signInViewModel.GetAuthorization()),
+                    await _cloudMediaService.GetStagesAsync(new GetStagesParameter(_signInViewModel.GetAuthorizationAsync().Result),
                         CancellationToken.None);
 
                 StageItems = stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
@@ -498,7 +479,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var stageItem in StageItems)
                 {
                     var projects = await _cloudMediaService.GetProjectsAsync(
-                        new GetProjectsParameter(_signInViewModel.GetAuthorization(), stageItem.Id, stageItem.Name),
+                        new GetProjectsParameter(_signInViewModel.GetAuthorizationAsync().Result, stageItem.Id, stageItem.Name),
                         CancellationToken.None);
 
                     if (projects == null || projects.TotalCount == 0)

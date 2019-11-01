@@ -49,7 +49,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void LoadAsync()
         {
-            var authorization = _signInViewModel.GetAuthorization();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
 
