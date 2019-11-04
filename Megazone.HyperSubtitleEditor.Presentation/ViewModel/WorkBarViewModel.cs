@@ -333,8 +333,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             // [resource]
                         {
                             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR,
-                                "저장을 실패하였습니다.\n관리자에게 문의하십시오.",
-                                MessageBoxButton.OK));
+                                Resource.MSG_SAVE_FAIL,
+                                MessageBoxButton.OK,
+                                Application.Current.MainWindow));
                         }
                     });
             }

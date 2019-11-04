@@ -764,4 +764,19 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="CNT_MAKE_NEW_CAPTION" xml:space="preserve">
     <value>Make New Caption</value>
   </data>
+  <data name="CNT_LANGUAGE_SETTING" xml:space="preserve">
+    <value>Language Setting</value>
+  </data>
+  <data name="MSG_CHANGE_LANGUAGE" xml:space="preserve">
+    <value>The language will be applied after a restart.
+Would you like to restart now?</value>
+  </data>
+  <data name="MSG_PRGRAM_ENDS_IN_PROGRESS" xml:space="preserve">
+    <value>There is work in progress.
+Do you want to the program ends?</value>
+  </data>
+  <data name="MSG_THERE_IS_WORK_IN_PROGRESS" xml:space="preserve">
+    <value>There is work in progress. 
+Continue?</value>
+  </data>
 </root>

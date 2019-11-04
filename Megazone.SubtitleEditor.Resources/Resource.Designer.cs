@@ -835,6 +835,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Language Setting과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_LANGUAGE_SETTING {
+            get {
+                return ResourceManager.GetString("CNT_LANGUAGE_SETTING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Asset과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_LEFT_SIDE_MENU_ASSET {
@@ -1654,6 +1663,16 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   The language will be applied after a restart.
+        ///Would you like to restart now?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CHANGE_LANGUAGE {
+            get {
+                return ResourceManager.GetString("MSG_CHANGE_LANGUAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Please try again after checking elastic transcoder authorization.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY {
@@ -1874,6 +1893,16 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   There is work in progress.
+        ///Do you want to the program ends?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_PRGRAM_ENDS_IN_PROGRESS {
+            get {
+                return ResourceManager.GetString("MSG_PRGRAM_ENDS_IN_PROGRESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   24 hour operation과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_PROJECT_EMPTY_CLOUD_INQUIRY_CALL {
@@ -1979,6 +2008,16 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_SET_AS_DEFAULT {
             get {
                 return ResourceManager.GetString("MSG_SET_AS_DEFAULT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   There is work in progress. 
+        ///Continue?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_THERE_IS_WORK_IN_PROGRESS {
+            get {
+                return ResourceManager.GetString("MSG_THERE_IS_WORK_IN_PROGRESS", resourceCulture);
             }
         }
         

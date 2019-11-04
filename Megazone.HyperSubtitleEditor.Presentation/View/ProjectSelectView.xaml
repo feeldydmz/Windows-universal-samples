@@ -706,18 +706,18 @@
                             Style="{StaticResource Style_Button_Right_Arrow}"
                             Command="{Binding Path=StartProjectCommand}"
                             Content="{x:Static resources:Resource.CNT_PROJECT_START}" />-->
-                    <mz:ImageButton Grid.Column="3"
-                                    Command="{Binding StartProjectCommand}"
-                                    ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
-                                    Background="Transparent"
-                                    NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
-                                    PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png"
-                                    MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png"
-                                    DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png"
-                                    Style="{StaticResource Style_TransparentImageButton}"
-                                    Width="25"
-                                    Height="25"
-                                    Margin="10,0,0,0" />
+                    <!-- <mz:ImageButton Grid.Column="3" -->
+                    <!--                 Command="{Binding StartProjectCommand}" -->
+                    <!--                 ToolTip="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}" -->
+                    <!--                 Background="Transparent" -->
+                    <!--                 NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png" -->
+                    <!--                 PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_act.png" -->
+                    <!--                 MouseOverImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_hov.png" -->
+                    <!--                 DisabledImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_dis.png" -->
+                    <!--                 Style="{StaticResource Style_TransparentImageButton}" -->
+                    <!--                 Width="25" -->
+                    <!--                 Height="25" -->
+                    <!--                 Margin="10,0,0,0" /> -->
 
 
                 </Grid>

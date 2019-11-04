@@ -27,5 +27,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
         void ShowMcmDeployConfirmDialog(Video video, CaptionAsset captionAsset, IEnumerable<Caption> captions, string linkUrl);
         void SetWindowTitle(string title);
         void ShowAssetEditorDialog(CaptionAsset captionAsset = null);
+        void RestartMainWindow();
     }
 }

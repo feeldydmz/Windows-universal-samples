@@ -44,7 +44,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             {
                 var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                     Resource.MSG_LOAD_GROUP_FILE,
-                    MessageBoxButton.OKCancel));
+                    MessageBoxButton.OKCancel, 
+                    Application.Current.MainWindow));
 
                 if (result == MessageBoxResult.Cancel)
                     return;
@@ -66,7 +67,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                         var message =
                             $"'{group.Stage.Name}' 스테이지의 '{group.Project.Name}' 프로젝트에서 오픈할 수 있습니다.프로젝트를 변경한 후 데이터를 불러오십시오.";
                         if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WAITING, message,
-                                MessageBoxButton.OK, TextAlignment.Left)) == MessageBoxResult.OK)
+                                MessageBoxButton.OK, 
+                                Application.Current.MainWindow,
+                                TextAlignment.Left)) == MessageBoxResult.OK)
                             return;
                     }
 
@@ -79,8 +82,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 _logger.Error.Write(ex.Message);
                 // [resource]
                 var errorMessage = "알 수 없는 오류로 파일 불러오기를 실패 하였습니다. 관리자에게 문의하십시오.";
-                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, errorMessage,
-                    MessageBoxButton.OK));
+                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, 
+                    errorMessage,
+                    MessageBoxButton.OK,
+                    Application.Current.MainWindow));
             }
         }
 

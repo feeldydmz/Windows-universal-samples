@@ -9,7 +9,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              Background="{DynamicResource Brush_CommonBackground}"
              Foreground="{DynamicResource Brush_CommonForeground}"
-             Width="430" Height="515"
+             Width="430" Height="580"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Setting}">
 
@@ -64,6 +64,9 @@
                             <ColumnDefinition Width="Auto" MinWidth="150" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -157,18 +160,42 @@
                         <Rectangle Grid.Row="8" Grid.ColumnSpan="2" Margin="0,13" Height="1"
                                    Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
 
+
+                        <!--언어 설정-->
                         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
-                                   Text="{x:Static resources:Resource.CNT_SETTING_VIDEO_PLAYER}" FontWeight="Bold"
+                                   Text="{x:Static resources:Resource.CNT_LANGUAGE_SETTING}" FontWeight="Bold"
                                    Margin="0,0,0,10" />
 
                         <TextBlock Grid.Row="10" Grid.Column="0"
+                                   Text="{Binding Source={x:Static resources:Resource.CNT_LANGUAGE}, StringFormat='{}{0} : '}" />
+
+                        <ComboBox Grid.Row="10" Grid.Column="1" 
+                                  ItemsSource="{Binding LanguageOptions}"
+                                  SelectedItem="{Binding LanguageSelectedItem}"
+                                  >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Display}" Foreground="#333333" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Rectangle Grid.Row="11" Grid.ColumnSpan="2" Margin="0,13" Height="1"
+                                   Fill="{StaticResource Brush_GrayBoxBorderBrush}" />
+
+                        <!-- 동영상 플레이어 설정 -->
+                        <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Text="{x:Static resources:Resource.CNT_SETTING_VIDEO_PLAYER}" FontWeight="Bold"
+                                   Margin="0,0,0,10" />
+
+                        <TextBlock Grid.Row="13" Grid.Column="0"
                                    Text="{Binding Source={x:Static resources:Resource.CNT_BUFFERING_TIME}, StringFormat='{}{0} : '}" />
 
-                        <mz:Spinner Grid.Row="10" Grid.Column="1" Minimum="1" Maximum="10" Width="Auto"
+                        <mz:Spinner Grid.Row="13" Grid.Column="1" Minimum="1" Maximum="10" Width="Auto"
                                     HorizontalAlignment="Stretch"
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
 
-                        <Border Grid.Row="11" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
+                        <Border Grid.Row="14" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
                                 CornerRadius="3" Padding="10,8" VerticalAlignment="Bottom">
                             <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap"
                                        Text="{x:Static resources:Resource.MSG_VIDEO_PLAY_CONDITION}" />
@@ -200,7 +227,7 @@
                 <Button Grid.Column="2" Content="{x:Static resources:Resource.CNT_APPLY}"
                         Command="{Binding ApplyCommand}" />
                 <Button Grid.Column="4" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True"
-                        Command="{Binding SaveCommand}" Click="ButtonBase_OnClick" />
+                        Command="{Binding ConfirmCommand}" Click="ButtonBase_OnClick" />
                 <Button Grid.Column="6" Content="{x:Static resources:Resource.CNT_CANCEL}" IsCancel="True"
                         Click="ButtonBase_OnClick" />
             </Grid>

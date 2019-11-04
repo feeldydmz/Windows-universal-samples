@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
@@ -317,17 +319,47 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
 
+        public void RestartMainWindow()
+        {
+            var browser = Bootstrapper.Container.Resolve<IBrowser>();
+            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+
+            if (subtitle.CheckWorkInProgress())
+            {
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                        Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
+                        MessageBoxButton.OKCancel,
+                        Application.Current.MainWindow,
+                        TextAlignment.Center)) == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            if (Application.Current.MainWindow != null)
+            {
+                Application.Current.MainWindow.Closing -= MainWindow_Closing;
+
+                var applicationPath = this.StartUpPath() + this.GetApplicationName();
+
+                // 강제 종료시키고, 재실행하도록 한다.
+                if (Application.Current.MainWindow != null)
+                    Application.Current.MainWindow.Close();
+                Process.Start(applicationPath, "-r");
+            }
+        }
+
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             var browser = Bootstrapper.Container.Resolve<IBrowser>();
             var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
-            if (subtitle.HasTab && subtitle.Tabs.Any(tab => tab.CheckDirty()))
+            if (subtitle.CheckWorkInProgress())
             {
-                //[resource]
-                var message = "편집 내용이 있습니다. \n작업 중인 자막을 저장하지 않으면 작업된 정보가 모두 사라집니다.\n계속 진행하시겠습니까?";
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, message,
-                        MessageBoxButton.OKCancel, TextAlignment.Left)) == MessageBoxResult.Cancel)
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
+                        MessageBoxButton.OKCancel,
+                        Application.Current.MainWindow,
+                        TextAlignment.Center)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
             }
         }

@@ -188,8 +188,10 @@ namespace Megazone.Cloud.Media.Repository
             foreach (var condition in request.SearchConditions)
                 restRequest.AddQueryParameter(condition.Key, condition.Value);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint)
-                .Execute(restRequest).Convert<VideoListResponse>();
+            var response =RestSharpExtension.CreateRestClient(request.Endpoint)
+                .Execute(restRequest);
+
+            return response.Convert<VideoListResponse>();
         }
 
         public TAsset UpdateAsset<TAsset>(AssetRequest<TAsset> request)

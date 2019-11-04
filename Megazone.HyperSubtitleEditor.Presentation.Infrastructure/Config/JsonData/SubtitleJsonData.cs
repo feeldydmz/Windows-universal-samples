@@ -11,5 +11,6 @@
         public double MinGapMilliseconds { get; set; } = 100;
         public int MediaBufferingSeconds { get; set; } = 5;
         public bool AutoLogin { get; set; } = false;
+        public string Language { get; set; } = "";
     }
 }

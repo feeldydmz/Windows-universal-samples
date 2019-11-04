@@ -295,8 +295,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     // [resource].
                     var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(
                         Resource.CNT_WARNING,
-                        "프로젝트가 변경됩니다.\r\n이 작업으로 인해 기존 양식의 데이터를 손실 할 수 있습니다.\r\n\r\n계속하시겠습니까?",
-                        MessageBoxButton.OKCancel));
+                        Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+                        MessageBoxButton.OKCancel,
+                        Application.Current.MainWindow));
 
                     if (result == MessageBoxResult.Cancel)
                         return;

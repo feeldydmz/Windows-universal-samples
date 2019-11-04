@@ -335,7 +335,7 @@
                                     </StackPanel>
                                     <Button Grid.Column="2"
                                             Style="{StaticResource Style_IconMenuButton}"
-                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                            ToolTip="{x:Static resources:Resource.CNT_RESET}"
                                             Command="{Binding RefreshCommand}">
                                         <Grid>
                                             <Image

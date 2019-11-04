@@ -6,11 +6,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View
     public class ConfirmWindowParameter
     {
         public ConfirmWindowParameter(string windowTitle, string message, MessageBoxButton buttonType,
-            TextAlignment textAlignment = TextAlignment.Center)
+            Window winOwner = null,
+            TextAlignment textAlignment = TextAlignment.Center
+            )
         {
             Message = message;
             WindowTitle = windowTitle;
             ButtonType = buttonType;
+            WindowOwner = winOwner;
             TextAlignment = textAlignment;
         }
 

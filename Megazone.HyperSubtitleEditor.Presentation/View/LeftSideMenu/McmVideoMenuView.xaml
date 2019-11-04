@@ -443,7 +443,7 @@
                             <Grid
                                 Visibility="{Binding ElementName=VideoListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                                 <TextBlock
-                                    Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
@@ -667,7 +667,7 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                                 <TextBlock
-                                                    Text="{Binding Source={x:Static resources:Resource.CNT_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                                     Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
                                                     VerticalAlignment="Center" HorizontalAlignment="Center"
                                                     TextAlignment="Center" />

@@ -219,6 +219,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _videoItem, value);
         }
 
+        public bool CheckWorkInProgress()
+        {
+            if (HasTab && Tabs.Any(tab => tab.CheckDirty()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool HasTab => Tabs?.Any() ?? false;
 
         public int SelectedTabRowsCount => SelectedTab?.Rows?.Count ?? 0;
@@ -899,7 +909,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                             Resource.MSG_SAVE_SUCCESS,
-                            MessageBoxButton.OK));
+                            MessageBoxButton.OK,
+                            Application.Current.MainWindow));
                     });
             }
             catch (Exception ex)
@@ -910,7 +921,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                             Resource.MSG_SAVE_FAIL,
-                            MessageBoxButton.OK));
+                            MessageBoxButton.OK,
+                            Application.Current.MainWindow));
                     });
             }
             finally
@@ -948,7 +960,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                             Resource.MSG_SAVE_FAIL,
-                            MessageBoxButton.OK));
+                            MessageBoxButton.OK,
+                            Application.Current.MainWindow));
                     });
             }
             finally
@@ -957,7 +970,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
-                MessageBoxButton.OK));
+                MessageBoxButton.OK,
+                Application.Current.MainWindow));
         }
 
         internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
@@ -1179,7 +1193,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
                             Resource.MSG_NO_PRINTABLE_CONTENTS,
-                            MessageBoxButton.OK));
+                            MessageBoxButton.OK,
+                            Application.Current.MainWindow));
                         _browser.Main.LoadingManager.Hide();
                     });
 

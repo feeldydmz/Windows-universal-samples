@@ -88,7 +88,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                         else
                             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                                 Resource.MSG_EXPORT_EXCEL_FILE_FAIL,
-                                MessageBoxButton.OK));
+                                MessageBoxButton.OK,
+                                Application.Current.MainWindow));
 
                         _browser.Main.LoadingManager.Hide();
                     });

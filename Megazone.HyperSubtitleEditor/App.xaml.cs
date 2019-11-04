@@ -6,6 +6,8 @@ using System.Threading;
 using System.Windows;
 using Megazone.Core.Log;
 using Megazone.Core.Windows;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
+using Megazone.SubtitleEditor.Resources;
 using Unity;
 using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
@@ -21,6 +23,17 @@ namespace Megazone.HyperSubtitleEditor
         public App()
         {
 
+            
+
+            if (ConfigHolder.Current != null)
+            {
+                if (!string.IsNullOrEmpty(ConfigHolder.Current.Subtitle.Language))
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(ConfigHolder.Current.Subtitle.Language);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(ConfigHolder.Current.Subtitle.Language);
+                    Resource.Culture = new CultureInfo(ConfigHolder.Current.Subtitle.Language);
+                }
+            }
             //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
             new Bootstrapper().Initialize();

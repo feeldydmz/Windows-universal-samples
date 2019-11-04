@@ -476,10 +476,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
                 {
-                    // [resource]
-                    var message = "편집 내용이 있습니다. 열려진 탭을 모두 닫고, 선택된 자막으로 오픈됩니다.\n계속 진행하시겠습니까?";
-                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING, message,
-                            MessageBoxButton.OKCancel)) == MessageBoxResult.Cancel)
+                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING, 
+                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+                            MessageBoxButton.OKCancel, 
+                            Application.Current.MainWindow)) == MessageBoxResult.Cancel)
                         return;
                 }
 
