@@ -13,7 +13,7 @@
         mc:Ignorable="d" UseLayoutRounding="True" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen"
         Width="590" Height="260"
         x:Name="OpenVideoWindow"
-        Title="{x:Static resources:Resource.CNT_OPEN_WITH_FILE_ADDRESS}" ResizeMode="NoResize"
+        Title="{x:Static resources:Resource.CNT_OPEN_VIDEO}" ResizeMode="NoResize"
         DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=OpenVideoAsset}"
         SizeToContent="Height">
 
