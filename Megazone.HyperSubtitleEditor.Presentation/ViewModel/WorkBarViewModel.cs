@@ -563,7 +563,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public bool CanImportFile()
         {
-            return VideoItem != null || CaptionAssetItem != null;
+            return true;
+//            return VideoItem != null || CaptionAssetItem != null;
         }
 
         public async Task<CaptionAsset> GetCaptionAssetAsync(string captionAssetId)
