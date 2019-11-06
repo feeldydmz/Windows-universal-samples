@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnLoaded()
         {
-            FilePath = InitialFilePath;
+            FilePath = InitialFilePath; 
             Open(FilePath);
         }
 

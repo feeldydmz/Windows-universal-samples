@@ -111,6 +111,7 @@
                                             Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                                         <Image
+                                            Width="16" Height="16"
                                             Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                                             <Image.Style>
                                                 <Style TargetType="Image">

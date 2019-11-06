@@ -191,7 +191,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public DisplayItem SelectedCaptionKindItem
         {
             get => _selectedCaptionKindItem;
-            set => Set(ref _selectedCaptionKindItem, value);
+            set
+            {
+                Set(ref _selectedCaptionKindItem, value); 
+
+            }
         }
 
         public string Keyword

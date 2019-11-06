@@ -48,6 +48,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ExcelService _excelService;
         private readonly FileManager _fileManager;
         private readonly ILogger _logger;
+        private readonly RecentlyLoader _recentlyLoader;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
         private readonly IList<Caption> _removedCaptions = new List<Caption>();
@@ -85,7 +86,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ExcelService excelService,
             SubtitleListItemValidator subtitleListItemValidator,
             IBrowser browser,
-            ICloudMediaService cloudMediaService)
+            ICloudMediaService cloudMediaService,
+            RecentlyLoader recentlyLoader)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -95,6 +97,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _cloudMediaService = cloudMediaService;
             _subtitleListItemValidator = subtitleListItemValidator;
             _browser = browser;
+            _recentlyLoader = recentlyLoader;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext();
@@ -1151,6 +1154,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             _subtitleListItemValidator.IsEnabled = true;
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
+
+            if (param.FilePath.IsNotNullAndAny())
+            {
+                _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
+                    .SetFormat("VTT").Create());
+            }
+
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -1236,6 +1246,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _browser.Main.LoadingManager.Hide();
                 });
             });
+
+            _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(filePath).SetFormat("EXCEL").Create());
         }
 
         private void OnCopySubtitle(Subtitle.CopyTabMessage message)

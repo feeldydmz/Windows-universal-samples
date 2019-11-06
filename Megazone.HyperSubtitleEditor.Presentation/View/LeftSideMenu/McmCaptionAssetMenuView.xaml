@@ -60,6 +60,7 @@
                                         <Style TargetType="{x:Type TextBox}">
                                             <Setter Property="Padding" Value="3,0,0,0" />
                                             <Setter Property="Foreground" Value="Transparent" />
+                                            <Setter Property="Padding" Value="8,0,0,0"/>
                                             <Style.Triggers>
                                                 <DataTrigger
                                                     Binding="{Binding Path=Text, Source={x:Reference textSource}}"
@@ -154,7 +155,7 @@
 
                         <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
                                                   MyItemsSource="{Binding Path=CaptionKindItems}"
-                                                  MySelectedItem="{Binding Path=SelectedCaptionKindItem}"
+                                                  MySelectedItem="{Binding Path=SelectedCaptionKindItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   DefaultText="{x:Static resources:Resource.CNT_KIND}"
                                                   Foreground="#333333">
                             <custom:PlaceholdCombobox.MyDataTemplate>
@@ -163,6 +164,16 @@
                                 </DataTemplate>
                             </custom:PlaceholdCombobox.MyDataTemplate>
                         </custom:PlaceholdCombobox>
+                        <!-- <ComboBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" -->
+                        <!--                           ItemsSource="{Binding Path=CaptionKindItems}" -->
+                        <!--                           SelectedItem="{Binding Path=SelectedCaptionKindItem}" -->
+                        <!--                           Foreground="#333333"> -->
+                        <!--     <ComboBox.ItemTemplate> -->
+                        <!--         <DataTemplate DataType="{x:Type itemVm:DisplayItem}"> -->
+                        <!--             <TextBlock Text="{Binding Path=Display}" /> -->
+                        <!--         </DataTemplate> -->
+                        <!--     </ComboBox.ItemTemplate> -->
+                        <!-- </ComboBox> -->
 
                         <!--Label 검색-->
                         <TextBlock Grid.Column="0" Grid.Row="4"
@@ -184,9 +195,8 @@
                         </TextBox>
 
                         <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6"
-
                                                   MyItemsSource="{Binding Path=Languages}"
-                                                  MySelectedItem="{Binding Path=SelectedLanguage}"
+                                                  MySelectedItem="{Binding Path=SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   MyDataTemplateSelector="{StaticResource LanguageItemTemplateSelector}"
                                                   DefaultText="{x:Static resources:Resource.CNT_LANGUAGE}"
                                                   Foreground="#333333" />

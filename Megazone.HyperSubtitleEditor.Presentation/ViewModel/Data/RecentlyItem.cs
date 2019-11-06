@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Newtonsoft.Json;
@@ -141,8 +142,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             public override RecentlyItem Create()
             {
                 var recently = base.Create();
+                recently.IsOnLine = false;
                 recently.LocalFileFullPath = _localFileFullPath;
                 recently.Format = _format;
+
+                recently.FirstName = Path.GetFileNameWithoutExtension(recently.LocalFileFullPath); ;
+                recently.SecondName = recently.LocalFileFullPath;
+
                 return recently;
             }
 

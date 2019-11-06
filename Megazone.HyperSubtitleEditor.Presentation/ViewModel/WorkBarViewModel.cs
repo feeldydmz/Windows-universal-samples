@@ -170,9 +170,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
 
 
-            CaptionAssetItem =
-                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
-                    null));
+//            CaptionAssetItem =
+//                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
+//                    null));
 
             HasWorkData = true;
         }
