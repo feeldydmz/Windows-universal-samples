@@ -63,9 +63,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     if (!_signInViewModel.SelectedStage.Id.Equals(group.Stage?.Id) ||
                         !_signInViewModel.SelectedProject.ProjectId.Equals(group.Project?.Id))
                     {
-                        // [resource]
-                        var message =
-                            $"'{group.Stage.Name}' 스테이지의 '{group.Project.Name}' 프로젝트에서 오픈할 수 있습니다.프로젝트를 변경한 후 데이터를 불러오십시오.";
+                        var message = string.Format(Resource.MSG_CHANGE_PROJECT_WARNING, group.Stage.Name, group.Project.Name);
+                            
                         if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WAITING, message,
                                 MessageBoxButton.OK, 
                                 Application.Current.MainWindow,
@@ -80,10 +79,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             catch (Exception ex)
             {
                 _logger.Error.Write(ex.Message);
-                // [resource]
-                var errorMessage = "알 수 없는 오류로 파일 불러오기를 실패 하였습니다. 관리자에게 문의하십시오.";
+                
                 _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, 
-                    errorMessage,
+                    Resource.MSG_FILE_IMPORT_UNKOWN_ERROR,
                     MessageBoxButton.OK,
                     Application.Current.MainWindow));
             }

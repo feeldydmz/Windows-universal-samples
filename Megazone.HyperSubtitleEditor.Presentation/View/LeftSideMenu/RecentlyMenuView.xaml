@@ -132,16 +132,23 @@
                                         </Image>
                                     </Grid>
 
-                                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=FirstName}"
-                                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                    <TextBlock Grid.Column="2" Grid.Row="0" 
+                                               Text="{Binding Path=FirstName}"
+                                               ToolTip="{Binding Path=FirstName}"
+                                               TextTrimming="CharacterEllipsis" 
+                                               VerticalAlignment="Center"
                                                HorizontalAlignment="Left" />
                                     <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=FirstId}"
                                                VerticalAlignment="Center" />
 
-                                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Path=SecondName}"
-                                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                    <TextBlock Grid.Column="2" Grid.Row="1" 
+                                               Text="{Binding Path=SecondName}"
+                                               ToolTip="{Binding Path=SecondName}"
+                                               TextTrimming="CharacterEllipsis" 
+                                               VerticalAlignment="Center"
                                                HorizontalAlignment="Left" />
-                                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Path=SecondId}"
+                                    <TextBlock Grid.Column="4" Grid.Row="1" 
+                                               Text="{Binding Path=SecondId}"
                                                VerticalAlignment="Center" />
                                 </Grid>
                             </Button>

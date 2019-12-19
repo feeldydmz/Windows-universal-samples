@@ -300,7 +300,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             var wnd = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
-                // [resource]
                 Title = captionAsset == null ? Resource.CNT_MAKE_NEW_ASSET : Resource.CNT_EDIT,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,

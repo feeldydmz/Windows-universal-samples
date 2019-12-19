@@ -43,7 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
             get { return _default = _default ?? LoadDefault(); }
         }
 
-        private static string SavedDirectory => ObjectExtension.AppDataPath() + "\\";
+        private static string SavedDirectory => ObjectExtension.AppDataPath();
         private static string SavedPath => SavedDirectory + "config.json";
         private static string DefaultConfigPath => SavedDirectory + "default_config.json";
 

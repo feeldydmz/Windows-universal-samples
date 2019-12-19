@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
+using Megazone.SubtitleEditor.Resources;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
@@ -45,9 +46,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 {
                     // 메시지 처리.
                     // 게시할수 없음.
-                    // [resource]
                     _browser.ShowConfirmWindow(
-                        new ConfirmWindowParameter("오류", "업로드 설정 정보 조회를 실패하였습니다.\n관리자에게 문의하십시오.",
+                        new ConfirmWindowParameter(Resource.CNT_ERROR, Resource.MSG_UPLOAD_FAIL,
                             MessageBoxButton.OK,
                             Application.Current.MainWindow));
                     return;

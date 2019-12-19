@@ -54,7 +54,7 @@
 ; Finish page
 ;!define MUI_FINISHPAGE_RUN "$INSTDIR\${PROCESS_NAME}"
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_TEXT "Start a shortcut"
+!define MUI_FINISHPAGE_RUN_TEXT "프로그램 바로 실행하기"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
 !define MUI_PAGE_CUSTOMFUNCTION_SHOW "FinishShowCallback"
 !insertmacro MUI_PAGE_FINISH
@@ -552,6 +552,7 @@ Section "MainSection" SEC01
   ReadRegStr $InstalledPath HKLM "${PRODUCT_REGISTRY_SUBKEY}" "${REGISTRY_REGKEY_InstallPath}"
 
   ${If} $CanUpdate == "True"
+	RMDir /r "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}"
     # 현재 설치위치에 있는  설치파일을 삭제한다.
     IfFileExists "$INSTDIR" DeleteCurrentInstallPath InstallContinue
     DeleteCurrentInstallPath:

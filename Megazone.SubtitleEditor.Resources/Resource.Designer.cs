@@ -1673,6 +1673,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   You can open it from the project named {1} in the stage named {0}. Please switch project in order to load the data.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CHANGE_PROJECT_WARNING {
+            get {
+                return ResourceManager.GetString("MSG_CHANGE_PROJECT_WARNING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Please try again after checking elastic transcoder authorization.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY {
@@ -1682,7 +1691,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   에셋 이름/종류 기입 후 저장할 자막을 선택해주세요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Please select captions to save after filling in name and kind fields.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_DEPLOY_AND_CREATE_ASSET_GUIDE {
             get {
@@ -1789,6 +1798,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_EXPORT_EXCEL_FILE_FAIL {
             get {
                 return ResourceManager.GetString("MSG_EXPORT_EXCEL_FILE_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to load the file due to unknown error. Please contact to admin.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_FILE_IMPORT_UNKOWN_ERROR {
+            get {
+                return ResourceManager.GetString("MSG_FILE_IMPORT_UNKOWN_ERROR", resourceCulture);
             }
         }
         
@@ -2018,6 +2036,35 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_THERE_IS_WORK_IN_PROGRESS {
             get {
                 return ResourceManager.GetString("MSG_THERE_IS_WORK_IN_PROGRESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You have unsaved modifications. 
+        ///All opened tabs will be closed, and new tab will be opened for the selected caption. Will you continue?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_UNSAVED_IN_PROGRESS_OPEN_CAPTION {
+            get {
+                return ResourceManager.GetString("MSG_UNSAVED_IN_PROGRESS_OPEN_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You have unsaved modifications. 
+        ///All opened tabs will be closed, and new tab will be opened for the selected video. Will you continue?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_UNSAVED_IN_PROGRESS_OPEN_VIDEO {
+            get {
+                return ResourceManager.GetString("MSG_UNSAVED_IN_PROGRESS_OPEN_VIDEO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to look up an upload configuration. Please contact to admin.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_UPLOAD_FAIL {
+            get {
+                return ResourceManager.GetString("MSG_UPLOAD_FAIL", resourceCulture);
             }
         }
         

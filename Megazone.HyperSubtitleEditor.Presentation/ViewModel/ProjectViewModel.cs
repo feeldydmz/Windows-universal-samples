@@ -292,10 +292,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var isDirty = dirtyTabs != null && dirtyTabs.Any();
                 if (isDirty)
                 {
-                    // [resource].
                     var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(
                         Resource.CNT_WARNING,
-                        Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+                        "변경 내용이 있다~~",
                         MessageBoxButton.OKCancel,
                         Application.Current.MainWindow));
 

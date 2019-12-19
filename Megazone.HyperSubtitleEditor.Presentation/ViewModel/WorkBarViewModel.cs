@@ -330,7 +330,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 message.Param.Captions.ToList(), linkUrl);
                         }
                         else
-                            // [resource]
                         {
                             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR,
                                 Resource.MSG_SAVE_FAIL,

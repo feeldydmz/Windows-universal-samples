@@ -481,7 +481,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
                 {
                     if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING, 
-                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+                            Resource.MSG_UNSAVED_IN_PROGRESS_OPEN_CAPTION,
                             MessageBoxButton.OKCancel, 
                             Application.Current.MainWindow)) == MessageBoxResult.Cancel)
                         return;

@@ -657,7 +657,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
     <value>Publish completed.</value>
   </data>
   <data name="MSG_DEPLOY_AND_CREATE_ASSET_GUIDE" xml:space="preserve">
-    <value>에셋 이름/종류 기입 후 저장할 자막을 선택해주세요.</value>
+    <value>Please select captions to save after filling in name and kind fields.</value>
   </data>
   <data name="MSG_PROJECT_SELECT_PAGE_GUIDE" xml:space="preserve">
     <value>Please select Project of the Stage you want to access</value>
@@ -778,5 +778,22 @@ Do you want to the program ends?</value>
   <data name="MSG_THERE_IS_WORK_IN_PROGRESS" xml:space="preserve">
     <value>There is work in progress. 
 Continue?</value>
+  </data>
+  <data name="MSG_CHANGE_PROJECT_WARNING" xml:space="preserve">
+    <value>You can open it from the project named {1} in the stage named {0}. Please switch project in order to load the data.</value>
+  </data>
+  <data name="MSG_FILE_IMPORT_UNKOWN_ERROR" xml:space="preserve">
+    <value>Failed to load the file due to unknown error. Please contact to admin.</value>
+  </data>
+  <data name="MSG_UNSAVED_IN_PROGRESS_OPEN_CAPTION" xml:space="preserve">
+    <value>You have unsaved modifications. 
+All opened tabs will be closed, and new tab will be opened for the selected caption. Will you continue?</value>
+  </data>
+  <data name="MSG_UNSAVED_IN_PROGRESS_OPEN_VIDEO" xml:space="preserve">
+    <value>You have unsaved modifications. 
+All opened tabs will be closed, and new tab will be opened for the selected video. Will you continue?</value>
+  </data>
+  <data name="MSG_UPLOAD_FAIL" xml:space="preserve">
+    <value>Failed to look up an upload configuration. Please contact to admin.</value>
   </data>
 </root>
