@@ -134,6 +134,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behavior\ButtonClickToOpenPopupBehavior.cs" />
     <Compile Include="Behavior\CheckedToFocusBehavior.cs" />
     <Compile Include="Behavior\InterpretRichTextBoxBehavior.cs" />
     <Compile Include="Behavior\ListBoxDataLoadBehavior.cs" />

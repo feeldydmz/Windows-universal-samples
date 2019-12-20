@@ -155,6 +155,26 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style x:Key="ContextMenuStyle" TargetType="{x:Type ContextMenu}">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Background" Value="{StaticResource Brush_Normal_Background_Brush_Color}"/>
+                <Setter Property="BorderBrush" Value="#444b56"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ContextMenu}">
+                            <Border BorderThickness="1" BorderBrush="#444b56" x:Name="Border" Background="{StaticResource Brush_Normal_Background_Brush_Color}">
+                                <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -513,16 +533,33 @@
                                                                                 Visibility="Collapsed">
                                                                         <Button x:Name="DefaultSetButton"
                                                                                 Style="{StaticResource Style_DefaultSetButtonForDeselect}"
-                                                                                Margin="10,0,0,0"
-                                                                                Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
-                                                                                CommandParameter="{Binding}" />
+                                                                                Margin="10,0,0,0">
+                                                                            <i:Interaction.Behaviors>
+                                                                                <behavior:ButtonClickToOpenPopupBehavior />
+                                                                            </i:Interaction.Behaviors>
+                                                                            <Button.ContextMenu>
+                                                                                <ContextMenu Style="{StaticResource ContextMenuStyle}" HorizontalOffset="-60">
+                                                                                    <MenuItem  Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel.SetDefaultProjectCommand}"
+                                                                                               CommandParameter="{Binding}">
+                                                                                        <MenuItem.Template>
+                                                                                            <ControlTemplate>
+                                                                                                <Label Content="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                                                                                       HorizontalAlignment="Center"
+                                                                                                       Foreground="White"/>
+                                                                                            </ControlTemplate>
+                                                                                        </MenuItem.Template>
+                                                                                    </MenuItem>
+                                                                                </ContextMenu>
+                                                                            </Button.ContextMenu>
+                                                                        </Button>
 
-                                                                        <Popup x:Name="DefaultPopup" Width="100"
+                                                                        <Popup x:Name="DefaultPopup2" Width="100"
                                                                                Height="28"
                                                                                PlacementTarget="{Binding ElementName=DefaultSetButton}"
                                                                                Placement="Bottom"
-                                                                               Focusable="False"
+                                                                               Focusable="True"
                                                                                StaysOpen="True"
+                                                                               Panel.ZIndex="0"
                                                                                HorizontalOffset="-75"
                                                                                VerticalOffset="2">
                                                                             <Grid
@@ -562,7 +599,25 @@
                                                                             Style="{StaticResource Style_DefaultSetButtonForSelect}"
                                                                             Margin="10,0,0,0"
                                                                             Command="{Binding DataContext.SetDefaultProjectCommand, ElementName=Root}"
-                                                                            CommandParameter="{Binding}" />
+                                                                            CommandParameter="{Binding}" >
+                                                                            <i:Interaction.Behaviors>
+                                                                                <behavior:ButtonClickToOpenPopupBehavior />
+                                                                            </i:Interaction.Behaviors>
+                                                                            <Button.ContextMenu>
+                                                                                <ContextMenu Style="{StaticResource ContextMenuStyle}" HorizontalOffset="-60">
+                                                                                    <MenuItem  Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=McmProjectViewModel.SetDefaultProjectCommand}"
+                                                                                               CommandParameter="{Binding}">
+                                                                                        <MenuItem.Template>
+                                                                                            <ControlTemplate>
+                                                                                                <Label Content="{x:Static resources:Resource.MSG_SET_AS_DEFAULT}"
+                                                                                                       HorizontalAlignment="Center"
+                                                                                                       Foreground="White"/>
+                                                                                            </ControlTemplate>
+                                                                                        </MenuItem.Template>
+                                                                                    </MenuItem>
+                                                                                </ContextMenu>
+                                                                            </Button.ContextMenu>
+                                                                        </Button>
 
                                                                         <Rectangle Height="12" Width="1"
                                                                                    Fill="{StaticResource Brush_ProjectSelect_Title_Brush_Color}"
@@ -615,7 +670,7 @@
                                                                             TargetName="SelectHovPanel" />
                                                                 </MultiDataTrigger>
 
-                                                                <MultiDataTrigger>
+                                                                <!--<MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
                                                                         <Condition
                                                                             Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
@@ -627,7 +682,7 @@
                                                                     </MultiDataTrigger.Conditions>
                                                                     <Setter Property="IsOpen" Value="True"
                                                                             TargetName="DefaultPopup" />
-                                                                </MultiDataTrigger>
+                                                                </MultiDataTrigger>-->
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
@@ -701,6 +756,7 @@
                             IsSnapToTickEnabled="True"
                             Visibility="{Binding IsNavigationBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Style="{StaticResource Style_Slider_ProjectSelect}" />
+
                     <!--<Button Grid.Column="3" 
                             HorizontalAlignment="Center"
                             Style="{StaticResource Style_Button_Right_Arrow}"
