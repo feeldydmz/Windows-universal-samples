@@ -78,7 +78,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition />
+                            <RowDefinition Height="55"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -195,9 +195,9 @@
                                     HorizontalAlignment="Stretch"
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
 
-                        <Border Grid.Row="14" Grid.ColumnSpan="2" Margin="0,15,0,0" Background="#FFf2f6fb"
-                                CornerRadius="3" Padding="10,8" VerticalAlignment="Bottom">
-                            <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap"
+                        <Border Grid.Row="14" Grid.ColumnSpan="2"  Background="#FFf2f6fb" 
+                                CornerRadius="3" Padding="12,8" VerticalAlignment="Bottom">
+                            <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap" 
                                        Text="{x:Static resources:Resource.MSG_VIDEO_PLAY_CONDITION}" />
                         </Border>
                     </Grid>
