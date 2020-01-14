@@ -254,9 +254,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             if (DefaultProject != null)
             {
-                DefaultProject.IsSelected = true;
+                DefaultProject.IsDefault = true;
 
-                stageItem.SelectedProject = DefaultProject;
+                //stageItem.SelectedProject = DefaultProject;
             }
         }
 

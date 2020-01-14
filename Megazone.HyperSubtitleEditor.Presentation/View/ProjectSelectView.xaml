@@ -52,7 +52,7 @@
                                 <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid x:Name="ImageContainer">
-                                        <Image x:Name="DefaultImage"
+                                        <Image x:Name="NormalImage"
                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_active_nor.png"
                                                Stretch="UniformToFill" />
                                         <Image x:Name="DisabledImage"
@@ -72,19 +72,19 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Visible" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="true">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Visible" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Visible" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
@@ -113,7 +113,7 @@
                                 <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid x:Name="ImageContainer">
-                                        <Image x:Name="DefaultImage"
+                                        <Image x:Name="NormalImage"
                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_set_default_btn_nor.png"
                                                Stretch="UniformToFill" />
                                         <Image x:Name="DisabledImage"
@@ -133,19 +133,19 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Visible" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="true">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Visible" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Visibility" TargetName="DefaultImage" Value="Hidden" />
+                                    <Setter Property="Visibility" TargetName="NormalImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="DisabledImage" Value="Visible" />
                                     <Setter Property="Visibility" TargetName="PressedImage" Value="Hidden" />
                                     <Setter Property="Visibility" TargetName="MouseOverImage" Value="Hidden" />
@@ -525,6 +525,15 @@
                                                                            VerticalAlignment="Center"
                                                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_check.png" />
 
+                                                                    <Image x:Name="DefaultCheckImage"
+                                                                           Grid.Column="3"
+                                                                           Stretch="None"
+                                                                           Visibility="Collapsed"
+                                                                           Margin="2,0,4,0"
+                                                                           HorizontalAlignment="Right"
+                                                                           VerticalAlignment="Center"
+                                                                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_default.png" />
+
                                                                     <StackPanel x:Name="DeselectHovPanel"
                                                                                 Grid.Column="3"
                                                                                 Orientation="Horizontal"
@@ -636,6 +645,22 @@
                                                             <DataTemplate.Triggers>
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsDefault}"
+                                                                                   Value="True" />
+                                                                        <Condition Binding="{Binding IsSelected}"
+                                                                                   Value="False" />
+                                                                        <Condition
+                                                                            Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                                            Value="False" />    
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Visibility" Value="Visible"
+                                                                            TargetName="DefaultCheckImage" />
+                                                                </MultiDataTrigger>
+
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsDefault}"
+                                                                                   Value="False" />
                                                                         <Condition Binding="{Binding IsSelected}"
                                                                                    Value="True" />
                                                                         <Condition
