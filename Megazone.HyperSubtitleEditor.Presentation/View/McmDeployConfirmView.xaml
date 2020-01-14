@@ -44,7 +44,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="자막 저장이 완료되었습니다." />
+                <TextBlock Text="{x:Static resources:Resource.MSG_DEPLOY_COMPLETE}" />
 
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>

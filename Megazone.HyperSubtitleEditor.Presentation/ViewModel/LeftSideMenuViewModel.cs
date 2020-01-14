@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -122,10 +123,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 선택된 video 정보를 메인 
             var video = recentlyItem.Video;
             var asset = recentlyItem.CaptionAsset;
+            var localFileFullPath = recentlyItem.LocalFileFullPath;
             var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
-                new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
+            
+            if (localFileFullPath.IsNullOrEmpty())
+            {
+                MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
+                    new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
+            }
+            else
+            {
+                var fileExtension = Path.GetExtension(localFileFullPath);
+                if (fileExtension == ".xlsx")
+                    _browser.Main.ShowImportExcelDialog(localFileFullPath);
+                else
+                    _browser.Main.ShowOpenSubtitleDialog(localFileFullPath);
+            }
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }

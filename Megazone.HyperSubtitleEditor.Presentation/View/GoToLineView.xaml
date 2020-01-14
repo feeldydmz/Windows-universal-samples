@@ -6,7 +6,7 @@
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
-             mc:Ignorable="d" Width="330" Height="180"
+             mc:Ignorable="d" Width="420" Height="180"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=GoToLine}">
 
     <UserControl.Resources>
