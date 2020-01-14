@@ -583,13 +583,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 DefaultProject.IsDefault = true;
             }
 
-            var item = new DefaultProjectSerialize
+            DefaultProjectSerialize serializeItem = null;
+            if (DefaultProject.IsDefault == true)
             {
-                StageId = projectItemViewModel.StageId,
-                ProjectId = projectItemViewModel.ProjectId
-            };
+                serializeItem = new DefaultProjectSerialize
+                {
+                    StageId = DefaultProject.StageId,
+                    ProjectId = DefaultProject.ProjectId
+                };
+            }
 
-            SaveDefaultProject(item);
+            SaveDefaultProject(serializeItem);
+            
         }
 
         private void SaveDefaultProject(DefaultProjectSerialize defaultProjectSerialize)
