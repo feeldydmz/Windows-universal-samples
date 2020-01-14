@@ -659,8 +659,7 @@
 
                                                                 <MultiDataTrigger>
                                                                     <MultiDataTrigger.Conditions>
-                                                                        <Condition Binding="{Binding IsDefault}"
-                                                                                   Value="False" />
+                                                                        
                                                                         <Condition Binding="{Binding IsSelected}"
                                                                                    Value="True" />
                                                                         <Condition
