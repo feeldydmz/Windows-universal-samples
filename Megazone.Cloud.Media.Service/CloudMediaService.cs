@@ -138,7 +138,7 @@ namespace Megazone.Cloud.Media.Service
                         asset.Duration,
                         asset.CreatedAt,
                         asset.Version,
-                        asset.Thumbnails?.FirstOrDefault()?.Url,
+                        asset.Thumbnails?.FirstOrDefault()?.AccessUrl,
                         null,
                         null,
                         null,
@@ -424,7 +424,8 @@ namespace Megazone.Cloud.Media.Service
 
         public async Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken)
         {
-            return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri), cancellationToken);
+            return await _cloudMediaRepository.Read(fileUri);
+            //   return await Task.Factory.StartNew(() => _cloudMediaRepository.Read(fileUri), cancellationToken);
         }
 
         public Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken)

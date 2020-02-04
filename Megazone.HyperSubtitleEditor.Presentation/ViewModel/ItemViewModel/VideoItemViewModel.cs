@@ -88,8 +88,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private string GetPrimaryImage(Video video)
         {
-            var url = video.PrimaryPoster?.Url ?? video.ImageUrl;
-            if (string.IsNullOrEmpty(url)) url = video.Posters?.FirstOrDefault(poster => poster.IsPreferred)?.Url;
+            var url = video.PrimaryPoster?.AccessUrl ?? video.ImageUrl;
+            if (string.IsNullOrEmpty(url)) url = video.Posters?.FirstOrDefault(poster => poster.IsPreferred)?.AccessUrl;
 
             if (string.IsNullOrEmpty(url) && (video.Thumbnails?.Any() ?? false))
             {
@@ -101,7 +101,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 if (string.IsNullOrEmpty(url))
                 {
                     var list = thumbnail?.Elements?.ToList() ?? new List<Thumbnail>();
-                    url = list.Count() > 2 ? list[1]?.Url : list.FirstOrDefault()?.Url;
+                    url = list.Count() > 2 ? list[1]?.AccessUrl : list.FirstOrDefault()?.AccessUrl;
                 }
             }
 

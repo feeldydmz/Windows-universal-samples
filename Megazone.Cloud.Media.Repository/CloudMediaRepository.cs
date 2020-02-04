@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using RestSharp;
+using RestSharp.Extensions;
 
 namespace Megazone.Cloud.Media.Repository
 {
@@ -144,17 +148,17 @@ namespace Megazone.Cloud.Media.Repository
             }
         }
 
-        public string Read(Uri fileUri)
+        public async Task<string> Read(Uri fileUri)
         {
-            var endpoint = $"https://{fileUri.Host}";
-            var localPath = fileUri.LocalPath;
-            if (localPath.StartsWith("/"))
-                localPath = localPath.Substring(1, localPath.Length - 1);
-
-            var response = RestSharpExtension.CreateRestClient(endpoint)
-                .Execute(new RestRequest(localPath, Method.GET));
-
-            return response?.Content;
+            using (var httpClient = new HttpClient())
+            {
+                using (var httpRequest = new HttpRequestMessage(HttpMethod.Get, fileUri))
+                {
+                    var httpResponseMessage = await httpClient.SendAsync(httpRequest);
+                    var response = await httpResponseMessage.Content.ReadAsStringAsync();
+                    return response;
+                }
+            }
         }
 
         public IEnumerable<Language> GetLanguages(LanguageRequest request)

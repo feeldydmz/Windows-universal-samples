@@ -169,7 +169,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
             {
                 var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
-                    tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, tab.Caption?.MimeType,
+                    tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
                     tab.Caption?.Size ?? 0);
 
                 return new CaptionElementItemViewModel(caption)

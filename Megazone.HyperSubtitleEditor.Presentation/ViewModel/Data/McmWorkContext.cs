@@ -63,7 +63,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 {
                     if (element.VideoSetting == null) continue;
 
-                    var url = element.Urls?.FirstOrDefault() ?? renditionAsset.Urls?.FirstOrDefault() ?? "";
+                    var url = element.AccessUrls?.FirstOrDefault() ?? renditionAsset.AccessUrls?.FirstOrDefault() ?? "";
                     resolutionDictionary.Add(
                         new VideoResolutionInfo(element.VideoSetting.Width, element.VideoSetting.Height,
                             element.VideoSetting.Codec),
@@ -71,7 +71,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 }
 
                 // renditionAsset Url이 비어있다면 resolutionDictionary의 첫번째 url로 채워준다
-                var baseUrl = renditionAsset.Urls?.FirstOrDefault() ??
+                var baseUrl = renditionAsset.AccessUrls?.FirstOrDefault() ??
                               resolutionDictionary.Values.FirstOrDefault() ?? "";
                 resultDictionary.Add(new MediaKind(renditionAsset.Type, baseUrl), resolutionDictionary);
             }
@@ -88,9 +88,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             if (asset == null)
                 return string.Empty;
 
-            var url = asset.Urls?.FirstOrDefault();
+            var url = asset.AccessUrls?.FirstOrDefault();
             if (string.IsNullOrEmpty(url))
-                url = asset.Elements?.FirstOrDefault()?.Urls?.FirstOrDefault();
+                url = asset.Elements?.FirstOrDefault()?.AccessUrls?.FirstOrDefault();
             return url;
         }
 

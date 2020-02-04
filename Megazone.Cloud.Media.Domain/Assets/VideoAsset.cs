@@ -9,6 +9,7 @@ namespace Megazone.Cloud.Media.Domain.Assets
     public class ThumnailMe
     {
         public string url { get; set; }
+        public string accessUrl { get; set; }
     }
 
     public class VideoAsset : Asset<Rendition>
