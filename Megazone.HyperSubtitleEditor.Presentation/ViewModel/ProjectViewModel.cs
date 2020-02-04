@@ -489,8 +489,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         continue;
                     }
 
+                    //foreach (var proejct in projects.Results)
+                    //{
+                    //    if (proejct.IsActive 
+                    //}
+
                     var projectItems = projects.Results
-                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
+                        .Where(project => project.IsActive == true)
+                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)
+                        ).ToList();
                     stageItem.ProjectItems = projectItems;
                 }
 
