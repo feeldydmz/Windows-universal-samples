@@ -490,7 +490,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     }
 
                     var projectItems = projects.Results
-                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)).ToList();
+                        .Where(project => project.IsActive == true)
+                        .Select(project => new ProjectItemViewModel(stageItem.Id, project)
+                        ).ToList();
                     stageItem.ProjectItems = projectItems;
                 }
 
