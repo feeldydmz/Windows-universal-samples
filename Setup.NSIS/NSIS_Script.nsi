@@ -2,10 +2,10 @@
 
 ; HM NIS Edit Wizard helper defines
 !define VersionHeader ".\Assembly_Version.nsh"
-!define PROCESS_NAME "MegazoneCloudMediaCaptionEditor.exe"
-!define PRODUCT_NAME "Megazone Cloud Media Caption Editor"
+!define PROCESS_NAME "CloudPlexMediaCaptionEditor.exe"
+!define PRODUCT_NAME "CloudPlex Media Caption Editor"
 #!define PRODUCT_VERSION "1.0.0.0
-!define PRODUCT_PUBLISHER "Megazone"
+!define PRODUCT_PUBLISHER "Megazone Cloud"
 !define PRODUCT_WEB_SITE "http://www.megazone.com"
 !define MCM_WEB_SITE "https://console.media.megazone.io"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PROCESS_NAME}"
@@ -601,7 +601,7 @@ Section "MainSection" SEC01
   File "Install_Files\Megazone.HyperSubtitleEditor.Presentation.Resource.dll"
   File "Install_Files\Megazone.SubtitleEditor.Resources.dll"
   File "Install_Files\Megazone.VideoStudio.Presentation.Common.Infrastructure.dll"
-  File "Install_Files\MegazoneCloudMediaCaptionEditor.exe"
+  File "Install_Files\CloudPlexMediaCaptionEditor.exe"
   File "Install_Files\Microsoft.Win32.Primitives.dll"
   File "Install_Files\Ms-PL.txt"
   File "Install_Files\NAudio.dll"

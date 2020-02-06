@@ -12,6 +12,7 @@ using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -69,7 +70,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CurrentPageNumber = 1;
         }
 
-        internal string DefaultProjectInfoFilePath => $"{Path.GetTempPath()}subtitleDefaultInfo.dat";
+        //internal string DefaultProjectInfoFilePath => $"{Path.GetTempPath()}subtitleDefaultInfo.dat";
+
+        private string GetSavePath()
+        {
+            return $"{this.AppDataPath()}\\subtitleDefaultInfo.dat";
+        }
 
         public bool IsProjectViewVisible
         {
@@ -241,23 +247,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void InitializeDefaultProject()
         {
-            var defaultProject = LoadDefaultProject();
-
-            if (defaultProject == null) return;
-
-            var stageItem = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
-
-            //SelectedStage = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
-
-            DefaultProject =
-                stageItem?.ProjectItems.Single(project => project.ProjectId.Equals(defaultProject.ProjectId));
-
-            if (DefaultProject != null)
+            try
             {
-                DefaultProject.IsDefault = true;
+                var defaultProject = LoadDefaultProject();
 
-                StartProject(DefaultProject);
-                //stageItem.SelectedProject = DefaultProject;
+                if (defaultProject == null) return;
+
+                var stageItem = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
+
+                //SelectedStage = StageItems.Single(stage => stage.Id.Equals(defaultProject.StageId));
+
+                DefaultProject =
+                    stageItem?.ProjectItems.Single(project => project.ProjectId.Equals(defaultProject.ProjectId));
+
+                if (DefaultProject != null)
+                {
+                    DefaultProject.IsDefault = true;
+
+                    StartProject(DefaultProject);
+                    //stageItem.SelectedProject = DefaultProject;
+                }
+            }
+            catch (System.InvalidOperationException e)
+            {
+                return;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
@@ -295,7 +312,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(
                         Resource.CNT_WARNING,
-                        "변경 내용이 있다~~",
+                        Resource.MSG_LOAD_GROUP_FILE,
                         MessageBoxButton.OKCancel,
                         Application.Current.MainWindow));
 
@@ -604,17 +621,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             var profileData = JsonConvert.SerializeObject(defaultProjectSerialize);
 
-            File.WriteAllText(DefaultProjectInfoFilePath, profileData);
+            var savePath =  GetSavePath();
+            File.WriteAllText(savePath, profileData);
         }
 
         private DefaultProjectSerialize LoadDefaultProject()
         {
             try
             {
-                if (!File.Exists(DefaultProjectInfoFilePath))
+                var savePath = GetSavePath();
+
+                if (!File.Exists(savePath))
                     return null;
 
-                var profileData = File.ReadAllText(DefaultProjectInfoFilePath);
+                var profileData = File.ReadAllText(savePath);
                 return JsonConvert.DeserializeObject<DefaultProjectSerialize>(profileData);
             }
             catch (FileNotFoundException e)

@@ -270,7 +270,8 @@
                                             </Grid.RowDefinitions>
                                             <RadioButton Grid.Column="0" Grid.Row="0"
                                                          IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                                         VerticalAlignment="Top" />
+                                                         VerticalAlignment="Top"
+                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CaptionAssetSectionChangedCommand}"/>
                                             <!--에셋정보-->
                                             <Grid Grid.Column="2" Grid.Row="0">
                                                 <Grid.ColumnDefinitions>

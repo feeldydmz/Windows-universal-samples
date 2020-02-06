@@ -68,7 +68,7 @@
                                Text="License" FontWeight="Bold" />
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Bold"
-                               Text="Megazone Cloud Media Caption Editor" FontSize="15px" Margin="10,15,10,10" />
+                               Text="CloudPlex Media Caption Editor" FontSize="15px" Margin="10,15,10,10" />
                     <TextBlock Grid.Row="1" Grid.Column="1"
                                Text="{markUps:VersionMarkUp}" />
                     <!--http://cloud.hosting.kr/-->

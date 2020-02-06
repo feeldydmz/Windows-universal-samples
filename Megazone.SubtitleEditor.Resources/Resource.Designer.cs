@@ -151,7 +151,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Megazone Cloud Media Caption Editor과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   CloudPlex Media Caption Editor과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_APPLICATION_NAME {
             get {
@@ -655,7 +655,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Hyper Subtitle Editor Info과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   CloudPlex Media Subtitle Editor Info과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_HYPER_SUBTITLE_EDITOR_INFO {
             get {
@@ -1847,7 +1847,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   - Hyper Subtitle Editor is using FFmpeg.exe for extracting thumbnail images and media metadata under the LGPLv2.1과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   - CloudPlex Media Subtitle Editor is using FFmpeg.exe for extracting thumbnail images and media metadata under the LGPLv2.1과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_LICENSE_FFMPEG {
             get {
@@ -1856,7 +1856,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   - Hyper Subtitle Editor is using naudio for Video Player under the Ms-PL licnese과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   - CloudPlex Media Subtitle Editor is using naudio for Video Player under the Ms-PL licnese과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_LICENSE_NAUDIO {
             get {

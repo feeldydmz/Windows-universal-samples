@@ -116,7 +116,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
-                            <TextBlock Grid.Column="5" Text="." />
+                            <!--<TextBlock Grid.Column="5" Text="." />-->
 
                             <TextBox x:Name="Part_Milliseconds" Grid.Column="6" MaxLength="3" MinWidth="32"
                                      TextAlignment="Left" Foreground="{TemplateBinding Foreground}"
@@ -349,7 +349,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
-                            <TextBlock Grid.Column="3" Text="." />
+                            <!--<TextBlock Grid.Column="3" Text="." />-->
 
                             <TextBox x:Name="Part_Milliseconds" Grid.Column="4" MaxLength="3" MinWidth="32"
                                      TextAlignment="Left"
@@ -565,7 +565,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
-                            <TextBlock Grid.Column="1" Text="." />
+                            <!--<TextBlock Grid.Column="1" Text="." />-->
 
                             <TextBox x:Name="Part_Milliseconds" Grid.Column="2" MaxLength="3" MinWidth="32"
                                      TextAlignment="Left"

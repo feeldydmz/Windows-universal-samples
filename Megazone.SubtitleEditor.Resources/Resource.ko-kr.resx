@@ -271,7 +271,7 @@
     <value>개 일치</value>
   </data>
   <data name="CNT_HYPER_SUBTITLE_EDITOR_INFO" xml:space="preserve">
-    <value>Hyper Subtitle Editor 정보</value>
+    <value>CloudPlex Media Subtitle Editor 정보</value>
   </data>
   <data name="CNT_IMPORT" xml:space="preserve">
     <value>불러오기</value>
@@ -533,10 +533,10 @@
     <value>현재 텝을 유지하시겠습니까?</value>
   </data>
   <data name="MSG_LICENSE_FFMPEG" xml:space="preserve">
-    <value>- Hyper Subtitle Editor는 썸네일 이미지와 미디어 메타 데이타 추출을 위해 LGPLv2.1 라이선스 아래 FFmpeg.exe를 사용하고 있습니다.</value>
+    <value>- CloudPlex Media Subtitle Editor는 썸네일 이미지와 미디어 메타 데이타 추출을 위해 LGPLv2.1 라이선스 아래 FFmpeg.exe를 사용하고 있습니다.</value>
   </data>
   <data name="MSG_LICENSE_NAUDIO" xml:space="preserve">
-    <value>- Hyper Subtitle Edito는 비디오 플레이어를 위해 Ms-PL 라이선스 아래 naudio를 사용하고 있습니다.</value>
+    <value>- CloudPlex Media Subtitle Editor는 비디오 플레이어를 위해 Ms-PL 라이선스 아래 naudio를 사용하고 있습니다.</value>
   </data>
   <data name="MSG_LOAD_GROUP_FILE" xml:space="preserve">
     <value>작업 중인 내용이 있습니다.

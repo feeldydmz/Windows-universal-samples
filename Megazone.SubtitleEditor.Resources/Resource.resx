@@ -145,7 +145,7 @@
     <value>All subtitle</value>
   </data>
   <data name="CNT_APPLICATION_NAME" xml:space="preserve">
-    <value>Megazone Cloud Media Caption Editor</value>
+    <value>CloudPlex Media Caption Editor</value>
   </data>
   <data name="CNT_APPLY" xml:space="preserve">
     <value>Apply</value>
@@ -274,7 +274,7 @@
     <value>Word match</value>
   </data>
   <data name="CNT_HYPER_SUBTITLE_EDITOR_INFO" xml:space="preserve">
-    <value>Hyper Subtitle Editor Info</value>
+    <value>CloudPlex Media Subtitle Editor Info</value>
   </data>
   <data name="CNT_IMPORT" xml:space="preserve">
     <value>Import</value>
@@ -534,10 +534,10 @@ You can load one by dragging a file.</value>
     <value>Keep the current tab?</value>
   </data>
   <data name="MSG_LICENSE_FFMPEG" xml:space="preserve">
-    <value>- Hyper Subtitle Editor is using FFmpeg.exe for extracting thumbnail images and media metadata under the LGPLv2.1</value>
+    <value>- CloudPlex Media Subtitle Editor is using FFmpeg.exe for extracting thumbnail images and media metadata under the LGPLv2.1</value>
   </data>
   <data name="MSG_LICENSE_NAUDIO" xml:space="preserve">
-    <value>- Hyper Subtitle Editor is using naudio for Video Player under the Ms-PL licnese</value>
+    <value>- CloudPlex Media Subtitle Editor is using naudio for Video Player under the Ms-PL licnese</value>
   </data>
   <data name="MSG_LOAD_GROUP_FILE" xml:space="preserve">
     <value>You have a file that you are working on.

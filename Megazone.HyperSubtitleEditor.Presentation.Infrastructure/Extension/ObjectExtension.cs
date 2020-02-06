@@ -6,7 +6,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension
     public static class ObjectExtension
     {
         private const string CompanyName = "Megazone";
-        private const string ApplicationName = "Megazone Cloud Media Caption Editor";
+        private const string ApplicationName = "CloudPlex Media Caption Editor";
 
         public static string AppDataPath(this object obj)
         {
