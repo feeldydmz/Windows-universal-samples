@@ -1,1 +1,1 @@
-!define PRODUCT_VERSION "0.8.0.4"
+!define PRODUCT_VERSION "0.8.0.5"
