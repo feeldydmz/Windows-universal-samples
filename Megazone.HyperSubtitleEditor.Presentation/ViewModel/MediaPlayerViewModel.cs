@@ -16,6 +16,7 @@ using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
+using Megazone.HyperSubtitleEditor.Presentation.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
 
@@ -46,15 +47,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
         private MediaHeaderData _videoData;
+        private SignInViewModel _signinViewModel;
 
         private IEnumerable<MediaKind> _videoTypes;
 
         public MediaPlayerViewModel(Action<decimal> onMediaPositionChanged,
             Action<MediaPlayStates> onMediaPlayStateChanged)
         {
+            //_signinViewModel = signInViewModel;
+
             _onMediaPositionChanged = onMediaPositionChanged;
             _onMediaPlayStateChanged = onMediaPlayStateChanged;
             _logger = Bootstrapper.Container.Resolve<ILogger>();
+            _signinViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
         }
 
         public ICommand DropToSetMediaCommand
@@ -318,11 +323,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private MediaHeaderData GetVideoHeaderData(string fullPath)
         {
+            var authorization = getAuthorization();
+
             var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
             {
                 Url = fullPath,
-                IsRequestThumbnail = false
-            }, _cancellationTokenSource);
+                IsRequestThumbnail = false,
+                Headers = $"mz-cm-auth:Bearer {authorization}"
+        }, _cancellationTokenSource);
 
             return videoData;
         }
@@ -401,6 +409,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             return false;
+        }
+
+        public string getAuthorization()
+        {
+            return _signinViewModel.GetAuthorizationAsync().Result?.AccessToken;
+            //return "mz-cm-auth:Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZTRjY2QzZi1jYWQ5LTQ0OWEtYjlhMC1kZmMzNzcxMDE4N2MiLCJleHAiOjE1ODE1MjQ3MjUsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJqdGkiOiIzNmIyZDcyZS1kMWZhLTQ4ZDUtYjhlNy0zNDdlNzIzNDNiOWIiLCJjbGllbnRfaWQiOiIwYTMxZTdkYy02NWViLTQ0MzAtOTAyNS0yNGY5ZTNkN2Q2MGQiLCJzY29wZSI6WyJvcmdhbml6YXRpb24udGVhbSIsIm9yZ2FuaXphdGlvbiIsInVzZXIuY29tcGFueSIsImRlZmF1bHQucHJvZmlsZSJdLCJhY3RpdmUiOnRydWV9.gGzK5Zz8t4p1QbhqXFEpjxaNXrxyAhZDdqwgIJLYCUUcBFJcsR8WS2APIlYgnFsBRkmm14DSufiwO3zG9Bn-dIisy-KKQr2shl6eKy92ExoBIPQQxFz8_qikmBm7N1EcfeiMVjKRoG6HXQ6TaN3rd2Myt-FtqJXbznVeVfEbNC8FvZPxuFwPC4z72hL_X4d4htoqj6-cpjLa_Ka0U2AzF10pgb4-ZRa6MscxuSTxEEZbwujjuutbo13wzFtoATU5eR3H9BlPFDRfBtIk5e1N5yqdnWhnf-iecyvtUDQbKIF1UfQ4O1bsFcACNjg7ONvRQndN1hNSJHnqXJkkRrnpnA";
         }
 
         public void SyncPosition(TimeSpan objStartTime)

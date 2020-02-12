@@ -7,6 +7,7 @@ using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Control.VideoPlayer;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -285,6 +286,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void PlayMedia(string mediaSource = null, int streamIndex = 0)
         {
+            var authorization = ((MediaPlayerViewModel) (this.DataContext)).getAuthorization();
+
             if (VideoElement == null)
                 return;
 
@@ -301,6 +304,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 else if (!VideoElement.Source.Equals(mediaSource)) VideoElement.Source = mediaSource;
 
                 if (!VideoElement.StreamIndex.Equals(streamIndex)) VideoElement.StreamIndex = streamIndex;
+
+                VideoElement.Authorization = authorization;
             }
 
             if (VideoElement.CanPlay)
