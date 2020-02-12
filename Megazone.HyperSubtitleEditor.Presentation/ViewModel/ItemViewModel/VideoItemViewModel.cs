@@ -11,6 +11,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     internal class VideoItemViewModel : ViewModelBase
     {
         private IList<CaptionAssetItemViewModel> _captionAssetItems;
+        private IList<string> _encryptions;
 
         private bool _hasSelectedCaption;
         private string _primaryImageUrl;
@@ -38,6 +39,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
             CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+            Encryptions = video.Encryptions?.ToList();
         }
 
         public CaptionAssetItemViewModel SelectedCaptionAsset
@@ -50,6 +52,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _captionAssetItems;
             set => Set(ref _captionAssetItems, value);
+        }
+
+        public IList<string> Encryptions
+        {
+            get => _encryptions;
+            set => Set(ref _encryptions, value);
         }
 
         public string PrimaryImageUrl

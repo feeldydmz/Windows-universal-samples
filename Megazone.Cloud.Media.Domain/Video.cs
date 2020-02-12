@@ -9,7 +9,7 @@ namespace Megazone.Cloud.Media.Domain
     {
         public Video(string id, string name, string description, string status, long duration, string createdAt,
             int version, string assetsFirstImageUrl, Poster primaryPoster, IEnumerable<RenditionAsset> origins, IEnumerable<RenditionAsset> sources,
-            IEnumerable<CaptionAsset> captions, IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters)
+            IEnumerable<CaptionAsset> captions, IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters, IEnumerable<string> encryptions)
         {
             Id = id;
             Name = name;
@@ -25,6 +25,7 @@ namespace Megazone.Cloud.Media.Domain
             Captions = captions;
             Thumbnails = thumbnails;
             Posters = posters;
+            Encryptions = encryptions;
         }
 
         public string Id { get; }
@@ -41,5 +42,6 @@ namespace Megazone.Cloud.Media.Domain
         public IEnumerable<CaptionAsset> Captions { get; }
         public IEnumerable<ThumbnailAsset> Thumbnails { get; }
         public IEnumerable<Poster> Posters { get; }
+        public IEnumerable<string> Encryptions { get; }
     }
 }

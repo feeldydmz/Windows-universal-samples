@@ -15,9 +15,9 @@ namespace Megazone.Cloud.Media.Domain.Assets
     public class VideoAsset : Asset<Rendition>
     {
         public VideoAsset(string id, string name, string status, string type, string mediaType, string ingestType,
-            long duration, int version, string createdAt, IEnumerable<Rendition> elements, IEnumerable<Thumbnail> thumbnails) 
+            long duration, int version, string createdAt, IEnumerable<Rendition> elements, IEnumerable<Thumbnail> thumbnails, IEnumerable<string> encryptions) 
             : base(id, name, status, type,
-                mediaType, ingestType, duration, version, createdAt, elements, null)
+                mediaType, ingestType, duration, version, createdAt, elements, encryptions)
         {
             Thumbnails = thumbnails;
         }
