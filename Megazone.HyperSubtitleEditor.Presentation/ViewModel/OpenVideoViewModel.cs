@@ -369,7 +369,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(
-                    results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
+                    results.List?
+                        .Where(video => video.Encryptions == null)
+                        .Select(video => new VideoItemViewModel(video)).ToList() ??
                     new List<VideoItemViewModel>());
             }
             catch (Exception e)
@@ -420,6 +422,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             else if (IsMcmOpenButtonChecked)
             {
                 if (IsBusy)
+                    return false;
+
+                if (SelectedVideoItem != null && SelectedVideoItem.Encryptions != null && SelectedVideoItem.Encryptions.Contains("DRM"))
                     return false;
 
                 if (SelectedVideoItem != null) return true;

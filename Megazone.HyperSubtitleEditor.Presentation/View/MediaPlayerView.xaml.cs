@@ -161,6 +161,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             set => SetValue(VolumeProperty, value);
         }
 
+        private double VolumeTemp { get; set; }
+
         private void OnMediaSourceProperty(string oldValue)
         {
             if (!string.IsNullOrEmpty(oldValue))
@@ -210,6 +212,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             VideoElement.PlayStateChanged -= OnPlayStateChanged;
             MediaPlaybackButton.Checked -= MediaPlaybackButton_Checked;
             MediaPlaybackButton.Unchecked -= MediaPlaybackButton_Unchecked;
+            MuteButton.Checked -= MuteButton_Checked;
+            MuteButton.Unchecked -= MuteButton_Unchecked;
         }
 
         private void AddEvent()
@@ -219,6 +223,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             VideoElement.PlayStateChanged += OnPlayStateChanged;
             MediaPlaybackButton.Checked += MediaPlaybackButton_Checked;
             MediaPlaybackButton.Unchecked += MediaPlaybackButton_Unchecked;
+            MuteButton.Checked += MuteButton_Checked;
+            MuteButton.Unchecked += MuteButton_Unchecked;
+        }
+
+        private void MuteButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Volume = VolumeTemp;
+        }
+
+        private void MuteButton_Checked(object sender, RoutedEventArgs e)
+        {
+            VolumeTemp = Volume;
+            Volume = 0;
         }
 
         private void MediaPlaybackButton_Unchecked(object sender, RoutedEventArgs e)

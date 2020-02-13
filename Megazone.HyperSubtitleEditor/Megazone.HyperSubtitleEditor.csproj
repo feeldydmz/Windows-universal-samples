@@ -297,7 +297,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <Version>0.8.0.5</Version>
+    <Version>0.8.0.8</Version>
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <ItemGroup>
