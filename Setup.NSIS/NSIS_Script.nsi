@@ -268,7 +268,18 @@ FunctionEnd
 !define FindProc_NOT_FOUND 1
 !define FindProc_FOUND 0
 !macro FindProc result processName
-    ExecCmd::exec "%SystemRoot%\System32\tasklist /NH /FI $\"IMAGENAME eq ${processName}$\" | %SystemRoot%\System32\find /I $\"${processName}$\""
+    StrLen $0 ${processName}
+	
+	; tasklist 에서 프로세스 출려해 줄 때 process name 이 25자가 넘어가면 name이 잘림
+	; 이를 해결하고자 find로 찾을 때 쓰이는 process name 은 25자가 넘을 경우 잘라서 사용 하도록 함
+    StrCpy $1 ""
+    ${If} $0 > 25
+      StrCpy $1 ${processName} 25
+    ${Else}
+      StrCpy $1 ${processName} $0
+    ${EndIf}
+
+    ExecCmd::exec "%SystemRoot%\System32\tasklist /NH /FI $\"IMAGENAME eq ${processName}$\" | %SystemRoot%\System32\find /I $\"$1$\""
     Pop $0 ; The handle for the process
     ExecCmd::wait $0
     Pop ${result} ; The exit code
@@ -276,9 +287,10 @@ FunctionEnd
 
 ; Process Runtime check.
 Function CheckProcessRuntime
+
   Var /GLOBAL processFound
   StrCpy $processFound "1"
-
+  
   !insertmacro FindProc $processFound "${PROCESS_NAME}"
 
   IntCmp $processFound ${FindProc_NOT_FOUND} Equal Less More
