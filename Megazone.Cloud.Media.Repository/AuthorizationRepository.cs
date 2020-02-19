@@ -15,7 +15,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public const string LOGIN_URL =
             "https://" + Domain +
-            "/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.megazone.io/megaone/login";
+            "/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.stg.continuum.co.kr/megazone/login";
 
         public AuthorizationResponse Get(AuthorizationRequest request)
         {
@@ -23,7 +23,7 @@ namespace Megazone.Cloud.Media.Repository
             // 인증 URL : https://oauth.megazone.io/oauth/token
             var clientAuthorization = GetClientAuthorization(); 
             var content =
-                $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.media.megazone.io/megaone/login";
+                $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.media.stg.continuum.co.kr/megazone/login";
 
             var restRequest = new RestRequest("oauth/token", Method.POST)
                 //var restRequest = new RestRequest("v1/token", Method.GET)

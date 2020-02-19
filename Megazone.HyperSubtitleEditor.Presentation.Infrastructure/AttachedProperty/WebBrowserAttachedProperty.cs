@@ -10,7 +10,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
     public class WebBrowserAttachedProperty
     {
         private const string CODE_PATTEN = "code=";
-        private const string MEGAONE_OAUTH_PATTEN = "megaone/login?";
+        private const string MEGAONE_OAUTH_PATTEN = "megazone/login?";
 
         public static readonly DependencyProperty UriSourceProperty =
             DependencyProperty.RegisterAttached("UriSource", typeof(string), typeof(WebBrowserAttachedProperty),
