@@ -23,9 +23,9 @@ $fileList = $dllList + $exeList + $lang_jp + $lang_ko + $lang_jp1
 
 
 #전자서명 정보
-$password = "347V5X";
+$password = "J5U5NY";
 $timestempUrl = "http://timestamp.comodoca.com/authenticode";
-$cerfFile = ".\CodeSignTools\20170314-qbj-MEGAZONE.pfx";
+$cerfFile = ".\CodeSignTools\20200309-147070_CHAIN_mz_co_kr.pfx";
 
 #전자서명 수행.
 foreach($filePath in $fileList)
