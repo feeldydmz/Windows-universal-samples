@@ -397,37 +397,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
-                var uploadInputPath = await GetUploadInputPathAsync();
-
-
-                //// upload caption files.
-                //foreach (var caption in captionList)
-                //{
-                //    var uploadData = GetTextBy(caption);
-                //    var fileName = GetFileName(caption);
-
-                //    var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
-                //        new GetUploadUrlParameter(authorization, stageId, projectId, "assetIdTest", "fileNameTest.txt"), CancellationToken.None);
-
-                //    //var uploadedPath = await _cloudMediaService.UploadCaptionFileAsync(
-                //    //    new UploadCaptionFileParameter(authorization, stageId, projectId, uploadData, fileName,
-                //    //        uploadInputPath, caption.Url), CancellationToken.None);
-                //    caption.Url = uploadPath.Url;
-                //    caption.UploadUrl = uploadPath.UploadUrl;
-
-                //    ////업로드 로직
-                //    //var uploadedPath = await _cloudMediaService.UploadCaptionFileAsync(
-                //    //    new UploadCaptionFileParameter(caption.UploadUrl, uploadData), CancellationToken.None);
-                //}
-                
 
                 if (string.IsNullOrEmpty(captionAsset.Id))
                 {
-                    //var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
-                    //    new CreateCaptionAssetParameter(authorization, stageId, projectId, captionAsset.Name,
-                    //        captionList),
-                    //    CancellationToken.None);
-                    //Debug.Assert(!string.IsNullOrEmpty(createAsset?.Id), "createAsset is null.");
                     var assetName = captionAsset.Name;
                     var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
                         new CreateCaptionAssetParameter(authorization, stageId, projectId, assetName,
@@ -442,83 +414,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         // upload caption files.
                         foreach (var caption in captionList)
                         {
-                            var uploadData = GetTextBy(caption);
-                            var fileName = GetFileName(caption);
-
-                            var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
-                                new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName),
-                                CancellationToken.None);
-                            caption.Url = uploadPath.Url;
-                            //caption.UploadUrl = uploadPath.UploadUrl;
-
-                            ////업로드 로직
-                            var isUploadSuccess = await _cloudMediaService.UploadCaptionFileAsync(
-                                new UploadCaptionFileParameter(uploadPath.UploadUrl, uploadData),
-                                CancellationToken.None);
-
-                            if (isUploadSuccess)
-                            {
-                                await _cloudMediaService.CreateAssetElementsAsync(
-                                    new CreateAssetElementParameter(authorization, stageId, projectId, assetId,
-                                        caption), CancellationToken.None);
-                            }
+                            await UploadAndCreateCaptionAsync(assetId, caption);
                         }
                     }
 
                     if (!string.IsNullOrEmpty(video?.Id))
                     {
+                        
                         var originalVideo = await _cloudMediaService.GetVideoAsync(
-                            new GetVideoParameter(authorization, stageId, projectId, video.Id),
+                            new GetVideoParameter(authorization, stageId, projectId, video?.Id),
                             CancellationToken.None);
 
-                        #region Video Update.
+                        // 여러개의 Caption Asset을 동시에 편집하지 않으므로 
+                        // 업데이트 하지 않고 새로 생성된 Caption Asset 만 비디오에 등록한다.
+                        var registeredCaptionAssets = await RegisterCaptionAssetAsync(originalVideo, createAsset);
 
-                        //if (originalVideo != null)
-                        //{
-                        //    var captionAssetList = originalVideo.Captions.ToList();
-                        //    captionAssetList.Add(createAsset);
-
-                        //    var updateVideo = new Video(originalVideo.Id, originalVideo.Name, originalVideo.Description,
-                        //        originalVideo.Status, originalVideo.Duration, originalVideo.CreatedAt,
-                        //        originalVideo.Version, originalVideo.ImageUrl, originalVideo.PrimaryPoster,
-                        //        originalVideo.Origins, originalVideo.Sources, captionAssetList, originalVideo.Thumbnails,
-                        //        originalVideo.Posters);
-
-                        //    var updatedVideo = await _cloudMediaService.UpdateVideoAsync(
-                        //        new UpdateVideoParameter(authorization, stageId, projectId, video.Id, updateVideo),
-                        //        CancellationToken.None);
-
-                        //    if (string.IsNullOrEmpty(updatedVideo?.Id))
-                        //    {
-                        //        // 등록된 asset 삭제.
-                        //        await _cloudMediaService.DeleteCaptionAssetAsync(
-                        //            new DeleteCaptionAssetParameter(authorization, stageId, projectId, createAsset.Id,
-                        //                createAsset.Version),
-                        //            CancellationToken.None);
-
-                        //        finishAction?.Invoke(false, updatedVideo, createAsset);
-                        //        return;
-                        //    }
-
-                        //    finishAction?.Invoke(true, updatedVideo, createAsset);
-                        //    return;
-                        //} 
-
-                        #endregion
-
-                        // 업데이트가 아니라, 추가된 Asset만 비디오에 등록한다.
-                        var videoId = originalVideo.Id;
-                        var version = originalVideo.Version;
-                        if (createAsset != null)
-                        {
-                            var assetList = new List<string> { createAsset.Id };
-                            var registeredCaptionAssets = await _cloudMediaService.RegisterCaptionAssetAsync(
-                                new RegisterCaptionAssetParameter(authorization, stageId, projectId, videoId, version,
-                                    assetList),
-                                CancellationToken.None);
-
-                            finishAction?.Invoke(registeredCaptionAssets.Any(), originalVideo, createAsset);
-                        }
+                        finishAction?.Invoke(registeredCaptionAssets.Any(), originalVideo, createAsset);
 
                         return;
                     }
@@ -527,7 +438,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
-                var updatedCaption = await _cloudMediaService.UpdateAssetElementsAsync(
+                var updatedCaption = await _cloudMediaService.UpdateCaptionAssetElementsAsync(
                     new UpdateCaptionParameter(authorization, stageId, projectId, captionAsset.Id, captionList),
                     CancellationToken.None);
 
@@ -567,34 +478,87 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);
         }
 
-        public async Task<string> GetUploadInputPathAsync()
+        private async Task<bool> UploadAndCreateCaptionAsync(string assetId, Caption caption)
         {
-            var uploadTargetPath = string.Empty;
-            var setting = await GetMcmSettingAsync();
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
 
-            if (setting != null)
+            var uploadData = GetTextBy(caption);
+            var fileName = GetFileName(caption);
+
+            var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
+                new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName),
+                CancellationToken.None);
+            caption.Url = uploadPath.Url;
+            //caption.UploadUrl = uploadPath.UploadUrl;
+
+            ////업로드 로직
+            var isUploadSuccess = await _cloudMediaService.UploadCaptionFileAsync(
+                new UploadCaptionFileParameter(uploadPath.UploadUrl, uploadData),
+                CancellationToken.None);
+
+            if (isUploadSuccess)
             {
-                var s3Path = setting.Asset?.OutputStoragePrefix?.Value;
-                var folderPath = setting.Asset?.OutputStoragePath?.Value;
-                if (!string.IsNullOrEmpty(s3Path))
-                    uploadTargetPath = $"{s3Path}{folderPath}";
-
-                if (string.IsNullOrEmpty(uploadTargetPath))
-                {
-                    s3Path = setting.General?.StoragePrefix?.Value;
-                    folderPath = setting.General?.StoragePath?.Value;
-                    if (!string.IsNullOrEmpty(s3Path))
-                        uploadTargetPath = $"{s3Path}{folderPath}";
-                }
+                await _cloudMediaService.CreateCaptionAssetElementsAsync(
+                    new CreateAssetElementParameter(authorization, stageId, projectId, assetId,
+                        caption), CancellationToken.None);
             }
 
-            if (!string.IsNullOrEmpty(uploadTargetPath))
-            {
-                var uri = new Uri(uploadTargetPath);
-                uploadTargetPath = $"{uri.Host}{uri.LocalPath}";
-            }
+            return false;
+        }
 
-            return uploadTargetPath;
+        private async Task<IEnumerable<CaptionAsset>> RegisterCaptionAssetAsync(Video video, CaptionAsset captionAsset)
+        {
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+            
+
+            #region Video Update.
+
+            //if (originalVideo != null)
+            //{
+            //    var captionAssetList = originalVideo.Captions.ToList();
+            //    captionAssetList.Add(createAsset);
+
+            //    var updateVideo = new Video(originalVideo.Id, originalVideo.Name, originalVideo.Description,
+            //        originalVideo.Status, originalVideo.Duration, originalVideo.CreatedAt,
+            //        originalVideo.Version, originalVideo.ImageUrl, originalVideo.PrimaryPoster,
+            //        originalVideo.Origins, originalVideo.Sources, captionAssetList, originalVideo.Thumbnails,
+            //        originalVideo.Posters);
+
+            //    var updatedVideo = await _cloudMediaService.UpdateVideoAsync(
+            //        new UpdateVideoParameter(authorization, stageId, projectId, video.Id, updateVideo),
+            //        CancellationToken.None);
+
+            //    if (string.IsNullOrEmpty(updatedVideo?.Id))
+            //    {
+            //        // 등록된 asset 삭제.
+            //        await _cloudMediaService.DeleteCaptionAssetAsync(
+            //            new DeleteCaptionAssetParameter(authorization, stageId, projectId, createAsset.Id,
+            //                createAsset.Version),
+            //            CancellationToken.None);
+
+            //        finishAction?.Invoke(false, updatedVideo, createAsset);
+            //        return;
+            //    }
+
+            //    finishAction?.Invoke(true, updatedVideo, createAsset);
+            //    return;
+            //} 
+
+            #endregion
+
+            // 업데이트가 아니라, 추가된 Asset만 비디오에 등록한다.
+            var assetList = new List<string> { captionAsset.Id };
+            var registeredCaptionAssets = await _cloudMediaService.RegisterCaptionAssetAsync(
+                new RegisterCaptionAssetParameter(authorization, stageId, projectId, video.Id, video.Version,
+                    assetList),
+                CancellationToken.None);
+
+            return registeredCaptionAssets;
         }
 
         public Task<Settings> GetMcmSettingAsync()

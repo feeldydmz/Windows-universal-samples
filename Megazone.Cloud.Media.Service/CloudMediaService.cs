@@ -262,7 +262,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> UpdateAssetElementsAsync(UpdateCaptionParameter parameter,
+        public async Task<CaptionAsset> UpdateCaptionAssetElementsAsync(UpdateCaptionParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
@@ -304,7 +304,7 @@ namespace Megazone.Cloud.Media.Service
                         // 추가된 자막 파일은 지정된 Asset에 추가한다.
                         foreach (var caption in addList)
                         {
-                            var newCaption = _cloudMediaRepository.CreateAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                            var newCaption = _cloudMediaRepository.CreateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                                 stageId, projectId, assetId, asset.Version, caption));
 
                             updatingCaptionList.Add(newCaption);
@@ -314,7 +314,7 @@ namespace Megazone.Cloud.Media.Service
 
                 foreach (var caption in updatingCaptionList)
                 {
-                    var response = _cloudMediaRepository.UpdateAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                    var response = _cloudMediaRepository.UpdateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
                         accessToken, stageId, projectId, assetId, asset.Version, caption));
                 }
 
@@ -329,7 +329,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<bool> CreateAssetElementsAsync(CreateAssetElementParameter parameter,
+        public async Task<Caption> CreateCaptionAssetElementsAsync(CreateAssetElementParameter parameter,
             CancellationToken cancellationToken)
         {
             var accessToken = parameter.Authorization.AccessToken;
@@ -340,7 +340,7 @@ namespace Megazone.Cloud.Media.Service
             var version = 1;
 
             return await Task.Factory.StartNew(() => 
-                _cloudMediaRepository.CreateAssetElement(
+                _cloudMediaRepository.CreateCaptionAssetElement(
                 new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, element)), 
                 cancellationToken);
         }
@@ -470,4 +470,5 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
     }
+
 }
