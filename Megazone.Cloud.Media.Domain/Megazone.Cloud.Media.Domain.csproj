@@ -56,6 +56,7 @@
     <Compile Include="Assets\ThumbnailAsset.cs" />
     <Compile Include="Assets\VideoAsset.cs" />
     <Compile Include="Assets\VideoSetting.cs" />
+    <Compile Include="AssetUploadUrl.cs" />
     <Compile Include="AuthorizationRequest.cs" />
     <Compile Include="AuthorizationResponse.cs" />
     <Compile Include="AssetListRequest.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Stage.cs" />
     <Compile Include="UploadCaptionRequest.cs" />
     <Compile Include="UploadResult.cs" />
+    <Compile Include="GetUploadUrlRequest.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoListRequest.cs" />
     <Compile Include="VideoListResponse.cs" />

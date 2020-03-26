@@ -314,4 +314,4 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             LoginByAuthorizationCodeAsync(code);
         }
     }
-}
+} 

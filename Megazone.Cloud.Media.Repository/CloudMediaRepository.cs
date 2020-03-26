@@ -120,32 +120,46 @@ namespace Megazone.Cloud.Media.Repository
                 .Execute(restRequest).Convert<Settings>();
         }
 
-        public UploadResult UploadCaptionFile(UploadCaptionRequest request)
+        public AssetUploadUrl GetUploadUrl(GetUploadUrlRequest request)
         {
-            var sha256 = GetSha256(request.Text);
-
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/upload", Method.POST)
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/upload-url",
+                    Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
-                .AddParameter("contentHash", sha256)
-                .AddFileBytes("file", Encoding.UTF8.GetBytes(request.Text), request.FileName);
+                .AddQueryParameter("fileName", request.FileName);
+            
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<UploadResult>();
+            Console.WriteLine($"GetUploadUrl : {response}");
 
-            string GetSha256(string data)
-            {
-                var fileBytes = Encoding.UTF8.GetBytes(data);
-                var contentHashBytes = HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
-                return ToHexString(contentHashBytes);
+            return response.Convert<AssetUploadUrl>();
+        }
 
-                string ToHexString(byte[] bytes)
-                {
-                    var result = "";
-                    foreach (var @byte in bytes)
-                        result += @byte.ToString("x2"); /* hex format */
-                    return result;
-                }
-            }
+        public bool UploadCaptionFile(UploadCaptionRequest request)
+        {
+            //var sha256 = GetSha256(request.Text);
+
+            var restRequest = new RestRequest("", Method.PUT)
+                .AddFileBytes("", Encoding.UTF8.GetBytes(request.Text), "", "application/x-www-form-urlencoded");
+
+            var response = RestSharpExtension.CreateRestClient(request.UploadUrl).Execute(restRequest);
+
+            return response.StatusCode == HttpStatusCode.OK;
+
+            //string GetSha256(string data)
+            //{
+            //    var fileBytes = Encoding.UTF8.GetBytes(data);
+            //    var contentHashBytes = HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
+            //    return ToHexString(contentHashBytes);
+
+            //    string ToHexString(byte[] bytes)
+            //    {
+            //        var result = "";
+            //        foreach (var @byte in bytes)
+            //            result += @byte.ToString("x2"); /* hex format */
+            //        return result;
+            //    }
+            //}
         }
 
         public async Task<string> Read(Uri fileUri)
@@ -272,7 +286,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
             throw new NotImplementedException();
         }
 
-        public Caption UpdateCaption(CaptionRequest request)
+        public Caption UpdateAssetElement(CaptionRequest request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/{request.Caption.Id}",
                     Method.PATCH)
@@ -281,6 +295,17 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
                 .AddQueryParameter("version", request.Version.ToString())
                 .AddJsonString(request.Caption);
 
+            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
+        }
+
+        public Caption CreateAssetElement(CaptionRequest request)
+        {
+            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements",
+                    Method.POST)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Version.ToString())
+                .AddJsonString(request.Caption);
             return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
         }
 

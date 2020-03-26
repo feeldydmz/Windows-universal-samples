@@ -17,7 +17,7 @@ namespace Megazone.Cloud.Media.Domain
      */
     public class CaptionRequest
     {
-        public CaptionRequest(string endpoint, string accessToken, string stageId, string projectId, string assetId, int version,Caption caption)
+        public CaptionRequest(string endpoint, string accessToken, string stageId, string projectId, string assetId, int version, Caption caption)
         {
             Endpoint = endpoint;
             AccessToken = accessToken;

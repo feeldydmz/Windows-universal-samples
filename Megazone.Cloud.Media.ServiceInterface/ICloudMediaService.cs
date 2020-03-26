@@ -24,15 +24,18 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<CaptionAsset> GetCaptionAssetAsync(GetAssetParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> CreateCaptionAssetAsync(CreateCaptionAssetParameter parameter, CancellationToken cancellationToken);
         Task<CaptionAsset> UpdateCaptionAssetAsync(UpdateCaptionAssetParameter parameter, CancellationToken cancellationToken);
-        Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter, CancellationToken cancellationToken);
+        Task<CaptionAsset> UpdateAssetElementsAsync(UpdateCaptionParameter parameter, CancellationToken cancellationToken);
         Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter, CancellationToken cancellationToken);
         Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken);
         Task<Video> GetVideoAsync(GetVideoParameter parameter, CancellationToken cancellationToken);
         Task<Video> UpdateVideoAsync(UpdateVideoParameter parameter, CancellationToken cancellationToken);
         // 비디오에 CaptionAsset을 등록한다.
         Task<IEnumerable<CaptionAsset>> RegisterCaptionAssetAsync(RegisterCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        Task<AssetUploadUrl> GetUploadUrlAsync(GetUploadUrlParameter parameter, CancellationToken cancellationToken);
         Task<Settings> GetSettingsAsync(GetSettingsParameter parameter, CancellationToken cancellationToken);
-        Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
+        Task<bool> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
+
+        Task<Caption> CreateAssetElementsAsync(CreateAssetElementParameter parameter,CancellationToken cancellationToken);
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
         Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken);
     }

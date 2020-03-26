@@ -2,24 +2,13 @@
 {
     public class UploadCaptionRequest
     {
-        public UploadCaptionRequest(string endpoint, string accessToken, string stageId, string projectId,
-            string inputPath, string fileName, string text)
+        public UploadCaptionRequest(string uploadUrl, string text)
         {
-            Endpoint = endpoint;
-            AccessToken = accessToken;
-            StageId = stageId;
-            ProjectId = projectId;
-            InputPath = inputPath;
-            FileName = fileName;
+            UploadUrl = uploadUrl;
             Text = text;
         }
 
-        public string Endpoint { get; }
-        public string AccessToken { get; }
-        public string StageId { get; }
-        public string ProjectId { get; }
-        public string InputPath { get; }
-        public string FileName { get; }
+        public string UploadUrl { get; }
         public string Text { get; }
     }
 }

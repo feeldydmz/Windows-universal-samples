@@ -24,7 +24,7 @@ namespace Megazone.Cloud.Media.Service
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.stg.continuum.co.kr"; // stage
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
-            "http://mz-cm-api-load-balancer-1319778791.ap-northeast-2.elb.amazonaws.com"; // develop version
+            "https://api.cloudplex.dev.megazone.io"; // develop version
 
         private const string UPLOAD_HOST_ENDPOINT =
             "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
@@ -262,7 +262,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> UpdateCaptionAsync(UpdateCaptionParameter parameter,
+        public async Task<CaptionAsset> UpdateAssetElementsAsync(UpdateCaptionParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
@@ -304,7 +304,7 @@ namespace Megazone.Cloud.Media.Service
                         // 추가된 자막 파일은 지정된 Asset에 추가한다.
                         foreach (var caption in addList)
                         {
-                            var newCaption = _cloudMediaRepository.CreateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                            var newCaption = _cloudMediaRepository.CreateAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                                 stageId, projectId, assetId, asset.Version, caption));
 
                             updatingCaptionList.Add(newCaption);
@@ -314,7 +314,7 @@ namespace Megazone.Cloud.Media.Service
 
                 foreach (var caption in updatingCaptionList)
                 {
-                    var response = _cloudMediaRepository.UpdateCaption(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                    var response = _cloudMediaRepository.UpdateAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
                         accessToken, stageId, projectId, assetId, asset.Version, caption));
                 }
 
@@ -327,6 +327,22 @@ namespace Megazone.Cloud.Media.Service
 
                 return updateAsset;
             }, cancellationToken);
+        }
+
+        public async Task<bool> CreateAssetElementsAsync(CreateAssetElementParameter parameter,
+            CancellationToken cancellationToken)
+        {
+            var accessToken = parameter.Authorization.AccessToken;
+            var stageId = parameter.StageId;
+            var projectId = parameter.ProjectId;
+            var assetId = parameter.AssetId;
+            var element = parameter.Element;
+            var version = 1;
+
+            return await Task.Factory.StartNew(() => 
+                _cloudMediaRepository.CreateAssetElement(
+                new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, element)), 
+                cancellationToken);
         }
 
         public async Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken)
@@ -411,17 +427,24 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<string> UploadCaptionFileAsync(UploadCaptionFileParameter parameter,
-            CancellationToken cancellationToken)
+        public async Task<AssetUploadUrl> GetUploadUrlAsync(GetUploadUrlParameter parameter, CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.UploadCaptionFile(new UploadCaptionRequest(UPLOAD_HOST_ENDPOINT,
-                    accessToken, parameter.StageId, parameter.ProjectId, parameter.InputPath, parameter.FileName,
-                    parameter.UploadData));
-                return response.UploadedPath;
+                var response = _cloudMediaRepository.GetUploadUrl(
+                    new GetUploadUrlRequest(CLOUD_MEDIA_ENDPOINT, accessToken, parameter.StageId,
+                        parameter.ProjectId, parameter.AssetId, parameter.FileName));
+                return response;
             }, cancellationToken);
+        }
+
+        public async Task<bool> UploadCaptionFileAsync(UploadCaptionFileParameter parameter,
+            CancellationToken cancellationToken)
+        {
+            return await Task.Factory.StartNew(() => 
+                _cloudMediaRepository.UploadCaptionFile(new UploadCaptionRequest(parameter.UploadUrl, parameter.UploadData)), 
+                cancellationToken);
         }
 
         public async Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken)
