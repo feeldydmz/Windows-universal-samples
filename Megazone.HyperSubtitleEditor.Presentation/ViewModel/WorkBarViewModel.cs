@@ -51,13 +51,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _unloadCommand;
         private VideoItemViewModel _videoItem;
 
-        public enum Method
-        {
-            CREATE,
-            UPDATE
-        }
-
-        public WorkBarViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger,
+         public WorkBarViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger,
             SignInViewModel signInViewModel, SubtitleParserProxy subtitleService, RecentlyLoader recentlyLoader)
         {
             _browser = browser;
@@ -424,7 +418,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         // upload caption files.
                         foreach (var caption in captionList)
                         {
-                            var newCaptionElement =  await CreateCaptionWithUploadAsync(assetId, createAsset.Version, caption, Method.CREATE);
+                            var newCaptionElement =  await CreateCaptionElementWithUploadAsync(assetId, createAsset.Version, caption);
                             newCaptions.Add(newCaptionElement);
                         }
 
@@ -491,7 +485,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);
         }
 
-        private async Task<Caption> CreateCaptionWithUploadAsync(string assetId, int assetVersion, Caption caption, Method method)
+        private async Task<Caption> CreateCaptionElementWithUploadAsync(string assetId, int assetVersion, Caption caption)
         {
             try
             {
@@ -502,38 +496,74 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var uploadData = GetTextBy(caption);
                 var fileName = GetFileName(caption);
 
-                var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
-                    new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName, method == Method.CREATE),
-                    CancellationToken.None);
-                caption.Url = uploadPath.Url;
-                //caption.UploadUrl = uploadPath.UploadUrl;
+                var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, true);
 
-                ////업로드 로직
-                var isUploadSuccess = await _cloudMediaService.UploadCaptionFileAsync(
-                    new UploadCaptionFileParameter(uploadPath.UploadUrl, uploadData),
-                    CancellationToken.None);
-
-                if (isUploadSuccess)
+                if (assetUploadUrl != null)
                 {
-                    if (method == Method.CREATE)
-                    {
-                        return await _cloudMediaService.CreateCaptionAssetElementsAsync(
-                            new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
-                                caption), CancellationToken.None);
-                    }
-                    else if (method == Method.UPDATE)
-                    {
-                        await _cloudMediaService.UpdateCaptionAssetElementAsync(
-                            new UpdateCaptionParameter(authorization, stageId, projectId, assetId, assetVersion,
-                                caption),
-                            CancellationToken.None);
-                    }
+                    caption.Url = assetUploadUrl.Url;
+                    return await _cloudMediaService.CreateCaptionElementsAsync(
+                        new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
+                            caption), CancellationToken.None);
                 }
 
                 return null;
             } catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        private async Task<Caption> UpdateCaptionElementWithUploadAsync(string assetId, int assetVersion, Caption caption)
+        {
+            try
+            {
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+                var stageId = _signInViewModel.SelectedStage.Id;
+                var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+                var uploadData = GetTextBy(caption);
+                var fileName = GetFileName(caption);
+
+                var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, false);
+
+                if (assetUploadUrl != null)
+                {
+                    return await _cloudMediaService.UpdateCaptionElementAsync(
+                        new UpdateCaptionParameter(authorization, stageId, projectId, assetId, assetVersion,
+                            caption),
+                        CancellationToken.None);
+                }
+                
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private async Task<AssetUploadUrl> UploadCaptionFileAsync(string assetId, string fileName, string uploadData, bool isAttacheId)
+        {
+            try
+            {
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+                var stageId = _signInViewModel.SelectedStage.Id;
+                var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+                var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
+                    new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName, isAttacheId),
+                    CancellationToken.None);
+
+                ////업로드 로직
+                var isUploadSuccess = await _cloudMediaService.UploadCaptionFileAsync(
+                    new UploadCaptionFileParameter(uploadPath.UploadUrl, uploadData),
+                    CancellationToken.None);
+
+                return isUploadSuccess ? uploadPath : null;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
         
@@ -544,9 +574,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var authorization = _signInViewModel.GetAuthorizationAsync().Result;
                 var stageId = _signInViewModel.SelectedStage.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
-
-                //var asset = _cloudMediaService.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
-                //    stageId, projectId, assetId));
 
                 var asset = await GetCaptionAssetAsync(assetId);
 
@@ -570,9 +597,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         }
                         else
                         {
-                            //var index = oldCaptions.IndexOf(findCaption);
-                            //oldCaptions.Remove(findCaption);
-                            //oldCaptions.Insert(index, workingCaption);
                             updatingCaptionList.Add(workingCaption);
                         }
                     }
@@ -583,13 +607,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         // 추가된 자막 파일은 지정된 Asset에 추가한다.
                         foreach (var caption in addList)
                         {
-                            //var newCaption = _cloudMediaService.CreateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
-                            //    stageId, projectId, assetId, asset.Version, caption));
-
-                            //updatingCaptionList.Add(newCaption);
-
                             var newCaptionElement =
-                                await CreateCaptionWithUploadAsync(assetId, asset.Version, caption, Method.CREATE);
+                                await CreateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
 
                             if (newCaptionElement != null)
                                 newCaptions.Add(newCaptionElement);
@@ -600,16 +619,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     for (int i = 0; i < updatingCaptionList.Count; i++)
                     {
                         var caption = updatingCaptionList[i];
-
-                        //var response = _cloudMediaRepository.UpdateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
-                        //    accessToken, stageId, projectId, assetId, asset.Version, caption));
-
-                        //await _cloudMediaService.UpdateCaptionAssetElementAsync(
-                        //    new UpdateCaptionParameter(authorization, stageId, projectId, assetId, asset.Version, caption),
-                        //    CancellationToken.None);
-
                         var response =
-                            await CreateCaptionWithUploadAsync(assetId, asset.Version, caption, Method.UPDATE);
+                            await UpdateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
 
                         newCaptions.Insert(i, caption);
 

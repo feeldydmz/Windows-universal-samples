@@ -269,7 +269,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
             throw new NotImplementedException();
         }
 
-        public Caption UpdateCaptionAssetElement(CaptionRequest request)
+        public Caption UpdateCaptionElement(CaptionRequest request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/{request.Caption.Id}",
                     Method.PATCH)
@@ -281,7 +281,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
             return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
         }
 
-        public Caption CreateCaptionAssetElement(CaptionRequest request)
+        public Caption CreateCaptionElement(CaptionRequest request)
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements",
                     Method.POST)
