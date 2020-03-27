@@ -30,6 +30,6 @@ namespace Megazone.Cloud.Media.Domain.Assets
         public int Version { get; }
         public IEnumerable<string> Encryptions { get; }
         public string CreatedAt { get; }
-        public IEnumerable<TAssetElement> Elements { get; }
+        public IEnumerable<TAssetElement> Elements { get; set; }
     }
 }

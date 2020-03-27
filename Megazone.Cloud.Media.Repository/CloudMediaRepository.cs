@@ -126,8 +126,9 @@ namespace Megazone.Cloud.Media.Repository
                     Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
-                .AddQueryParameter("fileName", request.FileName);
-            
+                .AddQueryParameter("fileName", request.FileName)
+                .AddQueryParameter("isAttachId", request.IsAttachId.ToString());
+
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
 
             Console.WriteLine($"GetUploadUrl : {response}");
@@ -137,29 +138,11 @@ namespace Megazone.Cloud.Media.Repository
 
         public bool UploadCaptionFile(UploadCaptionRequest request)
         {
-            //var sha256 = GetSha256(request.Text);
-
             var restRequest = new RestRequest("", Method.PUT)
-                .AddFileBytes("", Encoding.UTF8.GetBytes(request.Text), "", "application/x-www-form-urlencoded");
+                .AddParameter("application/x-www-form-urlencoded", Encoding.UTF8.GetBytes(request.Text), ParameterType.RequestBody);
 
             var response = RestSharpExtension.CreateRestClient(request.UploadUrl).Execute(restRequest);
-
             return response.StatusCode == HttpStatusCode.OK;
-
-            //string GetSha256(string data)
-            //{
-            //    var fileBytes = Encoding.UTF8.GetBytes(data);
-            //    var contentHashBytes = HashAlgorithm.Create("SHA-256")?.ComputeHash(fileBytes);
-            //    return ToHexString(contentHashBytes);
-
-            //    string ToHexString(byte[] bytes)
-            //    {
-            //        var result = "";
-            //        foreach (var @byte in bytes)
-            //            result += @byte.ToString("x2"); /* hex format */
-            //        return result;
-            //    }
-            //}
         }
 
         public async Task<string> Read(Uri fileUri)

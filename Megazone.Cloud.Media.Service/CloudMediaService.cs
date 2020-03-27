@@ -262,7 +262,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<CaptionAsset> UpdateCaptionAssetElementsAsync(UpdateCaptionParameter parameter,
+        public async Task<Caption> UpdateCaptionAssetElementAsync(UpdateCaptionParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(() =>
@@ -271,61 +271,65 @@ namespace Megazone.Cloud.Media.Service
                 var stageId = parameter.StageId;
                 var projectId = parameter.ProjectId;
                 var assetId = parameter.AssetId;
-                var captionList = parameter.Captions.ToList();
+                var assetVersion = parameter.AssetVersion;
+                var caption = parameter.Caption;
+                //var captionList = parameter.Captions.ToList();
 
-                var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
-                    stageId, projectId, assetId));
+                //var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                //    stageId, projectId, assetId));
 
-                if (asset == null)
-                    throw new Exception("asset is null");
+                //if (asset == null)
+                //    throw new Exception("asset is null");
 
-                var updatingCaptionList = asset.Elements?.ToList() ?? new List<Caption>();
-                if (captionList.Any())
-                {
-                    var addList = new List<Caption>();
-                    foreach (var newCaption in captionList)
-                    {
-                        var findCaption =
-                            updatingCaptionList.SingleOrDefault(caption => caption.Id.Equals(newCaption.Id));
-                        if (findCaption == null)
-                        {
-                            addList.Add(newCaption);
-                        }
-                        else
-                        {
-                            var index = updatingCaptionList.IndexOf(findCaption);
-                            updatingCaptionList.Remove(findCaption);
-                            updatingCaptionList.Insert(index, newCaption);
-                        }
-                    }
+                //var updatingCaptionList = asset.Elements?.ToList() ?? new List<Caption>();
+                //if (captionList.Any())
+                //{
+                //    var addList = new List<Caption>();
+                //    foreach (var newCaption in captionList)
+                //    {
+                //        var findCaption =
+                //            updatingCaptionList.SingleOrDefault(caption => caption.Id.Equals(newCaption.Id));
+                //        if (findCaption == null)
+                //        {
+                //            addList.Add(newCaption);
+                //        }
+                //        else
+                //        {
+                //            var index = updatingCaptionList.IndexOf(findCaption);
+                //            updatingCaptionList.Remove(findCaption);
+                //            updatingCaptionList.Insert(index, newCaption);
+                //        }
+                //    }
 
-                    if (addList.Any())
-                    {
-                        // 추가된 자막 파일은 지정된 Asset에 추가한다.
-                        foreach (var caption in addList)
-                        {
-                            var newCaption = _cloudMediaRepository.CreateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
-                                stageId, projectId, assetId, asset.Version, caption));
+                //    if (addList.Any())
+                //    {
+                //        // 추가된 자막 파일은 지정된 Asset에 추가한다.
+                //        foreach (var caption in addList)
+                //        {
+                //            var newCaption = _cloudMediaRepository.CreateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                //                stageId, projectId, assetId, asset.Version, caption));
 
-                            updatingCaptionList.Add(newCaption);
-                        }
-                    }
-                }
+                //            updatingCaptionList.Add(newCaption);
+                //        }
+                //    }
+                //}
 
-                foreach (var caption in updatingCaptionList)
-                {
-                    var response = _cloudMediaRepository.UpdateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
-                        accessToken, stageId, projectId, assetId, asset.Version, caption));
-                }
+                //foreach (var caption in updatingCaptionList)
+                //{
+                //    var response = _cloudMediaRepository.UpdateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                //        accessToken, stageId, projectId, assetId, asset.Version, caption));
+                //}
 
-                var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
-                    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
+                return _cloudMediaRepository.UpdateCaptionAssetElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                    accessToken, stageId, projectId, assetId, assetVersion, caption));
+
+                //var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
+                //    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, updatingCaptionList);
 
                 //var response = _cloudMediaRepository.UpdateCaptionAsset(new AssetRequest<CaptionAsset>(
                 //    CLOUD_MEDIA_ENDPOINT,
                 //    accessToken, stageId, projectId, assetId, updateAsset));
 
-                return updateAsset;
             }, cancellationToken);
         }
 
@@ -337,7 +341,7 @@ namespace Megazone.Cloud.Media.Service
             var projectId = parameter.ProjectId;
             var assetId = parameter.AssetId;
             var element = parameter.Element;
-            var version = 1;
+            var version = parameter.AssetVersion;
 
             return await Task.Factory.StartNew(() => 
                 _cloudMediaRepository.CreateCaptionAssetElement(
@@ -434,7 +438,7 @@ namespace Megazone.Cloud.Media.Service
                 var accessToken = parameter.Authorization.AccessToken;
                 var response = _cloudMediaRepository.GetUploadUrl(
                     new GetUploadUrlRequest(CLOUD_MEDIA_ENDPOINT, accessToken, parameter.StageId,
-                        parameter.ProjectId, parameter.AssetId, parameter.FileName));
+                        parameter.ProjectId, parameter.AssetId, parameter.FileName, parameter.IsAttachId));
                 return response;
             }, cancellationToken);
         }

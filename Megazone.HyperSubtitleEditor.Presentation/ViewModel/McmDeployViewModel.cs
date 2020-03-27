@@ -166,7 +166,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async Task<IEnumerable<CaptionElementItemViewModel>> MakeList()
         {
             // 현재 탭으로 오픈된 자막을 게시한다.
-            CaptionElementItemViewModel CrateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
+            CaptionElementItemViewModel CreateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
             {
                 var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
                     tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
@@ -174,20 +174,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 return new CaptionElementItemViewModel(caption)
                 {
-                    IsSelected = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) &&
-                                 !string.IsNullOrEmpty(tab.CountryCode),
+                    IsSelected = !string.IsNullOrEmpty(tab.Name) 
+                                 && !string.IsNullOrEmpty(tab.LanguageCode) 
+                                 && !string.IsNullOrEmpty(tab.CountryCode)
+                                 && tab.IsDirty,
+
                     CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) &&
                                 !string.IsNullOrEmpty(tab.CountryCode)
                 };
             }
 
-            var editedCaptionList = _subtitleViewModel.Tabs.Select(CrateCaptionElementItemViewModel).ToList();
+            var editedCaptionList = _subtitleViewModel.Tabs.Select(CreateCaptionElementItemViewModel).ToList();
 
-            foreach (var item in editedCaptionList)
-            {
-                item.IsSelected = true;
-                item.CanDeploy = true;
-            }
+            //foreach (var item in editedCaptionList)
+            //{
+            //    item.IsSelected = true;
+            //    item.CanDeploy = true;
+            //}
 
             var captionAssetId = _workBarViewModel.CaptionAssetItem?.Id;
             if (!string.IsNullOrEmpty(captionAssetId))

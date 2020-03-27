@@ -7,11 +7,13 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
     public class UpdateCaptionParameter : GetAssetParameter
     {
         public UpdateCaptionParameter(Authorization authorization, string stageId, string projectId,
-            string assetId, IEnumerable<Caption> captions) : base(authorization, stageId, projectId, assetId)
+            string assetId, int assetVersion, Caption caption) : base(authorization, stageId, projectId, assetId)
         {
-            Captions = captions;
+            Caption = caption;
+            AssetVersion = assetVersion;
         }
 
-        public IEnumerable<Caption> Captions { get; }
+        public Caption Caption { get; }
+        public int AssetVersion { get; }
     }
 }
