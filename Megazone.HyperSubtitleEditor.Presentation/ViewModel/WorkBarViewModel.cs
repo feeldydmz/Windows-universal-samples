@@ -505,8 +505,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
                             caption), CancellationToken.None);
                 }
+                else
+                {
+                    throw  new Exception("Caption upload fail");
+                }
 
-                return null;
             } catch (Exception e)
             {
                 throw e;

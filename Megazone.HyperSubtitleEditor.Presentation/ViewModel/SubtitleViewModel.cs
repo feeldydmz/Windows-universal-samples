@@ -1131,7 +1131,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var label = CheckConflictLabel(param.Label);
 
-            var subtitles = _subtitleService.Load(param.Text, TrackFormat.WebVtt);
+            var subtitles = _subtitleService.Load(param.Text, TrackFormat.Sami);
             var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             var newTab = new SubtitleTabItemViewModel(label,
                 OnRowCollectionChanged,

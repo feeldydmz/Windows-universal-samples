@@ -29,6 +29,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 case TrackFormat.WebVtt:
                     return new WebVttParser();
+                case TrackFormat.Sami:
+                    return new SamiParser();
+                case TrackFormat.Srt:
+                    return new SrtParser();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

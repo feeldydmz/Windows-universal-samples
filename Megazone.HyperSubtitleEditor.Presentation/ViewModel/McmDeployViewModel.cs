@@ -230,6 +230,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 foreach (var caption in selectedCaptionList) caption.Kind = SelectedSubtitleKind.ToString().ToUpper();
 
+                // TODO 여기서 captionAsset 을 생성해서 넘겨 줄 필요가 있나
+                // 실제로 사용하는건 assetId 와 assetName 뿐
                 MessageCenter.Instance.Send(new CloudMedia.DeployRequestedMessage(this,
                     new DeployRequestedMessageParameter(video, captionAsset, selectedCaptionList)));
             }

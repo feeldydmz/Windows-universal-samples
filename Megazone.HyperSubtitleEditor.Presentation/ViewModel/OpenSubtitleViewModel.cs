@@ -81,7 +81,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenSubtitleFile()
         {
-            FilePath = _fileManager.OpenFile("WebVtt files (*.vtt)|*.vtt");
+            FilePath = _fileManager.OpenFile("WebVtt files (*.vtt)|*.vtt|SMI Files (*.smi)|*.smi");
 
             Open(FilePath);
         }
