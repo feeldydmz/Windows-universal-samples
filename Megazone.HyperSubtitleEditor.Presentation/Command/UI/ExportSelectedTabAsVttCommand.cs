@@ -24,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.SaveMessage(this));
+            MessageCenter.Instance.Send(new Subtitle.ExportSubtitleMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

@@ -400,6 +400,7 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_IMPORT}" />
                         </Grid>
                     </Button>
+                    -->
                     <Button Command="{StaticResource ExportExcelFileCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -410,7 +411,7 @@
                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Export.png" />
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
                         </Grid>
-                    </Button>-->
+                    </Button>
                     <!--<Rectangle Visibility="Collapsed" />-->
                     <Grid Margin="0,5" Visibility="Collapsed">
                         <CheckBox x:Name="OpenVideoButton">

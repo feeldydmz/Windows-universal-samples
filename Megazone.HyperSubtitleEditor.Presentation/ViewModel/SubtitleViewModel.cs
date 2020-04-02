@@ -203,50 +203,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _goToSelectedRowCommand ?? new RelayCommand(GoToSelectedRow, CanGoToSelectedRow);
             }
         }
-
         
-        //// TODO 셋팅으로 빼기
-        //private string recentlySubtiltePath { get; set; }
-
-        public void OnImportSubtitleFile()
-        {
-            string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
-
-            var filePath = _fileManager.OpenFile("subtitle files (*.vtt;*.srt;*.smi;*.xlsx)|*.vtt;*.srt;*.smi;*.xlsx",
-                initialPath);
-
-            if(!string.IsNullOrEmpty(filePath))
-                ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(filePath);
-
-            ImportSubtitleFile(filePath);
-        }
-
-        public void ImportSubtitleFile(string filePath)
-        {
-            // 엑셀, vtt, srt, smi 확장자로 구분
-            var extension = Path.GetExtension(filePath);
-
-            switch (extension)
-            {
-                case ".vtt":
-                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.WebVtt);
-                    break;
-                case ".srt":
-                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.Srt);
-                    break;
-                case ".smi":
-                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.Sami);
-                    break;
-                case ".xlsx":
-                    _browser.Main.ShowImportExcelDialog(filePath);
-                    break;
-            }
-        }
-
-        private void exportSubtitleFile()
-        {
-
-        }
         public SubtitleTabItemViewModel SelectedTab
         {
             get => _selectedTab;
@@ -465,7 +422,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _hasRegisteredMessageHandlers = true;
             MessageCenter.Instance.Regist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
+            //MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
+            MessageCenter.Instance.Regist<Subtitle.ExportSubtitleMessage>(OnExportSubtitleFile);
             MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
@@ -535,7 +493,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!_hasRegisteredMessageHandlers) return;
             MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
+            //MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
@@ -987,19 +945,140 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             tab.FilePath = saveFilePath;
         }
 
-        private async void OnSave(Subtitle.SaveMessage message)
+        //private async void OnSave(Subtitle.SaveMessage message)
+        //{
+        //    var saveFilePath = SelectedTab.FilePath;
+        //    if (string.IsNullOrEmpty(saveFilePath))
+        //    {
+        //        saveFilePath = _fileManager.OpenSaveFileDialog(null, "WebVtt files (.vtt)|*.vtt", SelectedTab.Name);
+        //        if (string.IsNullOrEmpty(saveFilePath)) return;
+        //    }
+
+        //    _browser.Main.LoadingManager.Show();
+        //    try
+        //    {
+        //        await SaveTabAsFile(SelectedTab, saveFilePath);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Error.Write(ex);
+        //        this.InvokeOnUi(
+        //            () =>
+        //            {
+        //                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+        //                    Resource.MSG_SAVE_FAIL,
+        //                    MessageBoxButton.OK,
+        //                    Application.Current.MainWindow));
+        //            });
+        //    }
+        //    finally
+        //    {
+        //        _browser.Main.LoadingManager.Hide();
+        //    }
+
+        //    _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
+        //        MessageBoxButton.OK,
+        //        Application.Current.MainWindow));
+        //}
+        
+        private async void OnExportSubtitleFile(Subtitle.ExportSubtitleMessage message)
         {
-            var saveFilePath = SelectedTab.FilePath;
-            if (string.IsNullOrEmpty(saveFilePath))
+            var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi|excel (*.xlsx)|*.xlsx", SelectedTab.Name);
+
+            var subtitleFormat = GetSubTitleFormatKindByFileName(saveFilePath);
+
+            switch (subtitleFormat)
             {
-                saveFilePath = _fileManager.OpenSaveFileDialog(null, "WebVtt files (.vtt)|*.vtt", SelectedTab.Name);
-                if (string.IsNullOrEmpty(saveFilePath)) return;
+                case SubtitleFormatKind.WebVtt:
+                case SubtitleFormatKind.Sami:
+                case SubtitleFormatKind.Srt:
+                    ExportSubtitleAsync(saveFilePath);
+                    break;
+                case SubtitleFormatKind.Excel:
+                    //_browser.Main.ShowImportExcelDialog(saveFilePath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
+            if (string.IsNullOrEmpty(saveFilePath)) 
+                return;
+        }
+
+        private async void ExportExcelAsync(string savePath)
+        {
+            try
+            {
+                var now = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+                //var savePath = _fileManager.OpenSaveFileDialog(this.MyDocuments(), "Excel files (*.xlsx)|*.xlsx",
+                //    "HyperSubtitleEditor_Excel_" + now + ".xlsx");
+
+                if (string.IsNullOrEmpty(savePath))
+                    return;
+
+                IList<Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle> subtitles = 
+                    new List<Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle>();
+
+                foreach (var tab in Tabs)
+                {
+                    var subtitle = new Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle
+                    {
+                        Label = tab.Name,
+                        LanguageCode = tab.LanguageCode,
+                        CountryCode = tab.CountryCode,
+                        Format = TrackFormat.WebVtt,
+                        Kind = tab.Kind
+                    };
+
+                    foreach (var item in tab.Rows)
+                        subtitle.Datasets.Add(new SubtitleItem
+                        {
+                            Number = item.Number,
+                            StartTime = item.StartTime,
+                            EndTime = item.EndTime,
+                            Texts = item.Texts
+                        });
+
+                    subtitles.Add(subtitle);
+                }
+
+                _browser.Main.LoadingManager.Show();
+
+                //await this.CreateTask(() =>
+                //{
+                //    var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
+
+                //    this.InvokeOnUi(() =>
+                //    {
+                //        if (isSuccess)
+                //            Process.Start("explorer.exe", Path.GetDirectoryName(savePath));
+                //        else
+                //            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                //                Resource.MSG_EXPORT_EXCEL_FILE_FAIL,
+                //                MessageBoxButton.OK,
+                //                Application.Current.MainWindow));
+
+                //        _browser.Main.LoadingManager.Hide();
+                //    });
+                //});
+            }
+            catch (Exception ex)
+            {
+                _logger.Error.Write(ex.Message);
+            }
+        }
+
+        private async void ExportSubtitleAsync(string savePath)
+        {
+            if (string.IsNullOrEmpty(savePath))
+                return;
+
+            //var saveFilePath = SelectedTab.FilePath;
             _browser.Main.LoadingManager.Show();
             try
             {
-                await SaveTabAsFile(SelectedTab, saveFilePath);
+                await SaveTabAsFile(SelectedTab, savePath);
             }
             catch (Exception ex)
             {
@@ -1021,6 +1100,66 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
                 MessageBoxButton.OK,
                 Application.Current.MainWindow));
+        }
+
+        public void OnImportSubtitleFile()
+        {
+            string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
+
+            var filePath = _fileManager.OpenFile("subtitle files (*.vtt;*.srt;*.smi;*.xlsx)|*.vtt;*.srt;*.smi;*.xlsx",
+                initialPath);
+
+            if (!string.IsNullOrEmpty(filePath))
+                ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(filePath);
+
+            ImportSubtitleFile(filePath);
+        }
+
+        public void ImportSubtitleFile(string filePath)
+        {
+            var subtitleFormat = GetSubTitleFormatKindByFileName(filePath);
+
+            switch (subtitleFormat)
+            {
+                case SubtitleFormatKind.WebVtt:
+                case SubtitleFormatKind.Sami:
+                case SubtitleFormatKind.Srt:
+                    _browser.Main.ShowOpenSubtitleDialog(filePath, subtitleFormat);
+                    break;
+                case SubtitleFormatKind.Excel:
+                    _browser.Main.ShowImportExcelDialog(filePath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private SubtitleFormatKind GetSubTitleFormatKindByFileName(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+
+            SubtitleFormatKind subtitleFormat;
+
+            switch (extension)
+            {
+                case ".vtt":
+                    subtitleFormat =  SubtitleFormatKind.WebVtt;
+                    break;
+                case ".srt":
+                    subtitleFormat = SubtitleFormatKind.Srt;
+                    break;
+                case ".smi":
+                    subtitleFormat = SubtitleFormatKind.Sami;
+                    break;
+                case ".xlsx":
+                    subtitleFormat = SubtitleFormatKind.Excel;
+                    break;
+                default:
+                    subtitleFormat = SubtitleFormatKind.Unknown;
+                    break;
+            }
+
+            return subtitleFormat;
         }
 
         internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
