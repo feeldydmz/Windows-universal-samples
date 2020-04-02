@@ -131,15 +131,11 @@
                           Command="{StaticResource ExportAllTabsAsVttCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
                           Command="{StaticResource ExportSelectedTabAsVttCommand}" />
-                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_EXCEL}"
-                          Command="{StaticResource ExportExcelFileCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_PROJECT}"
                           Command="{StaticResource SaveGroupCommand}" Visibility="Collapsed" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_VTT}"
                           Command="{StaticResource OpenSubtitleCommand}" />
-                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
-                          Command="{StaticResource OpenExcelFileCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_PROJECT}"
                           Command="{StaticResource LoadGroupFileCommand}" Visibility="Collapsed" />
                 <Separator />

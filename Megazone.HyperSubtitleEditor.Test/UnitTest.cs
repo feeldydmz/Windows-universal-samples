@@ -166,7 +166,7 @@ namespace Megazone.HyperSubtitleEditor.Test
         //                            if (beforeText.Equals("국가 코드"))
         //                                subtitle.LanguageCode = text;
         //                            if (beforeText.Equals("파일 형식") && text.ToUpper().Equals("WEBVTT"))
-        //                                subtitle.Format = SubtitleFormat.WebVtt;
+        //                                subtitle.Format = SubtitleFormatKind.WebVtt;
         //                        }
         //                    }
 
@@ -297,7 +297,7 @@ namespace Megazone.HyperSubtitleEditor.Test
         //[TestMethod]
         //private void CreateWebVtt(Subtitle subtitle, string saveFullPath)
         //{
-        //    if (subtitle == null || subtitle.Format != SubtitleFormat.WebVtt)
+        //    if (subtitle == null || subtitle.Format != SubtitleFormatKind.WebVtt)
         //        return;
 
         //    IList<string> rows = new List<string>();

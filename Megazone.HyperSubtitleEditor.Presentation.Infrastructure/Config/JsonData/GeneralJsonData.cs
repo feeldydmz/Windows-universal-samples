@@ -13,5 +13,7 @@
         public bool IsRetry { get; set; } = true;
 
         public bool IsShowOnlyMediaFile { get; set; } = false;
+
+        public string RecentlySubtitleOpenPath { get; set; }
     }
 }

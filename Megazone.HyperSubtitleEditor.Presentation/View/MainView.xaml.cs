@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
+using Megazone.Core.VideoTrack;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
@@ -74,11 +75,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             window.ShowDialog();
         }
 
-        public void ShowOpenSubtitleDialog(string initialFilePath = null)
+        public void ShowOpenSubtitleDialog(string filePath, SubtitleFormatKind subtitleFormat)
         {
             var view = new OpenSubtitleView();
             var vm = (OpenSubtitleViewModel) view.DataContext;
-            vm.InitialFilePath = initialFilePath;
+            vm.FilePath = filePath;
+            vm.SubtitleFormat = subtitleFormat;
             var window = new ChildWindow
             {
                 Owner = Application.Current.MainWindow,
@@ -361,6 +363,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                         TextAlignment.Center)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
             }
+
+            subtitle.Unload();
         }
 
         private class SubtitleViewImpl : ISubtitleView

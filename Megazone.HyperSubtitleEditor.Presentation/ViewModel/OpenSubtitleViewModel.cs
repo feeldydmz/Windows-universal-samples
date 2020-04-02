@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
+using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -15,6 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private readonly FileManager _fileManager;
         private string _filePath;
+        private SubtitleFormatKind _subtitleFormat;
         private ICommand _loadedCommand;
         private ICommand _openSubtitleFileCommand;
 
@@ -35,16 +37,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _filePath, value);
         }
 
+        public SubtitleFormatKind SubtitleFormat
+        {
+            get => _subtitleFormat;
+            set => Set( ref _subtitleFormat, value);
+        }
+
         public ICommand OpenSubtitleFileCommand
         {
             get { return _openSubtitleFileCommand = _openSubtitleFileCommand ?? new RelayCommand(OpenSubtitleFile); }
         }
 
-        public string InitialFilePath { get; internal set; }
+        //public string InitialFilePath { get; internal set; }
 
         private void OnLoaded()
         {
-            FilePath = InitialFilePath; 
+            //FilePath = InitialFilePath; 
             Open(FilePath);
         }
 
@@ -68,7 +76,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         Label = Label,
                         Text = text,
                         LanguageCode = SelectedLanguage.LanguageCode,
-                        CountryCode = SelectedLanguage.CountryCode
+                        CountryCode = SelectedLanguage.CountryCode,
+                        SubtitleFormat = _subtitleFormat
                     }));
             }
             catch (Exception ex)
@@ -81,8 +90,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenSubtitleFile()
         {
-            FilePath = _fileManager.OpenFile("WebVtt files (*.vtt)|*.vtt|SMI Files (*.smi)|*.smi");
-
             Open(FilePath);
         }
 

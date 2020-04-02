@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -134,11 +135,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             else
             {
-                var fileExtension = Path.GetExtension(localFileFullPath);
-                if (fileExtension == ".xlsx")
-                    _browser.Main.ShowImportExcelDialog(localFileFullPath);
-                else
-                    _browser.Main.ShowOpenSubtitleDialog(localFileFullPath);
+                //var fileExtension = Path.GetExtension(localFileFullPath);
+
+                var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+
+                subtitleViewModel.ImportSubtitleFile(localFileFullPath);
+
+                //if (fileExtension == ".xlsx")
+                //    _browser.Main.ShowImportExcelDialog(localFileFullPath);
+                //else
+                //    _browser.Main.ShowOpenSubtitleDialog(localFileFullPath);
             }
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
@@ -166,7 +172,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private void Unload()
-        {
+        {   
+            Console.WriteLine("Unload");
             //UnregisterMessageHandlers();
         }
 
