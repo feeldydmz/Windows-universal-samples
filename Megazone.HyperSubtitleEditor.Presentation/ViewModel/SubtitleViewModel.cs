@@ -909,7 +909,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         if (string.IsNullOrEmpty(saveFilePath)) return;
                     }
 
-                    await SaveTabAsFile(tab, saveFilePath);
+                    await SaveTabAsFileAsync(tab, saveFilePath);
                 }
 
                 this.InvokeOnUi(
@@ -939,7 +939,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async Task SaveTabAsFile(ISubtitleTabItemViewModel tab, string saveFilePath)
+        private async Task SaveTabAsFileAsync(ISubtitleTabItemViewModel tab, string saveFilePath)
         {
             var rows = tab.Rows.ToList();
             await this.CreateTask(() => { Save(saveFilePath, rows); });
@@ -958,7 +958,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //    _browser.Main.LoadingManager.Show();
         //    try
         //    {
-        //        await SaveTabAsFile(SelectedTab, saveFilePath);
+        //        await SaveTabAsFileAsync(SelectedTab, saveFilePath);
         //    }
         //    catch (Exception ex)
         //    {
@@ -986,7 +986,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi|excel (*.xlsx)|*.xlsx", SelectedTab.Name);
 
+            if (string.IsNullOrEmpty(saveFilePath))
+                return;
+
             var subtitleFormat = GetSubTitleFormatKindByFileName(saveFilePath);
+
+            Debug.WriteLine("start OnExportSubtitleFile");
 
             switch (subtitleFormat)
             {
@@ -1000,14 +1005,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     //_browser.Main.ShowImportExcelDialog(saveFilePath);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
 
-            if (string.IsNullOrEmpty(saveFilePath)) 
-                return;
+            Debug.WriteLine("end OnExportSubtitleFile");
         }
 
-        private async void ExportExcelAsync(string savePath)
+        private async Task ExportExcelAsync(string savePath)
         {
             try
             {
@@ -1046,8 +1050,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     subtitles.Add(subtitle);
                 }
 
-                var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
-                 
+                await this.CreateTask(async () => {
+                        var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
+
+                        _browser.Main.LoadingManager.Hide();
+                });
+
                 //await this.CreateTask(() =>
                 //{
                 //    var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
@@ -1069,23 +1077,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             catch (Exception ex)
             {
                 _logger.Error.Write(ex.Message);
-            }
-            finally
-            {
                 _browser.Main.LoadingManager.Hide();
             }
         }
 
-        private async void ExportSubtitleAsync(string savePath)
+        private async Task ExportSubtitleAsync(string savePath)
         {
+            Debug.WriteLine("-- start ExportSubtitleAsync");
             if (string.IsNullOrEmpty(savePath))
                 return;
 
-            //var saveFilePath = SelectedTab.FilePath;
             _browser.Main.LoadingManager.Show();
+
             try
             {
-                await SaveTabAsFile(SelectedTab, savePath);
+                await SaveTabAsFileAsync(SelectedTab, savePath);
             }
             catch (Exception ex)
             {
@@ -1103,6 +1109,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 _browser.Main.LoadingManager.Hide();
             }
+
+            Debug.WriteLine("-- end ExportSubtitleAsync");
 
             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
                 MessageBoxButton.OK,
@@ -1367,7 +1375,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         newTab.AddRowsAsync(subtitles.ToList());
 
                     this.InvokeOnUi(() =>
-                    { 
+                    {
                         Tabs.Add(newTab);
                     });
 

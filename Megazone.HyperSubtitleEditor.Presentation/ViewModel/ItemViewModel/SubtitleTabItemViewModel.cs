@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -259,7 +260,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CheckDirty();
         }
 
-        private void AddRows(IList<SubtitleItem> subtitles)
+        public void AddRows(IList<SubtitleItem> subtitles)
         {
             _ignoreCollectionChanged = true;
             var index = _rows.Count + 1;
@@ -277,24 +278,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public async Task AddRowsAsync(IList<SubtitleItem> subtitles)
         {
+            Debug.WriteLine("++AddRowsAsync");
+
             _ignoreCollectionChanged = true;
             var index = _rows.Count + 1;
 
-            await Task.Factory.StartNew(() => { 
-
-            foreach (var subtitleItem in subtitles)
-            {
-                var item = new SubtitleListItemViewModel(subtitleItem, OnValidateRequested, OnDisplayTextChanged)
+            await Task.Factory.StartNew(() => {
+                foreach (var subtitleItem in subtitles)
                 {
-                    Number = index++
-                };
-                this.InvokeOnUi(() => { Rows.Add(item); });
-
-                
-            }
+                    var item = new SubtitleListItemViewModel(subtitleItem, OnValidateRequested, OnDisplayTextChanged)
+                    {
+                        Number = index++
+                    };
+                    this.InvokeOnUi(() => { Rows.Add(item); });
+                }
             });
 
             _ignoreCollectionChanged = false;
+            Debug.WriteLine("--AddRowsAsync");
         }
 
         public void AddRows(IList<SubtitleListItemViewModel> rows, int insertAt = -1)
