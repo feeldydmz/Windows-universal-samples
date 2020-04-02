@@ -1,4 +1,5 @@
 ﻿using Megazone.Cloud.Media.Domain;
+using Megazone.Core.VideoTrack;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
@@ -10,5 +11,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
         public string LanguageCode { get; set; }
         public string CountryCode { get; set; }
         public CaptionKind Kind { get; set; }
+        public SubtitleFormatKind SubtitleFormat { get; set; }
     }
 }

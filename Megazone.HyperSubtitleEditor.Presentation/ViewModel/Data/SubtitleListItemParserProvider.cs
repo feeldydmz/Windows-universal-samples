@@ -1,15 +1,15 @@
 using System;
-using Megazone.HyperSubtitleEditor.Presentation.Excel;
+using Megazone.Core.VideoTrack;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
     internal struct SubtitleListItemParserProvider
     {
-        public static ISubtitleListItemViewModelParser Get(TrackFormat type)
+        public static ISubtitleListItemViewModelParser Get(SubtitleFormatKind type)
         {
             switch (type)
             {
-                case TrackFormat.WebVtt:
+                case SubtitleFormatKind.WebVtt:
                     return new SubtitleListItemViewModelToWebVttStringParaser();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

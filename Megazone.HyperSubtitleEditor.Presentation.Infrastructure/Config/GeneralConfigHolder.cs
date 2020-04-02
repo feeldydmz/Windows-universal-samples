@@ -11,6 +11,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
         private bool _isShowOnlyMediaFile;
         private int _retryCount;
         private int _retryInterval;
+        private string _recentlySubtitleOpenPath;
 
         public GeneralConfigHolder(GeneralJsonData jsonData)
         {
@@ -20,6 +21,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
             _retryInterval = jsonData.RetryInterval;
             _isRetry = jsonData.IsRetry;
             _isShowOnlyMediaFile = jsonData.IsShowOnlyMediaFile;
+            _recentlySubtitleOpenPath = jsonData.RecentlySubtitleOpenPath;
         }
 
         public bool IsAutoLogin
@@ -82,6 +84,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
             }
         }
 
+        public string RecentlySubtitleOpenPath
+        {
+            get => _recentlySubtitleOpenPath;
+            set
+            {
+                Set(ref _recentlySubtitleOpenPath, value);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
         public bool IsDirty => !ConfigHolder.Current.General.IsAutoLogin.Equals(IsAutoLogin) ||
                                !ConfigHolder.Current.General.ConnectionTimeout.Equals(ConnectionTimeout) ||
                                !ConfigHolder.Current.General.RetryCount.Equals(RetryCount) ||
@@ -98,7 +110,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
                 RetryCount = _retryCount,
                 RetryInterval = _retryInterval,
                 IsRetry = _isRetry,
-                IsShowOnlyMediaFile = _isShowOnlyMediaFile
+                IsShowOnlyMediaFile = _isShowOnlyMediaFile,
+                RecentlySubtitleOpenPath = _recentlySubtitleOpenPath
             };
         }
 
@@ -109,7 +122,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config
                    RetryCount == config.RetryCount &&
                    RetryInterval == config.RetryInterval &&
                    IsRetry == config.IsRetry &&
-                   IsShowOnlyMediaFile == config.IsShowOnlyMediaFile;
+                   IsShowOnlyMediaFile == config.IsShowOnlyMediaFile &&
+                   RecentlySubtitleOpenPath == config.RecentlySubtitleOpenPath;
         }
     }
 }

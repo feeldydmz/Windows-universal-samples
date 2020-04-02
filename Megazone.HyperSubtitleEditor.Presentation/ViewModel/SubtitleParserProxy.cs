@@ -11,24 +11,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class SubtitleParserProxy
     {
-        public IEnumerable<SubtitleItem> Load(string text, TrackFormat type)
+        public IEnumerable<SubtitleItem> Load(string text, SubtitleFormatKind format)
         {
-            return GetSubtitleParser(type)
+            return GetSubtitleParser(format)
                 .Parse(text);
         }
 
-        public string ConvertToText(IEnumerable<string> subtitles, TrackFormat type)
+        public string ConvertToText(IEnumerable<string> subtitles, SubtitleFormatKind type)
         {
             return GetSubtitleParser(type)
                 .ToText(subtitles);
         }
 
-        public ISubtitleParser GetSubtitleParser(TrackFormat type)
+        public ISubtitleParser GetSubtitleParser(SubtitleFormatKind type)
         {
             switch (type)
             {
-                case TrackFormat.WebVtt:
+                case SubtitleFormatKind.WebVtt:
                     return new WebVttParser();
+                case SubtitleFormatKind.Sami:
+                    return new SamiParser();
+                case SubtitleFormatKind.Srt:
+                    return new SrtParser();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

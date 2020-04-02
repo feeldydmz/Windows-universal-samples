@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -77,8 +78,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _selectPreviousRowCommand;
         private ICommand _syncMediaPositionCommand;
         private IList<ISubtitleTabItemViewModel> _tabs;
-        private ICommand _unloadCommand;
+
+        private ICommand _importSubtitleFileCommand;
+
         private VideoItemViewModel _videoItem;
+        private WorkBarViewModel _workBarViewModel;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -87,7 +91,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SubtitleListItemValidator subtitleListItemValidator,
             IBrowser browser,
             ICloudMediaService cloudMediaService,
-            RecentlyLoader recentlyLoader)
+            RecentlyLoader recentlyLoader,
+            WorkBarViewModel workBarViewModel)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -96,8 +101,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser = browser;
             _cloudMediaService = cloudMediaService;
             _subtitleListItemValidator = subtitleListItemValidator;
-            _browser = browser;
             _recentlyLoader = recentlyLoader;
+            _workBarViewModel = workBarViewModel;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext();
@@ -124,11 +129,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
-        }
-
-        public ICommand UnloadCommand
-        {
-            get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
         }
 
         public EncodingInfo SelectedEncoding
@@ -204,6 +204,49 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        
+        //// TODO 셋팅으로 빼기
+        //private string recentlySubtiltePath { get; set; }
+
+        public void OnImportSubtitleFile()
+        {
+            string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
+
+            var filePath = _fileManager.OpenFile("subtitle files (*.vtt;*.srt;*.smi;*.xlsx)|*.vtt;*.srt;*.smi;*.xlsx",
+                initialPath);
+
+            if(!string.IsNullOrEmpty(filePath))
+                ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(filePath);
+
+            ImportSubtitleFile(filePath);
+        }
+
+        public void ImportSubtitleFile(string filePath)
+        {
+            // 엑셀, vtt, srt, smi 확장자로 구분
+            var extension = Path.GetExtension(filePath);
+
+            switch (extension)
+            {
+                case ".vtt":
+                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.WebVtt);
+                    break;
+                case ".srt":
+                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.Srt);
+                    break;
+                case ".smi":
+                    _browser.Main.ShowOpenSubtitleDialog(filePath, SubtitleFormatKind.Sami);
+                    break;
+                case ".xlsx":
+                    _browser.Main.ShowImportExcelDialog(filePath);
+                    break;
+            }
+        }
+
+        private void exportSubtitleFile()
+        {
+
+        }
         public SubtitleTabItemViewModel SelectedTab
         {
             get => _selectedTab;
@@ -290,11 +333,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var firstFilePath = filePaths.First();
                 if (File.Exists(firstFilePath))
                 {
-                    var fileExtension = Path.GetExtension(firstFilePath);
-                    if (fileExtension == ".xlsx")
-                        _browser.Main.ShowImportExcelDialog(firstFilePath);
-                    else
-                        _browser.Main.ShowOpenSubtitleDialog(firstFilePath);
+                    ImportSubtitleFile(firstFilePath);
+                    //var fileExtension = Path.GetExtension(firstFilePath);
+                    //if (fileExtension == ".xlsx")
+                    //    _browser.Main.ShowImportExcelDialog(firstFilePath);
+                    //else
+                    //    _browser.Main.ShowOpenSubtitleDialog(firstFilePath);
                 }
             }
         }
@@ -408,8 +452,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MediaPlayer.SyncPosition(selectedItem.StartTime);
         }
 
-        private void Unload()
+        public void Unload()
         {
+            ConfigHolder.Save(ConfigHolder.Current);
+
             UnregisterMessageHandlers();
         }
 
@@ -980,11 +1026,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
         {
             //var encoding = SelectedEncoding?.GetEncoding() ?? Encoding.UTF8;
-            var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
+            var parser = SubtitleListItemParserProvider.Get(SubtitleFormatKind.WebVtt);
             var subtitles = rows.Select(s => s.ConvertToString(parser))
                 .ToList();
             return _fileManager.Save(filePath,
-                _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt),
+                _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt),
                 Encoding.UTF8);
         }
 
@@ -1044,7 +1090,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (!string.IsNullOrEmpty(text))
                 {
-                    var rows = _subtitleService.Load(text, TrackFormat.WebVtt)?.ToList();
+                    var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
                     if (rows != null)
                         newTab.AddRows(rows);
                 }
@@ -1131,7 +1177,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var label = CheckConflictLabel(param.Label);
 
-            var subtitles = _subtitleService.Load(param.Text, TrackFormat.WebVtt);
+            var subtitles = _subtitleService.Load(param.Text, param.SubtitleFormat);
             var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             var newTab = new SubtitleTabItemViewModel(label,
                 OnRowCollectionChanged,

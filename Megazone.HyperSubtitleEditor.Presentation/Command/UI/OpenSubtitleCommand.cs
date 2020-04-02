@@ -9,13 +9,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
     public class OpenSubtitleCommand : DependencyObject, ICommand
     {
-        private readonly IBrowser _browser;
         private readonly WorkBarViewModel _workBarViewModel;
+        private readonly SubtitleViewModel _subtitleViewModel;
 
         public OpenSubtitleCommand()
         {
-            _browser = Bootstrapper.Container.Resolve<IBrowser>();
             _workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            _browser.Main.ShowOpenSubtitleDialog();
+            _subtitleViewModel.OnImportSubtitleFile();
         }
 
         public event EventHandler CanExecuteChanged

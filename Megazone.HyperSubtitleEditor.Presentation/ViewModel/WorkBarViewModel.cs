@@ -11,8 +11,8 @@ using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
+using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Mvvm;
-using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
@@ -480,9 +480,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 && tab.LanguageCode.Equals(caption.Language) 
                 && tab.CountryCode.Equals(caption.Country) 
                 && tab.Caption?.Id == caption.Id);
-            var parser = SubtitleListItemParserProvider.Get(TrackFormat.WebVtt);
+            var parser = SubtitleListItemParserProvider.Get(SubtitleFormatKind.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
-            return _subtitleService.ConvertToText(subtitles, TrackFormat.WebVtt);
+            return _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt);
         }
 
         private async Task<Caption> CreateCaptionElementWithUploadAsync(string assetId, int assetVersion, Caption caption)
@@ -505,8 +505,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
                             caption), CancellationToken.None);
                 }
+                else
+                {
+                    throw  new Exception("Caption upload fail");
+                }
 
-                return null;
             } catch (Exception e)
             {
                 throw e;

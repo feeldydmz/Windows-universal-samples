@@ -294,9 +294,6 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Path=LoadCommand}" />
         </i:EventTrigger>
-        <i:EventTrigger EventName="Unloaded">
-            <i:InvokeCommandAction Command="{Binding Path=UnloadCommand}" />
-        </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <Grid x:Name="RootGrid">
@@ -391,8 +388,8 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
                         </Grid>
                     </Button>
-                    <Rectangle />
-                    <Button Command="{StaticResource OpenExcelFileCommand}">
+                    <!--<Rectangle />-->
+                    <!--<Button Command="{StaticResource OpenExcelFileCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -413,8 +410,8 @@
                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Export.png" />
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_EXPORT}" />
                         </Grid>
-                    </Button>
-                    <Rectangle Visibility="Collapsed" />
+                    </Button>-->
+                    <!--<Rectangle Visibility="Collapsed" />-->
                     <Grid Margin="0,5" Visibility="Collapsed">
                         <CheckBox x:Name="OpenVideoButton">
                             <CheckBox.Style>
