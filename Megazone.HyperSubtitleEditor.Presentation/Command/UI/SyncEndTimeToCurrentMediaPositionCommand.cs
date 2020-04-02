@@ -19,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.SyncEndTimeToCurrentMediaPositionMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.SyncEndTimeToCurrentMediaPositionMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

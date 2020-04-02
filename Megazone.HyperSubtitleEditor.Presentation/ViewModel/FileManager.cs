@@ -36,7 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             using (File.Create(fileName))
             {
                 MessageCenter.Instance.Send(
-                    new Message.Subtitle.FileOpenedMessage(this, new FileOpenedMessageParameter
+                    new Message.SubtitleEditor.FileOpenedMessage(this, new FileOpenedMessageParameter
                     {
                         FilePath = fileName
                     }));

@@ -757,7 +757,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type model:ISubtitleTabItemViewModel}">
-                                        <RadioButton GroupName="SubtitleTabs"
+                                        <RadioButton GroupName="SubtitleEditorTabs"
                                                      IsChecked="{Binding IsSelected, Mode=TwoWay}">
                                             <i:Interaction.Behaviors>
                                                 <behavior:CheckedToFocusBehavior />
@@ -960,7 +960,7 @@
                                             </Grid>
                                         </RadioButton>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Kind}" Value="Subtitle">
+                                            <DataTrigger Binding="{Binding Kind}" Value="SubtitleEditor">
                                                 <Setter Property="Source"
                                                         Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleType_Subtitle.png"
                                                         TargetName="SubtitleKindImage" />

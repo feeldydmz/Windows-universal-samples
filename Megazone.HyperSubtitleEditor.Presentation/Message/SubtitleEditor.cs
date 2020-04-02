@@ -7,7 +7,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message
 {
-    internal static class Subtitle
+    internal static class SubtitleEditor
     {
         internal class InsertNewRowMessage : MessageBase
         {

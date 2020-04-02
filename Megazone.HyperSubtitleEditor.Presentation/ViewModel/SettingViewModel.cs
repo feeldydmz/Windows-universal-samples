@@ -160,7 +160,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (isChangedLanguage)
                 AskForRestart();
             
-            MessageCenter.Instance.Send(new Subtitle.SettingsSavedMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.SettingsSavedMessage(this));
         }
 
         private void Confirm()

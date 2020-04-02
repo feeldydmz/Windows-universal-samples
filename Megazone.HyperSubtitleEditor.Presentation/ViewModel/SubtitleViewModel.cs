@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,12 +31,12 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
-using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -420,24 +421,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_hasRegisteredMessageHandlers) return;
             _hasRegisteredMessageHandlers = true;
-            MessageCenter.Instance.Regist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
-            MessageCenter.Instance.Regist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            //MessageCenter.Instance.Regist<Subtitle.SaveMessage>(OnSave);
-            MessageCenter.Instance.Regist<Subtitle.ExportSubtitleMessage>(OnExportSubtitleFile);
-            MessageCenter.Instance.Regist<Subtitle.SaveAllMessage>(OnSaveAll);
-            MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
+            //MessageCenter.Instance.Regist<SubtitleEditor.SaveMessage>(OnSave);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
-            MessageCenter.Instance.Regist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
-            MessageCenter.Instance.Regist<Subtitle.CopyTabMessage>(OnCopySubtitle);
-            MessageCenter.Instance.Regist<Subtitle.EditTabMessage>(OnEditSubtitle);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CopyTabMessage>(OnCopySubtitle);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.EditTabMessage>(OnEditSubtitle);
 
-            MessageCenter.Instance.Regist<Subtitle.SyncStartTimeToCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.SyncStartTimeToCurrentMediaPositionMessage>(
                 OnSyncStartTimeToCurrentMediaPositionRequested);
-            MessageCenter.Instance.Regist<Subtitle.SyncEndTimeToCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.SyncEndTimeToCurrentMediaPositionMessage>(
                 OnSyncEndTimeToCurrentMediaPositionRequested);
 
             MessageCenter.Instance.Regist<SubtitleView.RequestFindCountMessage>(OnFindCountRequested);
@@ -449,24 +450,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<SubtitleView.SelectAllRowsMessage>(OnSelectAllRowsRequested);
             MessageCenter.Instance.Regist<SubtitleView.DeleteSelectRowsMessage>(OnDeleteSelectedRowsRequested);
 
-            MessageCenter.Instance.Regist<Subtitle.AddNewRowMessage>(OnAddNewRowRequested);
-            MessageCenter.Instance.Regist<Subtitle.InsertNewRowMessage>(OnInsertNewRowRequested);
-            MessageCenter.Instance.Regist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.AddNewRowMessage>(OnAddNewRowRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.InsertNewRowMessage>(OnInsertNewRowRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
-            MessageCenter.Instance.Regist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.InsertNewRowBeforeSelectedRowMessage>(
                 OnInsertNewRowBeforeSelectedRowRequested);
-            MessageCenter.Instance.Regist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
-            MessageCenter.Instance.Regist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
-            MessageCenter.Instance.Regist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
-            MessageCenter.Instance.Regist<Subtitle.LoadTabsMessage>(OnGroupFileLoaded);
-            MessageCenter.Instance.Regist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
-            MessageCenter.Instance.Regist<Subtitle.InsertRowAtCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.PasteRowsMessage>(OnPasteRowsRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
+            //MessageCenter.Instance.Regist<Message.SubtitleEditor.LoadTabsMessage>(OnGroupFileLoaded);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.InsertRowAtCurrentMediaPositionMessage>(
                 OnInsertRowAtCurrentMediaPositionRequested);
             MessageCenter.Instance.Regist<MediaPlayer.PlayBackByHalfSecondMessage>(OnPlayBackByHalfSecondRequested);
             MessageCenter.Instance.Regist<MediaPlayer.PlayForwardByHalfSecondMessage>(
                 OnPlayForwardByHalfSecondRequested);
 
-            MessageCenter.Instance.Regist<Subtitle.AdjustTimeMessage>(AdjustTime);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
         }
 
@@ -491,49 +492,49 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void UnregisterMessageHandlers()
         {
             if (!_hasRegisteredMessageHandlers) return;
-            MessageCenter.Instance.Unregist<Subtitle.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
-            MessageCenter.Instance.Unregist<Subtitle.SettingsSavedMessage>(OnSettingsSaved);
-            //MessageCenter.Instance.Unregist<Subtitle.SaveMessage>(OnSave);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
+            //MessageCenter.Instance.Unregist<SubtitleEditor.SaveMessage>(OnSave);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
-            MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
-            MessageCenter.Instance.Unregist<Subtitle.CloseTabMessage>(OnCloseTabRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
-            MessageCenter.Instance.Unregist<Subtitle.CopyTabMessage>(OnCopySubtitle);
-            MessageCenter.Instance.Unregist<Subtitle.SyncStartTimeToCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CopyTabMessage>(OnCopySubtitle);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.SyncStartTimeToCurrentMediaPositionMessage>(
                 OnSyncStartTimeToCurrentMediaPositionRequested);
-            MessageCenter.Instance.Unregist<Subtitle.SyncEndTimeToCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.SyncEndTimeToCurrentMediaPositionMessage>(
                 OnSyncEndTimeToCurrentMediaPositionRequested);
 
             MessageCenter.Instance.Unregist<SubtitleView.SelectAllRowsMessage>(OnSelectAllRowsRequested);
             MessageCenter.Instance.Unregist<SubtitleView.DeleteSelectRowsMessage>(OnDeleteSelectedRowsRequested);
-            MessageCenter.Instance.Unregist<Subtitle.AddNewRowMessage>(OnAddNewRowRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.AddNewRowMessage>(OnAddNewRowRequested);
             MessageCenter.Instance
-                .Unregist<Subtitle.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
+                .Unregist<Message.SubtitleEditor.CopyContentsToClipboardMessage>(OnCopyContentsToClipboardRequested);
 
-            MessageCenter.Instance.Unregist<Subtitle.EditTabMessage>(OnEditSubtitle);
-            MessageCenter.Instance.Unregist<Subtitle.InsertNewRowMessage>(OnInsertNewRowRequested);
-            MessageCenter.Instance.Unregist<Subtitle.InsertNewRowAfterSelectedRowMessage>(
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.EditTabMessage>(OnEditSubtitle);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.InsertNewRowMessage>(OnInsertNewRowRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.InsertNewRowAfterSelectedRowMessage>(
                 OnInsertNewRowAfterSelectedRowRequested);
-            MessageCenter.Instance.Unregist<Subtitle.InsertNewRowBeforeSelectedRowMessage>(
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.InsertNewRowBeforeSelectedRowMessage>(
                 OnInsertNewRowBeforeSelectedRowRequested);
-            MessageCenter.Instance.Unregist<Subtitle.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
-            MessageCenter.Instance.Unregist<Subtitle.PasteRowsMessage>(OnPasteRowsRequested);
-            MessageCenter.Instance.Unregist<Subtitle.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
-            MessageCenter.Instance.Unregist<Subtitle.LoadTabsMessage>(OnGroupFileLoaded);
-            MessageCenter.Instance.Unregist<Subtitle.InsertRowAtCurrentMediaPositionMessage>(
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CutSelectedRowsMessage>(OnCutSelectedRowRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.PasteRowsMessage>(OnPasteRowsRequested);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CopySelectedRowsMessage>(OnCopySelectedRowsRequested);
+            //MessageCenter.Instance.Unregist<Message.SubtitleEditor.LoadTabsMessage>(OnGroupFileLoaded);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.InsertRowAtCurrentMediaPositionMessage>(
                 OnInsertRowAtCurrentMediaPositionRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.PlayBackByHalfSecondMessage>(OnPlayBackByHalfSecondRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.PlayForwardByHalfSecondMessage>(
                 OnPlayForwardByHalfSecondRequested);
 
-            MessageCenter.Instance.Unregist<Subtitle.AdjustTimeMessage>(AdjustTime);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
         }
 
-        public void OnAutoAdjustEndtimesRequested(Subtitle.AutoAdjustEndtimesMessage message)
+        public void OnAutoAdjustEndtimesRequested(Message.SubtitleEditor.AutoAdjustEndtimesMessage message)
         {
             var rows = SelectedTab?.Rows;
             var rowsCount = rows?.Count ?? 0;
@@ -550,14 +551,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void OnCopyContentsToClipboardRequested(Subtitle.CopyContentsToClipboardMessage message)
+        private void OnCopyContentsToClipboardRequested(Message.SubtitleEditor.CopyContentsToClipboardMessage message)
         {
             var contents = SelectedTab?.SelectedRow?.DisplayText;
             if (string.IsNullOrEmpty(contents)) return;
             Clipboard.SetText(contents);
         }
 
-        private void AdjustTime(Subtitle.AdjustTimeMessage message)
+        private void AdjustTime(Message.SubtitleEditor.AdjustTimeMessage message)
         {
             if (SelectedTab == null)
                 return;
@@ -608,59 +609,59 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             });
         }
 
-        private async void OnGroupFileLoaded(Subtitle.LoadTabsMessage message)
-        {
-            var tabs = message.Tabs?.ToList();
-            if (tabs == null)
-                return;
+        //private async void OnGroupFileLoaded(Message.SubtitleEditor.LoadTabsMessage message)
+        //{
+        //    var tabs = message.Tabs?.ToList();
+        //    if (tabs == null)
+        //        return;
 
-            _browser.Main.LoadingManager.Show();
+        //    _browser.Main.LoadingManager.Show();
 
-            await Task.Factory.StartNew(async () =>
-            {
-                var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
-                var caption = await workBar.GetCaptionAssetAsync(tabs.FirstOrDefault()?.CaptionAssetId);
-                var video = await workBar.GetVideoAsync(tabs.FirstOrDefault()?.VideoId);
+        //    await Task.Factory.StartNew(async () =>
+        //    {
+        //        var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+        //        var caption = await workBar.GetCaptionAssetAsync(tabs.FirstOrDefault()?.CaptionAssetId);
+        //        var video = await workBar.GetVideoAsync(tabs.FirstOrDefault()?.VideoId);
 
-                this.InvokeOnUi(() =>
-                {
-                    WorkContext.Initialize(video, caption);
+        //        this.InvokeOnUi(() =>
+        //        {
+        //            WorkContext.Initialize(video, caption);
 
-                    _subtitleListItemValidator.IsEnabled = false;
-                    Tabs.Clear();
+        //            _subtitleListItemValidator.IsEnabled = false;
+        //            Tabs.Clear();
 
-                    foreach (var tab in tabs)
-                    {
-                        var newTab = new SubtitleTabItemViewModel(tab.Name,
-                            OnRowCollectionChanged,
-                            OnValidateRequested,
-                            OnTabSelected,
-                            OnItemSelected,
-                            tab.Kind,
-                            OnDisplayTextChanged,
-                            tab.LanguageCode,
-                            tab.CountryCode,
-                            tab.Caption)
-                        {
-                            IsSelected = tab.IsSelected,
-                            FilePath = tab.FilePath,
-                            VideoId = tab.VideoId,
-                            CaptionAssetId = tab.CaptionAssetId
-                        };
+        //            foreach (var tab in tabs)
+        //            {
+        //                var newTab = new SubtitleTabItemViewModel(tab.Name,
+        //                    OnRowCollectionChanged,
+        //                    OnValidateRequested,
+        //                    OnTabSelected,
+        //                    OnItemSelected,
+        //                    tab.Kind,
+        //                    OnDisplayTextChanged,
+        //                    tab.LanguageCode,
+        //                    tab.CountryCode,
+        //                    tab.Caption)
+        //                {
+        //                    IsSelected = tab.IsSelected,
+        //                    FilePath = tab.FilePath,
+        //                    VideoId = tab.VideoId,
+        //                    CaptionAssetId = tab.CaptionAssetId
+        //                };
 
-                        if (tab.Rows != null)
-                            newTab.AddRows(tab.Rows.ToList());
-                        Tabs.Add(newTab);
-                    }
+        //                if (tab.Rows != null)
+        //                    newTab.AddRows(tab.Rows.ToList());
+        //                Tabs.Add(newTab);
+        //            }
 
-                    _browser.Main.LoadingManager.Hide();
+        //            _browser.Main.LoadingManager.Hide();
 
-                    _subtitleListItemValidator.IsEnabled = true;
-                    _subtitleListItemValidator.Validate(SelectedTab.Rows);
-                    CommandManager.InvalidateRequerySuggested();
-                });
-            });
-        }
+        //            _subtitleListItemValidator.IsEnabled = true;
+        //            _subtitleListItemValidator.Validate(SelectedTab.Rows);
+        //            CommandManager.InvalidateRequerySuggested();
+        //        });
+        //    });
+        //}
 
         private void Load()
         {
@@ -670,7 +671,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             InitializeEncodingItems();
         }
 
-        private void OnSettingsSaved(Subtitle.SettingsSavedMessage message)
+        private void OnSettingsSaved(Message.SubtitleEditor.SettingsSavedMessage message)
         {
             if (SelectedTab != null && (SelectedTab.Rows?.Any() ?? false))
                 _subtitleListItemValidator.Validate(SelectedTab.Rows);
@@ -686,7 +687,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MediaPlayer.PlayForwardBy(TimeSpan.FromSeconds(0.5));
         }
 
-        private void OnInsertRowAtCurrentMediaPositionRequested(Subtitle.InsertRowAtCurrentMediaPositionMessage message)
+        private void OnInsertRowAtCurrentMediaPositionRequested(Message.SubtitleEditor.InsertRowAtCurrentMediaPositionMessage message)
         {
             if (SelectedTab == null) return;
             var position = TimeSpan.FromSeconds(Convert.ToDouble(MediaPlayer.CurrentMediaPosition));
@@ -709,7 +710,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private void OnSyncEndTimeToCurrentMediaPositionRequested(
-            Subtitle.SyncEndTimeToCurrentMediaPositionMessage message)
+            Message.SubtitleEditor.SyncEndTimeToCurrentMediaPositionMessage message)
         {
             if (SelectedTab?.SelectedRow == null) return;
             var currentMediaPosition = MediaPlayer.CurrentMediaPosition;
@@ -717,7 +718,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private void OnSyncStartTimeToCurrentMediaPositionRequested(
-            Subtitle.SyncStartTimeToCurrentMediaPositionMessage message)
+            Message.SubtitleEditor.SyncStartTimeToCurrentMediaPositionMessage message)
         {
             if (SelectedTab?.SelectedRow == null) return;
             var currentMediaPosition = MediaPlayer.CurrentMediaPosition;
@@ -730,12 +731,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             message.Response?.Invoke(findRows.Count());
         }
 
-        private void OnAddNewRowRequested(Subtitle.AddNewRowMessage message)
+        private void OnAddNewRowRequested(Message.SubtitleEditor.AddNewRowMessage message)
         {
             AddItem();
         }
 
-        private void OnCopySelectedRowsRequested(Subtitle.CopySelectedRowsMessage message)
+        private void OnCopySelectedRowsRequested(Message.SubtitleEditor.CopySelectedRowsMessage message)
         {
             if (SelectedTab == null) return;
             _copiedRows = SelectedTab.SelectedRows?.Cast<SubtitleListItemViewModel>()
@@ -744,7 +745,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _isCutRequest = false;
         }
 
-        private void OnCutSelectedRowRequested(Subtitle.CutSelectedRowsMessage message)
+        private void OnCutSelectedRowRequested(Message.SubtitleEditor.CutSelectedRowsMessage message)
         {
             if (SelectedTab == null) return;
             _copiedRows = SelectedTab.SelectedRows?.Cast<SubtitleListItemViewModel>()
@@ -754,7 +755,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CommandManager.InvalidateRequerySuggested();
         }
 
-        private void OnPasteRowsRequested(Subtitle.PasteRowsMessage message)
+        private void OnPasteRowsRequested(Message.SubtitleEditor.PasteRowsMessage message)
         {
             if (_copiedRows == null || SelectedTab == null) return;
             if (_isCutRequest)
@@ -776,7 +777,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
         }
 
-        private void OnInsertNewRowBeforeSelectedRowRequested(Subtitle.InsertNewRowBeforeSelectedRowMessage message)
+        private void OnInsertNewRowBeforeSelectedRowRequested(Message.SubtitleEditor.InsertNewRowBeforeSelectedRowMessage message)
         {
             var addedRow = SelectedTab?.AddNewRow(_minimumDuration,
                 SubtitleTabItemViewModel.InsertRowDirection.BeforeSelectedItem,
@@ -785,7 +786,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MessageCenter.Instance.Send(new SubtitleView.ScrollIntoObjectMessage(this, addedRow));
         }
 
-        private void OnInsertNewRowAfterSelectedRowRequested(Subtitle.InsertNewRowAfterSelectedRowMessage message)
+        private void OnInsertNewRowAfterSelectedRowRequested(Message.SubtitleEditor.InsertNewRowAfterSelectedRowMessage message)
         {
             var addedRow = SelectedTab?.AddNewRow(_minimumDuration,
                 SubtitleTabItemViewModel.InsertRowDirection.AfterSelectedItem,
@@ -794,7 +795,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MessageCenter.Instance.Send(new SubtitleView.ScrollIntoObjectMessage(this, addedRow));
         }
 
-        private void OnInsertNewRowRequested(Subtitle.InsertNewRowMessage message)
+        private void OnInsertNewRowRequested(Message.SubtitleEditor.InsertNewRowMessage message)
         {
             AddItem();
         }
@@ -862,7 +863,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MediaPlayer.OpenMedia(mediaFilePath, true);
         }
 
-        private void OnCloseTabRequested(Subtitle.CloseTabMessage message)
+        private void OnCloseTabRequested(Message.SubtitleEditor.CloseTabMessage message)
         {
             CloseTab(message.Tab);
         }
@@ -893,7 +894,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             Encodings = new List<EncodingInfo>(encodings);
         }
 
-        private async void OnSaveAll(Subtitle.SaveAllMessage message)
+        private async void OnSaveAll(Message.SubtitleEditor.SaveAllMessage message)
         {
             _browser.Main.LoadingManager.Show();
             try
@@ -945,7 +946,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             tab.FilePath = saveFilePath;
         }
 
-        //private async void OnSave(Subtitle.SaveMessage message)
+        //private async void OnSave(SubtitleEditor.SaveMessage message)
         //{
         //    var saveFilePath = SelectedTab.FilePath;
         //    if (string.IsNullOrEmpty(saveFilePath))
@@ -981,7 +982,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //        Application.Current.MainWindow));
         //}
         
-        private async void OnExportSubtitleFile(Subtitle.ExportSubtitleMessage message)
+        private async void OnExportSubtitleFile(Message.SubtitleEditor.ExportSubtitleMessage message)
         {
             var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi|excel (*.xlsx)|*.xlsx", SelectedTab.Name);
 
@@ -995,6 +996,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     ExportSubtitleAsync(saveFilePath);
                     break;
                 case SubtitleFormatKind.Excel:
+                    ExportExcelAsync(saveFilePath);
                     //_browser.Main.ShowImportExcelDialog(saveFilePath);
                     break;
                 default:
@@ -1009,6 +1011,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                _browser.Main.LoadingManager.Show();
+                
                 var now = DateTime.Now.ToString("yyyyMMddHHmmss");
 
                 //var savePath = _fileManager.OpenSaveFileDialog(this.MyDocuments(), "Excel files (*.xlsx)|*.xlsx",
@@ -1017,12 +1021,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (string.IsNullOrEmpty(savePath))
                     return;
 
-                IList<Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle> subtitles = 
-                    new List<Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle>();
+                IList<Subtitle> subtitles = new List<Subtitle>();
 
                 foreach (var tab in Tabs)
                 {
-                    var subtitle = new Megazone.HyperSubtitleEditor.Presentation.Excel.Subtitle
+                    var subtitle = new Subtitle
                     {
                         Label = tab.Name,
                         LanguageCode = tab.LanguageCode,
@@ -1043,8 +1046,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     subtitles.Add(subtitle);
                 }
 
-                _browser.Main.LoadingManager.Show();
-
+                var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
+                 
                 //await this.CreateTask(() =>
                 //{
                 //    var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
@@ -1066,6 +1069,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             catch (Exception ex)
             {
                 _logger.Error.Write(ex.Message);
+            }
+            finally
+            {
+                _browser.Main.LoadingManager.Hide();
             }
         }
 
@@ -1106,7 +1113,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
 
-            var filePath = _fileManager.OpenFile("subtitle files (*.vtt;*.srt;*.smi;*.xlsx)|*.vtt;*.srt;*.smi;*.xlsx",
+            var filePath = _fileManager.OpenFile(
+                "subtitle files (*.vtt;*.srt;*.smi;*.xlsx)|*.vtt;*.srt;*.smi;*.xlsx",
                 initialPath);
 
             if (!string.IsNullOrEmpty(filePath))
@@ -1130,7 +1138,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _browser.Main.ShowImportExcelDialog(filePath);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
+                    //throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -1231,7 +1240,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
                     if (rows != null)
-                        newTab.AddRows(rows);
+                        newTab.AddRowsAsync(rows);
                 }
 
                 Tabs.Add(newTab);
@@ -1306,66 +1315,91 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return result;
         }
 
-        private void OnFileOpened(Subtitle.FileOpenedMessage message)
+        private void OnOpenFile(Message.SubtitleEditor.FileOpenedMessage message)
         {
             var param = message.Param;
             if (param == null)
                 return;
 
-            _subtitleListItemValidator.IsEnabled = false;
+            OpenFileAsync(param);
+        }
 
-            var label = CheckConflictLabel(param.Label);
+        private async Task OpenFileAsync(FileOpenedMessageParameter param)
+        {
+            try {
+                Debug.WriteLine("Start FileOpenAsync");
 
-            var subtitles = _subtitleService.Load(param.Text, param.SubtitleFormat);
-            var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
-            var newTab = new SubtitleTabItemViewModel(label,
-                OnRowCollectionChanged,
-                OnValidateRequested,
-                OnTabSelected,
-                OnItemSelected,
-                param.Kind,
-                OnDisplayTextChanged,
-                param.LanguageCode,
-                param.CountryCode)
-            {
-                IsSelected = true,
-                FilePath = param.FilePath,
-                VideoId = workBar.VideoItem?.Id,
-                CaptionAssetId = workBar.CaptionAssetItem?.Id
-            };
-            if (subtitles != null)
-                newTab.AddRows(subtitles.ToList());
-            Tabs.Add(newTab);
+                _browser.Main.LoadingManager.Show();
 
-            _subtitleListItemValidator.IsEnabled = true;
-            _subtitleListItemValidator.Validate(SelectedTab.Rows);
+                _subtitleListItemValidator.IsEnabled = false;
 
-            if (param.FilePath.IsNotNullAndAny())
-            {
-                _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
-                    .SetFormat("VTT").Create());
+                var label = CheckConflictLabel(param.Label);
+
+                await this.CreateTask(async () =>
+                {
+                    var text = File.ReadAllText(param.FilePath);
+                    string videoId = "";
+                    string captionAssetId = "";
+
+                    var subtitles = _subtitleService.Load(text, param.SubtitleFormat);
+
+                    var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+                    videoId = workBar.VideoItem?.Id;
+                    captionAssetId = workBar.CaptionAssetItem?.Id;
+                    
+                    var newTab = new SubtitleTabItemViewModel(label,
+                        OnRowCollectionChanged,
+                        OnValidateRequested,
+                        OnTabSelected,
+                        OnItemSelected,
+                        param.Kind,
+                        OnDisplayTextChanged,
+                        param.LanguageCode,
+                        param.CountryCode)
+                    {
+                        IsSelected = true,
+                        FilePath = param.FilePath,
+                        VideoId = videoId,
+                        CaptionAssetId = captionAssetId
+                    };
+
+                    if (subtitles != null)
+                        newTab.AddRowsAsync(subtitles.ToList());
+
+                    this.InvokeOnUi(() =>
+                    { 
+                        Tabs.Add(newTab);
+                    });
+
+                    _subtitleListItemValidator.IsEnabled = true;
+                    _subtitleListItemValidator.Validate(SelectedTab.Rows);
+
+                    if (param.FilePath.IsNotNullAndAny())
+                    {
+                        _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
+                            .SetFormat("VTT").Create());
+                    }
+
+                    this.InvokeOnUi(() =>
+                    {
+                        _browser.Main.LoadingManager.Hide();
+                    });
+
+                    Debug.WriteLine("End OnOpenFile");
+                });
             }
-
-            CommandManager.InvalidateRequerySuggested();
+            catch (Exception ex)
+            {
+                _logger.Error.Write(ex.Message);
+                _browser.Main.LoadingManager.Hide();
+                throw;
+            }
         }
 
         private void OnRowCollectionChanged(SubtitleTabItemViewModel tab)
         {
             _subtitleListItemValidator.Validate(tab.Rows);
         }
-
-        //private void SetSelectedEncodingWithFileEncoding(string filePath)
-        //{
-        //    try
-        //    {
-        //        var fileEncoding = filePath.GetFileEncoding();
-        //        SelectedEncoding = Encodings.FirstOrDefault(e => e.CodePage == fileEncoding.CodePage);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error.Write(ex);
-        //    }
-        //}
 
         private async void OnImportExcelFile(Message.Excel.FileImportMessage message)
         {
@@ -1435,11 +1469,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(filePath).SetFormat("EXCEL").Create());
         }
 
-        private void OnCopySubtitle(Subtitle.CopyTabMessage message)
+        private async void OnCopySubtitle(Message.SubtitleEditor.CopyTabMessage message)
         {
             var param = message.Param;
             if (param == null)
                 return;
+
+            _browser.Main.LoadingManager.Show();
 
             _subtitleListItemValidator.IsEnabled = false;
 
@@ -1469,16 +1505,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionAssetId = workBar.CaptionAssetItem?.Id
             };
             if (subtitles.Any())
-                newTab.AddRows(subtitles);
+                await newTab.AddRowsAsync(subtitles);
 
             Tabs.Add(newTab);
 
             _subtitleListItemValidator.IsEnabled = true;
             _subtitleListItemValidator.Validate(SelectedTab.Rows);
             CommandManager.InvalidateRequerySuggested();
+
+            _browser.Main.LoadingManager.Hide();
         }
 
-        private void OnEditSubtitle(Subtitle.EditTabMessage message)
+        private void OnEditSubtitle(Message.SubtitleEditor.EditTabMessage message)
         {
             var param = message.Param;
             if (param == null)

@@ -61,7 +61,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                MessageCenter.Instance.Send(new Subtitle.CopyTabMessage(this, new CopyTabMessageParameter
+                MessageCenter.Instance.Send(new Message.SubtitleEditor.CopyTabMessage(this, new CopyTabMessageParameter
                 {
                     Kind = SelectedSubtitleKind,
                     Label = Label,

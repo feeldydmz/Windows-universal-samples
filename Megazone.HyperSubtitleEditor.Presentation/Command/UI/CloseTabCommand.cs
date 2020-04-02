@@ -17,7 +17,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             if (parameter is SubtitleTabItemViewModel tab)
-                MessageCenter.Instance.Send(new Subtitle.CloseTabMessage(this, tab));
+                MessageCenter.Instance.Send(new Message.SubtitleEditor.CloseTabMessage(this, tab));
         }
 
         public event EventHandler CanExecuteChanged
