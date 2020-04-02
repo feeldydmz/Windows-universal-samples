@@ -982,7 +982,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //        Application.Current.MainWindow));
         //}
         
-        private async void OnExportSubtitleFile(Message.SubtitleEditor.ExportSubtitleMessage message)
+        private void OnExportSubtitleFile(Message.SubtitleEditor.ExportSubtitleMessage message)
         {
             var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi|excel (*.xlsx)|*.xlsx", SelectedTab.Name);
 
@@ -1019,41 +1019,41 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 
                 var now = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                //var savePath = _fileManager.OpenSaveFileDialog(this.MyDocuments(), "Excel files (*.xlsx)|*.xlsx",
-                //    "HyperSubtitleEditor_Excel_" + now + ".xlsx");
-
                 if (string.IsNullOrEmpty(savePath))
                     return;
 
-                IList<Subtitle> subtitles = new List<Subtitle>();
+                await this.CreateTask(() => {
+                    IList<Subtitle> subtitles = new List<Subtitle>();
 
-                foreach (var tab in Tabs)
-                {
-                    var subtitle = new Subtitle
+                    foreach (var tab in Tabs)
                     {
-                        Label = tab.Name,
-                        LanguageCode = tab.LanguageCode,
-                        CountryCode = tab.CountryCode,
-                        Format = TrackFormat.WebVtt,
-                        Kind = tab.Kind
-                    };
-
-                    foreach (var item in tab.Rows)
-                        subtitle.Datasets.Add(new SubtitleItem
+                        var subtitle = new Subtitle
                         {
-                            Number = item.Number,
-                            StartTime = item.StartTime,
-                            EndTime = item.EndTime,
-                            Texts = item.Texts
-                        });
+                            Label = tab.Name,
+                            LanguageCode = tab.LanguageCode,
+                            CountryCode = tab.CountryCode,
+                            Format = TrackFormat.WebVtt,
+                            Kind = tab.Kind
+                        };
 
-                    subtitles.Add(subtitle);
-                }
+                        foreach (var item in tab.Rows)
+                            subtitle.Datasets.Add(new SubtitleItem
+                            {
+                                Number = item.Number,
+                                StartTime = item.StartTime,
+                                EndTime = item.EndTime,
+                                Texts = item.Texts
+                            });
 
-                await this.CreateTask(async () => {
-                        var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
+                        subtitles.Add(subtitle);
+                    }
 
+
+                    var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
+
+                    this.InvokeOnUi(()=>{
                         _browser.Main.LoadingManager.Hide();
+                    });
                 });
 
                 //await this.CreateTask(() =>
