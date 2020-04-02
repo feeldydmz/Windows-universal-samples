@@ -37,9 +37,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
                         {
                             var command = (ICommand) e.NewValue;
                             var absoluteUri = a.Uri.AbsoluteUri;
+                            var document2 = browser.Document as IHTMLDocument2;
+
+                            var isMyPageUrl = (absoluteUri.IndexOf("my.megazone.io", StringComparison.Ordinal)) > -1 ? true : false;
+
+                            if (isMyPageUrl)
+                            {
+                                Debug.WriteLine("In Megaone My Page");
+
+                                document2?.execCommand("ClearAuthenticationCache");
+
+                                a.Cancel = true;
+                                return;
+                            }
 
                             var isMegaoneOAuth  = (absoluteUri.IndexOf(MEGAONE_OAUTH_PATTEN, StringComparison.Ordinal)) > -1? true : false;
 
+                            Debug.WriteLine($"NavigatingCommand: {absoluteUri}");
                             // MegaOne Oauth 일때만 url에 들어있는 'code=' 체크
                             if (!isMegaoneOAuth) return;
 
@@ -47,7 +61,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
 
                             if (codeIndex == -1) return;
 
-                            var document2 = browser.Document as IHTMLDocument2;
                             document2?.execCommand("ClearAuthenticationCache");
                                 
                             var code = absoluteUri.Substring(codeIndex + CODE_PATTEN.Length);
