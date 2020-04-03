@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -213,6 +214,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             if (_ignoreCollectionChanged) return;
             _rowCollectionChangedAction?.Invoke(this);
             _isRowCollectionChanged = true;
+            Debug.WriteLine($"**** Items_CollectionChanged *** rowsCount : {Rows.Count}");
             CheckDirty();
         }
 
@@ -283,18 +285,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _ignoreCollectionChanged = true;
             var index = _rows.Count + 1;
 
-            await Task.Factory.StartNew(() => {
+            await Task.Factory.StartNew(() =>
+            {
+
+                Debug.WriteLine("++++AddRowsAsync Task");
+
                 foreach (var subtitleItem in subtitles)
                 {
                     var item = new SubtitleListItemViewModel(subtitleItem, OnValidateRequested, OnDisplayTextChanged)
                     {
                         Number = index++
                     };
-                    this.InvokeOnUi(() => { Rows.Add(item); });
-                }
-            });
 
-            _ignoreCollectionChanged = false;
+                    //Rows.Add(item);
+                    this.InvokeOnUiSync(DispatcherPriority.Input,
+                        () =>
+                    {
+                        Rows.Add(item);
+                    });
+                }
+
+                _ignoreCollectionChanged = false;
+
+
+                Debug.WriteLine("----AddRowsAsync Task");
+            });
+            
+            //task.Wait();
             Debug.WriteLine("--AddRowsAsync");
         }
 

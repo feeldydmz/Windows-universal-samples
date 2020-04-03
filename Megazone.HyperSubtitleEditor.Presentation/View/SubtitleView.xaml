@@ -504,7 +504,7 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_PUBLISH}" />
                         </Grid>
                     </Button>
-                    <Rectangle />
+                    <!--<Rectangle />
                     <Button Command="{StaticResource AddTabCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -526,7 +526,7 @@
                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_SubtitleEditor_Copy.png" />
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_COPY_CAPTION}" />
                         </Grid>
-                    </Button>
+                    </Button>-->
                     <Rectangle />
 
                 </StackPanel>

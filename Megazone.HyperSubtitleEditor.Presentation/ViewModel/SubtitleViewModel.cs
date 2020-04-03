@@ -1048,7 +1048,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         subtitles.Add(subtitle);
                     }
 
-
                     var isSuccess = _fileManager.ExportExcel(subtitles, savePath);
 
                     this.InvokeOnUi(()=>{
@@ -1224,6 +1223,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             _subtitleListItemValidator.IsEnabled = false;
 
+            Debug.WriteLine("++OnCaptionOpenRequest");
             foreach (var caption in captionList)
             {
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
@@ -1248,11 +1248,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
                     if (rows != null)
-                        newTab.AddRowsAsync(rows);
+                       newTab.AddRowsAsync(rows);
                 }
 
                 Tabs.Add(newTab);
             }
+            Debug.WriteLine("--OnCaptionOpenRequest");
 
             if (captionList.Any())
                 Tabs.First().IsSelected = true;
@@ -1343,8 +1344,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var label = CheckConflictLabel(param.Label);
 
-                await this.CreateTask(async () =>
-                {
+                //await this.CreateTask(async () =>
+                //{
                     var text = File.ReadAllText(param.FilePath);
                     string videoId = "";
                     string captionAssetId = "";
@@ -1394,7 +1395,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     });
 
                     Debug.WriteLine("End OnOpenFile");
-                });
+                //});
             }
             catch (Exception ex)
             {
@@ -1513,7 +1514,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 CaptionAssetId = workBar.CaptionAssetItem?.Id
             };
             if (subtitles.Any())
-                await newTab.AddRowsAsync(subtitles);
+                newTab.AddRowsAsync(subtitles);
 
             Tabs.Add(newTab);
 
