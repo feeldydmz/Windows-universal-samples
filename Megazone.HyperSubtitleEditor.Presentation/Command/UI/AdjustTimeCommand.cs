@@ -24,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             var way = Browser.Main.ShowAdjustTimeWindow();
-            MessageCenter.Instance.Send(new Subtitle.AdjustTimeMessage(this, way));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.AdjustTimeMessage(this, way));
         }
 
         public event EventHandler CanExecuteChanged

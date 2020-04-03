@@ -67,14 +67,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var text = File.ReadAllText(FilePath);
                 MessageCenter.Instance.Send(
-                    new Subtitle.FileOpenedMessage(this, new FileOpenedMessageParameter
+                    new Message.SubtitleEditor.FileOpenedMessage(this, new FileOpenedMessageParameter
                     {
                         FilePath = FilePath,
                         Kind = SelectedSubtitleKind,
                         Label = Label,
-                        Text = text,
                         LanguageCode = SelectedLanguage.LanguageCode,
                         CountryCode = SelectedLanguage.CountryCode,
                         SubtitleFormat = _subtitleFormat

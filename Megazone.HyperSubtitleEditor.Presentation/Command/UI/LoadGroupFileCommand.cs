@@ -74,7 +74,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
                 MessageCenter.Instance.Send(new ReinitializeAppContextMessage(this));
 
-                MessageCenter.Instance.Send(new Subtitle.LoadTabsMessage(this, group.Tabs));
+                MessageCenter.Instance.Send(new Message.SubtitleEditor.LoadTabsMessage(this, group.Tabs));
             }
             catch (Exception ex)
             {

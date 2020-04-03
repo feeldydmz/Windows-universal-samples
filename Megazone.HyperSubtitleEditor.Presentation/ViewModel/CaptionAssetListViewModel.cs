@@ -258,7 +258,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 new DisplayItem(string.Empty, string.Empty),
                 new DisplayItem("Caption", CaptionKind.Caption.ToString()),
                 new DisplayItem("Chapter", CaptionKind.Chapter.ToString()),
-                new DisplayItem("Subtitle", CaptionKind.Subtitle.ToString()),
+                new DisplayItem("SubtitleEditor", CaptionKind.Subtitle.ToString()),
                 new DisplayItem("Description", CaptionKind.Description.ToString()),
                 new DisplayItem("Metadata", CaptionKind.Metadata.ToString())
             };
@@ -490,7 +490,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var removeTabs = subtitleVm.Tabs.ToList();
                 foreach (var tab in removeTabs)
                     MessageCenter.Instance.Send(
-                        new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
+                        new Message.SubtitleEditor.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
             }
 
             var asset = SelectedCaptionAssetItem?.Source;

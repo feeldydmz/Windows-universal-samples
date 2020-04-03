@@ -234,7 +234,7 @@
     <Compile Include="Message\ProjectSelect.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
-    <Compile Include="Message\Subtitle.cs" />
+    <Compile Include="Message\SubtitleEditor.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AssetEditorViewModel.cs" />

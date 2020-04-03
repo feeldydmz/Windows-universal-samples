@@ -24,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.CopyContentsToClipboardMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.CopyContentsToClipboardMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

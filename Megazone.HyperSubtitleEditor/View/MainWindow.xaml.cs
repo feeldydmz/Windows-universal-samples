@@ -19,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.View
 
             InitializeComponent();
             
-#if DEBUG
+#if FEEL_DBUG
             ConsoleBuilder.Create()
                 .View(
                     RootPanel,

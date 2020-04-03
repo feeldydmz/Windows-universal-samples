@@ -22,7 +22,6 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
-using Subtitle = Megazone.HyperSubtitleEditor.Presentation.Message.Subtitle;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -151,7 +150,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Regist<CloudMedia.CaptionAssetRenameRequestedMessage>(RenameCaptionAsset);
             MessageCenter.Instance.Regist<CloudMedia.DeployRequestedMessage>(Deploy);
-            MessageCenter.Instance.Regist<Subtitle.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
         }
 
         private void UnregisterMessageHandlers()
@@ -159,11 +158,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionAssetRenameRequestedMessage>(RenameCaptionAsset);
             MessageCenter.Instance.Unregist<CloudMedia.DeployRequestedMessage>(Deploy);
-            MessageCenter.Instance.Unregist<Subtitle.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
         }
 
 
-        private void OnFileOpened(Subtitle.FileOpenedMessage message)
+        private void OnFileOpened(Message.SubtitleEditor.FileOpenedMessage message)
         {
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
 

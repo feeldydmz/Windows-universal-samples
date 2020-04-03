@@ -118,7 +118,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var removeTabs = subtitleVm.Tabs.ToList();
                 foreach (var tab in removeTabs)
                     MessageCenter.Instance.Send(
-                        new Subtitle.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
+                        new Message.SubtitleEditor.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
             }
 
             // 선택된 video 정보를 메인 

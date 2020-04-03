@@ -67,7 +67,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 if (Mode == SubtitleDialogViewMode.Add)
-                    MessageCenter.Instance.Send(new Subtitle.FileOpenedMessage(this, new FileOpenedMessageParameter
+                    MessageCenter.Instance.Send(new Message.SubtitleEditor.FileOpenedMessage(this, new FileOpenedMessageParameter
                     {
                         Kind = SelectedSubtitleKind,
                         Label = Label,
@@ -75,7 +75,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         CountryCode = SelectedLanguage.CountryCode
                     }));
                 if (Mode == SubtitleDialogViewMode.Edit)
-                    MessageCenter.Instance.Send(new Subtitle.EditTabMessage(this, new EditTabMessageParameter
+                    MessageCenter.Instance.Send(new Message.SubtitleEditor.EditTabMessage(this, new EditTabMessageParameter
                     {
                         Id = TabId,
                         Kind = SelectedSubtitleKind,

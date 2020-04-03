@@ -19,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.PasteRowsMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.PasteRowsMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

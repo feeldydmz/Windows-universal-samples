@@ -19,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.AutoAdjustEndtimesMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.AutoAdjustEndtimesMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

@@ -7,7 +7,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message
 {
-    internal static class Subtitle
+    internal static class SubtitleEditor
     {
         internal class InsertNewRowMessage : MessageBase
         {
@@ -76,6 +76,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
 
             public FileOpenedMessageParameter Param { get; }
+        }
+
+        internal class ImportSubtitleMessage : MessageBase
+        {
+            public ImportSubtitleMessage(object sender) : base(sender)
+            {
+            }
+        }
+
+        internal class ExportSubtitleMessage : MessageBase
+        {
+            public ExportSubtitleMessage(object sender) : base(sender)
+            {
+            }
         }
 
         internal class SaveMessage : MessageBase

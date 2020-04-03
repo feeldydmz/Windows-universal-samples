@@ -19,7 +19,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            MessageCenter.Instance.Send(new Subtitle.InsertNewRowBeforeSelectedRowMessage(this));
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.InsertNewRowBeforeSelectedRowMessage(this));
         }
 
         public event EventHandler CanExecuteChanged
