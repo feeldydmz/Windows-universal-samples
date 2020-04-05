@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -48,6 +49,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private IList _selectedRows;
         private ICommand _setFocusToSubtitleTextBox;
 
+        private bool _disposed = false;
+        private readonly CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
+
         public SubtitleTabItemViewModel(string name, Action<SubtitleTabItemViewModel> rowCollectionChangedAction,
             Action<SubtitleTabItemViewModel> validateAction, Action<SubtitleTabItemViewModel> onSelectedAction,
             Action<ISubtitleListItemViewModel> onSelectedRowAction,
@@ -73,6 +77,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _rows = rows;
             Caption = caption;
             _isAddedFromLocal = caption == null;
+
+            CancelToken = _cancelTokenSource.Token;
         }
 
         public IList SelectedRows
@@ -176,6 +182,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isDirty;
             set => Set(ref _isDirty, value);
         }
+
+        private CancellationToken CancelToken { get; set; } = new CancellationToken();
 
 
         public void SetAsDeployed()
@@ -309,7 +317,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
 
                 Debug.WriteLine("----AddRowsAsync Task");
-            });
+            }, CancelToken);
             
             //task.Wait();
             Debug.WriteLine("--AddRowsAsync");
@@ -470,6 +478,30 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             BeforeSelectedItem,
             AfterSelectedItem,
             AtTheEnd
+        }
+        
+
+        ~SubtitleTabItemViewModel()
+        {
+            Dispose();
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _cancelTokenSource?.Cancel();
+                _cancelTokenSource?.Dispose();
+            }
+
+            _disposed = disposing;
+        }
+
+        public void Dispose()
+        {
+            
+            GC.SuppressFinalize(this);
         }
     }
 }

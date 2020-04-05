@@ -970,6 +970,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   New Window과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_NEW_WINDOW {
+            get {
+                return ResourceManager.GetString("CNT_NEW_WINDOW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   NEXT과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_NEXT {

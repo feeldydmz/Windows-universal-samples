@@ -424,7 +424,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
             //MessageCenter.Instance.Regist<SubtitleEditor.SaveMessage>(OnSave);
-            MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
+            //MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
@@ -469,24 +469,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Regist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
         }
+
+        
 
         private void OnProjectChanged(ProjectSelect.ProjectChangeMessage message)
         {
-            var removeTabs = Tabs.ToList();
+            CleanUpSubtitle();
+            //var removeTabs = Tabs.ToList();
 
-            if (removeTabs != null)
-                foreach (var tab in removeTabs)
-                    CloseTab(tab as SubtitleTabItemViewModel);
+            //if (removeTabs != null)
+            //    foreach (var tab in removeTabs)
+            //        CloseTab(tab as SubtitleTabItemViewModel);
 
-            if (MediaPlayer.MediaSource != null)
-                MediaPlayer.RemoveMediaItem();
+            //if (MediaPlayer.MediaSource != null)
+            //    MediaPlayer.RemoveMediaItem();
 
 
-            var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
-            workBarViewModel.Initialize();
+            //var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            //workBarViewModel.Initialize();
 
-            ClearCurrentPositionText();
+            //ClearCurrentPositionText();
         }
 
         private void UnregisterMessageHandlers()
@@ -532,6 +536,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
         }
 
         public void OnAutoAdjustEndtimesRequested(Message.SubtitleEditor.AutoAdjustEndtimesMessage message)
@@ -1344,58 +1349,55 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var label = CheckConflictLabel(param.Label);
 
-                //await this.CreateTask(async () =>
-                //{
-                    var text = File.ReadAllText(param.FilePath);
-                    string videoId = "";
-                    string captionAssetId = "";
+                var text = File.ReadAllText(param.FilePath);
+                string videoId = "";
+                string captionAssetId = "";
 
-                    var subtitles = _subtitleService.Load(text, param.SubtitleFormat);
+                var subtitles = _subtitleService.Load(text, param.SubtitleFormat);
 
-                    var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
-                    videoId = workBar.VideoItem?.Id;
-                    captionAssetId = workBar.CaptionAssetItem?.Id;
-                    
-                    var newTab = new SubtitleTabItemViewModel(label,
-                        OnRowCollectionChanged,
-                        OnValidateRequested,
-                        OnTabSelected,
-                        OnItemSelected,
-                        param.Kind,
-                        OnDisplayTextChanged,
-                        param.LanguageCode,
-                        param.CountryCode)
-                    {
-                        IsSelected = true,
-                        FilePath = param.FilePath,
-                        VideoId = videoId,
-                        CaptionAssetId = captionAssetId
-                    };
+                var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+                videoId = workBar.VideoItem?.Id;
+                captionAssetId = workBar.CaptionAssetItem?.Id;
 
-                    if (subtitles != null)
-                        newTab.AddRowsAsync(subtitles.ToList());
+                var newTab = new SubtitleTabItemViewModel(label,
+                    OnRowCollectionChanged,
+                    OnValidateRequested,
+                    OnTabSelected,
+                    OnItemSelected,
+                    param.Kind,
+                    OnDisplayTextChanged,
+                    param.LanguageCode,
+                    param.CountryCode)
+                {
+                    IsSelected = true,
+                    FilePath = param.FilePath,
+                    VideoId = videoId,
+                    CaptionAssetId = captionAssetId
+                };
 
-                    this.InvokeOnUi(() =>
-                    {
-                        Tabs.Add(newTab);
-                    });
+                if (subtitles != null)
+                    newTab.AddRowsAsync(subtitles.ToList());
 
-                    _subtitleListItemValidator.IsEnabled = true;
-                    _subtitleListItemValidator.Validate(SelectedTab.Rows);
+                this.InvokeOnUi(() =>
+                {
+                    Tabs.Add(newTab);
+                });
 
-                    if (param.FilePath.IsNotNullAndAny())
-                    {
-                        _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
-                            .SetFormat("VTT").Create());
-                    }
+                _subtitleListItemValidator.IsEnabled = true;
+                _subtitleListItemValidator.Validate(SelectedTab.Rows);
 
-                    this.InvokeOnUi(() =>
-                    {
-                        _browser.Main.LoadingManager.Hide();
-                    });
+                if (param.FilePath.IsNotNullAndAny())
+                {
+                    _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
+                        .SetFormat("VTT").Create());
+                }
 
-                    Debug.WriteLine("End OnOpenFile");
-                //});
+                this.InvokeOnUi(() =>
+                {
+                    _browser.Main.LoadingManager.Hide();
+                });
+
+                Debug.WriteLine("End OnOpenFile");
             }
             catch (Exception ex)
             {
@@ -1541,6 +1543,73 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 tab.LanguageCode = param.LanguageCode;
                 tab.CountryCode = param.CountryCode;
             }
+        }
+
+        private void OnCleanUpSubtitle(Message.SubtitleEditor.CleanUpSubtitleMessage message)
+        {
+            if (_workBarViewModel.HasWorkData)
+            {
+                //TODO 다국어
+                if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                        "작업 중인 내용이 있습니다. 열여진 탭을 모두 닫고, 새 작업을 만드시겠습니까?",
+                        MessageBoxButton.OKCancel,
+                        Application.Current.MainWindow,
+                        TextAlignment.Center)) == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+
+
+                //if (CheckWorkInProgress()) { 
+
+                //    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                //            Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
+                //            MessageBoxButton.OKCancel,
+                //            Application.Current.MainWindow,
+                //            TextAlignment.Center)) == MessageBoxResult.Cancel)
+                //    {
+                //        return;
+                //    }
+                //}
+
+                CleanUpSubtitle();
+            }
+        }
+
+        private void CleanUpSubtitle()
+        {
+            // 초기화 코드
+            var removeTabs = Tabs.ToList();
+
+            if (removeTabs != null)
+            {
+                foreach (var tab in removeTabs)
+                {
+                    Tabs.Remove(tab);
+                    tab.Dispose();
+
+                    //if (tab.IsDeployedOnce || tab.Caption != null)
+                    //    _removedCaptions.Add(tab.Caption);
+                    //if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
+                    //var lastTab = Tabs.LastOrDefault();
+                    //if (lastTab != null)
+                    //    lastTab.IsSelected = true;
+                    //else
+
+                }
+
+                SelectedTab = null;
+            }
+            //CloseTab(tab as SubtitleTabItemViewModel);
+
+            if (MediaPlayer.MediaSource != null)
+                MediaPlayer.RemoveMediaItem();
+
+
+            var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            workBarViewModel.Initialize();
+
+            ClearCurrentPositionText();
         }
 
         private void SelectPreviousRow()

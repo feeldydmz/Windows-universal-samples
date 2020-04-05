@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Core.Extension;
+
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
@@ -16,9 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            var fileFullPath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
-            if (File.Exists(fileFullPath))
-                Process.Start(fileFullPath);
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

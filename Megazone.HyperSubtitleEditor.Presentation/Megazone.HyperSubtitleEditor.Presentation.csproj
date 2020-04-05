@@ -160,6 +160,7 @@
     <Compile Include="Command\UI\CloseLeftSideMenuCommand.cs" />
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\CreateNewCommand.cs" />
+    <Compile Include="Command\UI\CreateNewWindowCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />

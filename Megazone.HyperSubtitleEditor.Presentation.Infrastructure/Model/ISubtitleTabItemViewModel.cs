@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
 {
-    public interface ISubtitleTabItemViewModel
+    public interface ISubtitleTabItemViewModel : IDisposable
     {
         string Id { get; }
         string Name { get; set; }

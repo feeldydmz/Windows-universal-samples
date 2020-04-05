@@ -194,5 +194,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             {
             }
         }
+
+        internal class CleanUpSubtitleMessage : MessageBase
+        {
+            public CleanUpSubtitleMessage(object sender) : base(sender)
+            {
+            }
+        }
     }
 }
