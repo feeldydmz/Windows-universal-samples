@@ -17,10 +17,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 .Parse(text);
         }
 
+        //TODO 이 함수는 webVtt 에서 사용중, webVtt도 SubtitleItem 을 사용 하는 방식으로 바꾸고 이 함수는 제거해야 됨
         public string ConvertToText(IEnumerable<string> subtitles, SubtitleFormatKind type)
         {
             return GetSubtitleParser(type)
                 .ToText(subtitles);
+        }
+
+        public string ConvertToText(IEnumerable<SubtitleItem> subtitleItems, SubtitleFormatKind type)
+        {
+            return GetSubtitleParser(type)
+                .ToText(subtitleItems);
         }
 
         public ISubtitleParser GetSubtitleParser(SubtitleFormatKind type)

@@ -479,6 +479,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 && tab.LanguageCode.Equals(caption.Language) 
                 && tab.CountryCode.Equals(caption.Country) 
                 && tab.Caption?.Id == caption.Id);
+
+
+
             var parser = SubtitleListItemParserProvider.Get(SubtitleFormatKind.WebVtt);
             var subtitles = tabItem.Rows.Select(s => s.ConvertToString(parser)).ToList();
             return _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt);

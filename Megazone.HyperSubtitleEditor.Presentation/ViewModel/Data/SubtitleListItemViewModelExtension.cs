@@ -1,4 +1,5 @@
-﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
+﻿using Megazone.Core.VideoTrack.Model;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
@@ -8,6 +9,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             ISubtitleListItemViewModelParser parser)
         {
             return parser.Run(item);
+        }
+
+        public static SubtitleItem ConvertToSubtitleItem(this ISubtitleListItemViewModel item)
+        {
+            SubtitleItem newItem = new SubtitleItem()
+            {
+                StartTime = item.StartTime,
+                EndTime = item.EndTime,
+                Number =  item.Number,
+                Texts =  item.Texts
+            };
+
+
+            return newItem;
+
         }
     }
 }
