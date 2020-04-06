@@ -26,6 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly Action<SubtitleTabItemViewModel> _onDisplayTextChangedAction;
         private readonly Action<SubtitleTabItemViewModel> _onSelectedAction;
         private readonly Action<ISubtitleListItemViewModel> _onSelectedRowAction;
+        private readonly Action<ISubtitleListItemViewModel> _onDoubleClickRowAction;
         private readonly OriginalData _originalData;
         private readonly Action<SubtitleTabItemViewModel> _rowCollectionChangedAction;
         private readonly IList<ISubtitleListItemViewModel> _rows;
@@ -51,6 +52,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public SubtitleTabItemViewModel(string name, Action<SubtitleTabItemViewModel> rowCollectionChangedAction,
             Action<SubtitleTabItemViewModel> validateAction, Action<SubtitleTabItemViewModel> onSelectedAction,
             Action<ISubtitleListItemViewModel> onSelectedRowAction,
+            Action<ISubtitleListItemViewModel> onDoubleClickRowAction,
             CaptionKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
@@ -64,6 +66,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _onSelectedAction = onSelectedAction;
             _onSelectedRowAction = onSelectedRowAction;
             _onDisplayTextChangedAction = onDisplayTextChangedAction;
+            _onDoubleClickRowAction = onDoubleClickRowAction;
             _languageCode = languageCode;
             _countryCode = countryCode;
             _kind = kind;
@@ -91,13 +94,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             }
         }
 
-        public ICommand SetFocusToSubtitleTextBoxCommand
+        public ICommand DoubleClickCommand
         {
             get
             {
                 return
                     _setFocusToSubtitleTextBox =
-                        _setFocusToSubtitleTextBox ?? new RelayCommand(SetFocusToSubtitleTextBox);
+                        _setFocusToSubtitleTextBox ?? new RelayCommand(OnDoubleClickListItem);
             }
         }
 
@@ -197,9 +200,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             return IsDirty;
         }
 
-        private void SetFocusToSubtitleTextBox()
+        private void OnDoubleClickListItem()
         {
-            MessageCenter.Instance.Send(new SubtitleView.SetFocusToTextBoxMessage(this));
+            Debug.WriteLine("--- OnDoubleClickListItem Start");
+            //MessageCenter.Instance.Send(new SubtitleView.SetFocusToTextBoxMessage(this));
+            _onDoubleClickRowAction(SelectedRow);
         }
 
         private void AddRowsFromDataSheet()

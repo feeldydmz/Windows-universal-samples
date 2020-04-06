@@ -385,6 +385,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedItem = SelectedTab?.SelectedRow;
         }
 
+        private void OnDoubleClickedItem(ISubtitleListItemViewModel syncItem)
+        {
+            Debug.WriteLine($"--- OnDoubleClickedItem Start time : {syncItem.StartTime.ToString()}");
+
+            if (!string.IsNullOrEmpty(MediaPlayer?.MediaSource))
+                MediaPlayer.SyncPosition(syncItem.StartTime);
+            //SelectedItem = row;
+        }
+
         private void OnItemSelected(ISubtitleListItemViewModel row)
         {
             SelectedItem = row;
@@ -1233,6 +1242,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     OnValidateRequested,
                     OnTabSelected,
                     OnItemSelected,
+                    OnDoubleClickedItem,
                     WorkContext.CaptionKind,
                     OnDisplayTextChanged,
                     caption.Language,
@@ -1361,6 +1371,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         OnValidateRequested,
                         OnTabSelected,
                         OnItemSelected,
+                        OnDoubleClickedItem,
                         param.Kind,
                         OnDisplayTextChanged,
                         param.LanguageCode,
@@ -1447,6 +1458,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             OnValidateRequested,
                             OnTabSelected,
                             OnItemSelected,
+                            OnDoubleClickedItem,
                             subtitle.Kind,
                             OnDisplayTextChanged,
                             subtitle.LanguageCode,
@@ -1504,6 +1516,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnValidateRequested,
                 OnTabSelected,
                 OnItemSelected,
+                OnDoubleClickedItem,
                 param.Kind,
                 OnDisplayTextChanged,
                 param.LanguageCode,
