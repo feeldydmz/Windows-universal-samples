@@ -4,7 +4,6 @@
     <ui:OpenSubtitleCommand x:Key="OpenSubtitleCommand" />
     <ui:OpenVideoListDialogCommand x:Key="OpenVideoListDialogCommand" />
     <ui:ExportSelectedTabAsVttCommand x:Key="ExportSelectedTabAsVttCommand" />
-    <ui:CreateNewWindowCommand x:Key="CreateNewWindowCommand" />
     <ui:CreateNewCommand x:Key="CreateNewCommand" />
     <ui:SaveCommand x:Key="SaveCommand" />
     <ui:CreateNewFileCommand x:Key="CreateNewFileCommand" />

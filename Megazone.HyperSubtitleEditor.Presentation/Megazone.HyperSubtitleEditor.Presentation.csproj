@@ -310,6 +310,9 @@
     <Compile Include="View\CopySubtitleView.xaml.cs">
       <DependentUpon>CopySubtitleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CreateWorkspaceConfirmWindow.xaml.cs">
+      <DependentUpon>CreateWorkspaceConfirmWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FindAndReplaceView.xaml.cs">
       <DependentUpon>FindAndReplaceView.xaml</DependentUpon>
     </Compile>
@@ -543,6 +546,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CopySubtitleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CreateWorkspaceConfirmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

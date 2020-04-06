@@ -988,6 +988,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   No과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_NO {
+            get {
+                return ResourceManager.GetString("CNT_NO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Not Connected과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_NOT_CONNECTED {
@@ -1663,6 +1672,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Yes과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_YES {
+            get {
+                return ResourceManager.GetString("CNT_YES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   The language will be applied after a restart.
         ///Would you like to restart now?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
@@ -1697,6 +1715,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_CREATE_NEW {
             get {
                 return ResourceManager.GetString("MSG_CREATE_NEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   새 어플리케이션에서 만드시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CREATE_NEW_AGAIN {
+            get {
+                return ResourceManager.GetString("MSG_CREATE_NEW_AGAIN", resourceCulture);
             }
         }
         

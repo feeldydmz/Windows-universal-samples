@@ -27,26 +27,39 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                Resource.MSG_CREATE_NEW,
-                MessageBoxButton.YesNoCancel,
-                Application.Current.MainWindow,
-                TextAlignment.Center));
+            var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 
-            switch (result)
+            if (result)
             {
-                case MessageBoxResult.Yes:
-                    var fileFullPath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
-                    if (File.Exists(fileFullPath))
-                        Process.Start(fileFullPath);
-                    break;
-                case MessageBoxResult.No:
-                    MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
-                    break;
-                case MessageBoxResult.Cancel:
-                default:
-                    break;
+                var fileFullPath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
+                if (File.Exists(fileFullPath))
+                    Process.Start(fileFullPath);
             }
+            else
+            {
+                MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
+            }
+
+            //var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+            //    Resource.MSG_CREATE_NEW,
+            //    MessageBoxButton.YesNoCancel,
+            //    Application.Current.MainWindow,
+            //    TextAlignment.Center));
+
+            //switch (result)
+            //{
+            //    case MessageBoxResult.Yes:
+            //        var fileFullPath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
+            //        if (File.Exists(fileFullPath))
+            //            Process.Start(fileFullPath);
+            //        break;
+            //    case MessageBoxResult.No:
+            //        MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
+            //        break;
+            //    case MessageBoxResult.Cancel:
+            //    default:
+            //        break;
+            //}
         }
 
         public event EventHandler CanExecuteChanged

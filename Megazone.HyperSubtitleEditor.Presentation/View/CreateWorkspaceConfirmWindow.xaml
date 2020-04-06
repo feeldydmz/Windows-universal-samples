@@ -1,0 +1,84 @@
+﻿<Window x:Class="Megazone.HyperSubtitleEditor.Presentation.View.CreateWorksapceConfirmView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:mz="http://schemas.megazone.co.kr"
+             mc:Ignorable="d" 
+             Width="446" Height="294"
+             Title="{x:Static resources:Resource.CNT_NEW}"
+             ResizeMode="NoResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <!--<ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />-->
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+          <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition Height="46"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical">
+                <TextBlock FontStretch="UltraExpanded" LineHeight="22"
+                           Text="{x:Static resources:Resource.MSG_CREATE_NEW}"
+                           TextWrapping="Wrap"  TextAlignment="Center" 
+                           Margin="0,30,0,0"/>
+
+                <TextBlock FontWeight="Bold" LineHeight="22" 
+                           Text="{x:Static resources:Resource.MSG_CREATE_NEW_AGAIN}"
+                           TextAlignment="Center"
+                           Margin="0,13,0,0"
+                           />
+
+                <Border BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}" BorderThickness="1" Margin="21,10,21,0" Height="48">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <RadioButton x:Name="YesButton" IsChecked="True"
+                                     Margin="0,0,15,0"
+                                     Content="{x:Static resources:Resource.CNT_YES}" />
+                        <RadioButton x:Name="NoButton"
+                                     Margin="15,0,0,0"
+                                     Content="{x:Static resources:Resource.CNT_NO}"/>
+                    </StackPanel>
+
+                </Border>
+                </StackPanel>
+
+                
+
+            </Grid>
+
+        </Border>
+        <Border Grid.Row="1" Style="{StaticResource Style_PopupBottomButtonAreaBorder}">
+            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition SharedSizeGroup="ButtonWidth"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="80" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True" 
+                        Click="ConfirmButtonBase_OnClick"/>
+                <Button Grid.Column="3" Width="80" Content="{x:Static resources:Resource.CNT_CANCEL}"
+                        Click="CancelButtonBase_OnClick"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

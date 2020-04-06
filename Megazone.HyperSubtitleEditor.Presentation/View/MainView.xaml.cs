@@ -192,6 +192,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             return new AdjustTimeWay(wnd.Time, wnd.Range, wnd.Behavior);
         }
 
+        public bool ShowCreateWorkspaceConfirmWindow()
+        {
+            var wnd = new CreateWorksapceConfirmView
+            {
+                Owner = Application.Current.MainWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            var result = wnd.ShowDialog();
+            return result ?? false;
+        }
+
         public void ShowOpenVideoAddressWindow(string openTypeString)
         {
             var wnd = new OpenVideoAddressWindow

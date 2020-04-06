@@ -20,6 +20,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
         void ShowFindDialog();
         void ShowFindAndReplaceDialog();
         AdjustTimeWay ShowAdjustTimeWindow();
+        bool ShowCreateWorkspaceConfirmWindow();
         void ShowOpenVideoAddressWindow(string openTypeString);
         void ShowApplicationInfoWindow();
         void ShowVideoListDialog();
