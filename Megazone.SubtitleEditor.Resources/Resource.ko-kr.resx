@@ -768,8 +768,10 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   <data name="CNT_MAKE_NEW_CAPTION" xml:space="preserve">
     <value>캡션 새로 만들기</value>
   </data>
-  <data name="CNT_NEW_WINDOW" xml:space="preserve">
-    <value>새창으로 열기</value>
+  <data name="MSG_CREATE_NEW" xml:space="preserve">
+    <value>새창으로 새로 만들기를 하시겠습니까?
+    '아니요' 선택시 
+    현재창에서 새작업이 시작됩니다.</value>
   </data>
   <data name="CNT_NEW" xml:space="preserve">
     <value>새로 만들기</value>

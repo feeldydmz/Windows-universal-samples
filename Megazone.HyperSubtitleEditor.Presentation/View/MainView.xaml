@@ -117,8 +117,8 @@
                 <!--<MenuItem Header="저장" Command="{StaticResource SaveCommand}" />
                 <MenuItem Header="다른 이름으로 저장" Command="{StaticResource SaveAsCommand}" />-->
 
-                <MenuItem Header="{x:Static resources:Resource.CNT_NEW_WINDOW}"
-                          Command="{StaticResource CreateNewWindowCommand}" />
+                <!--<MenuItem Header="{x:Static resources:Resource.CNT_NEW_WINDOW}"
+                          Command="{StaticResource CreateNewWindowCommand}" />-->
                 <MenuItem Header="{x:Static resources:Resource.CNT_NEW}"
                           Command="{StaticResource CreateNewCommand}" />
                 <Separator />

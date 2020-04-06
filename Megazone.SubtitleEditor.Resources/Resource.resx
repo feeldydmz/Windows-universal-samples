@@ -755,8 +755,9 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="MSG_LOADING" xml:space="preserve">
     <value>Loading...</value>
   </data>
-  <data name="CNT_NEW_WINDOW" xml:space="preserve">
-    <value>New Window</value>
+  <data name="MSG_CREATE_NEW" xml:space="preserve">
+    <value>Would you like to create a new one in a new window?
+    If you select No, a new job starts in the current window.</value>
   </data>
   <data name="CNT_NEW" xml:space="preserve">
     <value>New</value>

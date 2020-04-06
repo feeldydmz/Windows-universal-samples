@@ -970,15 +970,6 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   New Window과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        public static string CNT_NEW_WINDOW {
-            get {
-                return ResourceManager.GetString("CNT_NEW_WINDOW", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   NEXT과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_NEXT {
@@ -1696,6 +1687,16 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY {
             get {
                 return ResourceManager.GetString("MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Would you like to create a new one in a new window?
+        ///    If you select No, a new job starts in the current window.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CREATE_NEW {
+            get {
+                return ResourceManager.GetString("MSG_CREATE_NEW", resourceCulture);
             }
         }
         
