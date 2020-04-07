@@ -403,6 +403,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Create a new caption on the video / asset.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CREATE_CAPTION_ASSET_INFO {
+            get {
+                return ResourceManager.GetString("CNT_CREATE_CAPTION_ASSET_INFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Create new track과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_CREATE_NEW_CAPTION {

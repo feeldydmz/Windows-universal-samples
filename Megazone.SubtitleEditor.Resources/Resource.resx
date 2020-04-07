@@ -809,4 +809,7 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   <data name="CNT_YES" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="CNT_CREATE_CAPTION_ASSET_INFO" xml:space="preserve">
+    <value>Create a new caption on the video / asset.</value>
+  </data>
 </root>

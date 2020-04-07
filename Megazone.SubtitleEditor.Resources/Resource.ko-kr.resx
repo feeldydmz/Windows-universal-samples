@@ -822,4 +822,7 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   <data name="CNT_YES" xml:space="preserve">
     <value>예</value>
   </data>
+  <data name="CNT_CREATE_CAPTION_ASSET_INFO" xml:space="preserve">
+    <value>비디오/에셋에 새 캡션을 생성하세요.</value>
+  </data>
 </root>
