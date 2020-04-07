@@ -23,5 +23,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         bool IsDirty();
         void CheckIsNowPlaying(TimeSpan position);
         void ResetDirtyCheckFlags();
+
+        void ResetData();
     }
 }

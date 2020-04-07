@@ -1690,6 +1690,18 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   진행 중인 작업이 있습니다.
+        ///편집 내용이 모두 초기화 됩니다.
+        ///
+        ///계속 진행하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CAPTION_ASSET_RESET_CONFIRM {
+            get {
+                return ResourceManager.GetString("MSG_CAPTION_ASSET_RESET_CONFIRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   The language will be applied after a restart.
         ///Would you like to restart now?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>

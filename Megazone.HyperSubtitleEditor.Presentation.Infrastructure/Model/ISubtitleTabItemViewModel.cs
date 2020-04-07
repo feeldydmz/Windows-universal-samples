@@ -24,5 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         string FilePath { get; set; }
         void SetAsDeployed();
         bool CheckDirty();
+
+        void Reset();
     }
 }

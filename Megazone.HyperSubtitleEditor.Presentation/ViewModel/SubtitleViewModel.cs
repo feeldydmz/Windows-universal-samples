@@ -428,6 +428,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Regist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CloseTabMessage>(OnCloseTabRequested);
@@ -500,6 +501,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
             //MessageCenter.Instance.Unregist<SubtitleEditor.SaveMessage>(OnSave);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Unregist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
@@ -1291,6 +1293,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        private void OnCaptionResetRequest(CloudMedia.CaptionResetRequestedMessage requestedMessage)
+        {
+            if (_workBarViewModel.IsOnlineData)
+            {
+                foreach (var tab in Tabs)
+                {
+                    tab.Reset();
+                }
+            }
+            else
+            {
+                foreach (var tab in Tabs)
+                {
+                    tab.Dispose();
+                }
+
+                Tabs.Clear();
+
+                SelectedTab = null;
+            }
+        }
+
+
         private void OnVideoOpenRequest(CloudMedia.VideoOpenRequestedMessage requestedMessage)
         {
             var video = requestedMessage.VideoParam;
@@ -1581,25 +1606,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 초기화 코드
             var removeTabs = Tabs.ToList();
 
-            if (removeTabs != null)
+            foreach (var tab in removeTabs)
             {
-                foreach (var tab in removeTabs)
-                {
-                    Tabs.Remove(tab);
-                    tab.Dispose();
+                Tabs.Remove(tab);
+                tab.Dispose();
 
-                    //if (tab.IsDeployedOnce || tab.Caption != null)
-                    //    _removedCaptions.Add(tab.Caption);
-                    //if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
-                    //var lastTab = Tabs.LastOrDefault();
-                    //if (lastTab != null)
-                    //    lastTab.IsSelected = true;
-                    //else
+                //if (tab.IsDeployedOnce || tab.Caption != null)
+                //    _removedCaptions.Add(tab.Caption);
+                //if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
+                //var lastTab = Tabs.LastOrDefault();
+                //if (lastTab != null)
+                //    lastTab.IsSelected = true;
+                //else
 
-                }
-
-                SelectedTab = null;
             }
+
+            SelectedTab = null;
             //CloseTab(tab as SubtitleTabItemViewModel);
 
             if (MediaPlayer.MediaSource != null)

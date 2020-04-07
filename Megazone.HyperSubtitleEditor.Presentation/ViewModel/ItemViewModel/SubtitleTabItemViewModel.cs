@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using DocumentFormat.OpenXml.Office.Excel;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -203,6 +204,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             var hasDirtyRow = Rows != null && Rows.Any(r => r.IsDirty());
             IsDirty = isBaseInfoChanged || _isAddedFromLocal || _isRowCollectionChanged || hasDirtyRow;
             return IsDirty;
+        }
+
+        public void Reset()
+        {
+            foreach (var row in Rows)
+            {
+                row.ResetData();
+            }
+
+            _isRowCollectionChanged = false;
+            _isAddedFromLocal = false;
+            IsDirty = false;
         }
 
         private void SetFocusToSubtitleTextBox()

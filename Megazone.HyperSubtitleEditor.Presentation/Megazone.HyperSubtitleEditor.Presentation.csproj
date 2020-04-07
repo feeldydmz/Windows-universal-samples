@@ -164,6 +164,7 @@
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />
     <Compile Include="Command\UI\OpenLeftSideMenuCommand.cs" />
+    <Compile Include="Command\UI\ResetWorkBarCommand.cs" />
     <Compile Include="Command\UI\SaveCommand.cs" />
     <Compile Include="Command\UI\ShowProjectViewCommand.cs" />
     <Compile Include="Command\UI\OpenLogFolderCommand.cs" />

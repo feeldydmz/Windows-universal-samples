@@ -54,4 +54,5 @@
     <ui:ShowProjectViewCommand x:Key="ShowProjectViewCommand" />
     <ui:OpenLeftSideMenuCommand x:Key="OpenLeftSideMenuCommand" />
     <ui:CloseLeftSideMenuCommand x:Key="CloseLeftSideMenuCommand" />
+    <ui:ResetWorkBarCommand x:Key="ResetWorkBarCommand" />
 </ResourceDictionary>

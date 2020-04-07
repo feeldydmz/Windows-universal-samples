@@ -786,6 +786,12 @@ Do you want to the program ends?</value>
     <value>There is work in progress. 
 Continue?</value>
   </data>
+  <data name="MSG_CAPTION_ASSET_RESET_CONFIRM" xml:space="preserve">
+    <value>진행 중인 작업이 있습니다.
+편집 내용이 모두 초기화 됩니다.
+
+계속 진행하시겠습니까?</value>
+  </data>
   <data name="MSG_CHANGE_PROJECT_WARNING" xml:space="preserve">
     <value>You can open it from the project named {1} in the stage named {0}. Please switch project in order to load the data.</value>
   </data>

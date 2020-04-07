@@ -3,9 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Megazone.SubtitleEditor.Resources;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
@@ -16,7 +14,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         private readonly FileManager _fileManager;
         private readonly SubtitleViewModel _subtitleViewModel;
         private readonly WorkBarViewModel _workBar;
-        private readonly WorkBarViewModel _workBarViewModel;
 
         public SaveCommand()
         {
@@ -24,7 +21,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             _workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            _workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
         }
 
         public bool CanExecute(object parameter)
@@ -53,7 +49,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 //    return;
                 //}
 
-                if (string.IsNullOrEmpty(_workBarViewModel.CaptionAssetItem?.Id))
+                if (string.IsNullOrEmpty(_workBar.CaptionAssetItem?.Id))
                     _browser.Main.ShowMcmDeployAndAssetCreateDialog();
                 else
                     _browser.Main.ShowMcmDeployDialog();

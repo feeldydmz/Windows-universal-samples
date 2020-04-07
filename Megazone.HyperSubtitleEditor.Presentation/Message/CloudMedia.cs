@@ -16,6 +16,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
             public CaptionOpenMessageParameter Param { get; }
         }
+        internal class CaptionResetRequestedMessage : MessageBase
+        {
+            public CaptionResetRequestedMessage(object sender) : base(sender)
+            {
+         
+            }
+        }
 
         internal class VideoOpenRequestedMessage : MessageBase
         {
