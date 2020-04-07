@@ -231,17 +231,17 @@
   <data name="CNT_EXPORT" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="CNT_EXPORT_ALL_WEBVTT" xml:space="preserve">
-    <value>Export all to WebVtt</value>
+  <data name="CNT_EXPORT_ALL_SUBTITLE_FILE" xml:space="preserve">
+    <value>Export all to Subtitle Files</value>
   </data>
   <data name="CNT_EXPORT_EXCEL" xml:space="preserve">
-    <value>Export to Excel</value>
+    <value>Export to Excel File</value>
   </data>
   <data name="CNT_EXPORT_PROJECT" xml:space="preserve">
     <value>Export to Project</value>
   </data>
-  <data name="CNT_EXPORT_WEBVTT" xml:space="preserve">
-    <value>Export to WebVtt</value>
+  <data name="CNT_EXPORT_SUBTITLE_FILE" xml:space="preserve">
+    <value>Export to Subtitle file</value>
   </data>
   <data name="CNT_FILE" xml:space="preserve">
     <value>File</value>
@@ -280,7 +280,7 @@
     <value>Import</value>
   </data>
   <data name="CNT_IMPORT_EXCEL" xml:space="preserve">
-    <value>Import excel</value>
+    <value>Import excel file</value>
   </data>
   <data name="CNT_IMPORT_PROJECT" xml:space="preserve">
     <value>Import project</value>
@@ -506,7 +506,7 @@
 You can add one by dragging a file.</value>
   </data>
   <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
-    <value>No video.
+    <value>No Preview video.
 You can load one by dragging a file.</value>
   </data>
   <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
@@ -817,5 +817,8 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   </data>
   <data name="CNT_CREATE_CAPTION_ASSET_INFO" xml:space="preserve">
     <value>Create a new caption on the video / asset.</value>
+  </data>
+  <data name="CNT_IMPORT_CAPTION" xml:space="preserve">
+    <value>Import subtitle file</value>
   </data>
 </root>

@@ -49,7 +49,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _openAssetEditorCommand;
         private ICommand _unloadCommand;
-        private ICommand _resetCommand;
         private VideoItemViewModel _videoItem;
 
          public WorkBarViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger,
@@ -122,11 +121,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _openAssetEditorCommand = _openAssetEditorCommand ?? new RelayCommand(OpenAssetEditor); }
         }
-
-        //public ICommand ResetCommand
-        //{
-        //    get { return _resetCommand = _resetCommand ?? new RelayCommand(ResetAssetElement, ca); }
-        //}
 
         public void Initialize()
         {

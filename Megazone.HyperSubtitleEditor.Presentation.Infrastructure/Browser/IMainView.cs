@@ -14,7 +14,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser
         ISubtitleView SubtitleView { get; }
         void ShowSettingsDialog();
         void ShowImportExcelDialog(string initialFilePath = null);
-        void ShowOpenSubtitleDialog(string filePath, SubtitleFormatKind subtitleFormat);
+        void ShowOpenSubtitleDialog(string filePath = null, SubtitleFormatKind subtitleFormat = SubtitleFormatKind.Unknown);
         void ShowAddAndEditSubtitleDialog(SubtitleDialogViewMode mode, ISubtitleTabItemViewModel tabItem, string title);
         void ShowCopySubtitleDialog(IEnumerable<ISubtitleTabItemViewModel> tabs);
         void ShowFindDialog();

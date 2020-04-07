@@ -5,6 +5,7 @@ using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Mvvm;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
@@ -88,6 +89,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenSubtitleFile()
         {
+            if (string.IsNullOrEmpty(FilePath))
+            {
+                string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
+                FilePath = _fileManager.OpenFile(
+                    "subtitle files (*.vtt;*.srt;*.smi)|*.vtt;*.srt;*.smi",
+                    initialPath);
+
+                if (!string.IsNullOrEmpty(FilePath))
+                    ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(FilePath);
+
+                SubtitleFormat = SubtitleViewModel.GetSubTitleFormatKindByFileName(FilePath);
+            }
+
             Open(FilePath);
         }
 

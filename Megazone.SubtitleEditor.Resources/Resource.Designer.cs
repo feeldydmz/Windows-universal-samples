@@ -538,16 +538,16 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Export all to WebVtt과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Export all to Subtitle Files과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string CNT_EXPORT_ALL_WEBVTT {
+        public static string CNT_EXPORT_ALL_SUBTITLE_FILE {
             get {
-                return ResourceManager.GetString("CNT_EXPORT_ALL_WEBVTT", resourceCulture);
+                return ResourceManager.GetString("CNT_EXPORT_ALL_SUBTITLE_FILE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Export to Excel과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Export to Excel File과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_EXPORT_EXCEL {
             get {
@@ -565,11 +565,11 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Export to WebVtt과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Export to Subtitle file과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string CNT_EXPORT_WEBVTT {
+        public static string CNT_EXPORT_SUBTITLE_FILE {
             get {
-                return ResourceManager.GetString("CNT_EXPORT_WEBVTT", resourceCulture);
+                return ResourceManager.GetString("CNT_EXPORT_SUBTITLE_FILE", resourceCulture);
             }
         }
         
@@ -691,7 +691,16 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Import excel과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Import subtitle file과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_IMPORT_CAPTION {
+            get {
+                return ResourceManager.GetString("CNT_IMPORT_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import excel file과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_IMPORT_EXCEL {
             get {
@@ -1805,7 +1814,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   No video.
+        ///   No Preview video.
         ///You can load one by dragging a file.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_DRAG_OPEN_VIDEO {

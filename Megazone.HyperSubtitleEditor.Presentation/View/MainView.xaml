@@ -129,15 +129,15 @@
                     <MenuItem Header="내 컴퓨터" />
                 </MenuItem>-->
                 <Separator />
-                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_WEBVTT}"
+                <!--<MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_WEBVTT}"
                           Command="{StaticResource ExportAllTabsAsVttCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_WEBVTT}" InputGestureText="Ctrl+S"
-                          Command="{StaticResource ExportSelectedTabAsVttCommand}" />
+                          Command="{StaticResource ExportSelectedTabAsVttCommand}" />-->
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_PROJECT}"
                           Command="{StaticResource SaveGroupCommand}" Visibility="Collapsed" />
                 <Separator />
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_VTT}"
-                          Command="{StaticResource OpenSubtitleCommand}" />
+                          Command="{StaticResource ImportSubtitleCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_PROJECT}"
                           Command="{StaticResource LoadGroupFileCommand}" Visibility="Collapsed" />
                 <Separator />
@@ -150,7 +150,7 @@
                 <Separator />
 
                 <MenuItem Header="{x:Static resources:Resource.CNT_ADD_CAPTION}"
-                          Command="{StaticResource OpenSubtitleCommand}" />
+                          Command="{StaticResource ImportSubtitleCommand}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_COPY_CAPTION}"
                           Command="{StaticResource CopyTabCommand}" />
                 <Separator />

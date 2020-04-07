@@ -7,6 +7,7 @@ using Megazone.Core.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
+using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
 
@@ -15,14 +16,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     public class CreateNewCommand : DependencyObject, ICommand
     {
         private IBrowser _browser;
+        private readonly WorkBarViewModel _workBar;
 
         public CreateNewCommand()
         {
             _browser = Bootstrapper.Container.Resolve<IBrowser>();
+            _workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
         }
         public bool CanExecute(object parameter)
         {
-            return true;
+            return _workBar.HasWorkData;
         }
 
         public void Execute(object parameter)

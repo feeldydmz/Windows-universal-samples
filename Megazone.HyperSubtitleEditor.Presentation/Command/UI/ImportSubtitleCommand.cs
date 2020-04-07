@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
+using Megazone.SubtitleEditor.Resources;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
-    public class OpenSubtitleCommand : DependencyObject, ICommand
+    public class ImportSubtitleCommand : DependencyObject, ICommand
     {
         private readonly WorkBarViewModel _workBarViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly IBrowser _browser;
 
-        public OpenSubtitleCommand()
+        public ImportSubtitleCommand()
         {
             _workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
             _subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            _browser = Bootstrapper.Container.Resolve<IBrowser>();
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +30,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            _subtitleViewModel.OnImportSubtitleFile();
+            if (parameter is string content)
+            {
+                if (content == Resource.CNT_IMPORT_CAPTION)
+                {
+                    //_subtitleViewModel.OnImportSubtitleFile();
+                    _browser.Main.ShowOpenSubtitleDialog();
+                }
+                else if(content == Resource.CNT_IMPORT_EXCEL)
+                {
+                    _browser.Main.ShowImportExcelDialog();
+                }
+            }
         }
 
         public event EventHandler CanExecuteChanged

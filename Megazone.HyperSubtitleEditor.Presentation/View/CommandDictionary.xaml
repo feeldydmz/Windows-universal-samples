@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Command.UI">
-    <ui:OpenSubtitleCommand x:Key="OpenSubtitleCommand" />
+    <ui:ImportSubtitleCommand x:Key="ImportSubtitleCommand" />
     <ui:OpenVideoListDialogCommand x:Key="OpenVideoListDialogCommand" />
     <ui:ExportSelectedTabAsVttCommand x:Key="ExportSelectedTabAsVttCommand" />
     <ui:CreateNewCommand x:Key="CreateNewCommand" />
@@ -55,4 +55,5 @@
     <ui:OpenLeftSideMenuCommand x:Key="OpenLeftSideMenuCommand" />
     <ui:CloseLeftSideMenuCommand x:Key="CloseLeftSideMenuCommand" />
     <ui:ResetWorkBarCommand x:Key="ResetWorkBarCommand" />
+    <ui:ExportSubtitleCommand x:Key="ExportSubtitleCommand"/>
 </ResourceDictionary>

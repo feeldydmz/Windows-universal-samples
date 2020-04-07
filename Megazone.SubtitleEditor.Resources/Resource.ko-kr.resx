@@ -228,17 +228,17 @@
   <data name="CNT_EXPORT" xml:space="preserve">
     <value>내보내기</value>
   </data>
-  <data name="CNT_EXPORT_ALL_WEBVTT" xml:space="preserve">
-    <value>WebVTT로 전체 내보내기</value>
+  <data name="CNT_EXPORT_ALL_SUBTITLE_FILE" xml:space="preserve">
+    <value>자막 파일로 전체 내보내기</value>
   </data>
   <data name="CNT_EXPORT_EXCEL" xml:space="preserve">
-    <value>Excel 내보내기</value>
+    <value>엑셀 파일로 내보내기</value>
   </data>
   <data name="CNT_EXPORT_PROJECT" xml:space="preserve">
     <value>프로젝트 내보내기</value>
   </data>
-  <data name="CNT_EXPORT_WEBVTT" xml:space="preserve">
-    <value>WebVTT로 내보내기</value>
+  <data name="CNT_EXPORT_SUBTITLE_FILE" xml:space="preserve">
+    <value>자막 파일로 내보내기</value>
   </data>
   <data name="CNT_FILE" xml:space="preserve">
     <value>파일</value>
@@ -277,7 +277,7 @@
     <value>불러오기</value>
   </data>
   <data name="CNT_IMPORT_EXCEL" xml:space="preserve">
-    <value>Excel 가져오기</value>
+    <value>엑셀 파일 불러오기</value>
   </data>
   <data name="CNT_IMPORT_PROJECT" xml:space="preserve">
     <value>프로젝트 가져오기</value>
@@ -503,7 +503,7 @@
 파일을 드래그하여 추가할 수 있습니다.</value>
   </data>
   <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
-    <value>비디오가 없습니다.
+    <value>미리보기 비디오가 없습니다.
 파일을 드래그하여 불러올 수 있습니다.</value>
   </data>
   <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
@@ -830,5 +830,8 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   </data>
   <data name="CNT_CREATE_CAPTION_ASSET_INFO" xml:space="preserve">
     <value>비디오/에셋에 새 캡션을 생성하세요.</value>
+  </data>
+  <data name="CNT_IMPORT_CAPTION" xml:space="preserve">
+    <value>캡션 파일 불러오기</value>
   </data>
 </root>

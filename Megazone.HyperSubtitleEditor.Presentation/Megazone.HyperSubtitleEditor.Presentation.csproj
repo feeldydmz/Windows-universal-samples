@@ -161,6 +161,7 @@
     <Compile Include="Command\UI\CopyContentsToClipboardCommand.cs" />
     <Compile Include="Command\UI\CreateNewCommand.cs" />
     <Compile Include="Command\UI\DownloadExcelTemplet.cs" />
+    <Compile Include="Command\UI\ExportSubtitleCommand.cs" />
     <Compile Include="Command\UI\InsertRowAtCurrentMediaPositionCommand.cs" />
     <Compile Include="Command\UI\LogoutCommand.cs" />
     <Compile Include="Command\UI\OpenLeftSideMenuCommand.cs" />
@@ -194,7 +195,7 @@
     <Compile Include="Command\UI\OpenFindAndReplaceWindowCommand.cs" />
     <Compile Include="Command\UI\OpenFindWindowCommand.cs" />
     <Compile Include="Command\UI\OpenLocalVideoCommand.cs" />
-    <Compile Include="Command\UI\OpenSubtitleCommand.cs" />
+    <Compile Include="Command\UI\ImportSubtitleCommand.cs" />
     <Compile Include="Command\UI\ReplaceTextCommand.cs" />
     <Compile Include="Command\UI\SaveGroupFileCommand.cs" />
     <Compile Include="Command\UI\TapAutoLoginCommand.cs" />

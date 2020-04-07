@@ -31,8 +31,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                    //Resource.MSG_CAPTION_ASSET_RESET_CONFIRM,
-                    "<bold>dddd</bold>ddddddd",
+                    Resource.MSG_CAPTION_ASSET_RESET_CONFIRM,
                     MessageBoxButton.OKCancel,
                     Application.Current.MainWindow,
                     TextAlignment.Center)) == MessageBoxResult.Cancel)

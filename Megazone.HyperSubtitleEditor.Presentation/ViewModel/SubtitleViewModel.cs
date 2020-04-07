@@ -424,13 +424,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
             //MessageCenter.Instance.Regist<SubtitleEditor.SaveMessage>(OnSave);
-            //MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
+
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Regist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Regist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
@@ -503,8 +504,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.CloseTabMessage>(OnCloseTabRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenLocalMediaMessage>(OnOpenLocalMediaRequested);
             MessageCenter.Instance.Unregist<MediaPlayer.OpenMediaFromUrlMessage>(OnOpenMediaFromFilePathRequested);
@@ -952,53 +955,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             await this.CreateTask(() => { Save(saveFilePath, rows); });
             tab.FilePath = saveFilePath;
         }
-
-        //private async void OnSave(SubtitleEditor.SaveMessage message)
-        //{
-        //    var saveFilePath = SelectedTab.FilePath;
-        //    if (string.IsNullOrEmpty(saveFilePath))
-        //    {
-        //        saveFilePath = _fileManager.OpenSaveFileDialog(null, "WebVtt files (.vtt)|*.vtt", SelectedTab.Name);
-        //        if (string.IsNullOrEmpty(saveFilePath)) return;
-        //    }
-
-        //    _browser.Main.LoadingManager.Show();
-        //    try
-        //    {
-        //        await SaveTabAsFileAsync(SelectedTab, saveFilePath);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error.Write(ex);
-        //        this.InvokeOnUi(
-        //            () =>
-        //            {
-        //                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-        //                    Resource.MSG_SAVE_FAIL,
-        //                    MessageBoxButton.OK,
-        //                    Application.Current.MainWindow));
-        //            });
-        //    }
-        //    finally
-        //    {
-        //        _browser.Main.LoadingManager.Hide();
-        //    }
-
-        //    _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
-        //        MessageBoxButton.OK,
-        //        Application.Current.MainWindow));
-        //}
-        
+       
         private void OnExportSubtitleFile(Message.SubtitleEditor.ExportSubtitleMessage message)
         {
-            var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi|excel (*.xlsx)|*.xlsx", SelectedTab.Name);
+            var saveFilePath = _fileManager.OpenSaveFileDialog(null, "vtt (*.vtt)|*.vtt|srt (*.srt)|*.srt|smi (*.smi)|.smi", SelectedTab.Name);
 
             if (string.IsNullOrEmpty(saveFilePath))
                 return;
 
             var subtitleFormat = GetSubTitleFormatKindByFileName(saveFilePath);
-
-            Debug.WriteLine("start OnExportSubtitleFile");
 
             switch (subtitleFormat)
             {
@@ -1007,15 +972,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 case SubtitleFormatKind.Srt:
                     ExportSubtitleAsync(saveFilePath);
                     break;
-                case SubtitleFormatKind.Excel:
-                    ExportExcelAsync(saveFilePath);
+                //case SubtitleFormatKind.Excel:
+                //    ExportExcelAsync(saveFilePath);
                     //_browser.Main.ShowImportExcelDialog(saveFilePath);
-                    break;
+                    //break;
                 default:
                     break;
             }
-
-            Debug.WriteLine("end OnExportSubtitleFile");
         }
 
         private async Task ExportExcelAsync(string savePath)
@@ -1153,11 +1116,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     break;
                 default:
                     break;
-                    //throw new ArgumentOutOfRangeException();
             }
         }
 
-        private SubtitleFormatKind GetSubTitleFormatKindByFileName(string fileName)
+        public static SubtitleFormatKind GetSubTitleFormatKindByFileName(string fileName)
         {
             var extension = Path.GetExtension(fileName);
 
@@ -1374,7 +1336,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var label = CheckConflictLabel(param.Label);
 
-                var text = File.ReadAllText(param.FilePath);
+                var text = param.FilePath != null ? File.ReadAllText(param.FilePath) : "";
                 string videoId = "";
                 string captionAssetId = "";
 
