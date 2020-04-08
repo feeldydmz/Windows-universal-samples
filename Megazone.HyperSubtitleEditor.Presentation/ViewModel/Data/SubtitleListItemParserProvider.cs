@@ -11,6 +11,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             {
                 case SubtitleFormatKind.WebVtt:
                     return new SubtitleListItemViewModelToWebVttStringParaser();
+
+                case SubtitleFormatKind.Srt:
+                case SubtitleFormatKind.Sami:
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

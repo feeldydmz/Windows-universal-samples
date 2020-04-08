@@ -951,10 +951,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async Task SaveTabAsFileAsync(ISubtitleTabItemViewModel tab, string saveFilePath)
+        private async Task SaveTabAsFileAsync(ISubtitleTabItemViewModel tab, string saveFilePath, SubtitleFormatKind subtitleFormat=SubtitleFormatKind.WebVtt)
         {
             var rows = tab.Rows.ToList();
-            await this.CreateTask(() => { Save(saveFilePath, rows); });
+            await this.CreateTask(() => { Save(saveFilePath, rows, subtitleFormat); });
             tab.FilePath = saveFilePath;
         }
        
@@ -972,7 +972,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 case SubtitleFormatKind.WebVtt:
                 case SubtitleFormatKind.Sami:
                 case SubtitleFormatKind.Srt:
-                    ExportSubtitleAsync(saveFilePath);
+                    ExportSubtitleAsync(saveFilePath, subtitleFormat);
                     break;
                 //case SubtitleFormatKind.Excel:
                 //    ExportExcelAsync(saveFilePath);
@@ -1052,7 +1052,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async Task ExportSubtitleAsync(string savePath)
+        private async Task ExportSubtitleAsync(string savePath, SubtitleFormatKind subtitleFormat)
         {
             Debug.WriteLine("-- start ExportSubtitleAsync");
             if (string.IsNullOrEmpty(savePath))
@@ -1062,7 +1062,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             try
             {
-                await SaveTabAsFileAsync(SelectedTab, savePath);
+                await SaveTabAsFileAsync(SelectedTab, savePath, subtitleFormat);
             }
             catch (Exception ex)
             {
@@ -1149,15 +1149,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return subtitleFormat;
         }
 
-        internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows)
+        internal bool Save(string filePath, IList<ISubtitleListItemViewModel> rows, SubtitleFormatKind subtitleFormat)
         {
             //var encoding = SelectedEncoding?.GetEncoding() ?? Encoding.UTF8;
-            var parser = SubtitleListItemParserProvider.Get(SubtitleFormatKind.WebVtt);
-            var subtitles = rows.Select(s => s.ConvertToString(parser))
-                .ToList();
-            return _fileManager.Save(filePath,
-                _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt),
-                Encoding.UTF8);
+            switch (subtitleFormat)
+            {
+                case SubtitleFormatKind.WebVtt:
+                    var parser = SubtitleListItemParserProvider.Get(subtitleFormat);
+                    var subtitles = rows.Select(s => s.ConvertToString(parser))
+                        .ToList();
+                    return _fileManager.Save(filePath,
+                        _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt),
+                        Encoding.UTF8);
+
+                case SubtitleFormatKind.Sami:
+                case SubtitleFormatKind.Srt:
+                    var subtitleItems = rows.Select(s => s.ConvertToSubtitleItem())
+                        .ToList();
+
+                    var result = _subtitleService.ConvertToText(subtitleItems, subtitleFormat);
+
+                    return _fileManager.Save(filePath, result, Encoding.UTF8);
+
+                default:
+                    return false;
+            }
+                
+  
         }
 
         public async void OnOpenCaptionRequest(Message.SubtitleEditor.CaptionOpenRequestedMessage requestedMessage)
