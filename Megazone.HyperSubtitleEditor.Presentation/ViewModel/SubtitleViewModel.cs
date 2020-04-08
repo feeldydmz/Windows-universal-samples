@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -384,6 +382,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedTab.IsSelected = false;
             SelectedTab = tab;
             SelectedItem = SelectedTab?.SelectedRow;
+        }
+
+        private void OnDoubleClickedItem(ISubtitleListItemViewModel syncItem)
+        {
+            Debug.WriteLine($"--- OnDoubleClickedItem Start time : {syncItem.StartTime.ToString()}");
+
+            if (!string.IsNullOrEmpty(MediaPlayer?.MediaSource))
+                MediaPlayer.SyncPosition(syncItem.StartTime);
+            //SelectedItem = row;
         }
 
         private void OnItemSelected(ISubtitleListItemViewModel row)
@@ -1222,6 +1229,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     OnValidateRequested,
                     OnTabSelected,
                     OnItemSelected,
+                    OnDoubleClickedItem,
                     WorkContext.CaptionKind,
                     OnDisplayTextChanged,
                     caption.Language,
@@ -1371,6 +1379,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     OnValidateRequested,
                     OnTabSelected,
                     OnItemSelected,
+                    OnDoubleClickedItem,
                     param.Kind,
                     OnDisplayTextChanged,
                     param.LanguageCode,
@@ -1456,6 +1465,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             OnValidateRequested,
                             OnTabSelected,
                             OnItemSelected,
+                            OnDoubleClickedItem,
                             subtitle.Kind,
                             OnDisplayTextChanged,
                             subtitle.LanguageCode,
@@ -1513,6 +1523,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnValidateRequested,
                 OnTabSelected,
                 OnItemSelected,
+                OnDoubleClickedItem,
                 param.Kind,
                 OnDisplayTextChanged,
                 param.LanguageCode,

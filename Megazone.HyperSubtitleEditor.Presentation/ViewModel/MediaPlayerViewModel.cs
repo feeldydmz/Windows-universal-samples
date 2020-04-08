@@ -451,7 +451,44 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void SyncPosition(TimeSpan objStartTime)
         {
+            var url = VideoUrlOfResolutions[_currentResolution];
+
             TimeSeeker?.Run(objStartTime, () => { _seekCount = 0; });
+            //LoadMediaItem();
+
+            //this.CreateTask(() =>
+            //{
+            //    try
+            //    {
+            //        //var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
+            //        //{
+            //        //    Url = fullPath,
+            //        //    IsRequestThumbnail = false
+            //        //}, _cancellationTokenSource);
+            //        if (objStartTime != null)
+            //        {
+            //            var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
+            //            {
+            //                SaveThumbnailPath = GetTempThumbnailFilePath(url, IsLocalFile),
+            //                TimeoutMilliseconds = 7000,
+            //                LocalFilePath = IsLocalFile ? url : new Uri(url).AbsoluteUri,
+            //                ThumbnailAtSeconds = objStartTime.TotalSeconds
+            //            });
+            //            if (thumbnail != null)
+            //                this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
+            //            //this.InvokeOnUi(() =>
+            //            //{
+            //            //    _videoData = videoData;
+            //            //    SetMediaHeaderData(_videoData);
+            //            //});
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.Error.Write(ex);
+            //    }
+            //});
+
         }
 
         public void PlayForwardBy(TimeSpan timespan)

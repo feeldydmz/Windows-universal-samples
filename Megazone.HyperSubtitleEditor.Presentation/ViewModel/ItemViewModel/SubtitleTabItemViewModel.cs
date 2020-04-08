@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using DocumentFormat.OpenXml.Office.Excel;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -17,9 +16,7 @@ using Megazone.Core.VideoTrack.Model;
 using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
-using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -28,6 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private readonly Action<SubtitleTabItemViewModel> _onDisplayTextChangedAction;
         private readonly Action<SubtitleTabItemViewModel> _onSelectedAction;
         private readonly Action<ISubtitleListItemViewModel> _onSelectedRowAction;
+        private readonly Action<ISubtitleListItemViewModel> _onDoubleClickRowAction;
         private readonly OriginalData _originalData;
         private readonly Action<SubtitleTabItemViewModel> _rowCollectionChangedAction;
         private readonly IList<ISubtitleListItemViewModel> _rows;
@@ -56,6 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public SubtitleTabItemViewModel(string name, Action<SubtitleTabItemViewModel> rowCollectionChangedAction,
             Action<SubtitleTabItemViewModel> validateAction, Action<SubtitleTabItemViewModel> onSelectedAction,
             Action<ISubtitleListItemViewModel> onSelectedRowAction,
+            Action<ISubtitleListItemViewModel> onDoubleClickRowAction,
             CaptionKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
             string languageCode = null,
@@ -69,6 +68,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _onSelectedAction = onSelectedAction;
             _onSelectedRowAction = onSelectedRowAction;
             _onDisplayTextChangedAction = onDisplayTextChangedAction;
+            _onDoubleClickRowAction = onDoubleClickRowAction;
             _languageCode = languageCode;
             _countryCode = countryCode;
             _kind = kind;
@@ -98,13 +98,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             }
         }
 
-        public ICommand SetFocusToSubtitleTextBoxCommand
+        public ICommand DoubleClickCommand
         {
             get
             {
                 return
                     _setFocusToSubtitleTextBox =
-                        _setFocusToSubtitleTextBox ?? new RelayCommand(SetFocusToSubtitleTextBox);
+                        _setFocusToSubtitleTextBox ?? new RelayCommand(OnDoubleClickListItem);
             }
         }
 
@@ -218,9 +218,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             IsDirty = false;
         }
 
-        private void SetFocusToSubtitleTextBox()
+        private void OnDoubleClickListItem()
         {
-            MessageCenter.Instance.Send(new SubtitleView.SetFocusToTextBoxMessage(this));
+            Debug.WriteLine("--- OnDoubleClickListItem Start");
+            //MessageCenter.Instance.Send(new SubtitleView.SetFocusToTextBoxMessage(this));
+            _onDoubleClickRowAction(SelectedRow);
         }
 
         private void AddRowsFromDataSheet()

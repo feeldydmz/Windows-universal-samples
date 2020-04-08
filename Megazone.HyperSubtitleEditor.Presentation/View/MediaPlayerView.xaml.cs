@@ -37,12 +37,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public static readonly DependencyProperty MediaSourceProperty =
             DependencyProperty.Register("MediaSource", typeof(string), typeof(MediaPlayerView),
                 new PropertyMetadata(
-                    (s, e) => { ((MediaPlayerView) s).OnMediaSourceProperty((string) e.OldValue); }));
+                    (s, e) => { ((MediaPlayerView) s).OnMediaSourceProperty((string)e.NewValue, (string) e.OldValue); }));
 
         public static readonly DependencyProperty StreamIndexProperty =
             DependencyProperty.Register("StreamIndex", typeof(int), typeof(MediaPlayerView),
                 new PropertyMetadata(
-                    (s, e) => { ((MediaPlayerView) s).OnStreamIndexProperty((int) e.OldValue); }));
+                    (s, e) => { ((MediaPlayerView) s).OnStreamIndexProperty((int)e.NewValue, (int)e.OldValue); }));
 
         public static readonly DependencyProperty HasAudioOnlyProperty =
             DependencyProperty.Register("HasAudioOnly", typeof(bool), typeof(MediaPlayerView),
@@ -163,15 +163,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private double VolumeTemp { get; set; }
 
-        private void OnMediaSourceProperty(string oldValue)
+        private void OnMediaSourceProperty(string newValue, string oldValue)
         {
             if (!string.IsNullOrEmpty(oldValue))
                 StopMedia();
+
+            OpenMedia(newValue, StreamIndex);
+            //PlayMedia(newValue, StreamIndex);
         }
 
-        private void OnStreamIndexProperty(int oldValue)
+        private void OnStreamIndexProperty(int newValue, int oldValue)
         {
             StopMedia();
+
+            OpenMedia(MediaSource, newValue);
         }
 
         public event Action<decimal> OnPositionChanged;
@@ -300,6 +305,35 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         }
 
         #region Media Control Func
+
+        private void OpenMedia(string mediaSource = null, int streamIndex = 0)
+        {
+            var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
+
+            if (VideoElement == null)
+                return;
+
+            if (string.IsNullOrWhiteSpace(mediaSource))
+                return;
+
+            if (VideoElement.PlayState != MediaPlayStates.Pause)
+            {
+                if (VideoElement.IsPlaying)
+                    VideoElement.Stop();
+
+                if (string.IsNullOrEmpty(VideoElement.Source))
+                    VideoElement.Source = mediaSource;
+
+                else if (!VideoElement.Source.Equals(mediaSource)) VideoElement.Source = mediaSource;
+
+                if (!VideoElement.StreamIndex.Equals(streamIndex)) VideoElement.StreamIndex = streamIndex;
+
+                VideoElement.Authorization = authorization;
+            }
+
+            //if (VideoElement.CanPlay)
+                VideoElement.Open();
+        }
 
         private void PlayMedia(string mediaSource = null, int streamIndex = 0)
         {

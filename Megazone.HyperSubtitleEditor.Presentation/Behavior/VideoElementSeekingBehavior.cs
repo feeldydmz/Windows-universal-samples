@@ -142,7 +142,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
                     break;
             }
 
-            AssociatedObject.IsEnabled = state == MediaPlayStates.Play || state == MediaPlayStates.Pause;
+            AssociatedObject.IsEnabled = state == MediaPlayStates.Opened || 
+                                         state ==  MediaPlayStates.Play || 
+                                         state == MediaPlayStates.Pause;
         }
 
         private void StartRendering()

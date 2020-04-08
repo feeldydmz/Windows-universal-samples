@@ -1084,7 +1084,7 @@
                         <mz:BindableSelectedItemsBehavior
                             SelectedItems="{Binding SelectedRows, FallbackValue={x:Null}, TargetNullValue={x:Null}, Mode=OneWayToSource}" />
                         <behavior:ListViewItemDoubleClickBehavior
-                            Command="{Binding Path=SetFocusToSubtitleTextBoxCommand}" />
+                            Command="{Binding Path=DoubleClickCommand}" />
                     </i:Interaction.Behaviors>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource Style_TabListItem}">
