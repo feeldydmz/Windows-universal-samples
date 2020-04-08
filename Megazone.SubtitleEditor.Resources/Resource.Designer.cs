@@ -1051,7 +1051,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Open MCM과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Cloud File과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_OPEN_FROM_MCM {
             get {

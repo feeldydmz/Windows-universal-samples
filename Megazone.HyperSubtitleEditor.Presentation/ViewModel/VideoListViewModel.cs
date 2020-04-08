@@ -477,6 +477,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             SelectedVideoItem?.Update();
             SelectedVideoItem?.Initialize();
+            SelectedVideoItem = null;
             SetTitleAction?.Invoke($"{Resource.CNT_VIDEO}");
             IsShowCaption = false;
             if (IsBusy)

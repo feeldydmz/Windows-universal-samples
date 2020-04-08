@@ -736,6 +736,7 @@
                 </Button>-->
 
                 <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="true"
+                        Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding ConfirmCommand}" />
             </Grid>
         </Border>
