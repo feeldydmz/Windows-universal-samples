@@ -19,6 +19,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
@@ -275,6 +276,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
 
                 HasWorkData = video != null || captionAsset != null;
+
+                //var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                //subtitleViewModel.OnOpenCaptionRequest(requestedMessage);
+                MessageCenter.Instance.Send(
+                    new Message.SubtitleEditor.CaptionOpenRequestedMessage(this, requestedMessage.Param));
 
                 _recentlyLoader.Save(new RecentlyItem.OnlineRecentlyCreator().SetVideo(video)
                     .SetCaptionAsset(captionAsset).SetCaptions(captions).Create());

@@ -773,7 +773,7 @@
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
-        <Setter Property="Background" Value="#262f4d" />
+        <Setter Property="Background" Value="#181d30" />
         <!--<Setter Property="BorderBrush" Value="#FFa4acb9" />-->
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0" />
@@ -853,7 +853,7 @@
                             <Setter Property="Visibility" Value="Visible" TargetName="PART_GuideText" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#262f4d"/>
+                            <Setter Property="Background" Value="#181d30"/>
                                 <!--<Setter Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

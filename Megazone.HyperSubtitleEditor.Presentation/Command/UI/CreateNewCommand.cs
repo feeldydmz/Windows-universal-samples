@@ -32,7 +32,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         {
             var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 
-            if (result)
+            if (!result.HasValue) return;
+
+            if (result.Value)
             {
                 var fileFullPath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
                 if (File.Exists(fileFullPath))

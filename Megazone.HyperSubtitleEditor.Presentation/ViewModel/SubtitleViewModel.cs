@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -84,6 +85,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private VideoItemViewModel _videoItem;
         private WorkBarViewModel _workBarViewModel;
+        private VideoStatusBarViewModel _videoStatusBar;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -93,7 +95,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IBrowser browser,
             ICloudMediaService cloudMediaService,
             RecentlyLoader recentlyLoader,
-            WorkBarViewModel workBarViewModel)
+            WorkBarViewModel workBarViewModel,
+            VideoStatusBarViewModel videoStatusBar)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -104,6 +107,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator = subtitleListItemValidator;
             _recentlyLoader = recentlyLoader;
             _workBarViewModel = workBarViewModel;
+            _videoStatusBar = videoStatusBar;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext();
@@ -427,7 +431,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
-            MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionOpenRequestedMessage>(OnOpenCaptionRequest);
             MessageCenter.Instance.Regist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
@@ -501,7 +505,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.AutoAdjustEndtimesMessage>(OnAutoAdjustEndtimesRequested);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
             //MessageCenter.Instance.Unregist<SubtitleEditor.SaveMessage>(OnSave);
-            MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionOpenRequestedMessage>(OnOpenCaptionRequest);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
@@ -858,6 +862,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnOpenMediaFromFilePathRequested(MediaPlayer.OpenMediaFromUrlMessage message)
         {
             MediaPlayer.InitMedia(message.Url, message.IsLocal);
+
             //MediaPlayer.OpenMedia(message.Url, false);
         }
 
@@ -1158,7 +1163,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Encoding.UTF8);
         }
 
-        private async void OnCaptionOpenRequest(CloudMedia.CaptionOpenRequestedMessage requestedMessage)
+        public async void OnOpenCaptionRequest(Message.SubtitleEditor.CaptionOpenRequestedMessage requestedMessage)
         {
             if (requestedMessage.Param == null)
                 return;
@@ -1192,7 +1197,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             _subtitleListItemValidator.IsEnabled = false;
 
-            Debug.WriteLine("++OnCaptionOpenRequest");
+            Debug.WriteLine("++OnOpenCaptionRequest");
             foreach (var caption in captionList)
             {
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
@@ -1222,7 +1227,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 Tabs.Add(newTab);
             }
-            Debug.WriteLine("--OnCaptionOpenRequest");
+            Debug.WriteLine("--OnOpenCaptionRequest");
 
             if (captionList.Any())
                 Tabs.First().IsSelected = true;

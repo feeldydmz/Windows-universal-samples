@@ -201,5 +201,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             {
             }
         }
+
+        internal class CaptionOpenRequestedMessage : MessageBase
+        {
+            public CaptionOpenRequestedMessage(object sender, CaptionOpenMessageParameter param) : base(sender)
+            {
+                Param = param;
+            }
+
+            public CaptionOpenMessageParameter Param { get; }
+        }
     }
 }

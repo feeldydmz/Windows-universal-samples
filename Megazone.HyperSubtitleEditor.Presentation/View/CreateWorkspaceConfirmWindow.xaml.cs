@@ -20,6 +20,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
     /// </summary>
     public partial class CreateWorksapceConfirmView : Window
     {
+        public bool IsCreateNewWindow { get; set; } = false;
+
         public CreateWorksapceConfirmView()
         {
             InitializeComponent();
@@ -27,18 +29,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void ConfirmButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = YesButton.IsChecked == true;
+            this.DialogResult = true;
+
+            IsCreateNewWindow = YesButton.IsChecked == true;
 
             CloseWindow();
         }
-
-        private void CancelButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
-
-            CloseWindow();
-        }
-
+        
         private void CloseWindow()
         {
             var window = Window.GetWindow(this);

@@ -234,7 +234,7 @@
                 </Style.BasedOn>-->
             </Style>
 
-            <Style x:Key="StyleCustomButton" TargetType="{x:Type Button}">
+            <Style TargetType="{x:Type Button}">
                 <Setter Property="UseLayoutRounding" Value="True" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
@@ -341,7 +341,7 @@
                 </Grid.Resources>
                 <StackPanel Orientation="Horizontal" Margin="5,0">
 
-                    <Button Command="{StaticResource CreateNewCommand}" Style="{StaticResource StyleCustomButton}">
+                    <Button Command="{StaticResource CreateNewCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -353,7 +353,7 @@
                         </Grid>
                     </Button>
 
-                    <Button Command="{StaticResource OpenLeftSideMenuCommand}" Style="{StaticResource StyleCustomButton}">
+                    <Button Command="{StaticResource OpenLeftSideMenuCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -365,7 +365,7 @@
                         </Grid>
                     </Button>
                     <!--<Button Command="{StaticResource SaveGroupCommand}">-->
-                    <Button Command="{StaticResource SaveCommand}" Style="{StaticResource StyleCustomButton}">
+                    <Button Command="{StaticResource SaveCommand}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -377,7 +377,7 @@
                         </Grid>
                     </Button>
                     <Rectangle />
-                    <Button Style="{StaticResource StyleCustomButton}">
+                    <Button>
                         <i:Interaction.Behaviors>
                             <behavior:ButtonClickToOpenPopupBehavior />
                         </i:Interaction.Behaviors>
@@ -401,7 +401,7 @@
                             <TextBlock Grid.Row="1" Text="{x:Static resources:Resource.CNT_IMPORT}" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource StyleCustomButton}">
+                    <Button>
                         <i:Interaction.Behaviors>
                             <behavior:ButtonClickToOpenPopupBehavior />
                         </i:Interaction.Behaviors>
@@ -598,7 +598,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0">
-                <views:WorkBarView Panel.ZIndex="999" />
+                <views:WorkBarView Panel.ZIndex="999"/>
             </Grid>
 
             <!--좌측 > 자막 편집 영역-->
@@ -1420,9 +1420,13 @@
                     <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
                 </i:Interaction.Behaviors>
                 <Grid.RowDefinitions>
+                    <!--<RowDefinition Height="40" />-->
                     <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <!--<Grid>
+                    <views:VideoStatusBar Panel.ZIndex="999"/>
+                </Grid>-->
                 <local:MediaPlayerView Grid.Row="0"
                                        Grid.RowSpan="2"
                                        HasAudioOnly="{Binding HasAudioOnly}"

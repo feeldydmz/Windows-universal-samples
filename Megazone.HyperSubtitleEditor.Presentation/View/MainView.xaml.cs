@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -15,6 +15,8 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
+using Application = System.Windows.Application;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -189,10 +191,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             wnd.ShowDialog();
+            
             return new AdjustTimeWay(wnd.Time, wnd.Range, wnd.Behavior);
         }
 
-        public bool ShowCreateWorkspaceConfirmWindow()
+        public bool? ShowCreateWorkspaceConfirmWindow()
         {
             var wnd = new CreateWorksapceConfirmView
             {
@@ -200,8 +203,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
 
-            var result = wnd.ShowDialog();
-            return result ?? false;
+            wnd.ShowDialog();
+
+            if (wnd.DialogResult.HasValue && wnd.DialogResult.Value)
+            {
+                return wnd.IsCreateNewWindow;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void ShowOpenVideoAddressWindow(string openTypeString)

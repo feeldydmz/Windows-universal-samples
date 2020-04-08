@@ -75,8 +75,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="1" Width="80" Content="{x:Static resources:Resource.CNT_CONFIRM}" IsDefault="True" 
                         Click="ConfirmButtonBase_OnClick"/>
-                <Button Grid.Column="3" Width="80" Content="{x:Static resources:Resource.CNT_CANCEL}"
-                        Click="CancelButtonBase_OnClick"/>
+                <Button Grid.Column="3" Width="80" Content="{x:Static resources:Resource.CNT_CANCEL}" IsCancel="True"/>
             </Grid>
         </Border>
 

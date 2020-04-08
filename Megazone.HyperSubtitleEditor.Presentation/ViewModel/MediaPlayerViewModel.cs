@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Megazone.Core.Extension;
+using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.VideoTrack;
@@ -38,8 +40,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private decimal _naturalDuration;
 
         private ICommand _playStateChangedCommand;
-
         private ICommand _positionChangedCommand;
+        private ICommand _changeWithOriginalSourceCommand;
         private IEnumerable<VideoResolutionInfo> _resolutions;
 
         private int _seekCount;
@@ -47,15 +49,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
         private MediaHeaderData _videoData;
-        private SignInViewModel _signinViewModel;
+        private readonly SignInViewModel _signinViewModel;
 
         private IEnumerable<MediaKind> _videoTypes;
 
         public MediaPlayerViewModel(Action<decimal> onMediaPositionChanged,
             Action<MediaPlayStates> onMediaPlayStateChanged)
         {
-            //_signinViewModel = signInViewModel;
-
             _onMediaPositionChanged = onMediaPositionChanged;
             _onMediaPlayStateChanged = onMediaPlayStateChanged;
             _logger = Bootstrapper.Container.Resolve<ILogger>();
@@ -120,6 +120,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 return _positionChangedCommand =
                     _positionChangedCommand ?? new RelayCommand<decimal>(OnPositionChanged);
+            }
+        }
+
+        public ICommand ChangeWithOriginalSourceCommand
+        {
+            get
+            {
+                return _changeWithOriginalSourceCommand =
+                    _changeWithOriginalSourceCommand ?? new RelayCommand(OnChangeWithOriginalSource);
             }
         }
 
@@ -192,6 +201,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             private set;
         }
 
+        private bool _isPreview;
+
+        public bool  IsPreview
+        {
+            get => _isPreview;
+            set => Set(ref _isPreview, value);
+        }
+
         private McmWorkContext WorkContext { get; set; }
 
         /// <summary>
@@ -212,6 +229,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _onMediaPositionChanged?.Invoke(value);
         }
 
+        private void OnChangeWithOriginalSource()
+        {
+            var videoMediaUrl =  WorkContext?.VideoMediaUrl;
+
+            InitMedia(WorkContext, false);
+        }
+
         private void SetMediaCommand(object parameter)
         {
             if (!(parameter is IDataObject dataObject)) return;
@@ -230,6 +254,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             WorkContext = mcmWorkContext;
             IsLocalFile = isLocalFile;
+            
+            var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+
+            IsPreview = workBar.VideoItem == null;
 
             VideoResolutionsByType = WorkContext.VideoResolutionsByType;
             VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;
@@ -245,6 +273,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void InitMedia(string filePath, bool isLocal)
         {
             IsLocalFile = isLocal;
+            IsPreview = true;
 
             var videoHeaderData = GetVideoHeaderData(filePath);
 
