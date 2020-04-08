@@ -38,18 +38,19 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Background="#f9fafb" Panel.ZIndex="999">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="56" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="10" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid HorizontalAlignment="Left" Margin="17, 12">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17, 12">
                     <Button Command="{StaticResource CloseLeftSideMenuCommand}" Margin="0,0,0,0"
                             Style="{StaticResource Style_IconMenuButton}">
                         <Grid>
@@ -58,9 +59,23 @@
                                 Width="30" Height="30" />
                         </Grid>
                     </Button>
-                </Grid>
+                    <TextBlock Text="{x:Static resources:Resource.CNT_OPEN}" 
+                               VerticalAlignment="Center"
+                               Margin="17,0,0,0"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Foreground="#666666"/>
+                </StackPanel>
+                <Border Grid.Row="1">
+                    <Rectangle 
+                        Width="135" 
+                        Height="1" 
+                        Fill="#a6adba"
+                        Margin="50,0,0,0"
+                        HorizontalAlignment="Left"/>
+                </Border>
 
-                <Border Grid.Row="2">
+                <Border Grid.Row="3">
                     <StackPanel Style="{x:Null}">
                         <StackPanel.Resources>
                             <Style x:Key="FocusVisual">
@@ -157,7 +172,7 @@
                             </Style>
 
                             <Style TargetType="RadioButton" BasedOn="{StaticResource Style_MenuRadioButton}">
-                                <Setter Property="Width" Value="120" />
+                                <Setter Property="Width" Value="200" />
                                 <Setter Property="Height" Value="39" />
                                 <Setter Property="FontSize" Value="11.5" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -206,14 +221,16 @@
                                     <RemoveStoryboard BeginStoryboardName="McmBoardOpenStoryboard" />
                                 </EventTrigger>
                             </RadioButton.Triggers>
-                            <Grid Width="120">
+                            <Grid Width="200">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="60" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="25" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1"
                                            FontSize="11"
+                                           Foreground="#222222"
                                            Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
@@ -226,7 +243,8 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="17" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="AUto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="25" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_SHARE_FILE}" />
                                 <Image Grid.Column="2"
@@ -275,14 +293,16 @@
                                     <RemoveStoryboard BeginStoryboardName="RecentlyFileListOpenStoryboard" />
                                 </EventTrigger>
                             </RadioButton.Triggers>
-                            <Grid Width="120">
+                            <Grid Width="200">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="60" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="25" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1"
                                            FontSize="11"
+                                           Foreground="#222222"
                                            Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
@@ -377,3 +397,4 @@
         <Border BorderBrush="#dfe3ee" BorderThickness="1" />
     </Grid>
 </UserControl>
+    

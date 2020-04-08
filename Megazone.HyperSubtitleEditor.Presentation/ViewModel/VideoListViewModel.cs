@@ -415,6 +415,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
 
             OnLoadAction?.Invoke();
+            IsConfirmButtonVisible = false;
             _isLoading = true;
             await SearchAsync(Keyword, 0);
             _isLoading = false;
