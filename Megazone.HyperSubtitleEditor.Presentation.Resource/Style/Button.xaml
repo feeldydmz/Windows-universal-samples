@@ -509,7 +509,7 @@
                             <Setter Property="Opacity" Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#10000000" />
+                            <!--<Setter Property="Background" Value="#10000000" />-->
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.3" />

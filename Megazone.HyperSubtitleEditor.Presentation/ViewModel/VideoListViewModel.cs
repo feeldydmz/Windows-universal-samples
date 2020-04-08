@@ -475,6 +475,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Back()
         {
+            IsConfirmButtonVisible = false;
             SelectedVideoItem?.Update();
             SelectedVideoItem?.Initialize();
             SelectedVideoItem = null;
@@ -483,7 +484,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (IsBusy)
                 _cancellationTokenSource.Cancel();
             IsNextButtonVisible = true;
-            IsConfirmButtonVisible = false;
         }
 
         private async void Enter(string keyword)
