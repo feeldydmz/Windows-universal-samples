@@ -85,7 +85,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private VideoItemViewModel _videoItem;
         private WorkBarViewModel _workBarViewModel;
-        private VideoStatusBarViewModel _videoStatusBar;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -95,8 +94,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IBrowser browser,
             ICloudMediaService cloudMediaService,
             RecentlyLoader recentlyLoader,
-            WorkBarViewModel workBarViewModel,
-            VideoStatusBarViewModel videoStatusBar)
+            WorkBarViewModel workBarViewModel)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -107,7 +105,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator = subtitleListItemValidator;
             _recentlyLoader = recentlyLoader;
             _workBarViewModel = workBarViewModel;
-            _videoStatusBar = videoStatusBar;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext();

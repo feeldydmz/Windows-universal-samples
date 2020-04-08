@@ -1420,13 +1420,9 @@
                     <mz:DropToCommandBehavior Command="{Binding DropToSetMediaCommand}" />
                 </i:Interaction.Behaviors>
                 <Grid.RowDefinitions>
-                    <!--<RowDefinition Height="40" />-->
                     <RowDefinition Height="{DynamicResource GridLength_HeaderAreaHeight}" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <!--<Grid>
-                    <views:VideoStatusBar Panel.ZIndex="999"/>
-                </Grid>-->
                 <local:MediaPlayerView Grid.Row="0"
                                        Grid.RowSpan="2"
                                        HasAudioOnly="{Binding HasAudioOnly}"

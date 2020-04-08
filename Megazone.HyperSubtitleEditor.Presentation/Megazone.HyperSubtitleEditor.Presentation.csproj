@@ -292,7 +292,6 @@
     <Compile Include="ViewModel\Strategy\ISettingSaveStrategy.cs" />
     <Compile Include="ViewModel\SubtitleParserProxy.cs" />
     <Compile Include="ViewModel\VideoListViewModel.cs" />
-    <Compile Include="ViewModel\VideoStatusBarViewModel.cs" />
     <Compile Include="ViewModel\ViewModes.cs" />
     <Compile Include="ViewModel\WorkBarViewModel.cs" />
     <Compile Include="View\AddAndEditSubtitleView.xaml.cs">
@@ -408,9 +407,6 @@
     </Compile>
     <Compile Include="View\VideoListView.xaml.cs">
       <DependentUpon>VideoListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\VideoStatusBarView.xaml.cs">
-      <DependentUpon>VideoStatusBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WorkBarView.xaml.cs">
       <DependentUpon>WorkBarView.xaml</DependentUpon>
@@ -664,10 +660,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\VideoListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\VideoStatusBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
