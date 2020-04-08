@@ -1205,7 +1205,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // video영상을 가져온다.
             if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
-                MediaPlayer.InitMedia(WorkContext, false);
+                MediaPlayer.InitMedia(WorkContext, true);
             //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
 
             var texts = await LoadCaptionTextListAsync();

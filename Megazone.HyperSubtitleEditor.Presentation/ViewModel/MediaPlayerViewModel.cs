@@ -210,6 +210,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private McmWorkContext WorkContext { get; set; }
+        private McmWorkContext OriginWorkContext { get; set; }
 
         /// <summary>
         ///     Binding Mode: One way to source
@@ -231,9 +232,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnChangeWithOriginalSource()
         {
-            var videoMediaUrl =  WorkContext?.VideoMediaUrl;
+            var videoMediaUrl = OriginWorkContext?.VideoMediaUrl;
 
-            InitMedia(WorkContext, false);
+            InitMedia(OriginWorkContext, false);
         }
 
         private void SetMediaCommand(object parameter)
@@ -250,14 +251,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public void InitMedia(McmWorkContext mcmWorkContext, bool isLocalFile)
+        public void InitMedia(McmWorkContext mcmWorkContext, bool isVideoContainer)
         {
             WorkContext = mcmWorkContext;
-            IsLocalFile = isLocalFile;
-            
-            var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            IsLocalFile = false;
 
-            IsPreview = workBar.VideoItem == null;
+            IsPreview = !isVideoContainer;
+            if (isVideoContainer)
+            {
+                OriginWorkContext = WorkContext;
+            }
 
             VideoResolutionsByType = WorkContext.VideoResolutionsByType;
             VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;

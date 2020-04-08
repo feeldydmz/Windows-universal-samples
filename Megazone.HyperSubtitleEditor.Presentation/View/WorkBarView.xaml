@@ -41,11 +41,11 @@
         <Grid Margin="14, 0, 0, 0">
             <Grid
                 Visibility="{Binding Path=HasWorkData, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                <TextBlock Text="{x:Static resources:Resource.MSG_LOADING}"
+                <!--<TextBlock Text="{x:Static resources:Resource.MSG_LOADING}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left"
                            TextAlignment="Center"
-                           Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                           Visibility="{Binding Path=IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
                 <TextBlock Text="{x:Static resources:Resource.CNT_CREATE_CAPTION_ASSET_INFO}" 
                            VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center"/>
             </Grid>
