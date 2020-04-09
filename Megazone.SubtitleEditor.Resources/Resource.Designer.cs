@@ -1805,7 +1805,8 @@ namespace Megazone.SubtitleEditor.Resources {
         
         /// <summary>
         ///   No registered tracks.
-        ///You can add one by dragging a file.과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///You can add one by dragging a file.
+        ///- or -과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_DRAG_OPEN_CAPTION {
             get {
@@ -1815,7 +1816,8 @@ namespace Megazone.SubtitleEditor.Resources {
         
         /// <summary>
         ///   No Preview video.
-        ///You can load one by dragging a file.과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///You can load one by dragging a file.
+        ///- or -과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_DRAG_OPEN_VIDEO {
             get {

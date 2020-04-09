@@ -500,11 +500,13 @@
   </data>
   <data name="MSG_DRAG_OPEN_CAPTION" xml:space="preserve">
     <value>등록된 캡션이 없습니다.
-파일을 드래그하여 추가할 수 있습니다.</value>
+파일을 드래그하여 추가할 수 있습니다.
+- or -</value>
   </data>
   <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
     <value>미리보기 비디오가 없습니다.
-파일을 드래그하여 불러올 수 있습니다.</value>
+파일을 드래그하여 불러올 수 있습니다.
+- or -</value>
   </data>
   <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
     <value>다음 캡션과 중복 노출됩니다</value>

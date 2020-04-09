@@ -503,11 +503,13 @@
   </data>
   <data name="MSG_DRAG_OPEN_CAPTION" xml:space="preserve">
     <value>No registered tracks.
-You can add one by dragging a file.</value>
+You can add one by dragging a file.
+- or -</value>
   </data>
   <data name="MSG_DRAG_OPEN_VIDEO" xml:space="preserve">
     <value>No Preview video.
-You can load one by dragging a file.</value>
+You can load one by dragging a file.
+- or -</value>
   </data>
   <data name="MSG_DUPLICATE_TO_THE_NEXT_CAPTION" xml:space="preserve">
     <value>Duplicate subtitle with next one.</value>

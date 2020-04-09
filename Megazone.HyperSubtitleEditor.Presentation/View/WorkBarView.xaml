@@ -100,9 +100,16 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_title.png"
-                           Width="21" Height="15"
-                           Visibility="{Binding VideoItem, Converter={StaticResource NullToVisibleNCollapsedConverter}}"/>
+                    <Grid Grid.Column="0" 
+                          Visibility="{Binding VideoItem, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
+                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_title.png"
+                               Width="21" Height="15"
+                               Visibility="{Binding Path=CaptionAssetItem.Id, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}"/>
+                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_local_title.png"
+                               Width="21" Height="15"
+                               Visibility="{Binding Path=CaptionAssetItem.Id, Converter={StaticResource NullToVisibleNCollapsedConverter}}"/>
+                    </Grid>
+                    
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0" FontWeight="Bold"
                                MaxWidth="470"
                                DataContext="{Binding Path=CaptionAssetItem}"
