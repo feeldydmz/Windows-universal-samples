@@ -586,8 +586,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             catch (Exception e)
             {
+                IsLoadingProjectPage = false;
+                IsEmptyProjectPage = true;
                 _logger.Error.Write(e);
-                throw;
+                //throw;
             }
         }
 
