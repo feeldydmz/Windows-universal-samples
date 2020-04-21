@@ -136,7 +136,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     CaptionKind.Subtitle,
                     CaptionKind.Caption,
-                    CaptionKind.Chapter
+                    CaptionKind.Chapter,
+                    CaptionKind.Description,
+                    CaptionKind.Metadata
                 };
                 SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
 

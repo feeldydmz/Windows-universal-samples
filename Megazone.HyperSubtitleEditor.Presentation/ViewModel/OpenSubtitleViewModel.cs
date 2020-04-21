@@ -89,18 +89,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenSubtitleFile()
         {
-            if (string.IsNullOrEmpty(FilePath))
-            {
-                string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
-                FilePath = _fileManager.OpenFile(
-                    "subtitle files (*.vtt;*.srt;*.smi)|*.vtt;*.srt;*.smi",
-                    initialPath);
+            string initialPath = ConfigHolder.Current.General.RecentlySubtitleOpenPath;
+            FilePath = _fileManager.OpenFile(
+                "subtitle files (*.vtt;*.srt;*.smi)|*.vtt;*.srt;*.smi",
+                initialPath);
 
-                if (!string.IsNullOrEmpty(FilePath))
-                    ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(FilePath);
+            if (!string.IsNullOrEmpty(FilePath))
+                ConfigHolder.Current.General.RecentlySubtitleOpenPath = Path.GetDirectoryName(FilePath);
 
-                SubtitleFormat = SubtitleViewModel.GetSubTitleFormatKindByFileName(FilePath);
-            }
+            SubtitleFormat = SubtitleViewModel.GetSubTitleFormatKindByFileName(FilePath);
 
             Open(FilePath);
         }

@@ -123,8 +123,9 @@
                     <Button Grid.Column="3" Style="{StaticResource Style_IconMenuButton}" VerticalAlignment="Center"
                             Command="{Binding Path=OpenAssetEditorCommand}"
                             Margin="0,-2,0,-2">
-                        <Grid Visibility="{Binding Path=VideoItem, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
+                        <Grid >
                             <Image
+
                                 Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_edit_nor.png"
                                 Width="15" Height="15" />
                         </Grid>

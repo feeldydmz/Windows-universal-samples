@@ -8,6 +8,31 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
+    public class MetadataCaptionAssetInfo : ViewModelBase
+    {
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+
+        private string _id;
+
+        public string Id
+        {
+            get => _id;
+            set => Set(ref _id, value);
+        }
+
+        public MetadataCaptionAssetInfo(string name, string id)
+        {
+            _name = name;
+            _id = id;
+        }
+    }
+
     [Inject(Scope = LifetimeScope.Singleton)]
     public class MetadataViewModel : ViewModelBase
     {
@@ -20,15 +45,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _duration;
         private bool _isOpenVideoInfoPopup;
         private string _jobId;
+        private string _videoId;
         private string _mediaType;
         private string _name;
 
         private ICommand _openVideoInfoPopupCommand;
-        private List<string> _renditions;
+        private List<MetadataCaptionAssetInfo> _captions;
 
         private string _status;
         private string _tags;
-
+        
         internal MetadataViewModel(WorkBarViewModel workBarViewModel)
         {
             _workBarViewModel = workBarViewModel;
@@ -41,8 +67,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _categories = "None";
             _attributions = "None";
             _tags = "None";
-
-            Renditions = new List<string>();
         }
 
         public bool IsOpenVideoInfoPopup
@@ -94,6 +118,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _name, value);
         }
 
+        public string VideoId
+        {
+            get => _videoId;
+            set => Set(ref _videoId, value);
+        }
+
         public string JobId
         {
             get => _jobId;
@@ -118,10 +148,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _tags, value);
         }
 
-        public List<string> Renditions
+        public List<MetadataCaptionAssetInfo> Captions
         {
-            get => _renditions;
-            set => Set(ref _renditions, value);
+            get => _captions;
+            set => Set(ref _captions, value);
         }
 
         public void Open()
@@ -129,8 +159,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             Status = _workBarViewModel.VideoItem.Status ?? "None";
 
             MediaType = "";
-
-            Renditions?.Clear();
 
             if (_workBarViewModel.VideoItem?.Source?.Sources != null)
                 foreach (var renditionAsset in _workBarViewModel.VideoItem.Source.Sources)
@@ -143,21 +171,43 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MediaType = "None";
 
             Duration = _workBarViewModel.VideoItem.Duration.ToString(@"hh\:mm\:ss");
-            JobId = _workBarViewModel.VideoItem.Id ?? "None";
+            JobId = _workBarViewModel.VideoItem.Source?.Job?.Id ?? "None";
+            VideoId = _workBarViewModel.VideoItem.Id?? "None";
             Name = _workBarViewModel.VideoItem.Name ?? "None";
 
-            if (_workBarViewModel?.VideoItem?.Source?.Sources != null)
-                foreach (var renditionAsset in _workBarViewModel.VideoItem.Source.Sources)
-                foreach (var renditionAssetElement in renditionAsset.Elements)
-                    if (renditionAssetElement.VideoSetting != null)
-                    {
-                        var videoSetting = renditionAssetElement.VideoSetting;
-                        var bitRateStr = ConvertBitRateToString(videoSetting.Bitrate);
-                        var rendition =
-                            $"{videoSetting.Codec}, {videoSetting.Width}x{videoSetting.Height}, {videoSetting.RatingControlMode}, {bitRateStr}";
+            //if (_workBarViewModel?.VideoItem?.Source?.Sources != null)
+            //    foreach (var renditionAsset in _workBarViewModel.VideoItem.Source.Sources)
+            //    foreach (var renditionAssetElement in renditionAsset.Elements)
+            //        if (renditionAssetElement.VideoSetting != null)
+            //        {
+            //            var videoSetting = renditionAssetElement.VideoSetting;
+            //            var bitRateStr = ConvertBitRateToString(videoSetting.Bitrate);
+            //            var rendition =
+            //                $"{videoSetting.Codec}, {videoSetting.Width}x{videoSetting.Height}, {videoSetting.RatingControlMode}, {bitRateStr}";
 
-                        Renditions.Add(rendition);
-                    }
+            //            Captions.Add(rendition);
+            //        }
+
+            List<MetadataCaptionAssetInfo> captions= new List<MetadataCaptionAssetInfo>();
+
+            if (_workBarViewModel?.VideoItem?.CaptionAssetItems != null)
+            {
+                foreach (var captionAssetItem in _workBarViewModel?.VideoItem?.CaptionAssetItems)
+                {
+                    //var caption = $"{captionAssetItem.Name} ({captionAssetItem.Id})";
+
+                    captions.Add(new MetadataCaptionAssetInfo(captionAssetItem.Name, captionAssetItem.Id));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(_workBarViewModel?.CaptionAssetItem?.Id))
+            {
+                //var caption = $"{_workBarViewModel?.CaptionAssetItem.Name} ({_workBarViewModel?.CaptionAssetItem.Id})";
+
+                captions.Add(new MetadataCaptionAssetInfo(_workBarViewModel?.CaptionAssetItem.Name, _workBarViewModel?.CaptionAssetItem.Id));
+            }
+
+            Captions = captions;
 
             IsOpenVideoInfoPopup = true;
         }

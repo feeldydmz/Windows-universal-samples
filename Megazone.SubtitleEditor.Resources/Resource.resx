@@ -736,6 +736,9 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="CNT_VIDEO_META_RENDITIONS" xml:space="preserve">
     <value>Renditions</value>
   </data>
+  <data name="CNT_VIDEO_META_CAPTIONS" xml:space="preserve">
+    <value>Captions</value>
+  </data>
   <data name="CNT_VIDEO_META_STATUS" xml:space="preserve">
     <value>Status</value>
   </data>

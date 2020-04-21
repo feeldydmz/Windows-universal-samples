@@ -609,45 +609,6 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <!--<Border x:Name="MetaDataBorder" 
-                        Grid.Row="0" Grid.RowSpan="2"
-                        Width="300"
-                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.IsOpenVideoInfoPopup, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <views:MetadataView/>
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <Trigger Property="Visibility" Value="Visible">
-
-                                </Trigger>
-                                <DataTrigger Binding="{Binding Path=MetaData.IsOpenVideoInfoPopup, Source={StaticResource SubtitleViewModelLocator}}"
-                                             Value="True">
-
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard Name="OpenStoryboard">
-                                            <Storyboard>
-                                                <DoubleAnimation
-                                                Storyboard.Target="{Binding ElementName=MetaDataBorder}"
-                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                Duration="0:0:10" From="-300" To="0"
-                                                AccelerationRatio="0.3"
-                                                DecelerationRatio="0.7"
-                                                FillBehavior="HoldEnd" />
-                                                --><!--<DoubleAnimation
-                                                Storyboard.Target="{Binding ElementName=MetaDataBorder}"
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:1" From="0.3" To="1"
-                                                FillBehavior="HoldEnd" />--><!--
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>-->
-
-
                 <!--탭 목록-->
                 <Border BorderBrush="#FFa6adba" BorderThickness="0,1" Background="#FFf4f5f7" />
                 <Border Grid.Row="0" Margin="0,-4,0,0">

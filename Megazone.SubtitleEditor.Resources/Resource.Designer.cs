@@ -1582,6 +1582,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Captions과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_VIDEO_META_CAPTIONS {
+            get {
+                return ResourceManager.GetString("CNT_VIDEO_META_CAPTIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Categories과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_VIDEO_META_CATEGORIES {

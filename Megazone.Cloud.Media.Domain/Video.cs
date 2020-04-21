@@ -5,11 +5,16 @@ using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.Cloud.Media.Domain
 {
+    public class JobMe
+    {
+        public string Id { get; set; }
+    }
+
     public class Video
     {
         public Video(string id, string name, string description, string status, long duration, string createdAt,
             int version, string assetsFirstImageUrl, Poster primaryPoster, IEnumerable<RenditionAsset> origins, IEnumerable<RenditionAsset> sources,
-            IEnumerable<CaptionAsset> captions, IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters, IEnumerable<string> encryptions)
+            IEnumerable<CaptionAsset> captions, IEnumerable<ThumbnailAsset> thumbnails, IEnumerable<Poster> posters, IEnumerable<string> encryptions, JobMe job = null)
         {
             Id = id;
             Name = name;
@@ -26,6 +31,7 @@ namespace Megazone.Cloud.Media.Domain
             Thumbnails = thumbnails;
             Posters = posters;
             Encryptions = encryptions;
+            Job = job;
         }
 
         public string Id { get; }
@@ -43,5 +49,7 @@ namespace Megazone.Cloud.Media.Domain
         public IEnumerable<ThumbnailAsset> Thumbnails { get; }
         public IEnumerable<Poster> Posters { get; }
         public IEnumerable<string> Encryptions { get; }
+
+        public JobMe Job { get; set; }
     }
 }
