@@ -23,11 +23,8 @@ namespace Megazone.Cloud.Media.Service
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.stg.continuum.co.kr"; // stage
 #elif DEBUG
-        private const string CLOUD_MEDIA_ENDPOINT =
-            "https://api.cloudplex.dev.megazone.io"; // develop version
-
-        private const string UPLOAD_HOST_ENDPOINT =
-            "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
+        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
+        private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.stg.continuum.co.kr"; // stage
 #else
         //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         //private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production

@@ -319,9 +319,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     if (result == MessageBoxResult.Cancel)
                         return;
                 }
-
-
-                MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
             }
 
             // workingProject 값이 있다는 것은 프로젝트 재선택이라는 뜻
@@ -343,6 +340,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                    string.IsNullOrEmpty(_signInViewModel.SelectedStage?.Id);
 
             await _languageLoader.LoadAsync();
+
+            MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
         }
 
         private void OnStagePerPageNumberChanged(int obj)

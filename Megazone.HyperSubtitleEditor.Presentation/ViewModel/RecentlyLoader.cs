@@ -6,6 +6,7 @@ using System.Linq;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Newtonsoft.Json;
 
@@ -25,13 +26,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _signInViewModel = signInViewModel;
         }
 
-        public IEnumerable<RecentlyItem> GetRecentlyItems()
+        public IEnumerable<RecentlyItem> GetRecentlyItems(bool isOnline = true)
         {
             var stageId = _signInViewModel.SelectedStage?.Id;
             var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
             var reuslt = _recentlyItems
-                .Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId))
+                .Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId) && recently.IsOnLine.Equals(isOnline)) 
                 .OrderByDescending(recently => recently.CreatedTime);
 
             Debug.WriteLine("---GetRecentlyItems---");
@@ -109,6 +110,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var jsonString = JsonConvert.SerializeObject(_recentlyItems);
                 File.WriteAllText(GetSavePath(), jsonString);
+
+                MessageCenter.Instance.Send(new Message.RecentlyLoader.ChangeItemMessage(this));
             }
             catch (Exception e)
             {

@@ -12,6 +12,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:converter="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Converter"
              xmlns:views="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:data="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
              mc:Ignorable="d" Background="White"
              d:DesignHeight="600" d:DesignWidth="900"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Subtitle}">
@@ -383,12 +384,29 @@
                         </i:Interaction.Behaviors>
                         <Button.ContextMenu>
                             <ContextMenu>
-                            <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_CAPTION}"
-                                      Command="{StaticResource ImportSubtitleCommand}" 
-                                      CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
-                            <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
-                                      Command="{StaticResource ImportSubtitleCommand}"
-                                      CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
+                                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_CAPTION}"
+                                          Command="{StaticResource ImportSubtitleCommand}" 
+                                          CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
+                                <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
+                                          Command="{StaticResource ImportSubtitleCommand}"
+                                          CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
+                                <!--<MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}">
+                                   
+                                </MenuItem>-->
+                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="최신 파일">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="{x:Type MenuItem}">
+                                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
+                                            <Setter Property="CommandParameter" Value="{Binding}" />
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                    <MenuItem.ItemTemplate>
+                                        <HierarchicalDataTemplate DataType="{x:Type data:RecentlyItem}">
+                                            <TextBlock Foreground="Black"
+                                                Text="{Binding FirstName}"/>
+                                        </HierarchicalDataTemplate>
+                                    </MenuItem.ItemTemplate>
+                                </MenuItem>
                             </ContextMenu>
                         </Button.ContextMenu>
                         <Grid>

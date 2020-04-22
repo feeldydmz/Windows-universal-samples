@@ -50,6 +50,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly FileManager _fileManager;
         private readonly ILogger _logger;
         private readonly RecentlyLoader _recentlyLoader;
+        private List<RecentlyItem> _recentlyItems;
 
         private readonly TimeSpan _minimumDuration = TimeSpan.FromMilliseconds(1000);
         private readonly IList<Caption> _removedCaptions = new List<Caption>();
@@ -79,7 +80,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _syncMediaPositionCommand;
         private IList<ISubtitleTabItemViewModel> _tabs;
 
-        private ICommand _importSubtitleFileCommand;
+        
+        private ICommand _openRecentlyCommand;
 
         private VideoItemViewModel _videoItem;
         private WorkBarViewModel _workBarViewModel;
@@ -203,6 +205,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _goToSelectedRowCommand ?? new RelayCommand(GoToSelectedRow, CanGoToSelectedRow);
             }
         }
+
+        public ICommand OpenRecentlyCommand
+        {
+            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
+        }
         
         public SubtitleTabItemViewModel SelectedTab
         {
@@ -220,6 +227,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _videoItem;
             set => Set(ref _videoItem, value);
+        }
+
+        public List<RecentlyItem> RecentlyItems
+        {
+            get => _recentlyItems; 
+            set => Set(ref _recentlyItems, value);
         }
 
         public bool CheckWorkInProgress()
@@ -480,6 +493,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
+
+            MessageCenter.Instance.Regist<Message.RecentlyLoader.ChangeItemMessage>(OnChangeRecentlyItem);
         }
 
         
@@ -487,6 +502,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnProjectChanged(ProjectSelect.ProjectChangeMessage message)
         {
             CleanUpSubtitle();
+
+            RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
             //var removeTabs = Tabs.ToList();
 
             //if (removeTabs != null)
@@ -550,6 +567,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
+
+            MessageCenter.Instance.Unregist<Message.RecentlyLoader.ChangeItemMessage>(OnChangeRecentlyItem);
         }
 
         public void OnAutoAdjustEndtimesRequested(Message.SubtitleEditor.AutoAdjustEndtimesMessage message)
@@ -687,6 +706,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             InitializeTabs();
             InitializeEncodingItems();
+
+            _recentlyLoader.Load();
         }
 
         private void OnSettingsSaved(Message.SubtitleEditor.SettingsSavedMessage message)
@@ -1594,6 +1615,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        private void OnChangeRecentlyItem(Message.RecentlyLoader.ChangeItemMessage message)
+        {
+            RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
+        }
+
         private void CleanUpSubtitle()
         {
             // 초기화 코드
@@ -1732,6 +1758,35 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 ListBoxScroll?.ScrollIntoView(row, true);
                 ListBoxScroll?.Focus();
             }
+        }
+
+        private void OpenRecently(RecentlyItem recentlyItem)
+        {
+            //var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            if (Tabs?.Any() ?? false)
+            {
+                if (Tabs.Any(tab => tab.CheckDirty()))
+                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
+                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+                            MessageBoxButton.OKCancel,
+                            Application.Current.MainWindow)) !=
+                        MessageBoxResult.OK)
+                        return;
+
+                var removeTabs = Tabs.ToList();
+                foreach (var tab in removeTabs)
+                {
+                    CloseTab(tab as SubtitleTabItemViewModel);
+                }
+            }
+
+            // 선택된 video 정보를 메인 
+            //var video = recentlyItem.Video;
+            //var asset = recentlyItem.CaptionAsset;
+            var localFileFullPath = recentlyItem.LocalFileFullPath;
+            //var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
+
+            ImportSubtitleFile(localFileFullPath);
         }
     }
 }

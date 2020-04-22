@@ -124,28 +124,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 선택된 video 정보를 메인 
             var video = recentlyItem.Video;
             var asset = recentlyItem.CaptionAsset;
-            var localFileFullPath = recentlyItem.LocalFileFullPath;
+            //var localFileFullPath = recentlyItem.LocalFileFullPath;
             var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
 
-            
-            if (localFileFullPath.IsNullOrEmpty())
-            {
-                MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
-                    new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
-            }
-            else
-            {
-                //var fileExtension = Path.GetExtension(localFileFullPath);
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
+                new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
 
-                var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            //if (localFileFullPath.IsNullOrEmpty())
+            //{
+            //    MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
+            //        new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
+            //}
+            //else
+            //{
+            //    var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
-                subtitleViewModel.ImportSubtitleFile(localFileFullPath);
-
-                //if (fileExtension == ".xlsx")
-                //    _browser.Main.ShowImportExcelDialog(localFileFullPath);
-                //else
-                //    _browser.Main.ShowOpenSubtitleDialog(localFileFullPath);
-            }
+            //    subtitleViewModel.ImportSubtitleFile(localFileFullPath);
+            //}
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
         }

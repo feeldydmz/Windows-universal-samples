@@ -234,6 +234,7 @@
     <Compile Include="Message\Parameter\CaptionOpenMessageParameter.cs" />
     <Compile Include="Message\Parameter\DeployRequestedMessageParameter.cs" />
     <Compile Include="Message\ProjectSelect.cs" />
+    <Compile Include="Message\RecentlyLoader.cs" />
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
     <Compile Include="Message\SubtitleEditor.cs" />
