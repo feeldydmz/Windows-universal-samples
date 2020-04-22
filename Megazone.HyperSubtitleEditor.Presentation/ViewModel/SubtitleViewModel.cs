@@ -1598,19 +1598,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
-
-                //if (CheckWorkInProgress()) { 
-
-                //    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                //            Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
-                //            MessageBoxButton.OKCancel,
-                //            Application.Current.MainWindow,
-                //            TextAlignment.Center)) == MessageBoxResult.Cancel)
-                //    {
-                //        return;
-                //    }
-                //}
-
                 CleanUpSubtitle();
             }
         }
@@ -1629,19 +1616,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Tabs.Remove(tab);
                 tab.Dispose();
-
-                //if (tab.IsDeployedOnce || tab.Caption != null)
-                //    _removedCaptions.Add(tab.Caption);
-                //if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
-                //var lastTab = Tabs.LastOrDefault();
-                //if (lastTab != null)
-                //    lastTab.IsSelected = true;
-                //else
-
             }
 
             SelectedTab = null;
-            //CloseTab(tab as SubtitleTabItemViewModel);
 
             if (MediaPlayer.MediaSource != null)
                 MediaPlayer.RemoveMediaItem();

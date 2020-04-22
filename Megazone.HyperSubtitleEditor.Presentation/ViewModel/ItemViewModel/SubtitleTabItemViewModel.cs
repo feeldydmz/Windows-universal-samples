@@ -202,7 +202,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                                     _originalData.CountryCode != CountryCode;
 
             var hasDirtyRow = Rows != null && Rows.Any(r => r.IsDirty());
-            IsDirty = isBaseInfoChanged || _isAddedFromLocal || _isRowCollectionChanged || hasDirtyRow;
+            IsDirty = isBaseInfoChanged || _isRowCollectionChanged || hasDirtyRow;
             return IsDirty;
         }
 
@@ -363,6 +363,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public void AddDatasheet(IList<SubtitleItem> datasheet)
         {
             _datasheet = datasheet;
+        }
+
+        public void UpdateOriginData()
+        {
+            var dirtyRows = Rows?.Where(r => r.IsDirty());
+
+            if (dirtyRows != null)
+                foreach (var row in dirtyRows)
+                {
+                    row.UpdateOriginData();
+                }
         }
 
         private SubtitleItem PrepareSubtitleItemForNewRow(TimeSpan minDuration,

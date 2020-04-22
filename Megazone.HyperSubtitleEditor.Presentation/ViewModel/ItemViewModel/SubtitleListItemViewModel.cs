@@ -188,6 +188,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _originalDisplayText = _displayText;
         }
 
+        public void UpdateOriginData()
+        {
+            OriginalData.StartTime = StartTime;
+            OriginalData.EndTime = EndTime;
+            OriginalData.Texts = Texts;
+
+            AnalyzeText(Duration, Texts);
+        }
+
         public void ResetData()
         {
             StartTime = OriginalData.StartTime;

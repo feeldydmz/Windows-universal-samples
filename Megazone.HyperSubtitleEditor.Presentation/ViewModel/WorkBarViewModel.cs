@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -324,8 +325,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             {
                                 var newCaption =
                                     captionAsset?.Elements?.FirstOrDefault(caption => caption.Label.Equals(tab.Name));
-                                if (newCaption != null)
-                                    ((SubtitleTabItemViewModel) tab).Caption = newCaption;
+                                if (newCaption != null) {
+                                    if (tab is SubtitleTabItemViewModel subtitleTabItemViewModel)
+                                    {
+                                        subtitleTabItemViewModel.Caption = newCaption;
+                                        subtitleTabItemViewModel.UpdateOriginData();
+                                    }
+                                }
                             }
 
                             var linkUrl = video != null ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
@@ -544,6 +550,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
 
                 var uploadData = GetTextBy(caption);
+
+                Debug.WriteLine("UpdateCaptionElementWithUploadAsync uploadData : ", uploadData);
+
                 var fileName = GetFileName(caption);
 
                 var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, false);
@@ -575,6 +584,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
                     new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName, isAttacheId),
                     CancellationToken.None);
+
+                Debug.WriteLine($"UploadCaptionFileAsync uploadPath : {uploadPath.UploadUrl}" );
 
                 ////업로드 로직
                 var isUploadSuccess = await _cloudMediaService.UploadCaptionFileAsync(

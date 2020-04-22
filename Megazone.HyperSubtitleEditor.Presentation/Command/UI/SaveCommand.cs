@@ -25,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public bool CanExecute(object parameter)
         {
-            return _subtitleViewModel.HasTab && _subtitleViewModel.Tabs.Any(tab => tab.CheckDirty());
+            return _subtitleViewModel.HasTab && _subtitleViewModel.Tabs.Any(tab => tab.CheckDirty() || tab.Caption == null);
         }
 
         public async void Execute(object parameter)

@@ -21,6 +21,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         int TextTotalLength { get; }
         bool IsDurationValid { get; set; }
         bool IsDirty();
+        void UpdateOriginData();
         void CheckIsNowPlaying(TimeSpan position);
         void ResetDirtyCheckFlags();
 
