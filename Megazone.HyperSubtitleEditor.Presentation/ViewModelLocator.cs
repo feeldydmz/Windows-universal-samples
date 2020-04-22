@@ -40,5 +40,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public OpenVideoViewModel OpenVideoAsset => Bootstrapper.Container.Resolve<OpenVideoViewModel>();
         public AssetEditorViewModel AssetEditor => Bootstrapper.Container.Resolve<AssetEditorViewModel>();
         public MetadataViewModel MetaData => Bootstrapper.Container.Resolve<MetadataViewModel>();
+
+        public CaptionElementsEditViewModel CaptionElementEdit =>
+            Bootstrapper.Container.Resolve<CaptionElementsEditViewModel>();
     }
 }

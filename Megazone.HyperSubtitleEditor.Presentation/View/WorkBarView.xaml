@@ -87,7 +87,7 @@
                     <Button Grid.Column="3"
                             Style="{StaticResource Style_MetadataButton}"
                             VerticalAlignment="Center"
-                            Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.OpenVideoInfoPopupCommand}"
+                            Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.OpenMetadataPopupCommand}"
                             Visibility="Visible" />
                     <TextBlock Grid.Column="4" Text=" > " FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,5,0"
                                Foreground="White" />

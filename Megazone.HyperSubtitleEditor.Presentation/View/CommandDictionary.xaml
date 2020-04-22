@@ -56,4 +56,5 @@
     <ui:CloseLeftSideMenuCommand x:Key="CloseLeftSideMenuCommand" />
     <ui:ResetWorkBarCommand x:Key="ResetWorkBarCommand" />
     <ui:ExportSubtitleCommand x:Key="ExportSubtitleCommand"/>
+    <ui:ShowCaptionElementsEditViewCommand x:Key="ShowCaptionElementsEditViewCommand"/>
 </ResourceDictionary>

@@ -632,8 +632,10 @@
                 <Border Grid.Row="0" Margin="0,-4,0,0">
                     <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition/>
+                            <!--탭추가버튼-->
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                             <ScrollViewer.Style>
@@ -788,7 +790,7 @@
                                                     <Setter Property="SnapsToDevicePixels" Value="True" />
                                                     <!--<Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />-->
                                                     <Setter Property="Width" Value="140" />
-                                                    <Setter Property="BorderBrush" Value="#FFa6adba" />
+                                                    <!--<Setter Property="BorderBrush" Value="#FFa6adba" />-->
                                                     <Setter Property="BorderThickness" Value="0,0,1,0" />
                                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                                     <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -999,7 +1001,10 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        <Button Grid.Column="1" ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
+                        
+                        <!--<StackPanel Grid.Column="1" Orientation="Horizontal" MinWidth="400">-->
+                       
+                            <Button Grid.Column="1" ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
                                 Command="{StaticResource AddTabCommand}" Margin="-1,4,-1,0">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
@@ -1044,9 +1049,75 @@
                                 <Rectangle Fill="#FF6a7482" Width="10" Height="2" />
                             </Grid>
                         </Button>
+
+                        
+                        <!--</StackPanel>-->
                     </Grid>
                 </Border>
+                <Grid >
+                    <!--<Border BorderBrush="red" BorderThickness="1"/>-->
+                    <ToggleButton ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
+                                Command="{StaticResource ShowCaptionElementsEditViewCommand}" 
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Right">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                                <Setter Property="UseLayoutRounding" Value="True" />
+                                <Setter Property="SnapsToDevicePixels" Value="True" />
+                                <Setter Property="FocusVisualStyle"
+                                            Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="BorderThickness" Value="1,1,1,0" />
+                                <Setter Property="BorderBrush" Value="#FFa6adba" />
+                                <Setter Property="Width" Value="28" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                                <!--<ContentPresenter
+                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                        Margin="{TemplateBinding Padding}" />-->
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <Grid x:Name="Container">
+                                                        <Image x:Name="CaptionElementEditCloseIcon"
+                                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit.png"
+                                                               Stretch="None" />
+                                                        <Image x:Name="CaptionElementEditIcon" Visibility="Hidden"
+                                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_close.png"
+                                                               Stretch="None" />
+                                                    </Grid>
+                                                </Grid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Opacity" Value="0.4" TargetName="Container" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Opacity" Value="0.7" TargetName="Container" />
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditCloseIcon" />
+                                                    <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditIcon" />
+                                                    <Setter Property="Background" Value="White"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditCloseIcon" />
+                                                    <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditIcon" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ToggleButton.Style>
+                        
+                    </ToggleButton>
+                </Grid>
 
+                
 
                 <ListView x:Name="SubtitleListView" Grid.Row="1"
                           Margin="0,4,0,0" BorderThickness="0,1,0,0"
@@ -1292,16 +1363,20 @@
 
                 <!--아이템 없을때 드래그 가이드-->
                 <Border Grid.Row="1"
-                        Visibility="{Binding ElementName=TabList, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                        Visibility="Collapsed"
                         Background="White">
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="404*"/>
+                            <ColumnDefinition Width="43*"/>
+                        </Grid.ColumnDefinitions>
                         <i:Interaction.Behaviors>
                             <mz:DropToCommandBehavior Command="{Binding DropToAddSubtitleCommand}" />
                         </i:Interaction.Behaviors>
                         <Rectangle Margin="10"
                                    Stroke="#FFb8bbbd" RadiusX="3" RadiusY="3" StrokeThickness="1.5"
-                                   StrokeDashArray="1.5,1.5" Fill="#FFeff1f3" />
-                        <Grid Margin="20,20,20,15" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                   StrokeDashArray="1.5,1.5" Fill="#FFeff1f3" Grid.ColumnSpan="2" />
+                        <Grid Margin="44,64,2,59" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -1349,12 +1424,26 @@
                     </Grid>
                 </Border>
 
+                <Border x:Name="CaptionElementEdit"
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Margin="0,0,0,0"
+                        Width="300"
+                        HorizontalAlignment="Right"
+                        BorderBrush="#bec4ce"
+                        BorderThickness="1,0,1,1"
+                        Background="White"
+                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator},Path=CaptionElementEdit.IsShow, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+                    <views:CaptionElementsEditView/>
+                </Border>
+
+                <!--메타데이터 왼쪽 사이드 바-->
                 <Border x:Name="MetaDataBorder"
                         Grid.Row="0" Grid.RowSpan="2"
                         Margin="0,0,0,0"
                         Width="355"
                         HorizontalAlignment="Left"
-                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.IsOpenVideoInfoPopup, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}">
+                        Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=MetaData.IsShow, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}">
                     <Border.RenderTransform>
                         <TranslateTransform X="0" />
                     </Border.RenderTransform>
@@ -1363,7 +1452,7 @@
                         <Style TargetType="{x:Type Border}">
                             <Style.Triggers>
                                 <DataTrigger
-                                    Binding="{Binding Path=MetaData.IsOpenVideoInfoPopup, Source={StaticResource SubtitleViewModelLocator}}"
+                                    Binding="{Binding Path=MetaData.IsShow, Source={StaticResource SubtitleViewModelLocator}}"
                                     Value="True">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard Name="OPenMetadataStoryboard">

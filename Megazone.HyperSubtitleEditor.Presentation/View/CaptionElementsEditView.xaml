@@ -1,0 +1,184 @@
+﻿<UserControl x:Class="Megazone.HyperSubtitleEditor.Presentation.View.CaptionElementsEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mz="http://schemas.megazone.co.kr"
+             xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
+             xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionElementEdit}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <mz:DesignTimeResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!--에셋정보-->
+        <StackPanel Grid.Row="0">
+            <!--<Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>-->
+            <!--TODO: DataTemplateSelector 이용하는 방식으로-->
+            <!--<StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                <Image Style="{StaticResource Style_CaptionBadgeImage}" />
+                <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
+            </StackPanel>-->
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="21,21,0,0">
+                <Grid Width="50" Height="17" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Rectangle Fill="{StaticResource Brush_Badge_Caption_Color}"
+                               RadiusY="2" 
+                               RadiusX="2">
+                    </Rectangle>
+                    <TextBlock Text="CAPTION" 
+                               Foreground="White" 
+                               FontWeight="Bold" 
+                               FontSize="10"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,2,0,1"/>
+                </Grid>
+
+                <Ellipse Width="3" 
+                         Height="3"
+                         Fill="Black"
+                         Margin="124,-1,0,0"/>
+                <TextBlock Text="Kind - "
+                           Margin="6,0,0,0"/>
+                <TextBlock Text="Subtitle"
+                           Margin="0,0,0,0"
+                           FontWeight="Bold"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="21,6,0,0">
+                <TextBlock Text="{Binding Path=AssetName}"
+                           FontWeight="Bold"
+                           MaxWidth="160"
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding Path=AssetName}" />
+
+                <TextBlock Text="{Binding Path=AssetId, StringFormat='{}({0})'}"
+                           Margin="3,0"
+                           Foreground="#697382"
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding Path=AssetId, StringFormat='{}({0})'}"
+                           Visibility="{Binding Path=AssetId, Converter={StaticResource NullToCollapsedNVisibleConverter}}" />
+            </StackPanel>
+            
+            <Grid Grid.Column="1" VerticalAlignment="Center"
+                  HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+               
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                BorderBrush="#e0e2e6"
+                BorderThickness="1"
+                Margin="20,0,20,0"/>
+
+        <!--Caption Info-->
+        <Border Grid.Row="2">
+            <ScrollViewer>
+                <ItemsControl x:Name="listParent" ItemsSource="{Binding Path=CaptionItems}" Margin="20,0,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="itemViewModel:CaptionElementItemViewModel">
+                            <Border x:Name="itemBorder" Height="25" Margin="0,0,5,0">
+                                <Grid VerticalAlignment="Center" IsEnabled="{Binding Path=CanDeploy}">
+                                    <CheckBox IsChecked="{Binding Path=IsSelected}">
+                                        <Grid MinWidth="{Binding ActualWidth, ElementName=itemBorder}" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="10" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Path=Label}"
+                                                       HorizontalAlignment="Left" 
+                                                       ToolTip="{Binding Path=Label}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <!--<TextBlock Grid.Column="1"
+                                                           Text="{Binding Path=Language, StringFormat={}[{0}]}"
+                                                           HorizontalAlignment="Right"
+                                                           Foreground="{StaticResource Brush_PointColor}" />-->
+                                            <TextBlock Grid.Column="1"
+                                                   Foreground="{StaticResource Brush_PointColor}"
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,0,20,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}[{0}-{1}]">
+                                                        <MultiBinding.Bindings>
+                                                            <Binding Path="Language" />
+                                                            <Binding Path="Country" />
+                                                        </MultiBinding.Bindings>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                            <!--<Border Background="Transparent" Grid.Column="0"  Grid.ColumnSpan="2" Height="20"/>-->
+                                            <!--<Border Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Red" BorderThickness="2"/>-->
+                                        </Grid>
+                                        
+                                        <!--<Border Background="Transparent" Grid.ColumnSpan="2" Height="20"/>-->
+                                        <!--<ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+                                    </CheckBox>
+                                </Grid>
+                                
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter TargetName="itemBorder" Property="Background" Value="#f5f9ff" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <Border Grid.Row="3"
+                BorderBrush="#e0e2e6"
+                BorderThickness="1"/>
+        <Button Grid.Row="4" 
+                Style="{StaticResource Style_ButtonDefault}"
+                Content="{x:Static resources:Resource.CNT_APPLY}" 
+                HorizontalAlignment="Right"
+                Margin="0,0,14,0"
+                Width="95" 
+                IsDefault="True"/>
+    </Grid>
+</UserControl>
+
+    

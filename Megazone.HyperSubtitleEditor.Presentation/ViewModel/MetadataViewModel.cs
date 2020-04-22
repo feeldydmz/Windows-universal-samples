@@ -43,13 +43,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private string _categories;
         private ICommand _closeVideoInfoPopupCommand;
         private string _duration;
-        private bool _isOpenVideoInfoPopup;
+        private bool _isShow;
         private string _jobId;
         private string _videoId;
         private string _mediaType;
         private string _name;
 
-        private ICommand _openVideoInfoPopupCommand;
+        private ICommand _openMetadataPopupCommand;
         private List<MetadataCaptionAssetInfo> _captions;
 
         private string _status;
@@ -69,18 +69,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _tags = "None";
         }
 
-        public bool IsOpenVideoInfoPopup
+        public bool IsShow
         {
-            get => _isOpenVideoInfoPopup;
-            set => Set(ref _isOpenVideoInfoPopup, value);
+            get => _isShow;
+            set => Set(ref _isShow, value);
         }
 
-        public ICommand OpenVideoInfoPopupCommand
+        public ICommand OpenMetadataPopupCommand
         {
             get
             {
-                return _openVideoInfoPopupCommand =
-                    _openVideoInfoPopupCommand ?? new RelayCommand(Open);
+                return _openMetadataPopupCommand =
+                    _openMetadataPopupCommand ?? new RelayCommand(Open);
             }
         }
 
@@ -209,12 +209,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             Captions = captions;
 
-            IsOpenVideoInfoPopup = true;
+            IsShow = true;
         }
 
         public void Close()
         {
-            IsOpenVideoInfoPopup = false;
+            IsShow = false;
         }
 
         private string ConvertBitRateToString(double bitRate)

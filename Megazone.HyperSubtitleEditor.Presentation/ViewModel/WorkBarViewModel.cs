@@ -338,8 +338,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                             foreach (var caption in message.Param.Captions.ToList())
                             {
-                                var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-                                var tabItem = subtitleVm.Tabs.SingleOrDefault(tab =>
+                                var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                                var tabItem = subtitleViewModel.Tabs.SingleOrDefault(tab =>
                                     tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) &&
                                     tab.CountryCode.Equals(caption.Country));
                                 tabItem?.SetAsDeployed();
