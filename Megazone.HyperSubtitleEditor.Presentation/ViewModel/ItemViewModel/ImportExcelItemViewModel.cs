@@ -2,6 +2,7 @@
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -13,17 +14,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private LanguageItem _selectedLanguage;
         private CaptionKind _selectedSubtitleKind;
         private string _sheetName;
-        private IList<CaptionKind> _subtitleKinds;
 
         public ImportExcelItemViewModel(LanguageLoader languageLoader)
         {
-            _subtitleKinds = new List<CaptionKind>
-            {
-                CaptionKind.Subtitle,
-                CaptionKind.Caption,
-                CaptionKind.Chapter
-            };
-
             Languages = languageLoader.Languages?.ToList();
         }
 
@@ -43,12 +36,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _selectedLanguage;
             set => Set(ref _selectedLanguage, value);
-        }
-
-        public IList<CaptionKind> SubtitleKinds
-        {
-            get => _subtitleKinds;
-            set => Set(ref _subtitleKinds, value);
         }
 
         public CaptionKind SelectedSubtitleKind

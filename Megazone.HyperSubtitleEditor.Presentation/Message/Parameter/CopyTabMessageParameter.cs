@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Megazone.Cloud.Media.Domain;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter

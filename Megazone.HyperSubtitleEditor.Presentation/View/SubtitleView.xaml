@@ -1058,6 +1058,7 @@
                     <!--<Border BorderBrush="red" BorderThickness="1"/>-->
                     <ToggleButton ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
                                 Command="{StaticResource ShowCaptionElementsEditViewCommand}" 
+                                IsChecked="{Binding Path=CaptionElementEdit.IsShow, Mode=TwoWay, Source={StaticResource SubtitleViewModelLocator}}"
                                 Margin="0,0,0,0"
                                 HorizontalAlignment="Right">
                         <ToggleButton.Style>
@@ -1363,7 +1364,7 @@
 
                 <!--아이템 없을때 드래그 가이드-->
                 <Border Grid.Row="1"
-                        Visibility="Collapsed"
+                        Visibility="{Binding ElementName=TabList, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
                         Background="White">
                     <Grid>
                         <Grid.ColumnDefinitions>

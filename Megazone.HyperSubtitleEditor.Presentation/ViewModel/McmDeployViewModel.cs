@@ -8,6 +8,7 @@ using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -75,11 +76,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _assetName, value);
         }
 
-        public IEnumerable<CaptionKind> SubtitleKinds
-        {
-            get => _subtitleKinds;
-            set => Set(ref _subtitleKinds, value);
-        }
+        //public IEnumerable<CaptionKind> SubtitleKinds
+        //{
+        //    get => _subtitleKinds;
+        //    set => Set(ref _subtitleKinds, value);
+        //}
 
         public CaptionKind SelectedSubtitleKind
         {
@@ -132,15 +133,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 CaptionItems = await MakeList();
 
-                SubtitleKinds = new List<CaptionKind>
-                {
-                    CaptionKind.Subtitle,
-                    CaptionKind.Caption,
-                    CaptionKind.Chapter,
-                    CaptionKind.Description,
-                    CaptionKind.Metadata
-                };
-                SelectedSubtitleKind = Convert(CaptionItems.First().Kind);
+                SelectedSubtitleKind = CaptionItems.First().Kind;
 
                 CommandManager.InvalidateRequerySuggested();
             }
@@ -148,20 +141,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 Console.WriteLine(e);
                 throw;
-            }
-
-            CaptionKind Convert(string kind)
-            {
-                switch (kind?.ToUpper())
-                {
-                    case "CAPTION": return CaptionKind.Caption;
-                    case "CHAPTER": return CaptionKind.Chapter;
-                    case "DESCRIPTION": return CaptionKind.Description;
-                    case "METADATA": return CaptionKind.Metadata;
-                    case "SUBTITLE": return CaptionKind.Subtitle;
-                }
-
-                return CaptionKind.Subtitle;
             }
         }
 

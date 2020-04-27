@@ -6,6 +6,7 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -18,18 +19,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _onConfirmCommand;
         private LanguageItem _selectedLanguage;
         private CaptionKind _selectedSubtitleKind;
-        private IList<CaptionKind> _subtitleKinds;
 
         protected CreateSubtitleViewModelBase(ILogger logger, LanguageLoader languageLoader)
         {
             Logger = logger;
-
-            _subtitleKinds = new List<CaptionKind>
-            {
-                CaptionKind.Subtitle,
-                CaptionKind.Caption,
-                CaptionKind.Chapter
-            };
 
             SelectedSubtitleKind = CaptionKind.Subtitle;
 
@@ -56,12 +49,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _selectedLanguage;
             set => Set(ref _selectedLanguage, value);
-        }
-
-        public IList<CaptionKind> SubtitleKinds
-        {
-            get => _subtitleKinds;
-            set => Set(ref _subtitleKinds, value);
         }
 
         public CaptionKind SelectedSubtitleKind

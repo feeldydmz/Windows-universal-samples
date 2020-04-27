@@ -2,6 +2,7 @@
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 {
@@ -18,7 +19,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 VideoMediaUrl = VideoResolutionsByType?.FirstOrDefault().Key.Url;
             else
                 VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
-            CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
         private Video OpenedVideo { get; set; }
@@ -33,8 +33,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             private set;
         }
 
-        public CaptionKind CaptionKind { get; private set; }
-
         public void Initialize(Video openedVideo, CaptionAsset openedCaptionAsset)
         {
             OpenedVideo = openedVideo;
@@ -42,7 +40,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             VideoResolutionsByType = GetVideoUrlDictionary(openedVideo);
             VideoUrlOfResolutions = VideoResolutionsByType?.FirstOrDefault().Value;
             VideoMediaUrl = VideoUrlOfResolutions?.FirstOrDefault().Value ?? "";
-            CaptionKind = GetCaptionKind(openedCaptionAsset);
         }
 
         private Dictionary<MediaKind, Dictionary<VideoResolutionInfo, string>> GetVideoUrlDictionary(Video video)
@@ -92,32 +89,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             if (string.IsNullOrEmpty(url))
                 url = asset.Elements?.FirstOrDefault()?.AccessUrls?.FirstOrDefault();
             return url;
-        }
-
-        private CaptionKind GetCaptionKind(CaptionAsset asset)
-        {
-            var kind = asset?.Elements?.FirstOrDefault()?.Kind?.ToUpper() ?? string.Empty;
-            var captionKind = CaptionKind.Subtitle;
-            switch (kind)
-            {
-                case "SUBTITLE":
-                    captionKind = CaptionKind.Subtitle;
-                    break;
-                case "CAPTION":
-                    captionKind = CaptionKind.Caption;
-                    break;
-                case "CHAPTER":
-                    captionKind = CaptionKind.Chapter;
-                    break;
-                case "DESCRIPTION":
-                    captionKind = CaptionKind.Description;
-                    break;
-                case "METADATA":
-                    captionKind = CaptionKind.Metadata;
-                    break;
-            }
-
-            return captionKind;
         }
     }
 }

@@ -30,9 +30,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         public void Execute(object parameter)
         {
             if (_captionElementsEditViewModel.IsShow)
-                _captionElementsEditViewModel.Close();
-            else
                 _captionElementsEditViewModel.Show();
+            else
+                _captionElementsEditViewModel.Close();
             
         }
 

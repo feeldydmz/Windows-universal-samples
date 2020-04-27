@@ -16,6 +16,7 @@ using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
@@ -253,6 +254,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 new DisplayItem(Resource.CNT_NAME, "name"),
                 new DisplayItem("Asset ID", "id")
             };
+
             CaptionKindItems = new List<DisplayItem>
             {
                 new DisplayItem(string.Empty, string.Empty),

@@ -75,6 +75,7 @@
     <Compile Include="Config\JsonData\UploadJsonData.cs" />
     <Compile Include="Config\SubtitleConfigHolder.cs" />
     <Compile Include="Config\UploadConfigHolder.cs" />
+    <Compile Include="Enum\CaptionKind.cs" />
     <Compile Include="Enum\SubtitleDialogViewMode.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="Messagenger\IMessage.cs" />
@@ -157,6 +158,10 @@
     <Page Include="View\ChildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommonObjectDataProviderDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ConfirmWindow.xaml">
       <SubType>Designer</SubType>

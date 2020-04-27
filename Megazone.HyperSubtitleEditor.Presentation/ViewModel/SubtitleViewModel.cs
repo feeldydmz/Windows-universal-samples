@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Core.Extension;
@@ -26,6 +27,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Excel;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
@@ -413,9 +415,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void CloseTab(SubtitleTabItemViewModel tab)
         {
+            if (tab == null) return;
+
             Tabs.Remove(tab);
             if (tab.IsDeployedOnce || tab.Caption != null)
+            {
                 _removedCaptions.Add(tab.Caption);
+                var elementItem = _workBarViewModel.CaptionAssetItem.Elements.FirstOrDefault(e => e.Id == tab.Caption.Id);
+                elementItem.IsOpened = false;
+            }
+
             if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
             var lastTab = Tabs.LastOrDefault();
             if (lastTab != null)
@@ -449,6 +458,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionOpenRequestedMessage>(OnOpenCaptionRequest);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementOpenRequestedMessage>(OnOpenCaptionElementRequest);
             MessageCenter.Instance.Regist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
@@ -1202,8 +1212,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 default:
                     return false;
             }
-                
-  
         }
 
         public async void OnOpenCaptionRequest(Message.SubtitleEditor.CaptionOpenRequestedMessage requestedMessage)
@@ -1236,7 +1244,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 MediaPlayer.InitMedia(WorkContext, true);
             //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
 
-            var texts = await LoadCaptionTextListAsync();
+            var texts = await LoadCaptionTextListAsync(captionList);
 
             _subtitleListItemValidator.IsEnabled = false;
 
@@ -1244,6 +1252,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             foreach (var caption in captionList)
             {
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
+                Enum.TryParse(caption.Kind, true, out CaptionKind kind);
 
                 var newTab = new SubtitleTabItemViewModel(caption.Label,
                     OnRowCollectionChanged,
@@ -1251,7 +1260,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     OnTabSelected,
                     OnItemSelected,
                     OnDoubleClickedItem,
-                    WorkContext.CaptionKind,
+                    kind,
                     OnDisplayTextChanged,
                     caption.Language,
                     caption.Country,
@@ -1282,26 +1291,60 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             CommandManager.InvalidateRequerySuggested();
 
-            async Task<Dictionary<string, string>> LoadCaptionTextListAsync()
-            {
-                var dic = new Dictionary<string, string>();
-                foreach (var caption in captionList)
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(caption.AccessUrl)
-                        ) // && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute)
-                        {
-                            var text = await _cloudMediaService.ReadAsync(new Uri(caption.AccessUrl), CancellationToken.None);
-                            dic.Add(caption.Id, text);
-                        }
-                    }
-                    catch (WebException e)
-                    {
-                        Console.WriteLine(e);
-                    }
+            
+        }
 
-                return dic;
+
+
+        private async void OnOpenCaptionElementRequest(Message.SubtitleEditor.CaptionElementOpenRequestedMessage message)
+        {
+            // 닫힐 탭
+            var closeItems = message.CloseCaptionElements;
+
+            foreach (var closeItem in closeItems)
+            {
+                CloseTab(closeItem);
             }
+
+            // 열릴 탭
+            var openItems = message.OpenCaptionElements;
+            var texts = await LoadCaptionTextListAsync(openItems);
+            foreach (var caption in openItems)
+            {
+                var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
+                var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
+                Enum.TryParse(caption.Kind, true, out CaptionKind kind);
+                
+                AddTab(caption.Label,
+                    kind,
+                    caption,
+                    rows,
+                    _workBarViewModel.VideoItem?.Id,
+                    "",
+                    caption.Id,
+                    true
+                );
+            }
+        }
+
+        async Task<Dictionary<string, string>> LoadCaptionTextListAsync(List<Caption> captionList)
+        {
+            var dic = new Dictionary<string, string>();
+            foreach (var caption in captionList)
+                try
+                {
+                    if (!string.IsNullOrEmpty(caption.AccessUrl)) // && Uri.IsWellFormedUriString(caption.Url, UriKind.Absolute)
+                    {
+                        var text = await _cloudMediaService.ReadAsync(new Uri(caption.AccessUrl), CancellationToken.None);
+                        dic.Add(caption.Id, text);
+                    }
+                }
+                catch (WebException e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            return dic;
         }
 
         private void OnCaptionResetRequest(CloudMedia.CaptionResetRequestedMessage requestedMessage)
@@ -1518,6 +1561,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(filePath).SetFormat("EXCEL").Create());
         }
 
+
         private async void OnCopySubtitle(Message.SubtitleEditor.CopyTabMessage message)
         {
             var param = message.Param;
@@ -1564,6 +1608,58 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CommandManager.InvalidateRequerySuggested();
 
             _browser.Main.LoadingManager.Hide();
+        }
+
+        private async void AddTab(string name, 
+            CaptionKind kind, 
+            Caption caption,
+            IList<SubtitleItem> subtitleContentList,
+            string videoId = "",
+            string filePath = "",
+            string captionAssetId = "", 
+            bool isSelected = false
+            )
+        {
+
+            Debug.WriteLine("+ AddTab");
+            _browser.Main.LoadingManager.Show();
+
+            _subtitleListItemValidator.IsEnabled = false;
+
+            var newTab = new SubtitleTabItemViewModel(name,
+                OnRowCollectionChanged,
+                OnValidateRequested,
+                OnTabSelected,
+                OnItemSelected,
+                OnDoubleClickedItem,
+                kind,
+                OnDisplayTextChanged,
+                caption?.Language,
+                caption?.Country,
+                caption)
+            {
+                VideoId = videoId,
+                CaptionAssetId = captionAssetId,
+                FilePath = filePath,
+                IsSelected = isSelected,
+            };
+            if (subtitleContentList.Any())
+                await newTab.AddRowsAsync(subtitleContentList);
+
+            this.InvokeOnUi(() =>
+            {
+                Tabs.Add(newTab);
+            });
+
+            _subtitleListItemValidator.IsEnabled = true;
+            _subtitleListItemValidator.Validate(newTab.Rows);
+            
+
+            CommandManager.InvalidateRequerySuggested();
+
+            _browser.Main.LoadingManager.Hide();
+
+            Debug.WriteLine("- AddTab");
         }
 
         private void OnEditSubtitle(Message.SubtitleEditor.EditTabMessage message)
@@ -1765,5 +1861,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             ImportSubtitleFile(localFileFullPath);
         }
+
+     
     }
 }

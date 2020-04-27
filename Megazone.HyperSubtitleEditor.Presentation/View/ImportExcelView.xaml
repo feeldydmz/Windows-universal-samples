@@ -20,6 +20,8 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
                 <ResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -171,7 +173,7 @@
                                                            VerticalAlignment="Center" FontWeight="Bold" />
 
                                                 <ComboBox Grid.Column="1" Grid.Row="0"
-                                                          ItemsSource="{Binding Path=SubtitleKinds}"
+                                                          ItemsSource="{Binding Source={StaticResource CaptionKIndEnums}}"
                                                           SelectedItem="{Binding Path=SelectedSubtitleKind}" />
                                                 <ComboBox Grid.Column="1" Grid.Row="1" Margin="0,5"
                                                           ItemsSource="{Binding Path=Languages}"

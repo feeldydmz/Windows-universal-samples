@@ -4,6 +4,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.Serializable;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
+using Megazone.Cloud.Media.Domain.Assets;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message
 {
@@ -210,6 +211,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
 
             public CaptionOpenMessageParameter Param { get; }
+        }
+
+        internal class CaptionElementOpenRequestedMessage : MessageBase
+        {
+            public CaptionElementOpenRequestedMessage(object sender, List<Caption> openCaptionElements, List<SubtitleTabItemViewModel> closeCaptionElements) : base(sender)
+            {
+                OpenCaptionElements = openCaptionElements;
+                CloseCaptionElements = closeCaptionElements;
+            }
+
+            public List<Caption> OpenCaptionElements { get; }
+            public List<SubtitleTabItemViewModel> CloseCaptionElements { get; }
         }
     }
 }

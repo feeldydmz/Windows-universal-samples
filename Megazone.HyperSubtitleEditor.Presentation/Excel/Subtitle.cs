@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Core.VideoTrack.Model;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 {

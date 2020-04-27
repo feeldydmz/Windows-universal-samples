@@ -177,7 +177,8 @@
                 HorizontalAlignment="Right"
                 Margin="0,0,14,0"
                 Width="95" 
-                IsDefault="True"/>
+                IsDefault="True"
+                Command="{Binding ApplyCommand}"/>
     </Grid>
 </UserControl>
 

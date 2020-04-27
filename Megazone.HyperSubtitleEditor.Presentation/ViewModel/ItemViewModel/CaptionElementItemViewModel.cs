@@ -1,5 +1,8 @@
-﻿using Megazone.Cloud.Media.Domain.Assets;
+﻿using System;
+using Megazone.Cloud.Media.Domain;
+using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -12,6 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isDraft;
         private bool _isPreferred;
         private bool _isSelected;
+        private bool _isOpened;
 
         public CaptionElementItemViewModel(Caption caption)
         {
@@ -20,17 +24,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Id = caption.Id;
             IsDraft = caption.IsDraft;
             IsPreferred = caption.IsPreferred;
-            Kind = caption.Kind;
+            Kind = GetCaptionKind(caption.Kind);
             Label = caption.Label;
             Language = caption.Language;
             FileUrl = caption.Url;
+        }
+
+        private CaptionKind GetCaptionKind(string kind)
+        {
+            Enum.TryParse(kind, true, out CaptionKind captionKind);
+
+            return captionKind;
         }
 
         public Caption Source { get; }
 
         public string Id { get; }
         public string Label { get; }
-        public string Kind { get; }
+        public CaptionKind Kind { get; }
         public string Country { get; }
         public string Language { get; }
         public string FileUrl { get; }
@@ -52,6 +63,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _isSelected;
             set => Set(ref _isSelected, value);
         }
+
+        public bool IsOpened
+        {
+            get => _isOpened;
+            set
+            {
+                Set(ref _isOpened, value);
+
+                IsSelected = _isOpened;
+            }
+        }
+
 
         public bool CanDeploy
         {

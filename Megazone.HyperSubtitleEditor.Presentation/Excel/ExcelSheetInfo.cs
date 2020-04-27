@@ -1,4 +1,4 @@
-﻿using Megazone.Cloud.Media.Domain;
+﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Excel
 {

@@ -6,6 +6,9 @@
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:StyleAlias="clr-namespace:DocumentFormat.OpenXml.Drawing;assembly=DocumentFormat.OpenXml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:enum="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;assembly=Megazone.HyperSubtitleEditor.Presentation.Infrastructure"
              mc:Ignorable="d" Width="430" Height="230"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=AddAndEditSubtitle}">
 
@@ -18,6 +21,8 @@
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommandDictionary.xaml" />
                 <ResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
+                <ResourceDictionary
+                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -62,7 +67,7 @@
                                    Text="{Binding Source={x:Static resources:Resource.CNT_NAME}, StringFormat='{}{0} : '}"
                                    VerticalAlignment="Center" FontWeight="Bold" />
 
-                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=SubtitleKinds}"
+                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource CaptionKIndEnums}}"
                                   SelectedItem="{Binding Path=SelectedSubtitleKind, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding Path=CanSelectSubtitleKind}" />
                         <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,5" ItemsSource="{Binding Path=Languages}"

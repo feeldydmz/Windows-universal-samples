@@ -29,6 +29,5 @@
                IsHitTestVisible="False"
                Content="{Binding ElementName=customComboBox, Path=DefaultText}"
                Visibility="{Binding ElementName=customComboBox, Path=MySelectedItem, Converter={StaticResource NullToVisibleNCollapsedConverter}}" />
-
     </Grid>
 </UserControl>
