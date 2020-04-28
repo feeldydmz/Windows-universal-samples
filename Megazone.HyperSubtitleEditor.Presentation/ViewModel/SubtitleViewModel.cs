@@ -460,8 +460,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionOpenRequestedMessage>(OnOpenCaptionRequest);
-            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementOpenRequestedMessage>(OnOpenCaptionElementRequest);
-            MessageCenter.Instance.Regist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementUpdateMessage>(OnOpenCaptionElementUpdate);
+            MessageCenter.Instance.Regist<CloudMedia.CaptionResetMessage>(OnCaptionReset);
             MessageCenter.Instance.Regist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.ExportSubtitleMessage>(OnExportSubtitleFile);
@@ -539,7 +540,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.SettingsSavedMessage>(OnSettingsSaved);
             //MessageCenter.Instance.Unregist<SubtitleEditor.SaveMessage>(OnSave);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionOpenRequestedMessage>(OnOpenCaptionRequest);
-            MessageCenter.Instance.Unregist<CloudMedia.CaptionResetRequestedMessage>(OnCaptionResetRequest);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionElementUpdateMessage>(OnOpenCaptionElementUpdate);
+            MessageCenter.Instance.Unregist<CloudMedia.CaptionResetMessage>(OnCaptionReset);
             MessageCenter.Instance.Unregist<CloudMedia.VideoOpenRequestedMessage>(OnVideoOpenRequest);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.SaveAllMessage>(OnSaveAll);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnOpenFile);
@@ -1264,6 +1267,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     OnDoubleClickedItem,
                     kind,
                     OnDisplayTextChanged,
+                    SourceLocationKind.Cloud,
                     caption.Language,
                     caption.Country,
                     caption)
@@ -1298,10 +1302,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
 
 
-        private async void OnOpenCaptionElementRequest(Message.SubtitleEditor.CaptionElementOpenRequestedMessage message)
+        private async void OnOpenCaptionElementUpdate(Message.SubtitleEditor.CaptionElementUpdateMessage message)
         {
+            var param = message.Param;
             // 닫힐 탭
-            var closeItems = message.CloseCaptionElements;
+            var closeItems = param.CloseCaptionElements;
 
             foreach (var closeItem in closeItems)
             {
@@ -1309,10 +1314,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             // 열릴 탭
-            var openItems = message.OpenCaptionElements;
-            var texts = await LoadCaptionTextListAsync(openItems);
-            foreach (var caption in openItems)
+            var openItems = param.OpenCaptionElements;
+
+            var captionList = openItems.Select(c => c.Key).ToList();
+
+            var texts = await LoadCaptionTextListAsync(captionList);
+
+            foreach (var pairItem in openItems)
             {
+                var caption = pairItem.Key;
+                var sourceLocation = pairItem.Value;
+
                 var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
                 var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
                 Enum.TryParse(caption.Kind, true, out CaptionKind kind);
@@ -1326,7 +1338,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _workBarViewModel.VideoItem?.Id,
                     "",
                     caption.Id,
-                    true
+                    sourceLocation
                 );
             }
         }
@@ -1351,26 +1363,50 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return dic;
         }
 
-        private void OnCaptionResetRequest(CloudMedia.CaptionResetRequestedMessage requestedMessage)
+        private void OnCaptionReset(CloudMedia.CaptionResetMessage message)
         {
-            if (_workBarViewModel.IsOnlineData)
+            var closeTabList = new List<SubtitleTabItemViewModel>();
+
+            foreach (var tab in Tabs)
             {
-                foreach (var tab in Tabs)
+                switch (tab.SourceLocation)
                 {
-                    tab.Reset();
+
+                    case SourceLocationKind.Cloud:
+                    case SourceLocationKind.LocalFile:
+                        tab.Reset();
+                        break;
+                    case SourceLocationKind.None:
+                    case SourceLocationKind.CreatedByEditor:
+                        closeTabList.Add(tab as SubtitleTabItemViewModel);
+                        //CloseTab(tab as SubtitleTabItemViewModel);
+                        break;
                 }
             }
-            else
+
+            foreach (var tab in closeTabList)
             {
-                foreach (var tab in Tabs)
-                {
-                    tab.Dispose();
-                }
-
-                Tabs.Clear();
-
-                SelectedTab = null;
+                CloseTab(tab);
             }
+
+            //if (_workBarViewModel.IsOnlineData)
+            //{
+            //    foreach (var tab in Tabs)
+            //    {
+            //        tab.Reset();
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (var tab in Tabs)
+            //    {
+            //        tab.Dispose();
+            //    }
+
+            //    Tabs.Clear();
+
+            //    SelectedTab = null;
+            //}
         }
 
 
@@ -1412,6 +1448,46 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return result;
         }
 
+        private void OnCaptionElementCreateNew(Message.SubtitleEditor.CaptionElementCreateNewMessage message)
+        {
+            var param = message.Param;
+
+            try
+            {
+                Debug.WriteLine("Start OnCaptionElementCreateNew");
+
+                _browser.Main.LoadingManager.Show();
+
+                var label = CheckConflictLabel(param.Label);
+
+                var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+                var videoId = workBar.VideoItem?.Id;
+                var captionAssetId = workBar.CaptionAssetItem?.Id;
+
+                AddTab(label,
+                    param.Kind,
+                    param.LanguageCode,
+                    param.CountryCode,
+                    null,
+                    null,
+                    videoId,
+                    param.FilePath,
+                    captionAssetId,
+                    SourceLocationKind.CreatedByEditor
+                );
+
+                _browser.Main.LoadingManager.Hide();
+
+                Debug.WriteLine("End OnCaptionElementCreateNew");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error.Write(ex.Message);
+                _browser.Main.LoadingManager.Hide();
+                throw;
+            }
+        }
+
         private void OnOpenFile(Message.SubtitleEditor.FileOpenedMessage message)
         {
             var param = message.Param;
@@ -1420,7 +1496,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             OpenFileAsync(param);
         }
-
+        
         private async Task OpenFileAsync(FileOpenedMessageParameter param)
         {
             try {
@@ -1450,7 +1526,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     rows,
                     videoId,
                     param.FilePath,
-                    captionAssetId
+                    captionAssetId,
+                    SourceLocationKind.LocalFile
                     );
 
                 if (param.FilePath.IsNotNullAndAny())
@@ -1519,6 +1596,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             OnDoubleClickedItem,
                             subtitle.Kind,
                             OnDisplayTextChanged,
+                            SourceLocationKind.LocalFile,
                             subtitle.LanguageCode,
                             subtitle.CountryCode)
                         {
@@ -1578,6 +1656,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnDoubleClickedItem,
                 param.Kind,
                 OnDisplayTextChanged,
+                SourceLocationKind.CreatedByEditor,
                 param.LanguageCode,
                 param.CountryCode)
             {
@@ -1603,9 +1682,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             string countryCode,
             Caption caption,
             IEnumerable<SubtitleItem> subtitleContentList,
-            string videoId = "",
-            string filePath = "",
-            string captionAssetId = "", 
+            string videoId,
+            string filePath,
+            string captionAssetId,
+            SourceLocationKind sourceLocation,
             bool isSelected = true)
         {
 
@@ -1622,6 +1702,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnDoubleClickedItem,
                 kind,
                 OnDisplayTextChanged,
+                sourceLocation,
                 languageCode,
                 countryCode,
                 caption)

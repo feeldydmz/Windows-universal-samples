@@ -18,6 +18,7 @@ using Megazone.Core.Windows.Mvvm;
 using Megazone.Core.Windows.Xaml.Behaviors.Primitives;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
@@ -145,7 +146,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
 
 
-            //MessageCenter.Instance.Send(new CloudMedia.CaptionResetRequestedMessage(this));
+            //MessageCenter.Instance.Send(new CloudMedia.CaptionResetMessage(this));
         }
 
 
@@ -163,6 +164,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Regist<CloudMedia.CaptionAssetRenameRequestedMessage>(RenameCaptionAsset);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
             MessageCenter.Instance.Regist<CloudMedia.DeployRequestedMessage>(Deploy);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
         }
@@ -171,6 +173,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedMessage>(OnCaptionOpenRequest);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionAssetRenameRequestedMessage>(RenameCaptionAsset);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
             MessageCenter.Instance.Unregist<CloudMedia.DeployRequestedMessage>(Deploy);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
         }
@@ -179,15 +182,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnFileOpened(Message.SubtitleEditor.FileOpenedMessage message)
         {
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
-
-
-//            CaptionAssetItem =
 //                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
 //                    null));
 
             HasWorkData = true;
         }
 
+        private void OnCaptionElementCreateNew(Message.SubtitleEditor.CaptionElementCreateNewMessage message)
+        {
+            IsOnlineData = false;
+
+            HasWorkData = true;
+        }
 
         private async void RenameCaptionAsset(CloudMedia.CaptionAssetRenameRequestedMessage message)
         {
@@ -215,7 +221,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         CancellationToken.None);
 
                     if (captionAsset != null)
-                        CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                        CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset, SourceLocationKind.Cloud);
                 }
                 catch (Exception e)
                 {
@@ -275,7 +281,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         new GetAssetParameter(authorization, stageId, projectId, assetId), CancellationToken.None);
 
                 if (captionAsset != null)
-                    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset, SourceLocationKind.Cloud);
 
                 HasWorkData = video != null || captionAsset != null;
 
@@ -355,7 +361,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 }
                             }
                             
-                            CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                            CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset, SourceLocationKind.Cloud);
 
                             //foreach (var caption in message.Param.Captions.ToList())
                             //{

@@ -17,8 +17,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isSelected;
         private bool _isDirty;
         private bool _isOpened;
+        private SourceLocationKind _sourceLocation;
 
-        public CaptionElementItemViewModel(Caption caption)
+        public CaptionElementItemViewModel(Caption caption, SourceLocationKind sourceLocation = SourceLocationKind.CreatedByEditor)
         {
             Source = caption;
             Country = caption.Country;
@@ -29,6 +30,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Label = caption.Label;
             Language = caption.Language;
             FileUrl = caption.Url;
+            SourceLocation = sourceLocation;
         }
 
         private CaptionKind GetCaptionKind(string kind)
@@ -88,6 +90,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _canDeploy;
             set => Set(ref _canDeploy, value);
+        }
+
+        public SourceLocationKind SourceLocation
+        {
+            get => _sourceLocation;
+            set => Set(ref _sourceLocation, value);
         }
     }
 }

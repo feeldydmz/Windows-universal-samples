@@ -230,6 +230,7 @@
     <Compile Include="Message\Excel.cs" />
     <Compile Include="Message\LeftSideMenu.cs" />
     <Compile Include="Message\MediaPlayer.cs" />
+    <Compile Include="Message\Parameter\CaptionElementUpdateMessageParameter.cs" />
     <Compile Include="Message\Parameter\CopyTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\EditTabMessageParameter.cs" />
     <Compile Include="Message\Parameter\FileOpenedMessageParameter.cs" />

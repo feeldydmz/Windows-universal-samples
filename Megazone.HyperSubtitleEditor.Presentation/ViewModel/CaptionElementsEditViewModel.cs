@@ -13,6 +13,7 @@ using Megazone.HyperSubtitleEditor.Presentation;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -115,35 +116,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void Apply()
         {
-            var openItems = new List<Caption>();
+            var openItems = new List<KeyValuePair<Caption, SourceLocationKind>>();
             var closeItems= new List<SubtitleTabItemViewModel>();
 
             foreach (var item in CaptionItems)
             {
                 if (item.IsOpened != item.IsSelected)
                 {
-                    // 새로 탭 열기
+                    // 열릴 탭
                     if (item.IsSelected)
                     {
-                        openItems.Add(item.Source);
-                        //MessageCenter.Instance.Send(
-                        //    new Message.SubtitleEditor.CaptionElementOpenRequestedMessage(this,));
-
-                        //Debug.WriteLine("새 탭 열기");
+                        openItems.Add(new KeyValuePair<Caption, SourceLocationKind>(item.Source, item.SourceLocation));
                     }
-                    // 기존 탭 닫기
+                    // 닫힐 탭
                     else
                     {
 
                         var tab = _subtitleViewModel.Tabs.FirstOrDefault(t => t.Caption?.Id == item.Id);
 
-                        //MessageCenter.Instance.Send(new Message.SubtitleEditor.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
                         if(tab is SubtitleTabItemViewModel tabItem)
                             closeItems.Add(tabItem);
 
                         item.IsOpened = false;
-
-                        //Debug.WriteLine("기존 탭 닫기");
                     }
                 }
 
@@ -151,7 +145,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             MessageCenter.Instance.Send(
-                new Message.SubtitleEditor.CaptionElementOpenRequestedMessage(this, openItems, closeItems));
+                new Message.SubtitleEditor.CaptionElementUpdateMessage(this, new CaptionElementUpdateMessageParameter(openItems, closeItems)));
 
         }
 
@@ -193,11 +187,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
                 else
                 {
+                    // 로컬 파일 또는 직접 생성했지만 아직 Cloud에 올리지 않은 Caption Element
                     var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
                                 tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
                                 tab.Caption?.Size ?? 0);
 
-                    newElementItem = new CaptionElementItemViewModel(caption)
+                    newElementItem = new CaptionElementItemViewModel(caption, tab.SourceLocation)
                     {
                         IsOpened = true,
                         CanDeploy = false

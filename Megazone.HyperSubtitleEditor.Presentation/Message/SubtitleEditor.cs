@@ -79,6 +79,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public FileOpenedMessageParameter Param { get; }
         }
 
+        internal class CaptionElementCreateNewMessage : MessageBase
+        {
+            public CaptionElementCreateNewMessage(object sender, FileOpenedMessageParameter param) : base(sender)
+            {
+                Param = param;
+            }
+
+            public FileOpenedMessageParameter Param { get; }
+        }
+
         internal class ImportSubtitleMessage : MessageBase
         {
             public ImportSubtitleMessage(object sender) : base(sender)
@@ -213,16 +223,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             public CaptionOpenMessageParameter Param { get; }
         }
 
-        internal class CaptionElementOpenRequestedMessage : MessageBase
+        internal class CaptionElementUpdateMessage : MessageBase
         {
-            public CaptionElementOpenRequestedMessage(object sender, List<Caption> openCaptionElements, List<SubtitleTabItemViewModel> closeCaptionElements) : base(sender)
+            public CaptionElementUpdateMessage(object sender, CaptionElementUpdateMessageParameter param) : base(sender)
             {
-                OpenCaptionElements = openCaptionElements;
-                CloseCaptionElements = closeCaptionElements;
+                Param = param;
+                //OpenCaptionElements = openCaptionElements;
+                //CloseCaptionElements = closeCaptionElements;
             }
 
-            public List<Caption> OpenCaptionElements { get; }
-            public List<SubtitleTabItemViewModel> CloseCaptionElements { get; }
+            public CaptionElementUpdateMessageParameter Param { get; }
+            //public List<Caption> OpenCaptionElements { get; }
+            //public List<SubtitleTabItemViewModel> CloseCaptionElements { get; }
         }
     }
 }

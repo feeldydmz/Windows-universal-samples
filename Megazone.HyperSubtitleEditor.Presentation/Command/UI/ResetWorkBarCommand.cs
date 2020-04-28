@@ -54,7 +54,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 return;
             }
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionResetRequestedMessage(this));
+            MessageCenter.Instance.Send(new CloudMedia.CaptionResetMessage(this));
         }
 
         public event EventHandler CanExecuteChanged

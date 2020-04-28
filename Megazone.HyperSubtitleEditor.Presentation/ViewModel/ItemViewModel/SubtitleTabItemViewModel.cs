@@ -57,6 +57,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Action<ISubtitleListItemViewModel> onDoubleClickRowAction,
             CaptionKind kind,
             Action<SubtitleTabItemViewModel> onDisplayTextChangedAction,
+            SourceLocationKind sourceLocation,
             string languageCode = null,
             string countryCode = null,
             Caption caption = null)
@@ -78,6 +79,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _rows = rows;
             Caption = caption;
             _isAddedFromLocal = caption == null;
+            SourceLocation = sourceLocation;
 
             CancelToken = _cancelTokenSource.Token;
         }
@@ -113,6 +115,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string VideoId { get; set; }
         public string CaptionAssetId { get; set; }
         public string FilePath { get; set; }
+        public SourceLocationKind SourceLocation { get; set; }
 
         public string Id { get; } = Guid.NewGuid()
             .ToString();

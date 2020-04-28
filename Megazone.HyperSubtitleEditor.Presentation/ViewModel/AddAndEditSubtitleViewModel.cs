@@ -67,7 +67,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 if (Mode == SubtitleDialogViewMode.Add)
-                    MessageCenter.Instance.Send(new Message.SubtitleEditor.FileOpenedMessage(this, new FileOpenedMessageParameter
+                    MessageCenter.Instance.Send(new Message.SubtitleEditor.CaptionElementCreateNewMessage(this, new FileOpenedMessageParameter
                     {
                         Kind = SelectedSubtitleKind,
                         Label = Label,

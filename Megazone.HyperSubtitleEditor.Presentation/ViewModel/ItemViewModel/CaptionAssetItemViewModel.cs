@@ -4,6 +4,7 @@ using System.Linq;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
 
@@ -26,7 +27,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Name = Resource.CNT_MAKE_NEW_CAPTION;
         }
 
-        public CaptionAssetItemViewModel(CaptionAsset asset)
+        public CaptionAssetItemViewModel(CaptionAsset asset, SourceLocationKind sourceLocation = SourceLocationKind.None)
         {
             _cloudMediaService = Bootstrapper.Container.Resolve<ICloudMediaService>();
             _signInViewModel = Bootstrapper.Container.Resolve<SignInViewModel>();
@@ -42,8 +43,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             CreatedAt = string.IsNullOrEmpty(asset.CreatedAt)
                 ? DateTime.MinValue
                 : DateTimeOffset.Parse(asset.CreatedAt).DateTime;
-            Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(element)).ToList();
-            Kind = asset.Elements?.FirstOrDefault()?.Kind ?? "Untitle";
+            Elements = asset.Elements?.Select(element => new CaptionElementItemViewModel(element, sourceLocation)).ToList();
+            Kind = asset.Elements?.FirstOrDefault()?.Kind ?? "Untitled";
         }
 
         public CaptionAsset Source { get; }

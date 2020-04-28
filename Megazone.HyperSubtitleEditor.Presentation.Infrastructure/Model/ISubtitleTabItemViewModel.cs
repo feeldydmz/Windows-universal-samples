@@ -22,6 +22,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         string VideoId { get; }
         string CaptionAssetId { get; }
         string FilePath { get; set; }
+        SourceLocationKind SourceLocation { get; set; }
         void SetAsDeployed();
         bool CheckDirty();
 
