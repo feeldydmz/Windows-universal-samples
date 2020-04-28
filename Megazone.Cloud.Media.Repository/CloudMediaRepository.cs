@@ -240,7 +240,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddJsonString(captionAssetList);
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
-            if (response.StatusCode == HttpStatusCode.OK) return !response.Content.Contains("errorCode");
+            if (response.StatusCode == HttpStatusCode.OK) 
+                return !response.Content.Contains("errorCode");
             return false;
         }
 
@@ -295,7 +296,11 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
                 .AddJsonString(request.Caption);
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
-            Debug.WriteLine(response.ToString());
+
+            if (response.StatusCode == HttpStatusCode.OK && response.Content.Contains("errorCode"))
+            {
+                return null;
+            }
 
             return response.Convert<Caption>();
         }

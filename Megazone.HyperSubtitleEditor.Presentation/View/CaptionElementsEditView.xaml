@@ -197,12 +197,22 @@
                 BorderThickness="1"/>
         <Button Grid.Row="4" 
                 Style="{StaticResource Style_ButtonDefault}"
+                Content="{x:Static resources:Resource.CNT_CLOSE}" 
+                HorizontalAlignment="Right"
+                Margin="0,0,14,0"
+                Width="95" 
+                IsDefault="True"
+                Command="{Binding CloseCommand}"
+                Visibility="{Binding IsLocalCaptionOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Button Grid.Row="4" 
+                Style="{StaticResource Style_ButtonDefault}"
                 Content="{x:Static resources:Resource.CNT_APPLY}" 
                 HorizontalAlignment="Right"
                 Margin="0,0,14,0"
                 Width="95" 
                 IsDefault="True"
-                Command="{Binding ApplyCommand}"/>
+                Command="{Binding ApplyCommand}"
+                Visibility="{Binding IsLocalCaptionOnly, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"/>
     </Grid>
 </UserControl>
 

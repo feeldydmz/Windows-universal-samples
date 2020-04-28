@@ -21,6 +21,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class CaptionElementsEditViewModel : ViewModelBase
     {
         private bool _isShow;
+        private bool _isLocalCaptionOnly;
         private IEnumerable<CaptionElementItemViewModel> _captionItems;
         private string _assetName;
         private string _assetId;
@@ -30,6 +31,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly SignInViewModel _signInViewModel;
 
         private ICommand _applyCommand;
+        private ICommand _closeCommand;
 
 
         public IEnumerable<CaptionElementItemViewModel> CaptionItems
@@ -42,6 +44,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _isShow;
             set => Set(ref _isShow, value);
+        }
+
+        public bool IsLocalCaptionOnly
+        {
+            get => _isLocalCaptionOnly;
+            set => Set(ref _isLocalCaptionOnly, value);
         }
 
         public string AssetName
@@ -65,6 +73,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand ApplyCommand
         {
             get => _applyCommand = _applyCommand ?? new RelayCommand(Apply);
+        }
+        public ICommand CloseCommand
+        {
+            get => _closeCommand = _closeCommand ?? new RelayCommand(Close);
         }
 
         public CaptionElementsEditViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
@@ -145,49 +157,39 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task<IEnumerable<CaptionElementItemViewModel>> MakeList()
         {
-            //// 현재 탭으로 오픈된 자막을 게시한다.
-            //CaptionElementItemViewModel CreateCaptionElementItemViewModel(ISubtitleTabItemViewModel tab)
-            //{
-            //    var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
-            //        tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
-            //        tab.Caption?.Size ?? 0);
+            List<CaptionElementItemViewModel> newElementItemViewModel = null;
 
-            //    return new CaptionElementItemViewModel(caption)
-            //    {
-            //        IsSelected = !string.IsNullOrEmpty(tab.Name)
-            //                     && !string.IsNullOrEmpty(tab.LanguageCode)
-            //                     && !string.IsNullOrEmpty(tab.CountryCode),
-
-            //        CanDeploy = !string.IsNullOrEmpty(tab.Name) 
-            //                    && !string.IsNullOrEmpty(tab.LanguageCode)
-            //                    && !string.IsNullOrEmpty(tab.CountryCode)
-            //    };
-            //}
-
-            //var editedCaptionList = _subtitleViewModel.Tabs.Select(CreateCaptionElementItemViewModel).ToList();
-
-            var elementItemViewModels = _workBarViewModel.CaptionAssetItem?.Elements?.ToList();
-
-            if (elementItemViewModels != null)
+            var elementItemViewModelOfCloud = _workBarViewModel.CaptionAssetItem?.Elements?.ToList();
+            
+            if (elementItemViewModelOfCloud != null)
             {
-                foreach (var elementItem in elementItemViewModels)
+                newElementItemViewModel = elementItemViewModelOfCloud;
+                foreach (var elementItem in newElementItemViewModel)
                 {
                     elementItem.CanDeploy = true;
                     elementItem.IsOpened = false;
                     elementItem.IsDirty = false;
                 }
-            }
 
-            
+                IsLocalCaptionOnly = false;
+            }
+            else
+            {
+                newElementItemViewModel = new List<CaptionElementItemViewModel>();
+
+                IsLocalCaptionOnly = true;
+            }
 
             foreach (var tab in _subtitleViewModel.Tabs)
             {
-                var elementItem = elementItemViewModels?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
+                //elementItemViewModelOfCloud 가 null 이라면 tab에 있는 모든 caption element는 로컬 파일이고
+                //newElementItem 에 도 null이 됨
+                var newElementItem = elementItemViewModelOfCloud?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
 
-                if (elementItem != null)
+                if (newElementItem != null)
                 {
-                    elementItem.IsOpened = true;
-                    elementItem.IsDirty = tab.IsDirty;
+                    newElementItem.IsOpened = true;
+                    newElementItem.IsDirty = tab.IsDirty;
                 }
                 else
                 {
@@ -195,78 +197,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                 tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
                                 tab.Caption?.Size ?? 0);
 
-                    var newElementItem = new CaptionElementItemViewModel(caption)
+                    newElementItem = new CaptionElementItemViewModel(caption)
                     {
                         IsOpened = true,
-                            //!string.IsNullOrEmpty(tab.Name)
-                            //             && !string.IsNullOrEmpty(tab.LanguageCode)
-                            //             && !string.IsNullOrEmpty(tab.CountryCode),
-
                         CanDeploy = false
                     };
 
-                    elementItemViewModels.Add(newElementItem);
+                    newElementItemViewModel?.Add(newElementItem);
                 }
             }
 
-            return elementItemViewModels;
-
-            ////-------------------------
-            //var tempCaptionList = _workBarViewModel.CaptionAssetItem.Elements.ToList();
-
-            //foreach (var element in tempCaptionList)
-            //{
-            //    var tab = _subtitleViewModel.Tabs.FirstOrDefault(t => t.Caption?.Id == element.Id);
-
-            //    //var item = tempCaptionList.FirstOrDefault(c => c.Id == tab.Caption?.Id);
-            //    element.CanDeploy = true;
-
-            //    if (tab != null)
-            //    {
-            //        element.IsOpened = true;
-            //    }
-            //    else
-            //    {
-            //        element.IsOpened = false;
-            //    }
-            //}
-
-            //return tempCaptionList;
-            ////-------------------------
-
-            //foreach (var item in editedCaptionList)
-            //{
-            //    item.IsSelected = true;
-            //    item.CanDeploy = true;
-            //}
-
-
-            //if (!string.IsNullOrEmpty(AssetId))
-            //{
-            //    var captionAsset = await _workBarViewModel.GetCaptionAssetAsync(AssetId);
-            //    if (!string.IsNullOrEmpty(captionAsset?.Id))
-            //    {
-            //        var captionItemList =
-            //            captionAsset.Elements?.Select(caption => new CaptionElementItemViewModel(caption)).ToList() ??
-            //            new List<CaptionElementItemViewModel>();
-
-            //        // 편집하지 않은 캡션 정보 추가.
-            //        foreach (var item in captionItemList)
-            //            if (!editedCaptionList.Any(caption => caption.Id?.Equals(item.Id) ?? false))
-            //                editedCaptionList.Add(item);
-            //    }
-            //}
-
-            //return editedCaptionList;
+            return newElementItemViewModel;
         }
-        //public ICommand OpenMetadataPopupCommand
-        //{
-        //    get
-        //    {
-        //        return _openCaptionElementsEditCommand =
-        //            _openCaptionElementsEditCommand ?? new RelayCommand(Open);
-        //    }
-        //}
 
         private async void OnChangedTab(Message.View.CaptionElementsEditView.ChangedTabMessage message)
         {

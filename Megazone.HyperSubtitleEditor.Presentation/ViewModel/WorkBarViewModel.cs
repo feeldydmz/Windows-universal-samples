@@ -383,7 +383,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.Error.Write(e);
+
                 _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR,
                     Resource.MSG_SAVE_FAIL,
                     MessageBoxButton.OK,
@@ -445,7 +446,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var stageId = _signInViewModel.SelectedStage.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
 
-                // Create Asset
+                //--------------
+                // Create Asset 
+                //--------------
                 if (string.IsNullOrEmpty(captionAsset.Id))
                 {
                     var assetName = captionAsset.Name;
@@ -455,17 +458,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         CancellationToken.None);
 
                     var assetId = createAsset?.Id;
-                    
-
 
                     if (!string.IsNullOrEmpty(assetId))
                     {
+                        var version = createAsset.Version;
                         List<Caption> newCaptions = new List<Caption>();
                         // upload caption files.
                         foreach (var caption in captionList)
                         {
-                            var newCaptionElement =  await CreateCaptionElementWithUploadAsync(assetId, createAsset.Version, caption);
+                            var newCaptionElement =  await CreateCaptionElementWithUploadAsync(assetId, version, caption);
                             newCaptions.Add(newCaptionElement);
+                            ++version;
                         }
 
                         createAsset.Elements = newCaptions;
@@ -491,7 +494,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
+                //-------------
                 // Update Asset
+                //-------------
                 var updatedCaptionAssets = await UpdateCaptionAssetAsync(captionAsset.Id, captionList);
 
 
@@ -523,7 +528,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.Error.Write(e);
                 throw;
             }
         }
@@ -590,13 +595,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (assetUploadUrl != null)
                 {
                     caption.Url = assetUploadUrl.Url;
-                    return await _cloudMediaService.CreateCaptionElementsAsync(
+                    var response = await _cloudMediaService.CreateCaptionElementsAsync(
                         new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
                             caption), CancellationToken.None);
+
+                    if (response == null)
+                        throw new Exception($"Caption element, create fail (element name : {caption.Label})");
+
+                    return response;
                 }
                 else
                 {
-                    throw  new Exception("Caption upload fail");
+                    throw  new Exception($"Caption element, subtitle file upload fail (assetId : {assetId}, fileName : {fileName}) ");
                 }
 
             } catch (Exception e)
