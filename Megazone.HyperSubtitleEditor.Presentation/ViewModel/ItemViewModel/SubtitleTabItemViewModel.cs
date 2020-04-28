@@ -301,7 +301,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             _ignoreCollectionChanged = false;
         }
 
-        public async Task AddRowsAsync(IList<SubtitleItem> subtitles)
+        public async Task AddRowsAsync(IEnumerable<SubtitleItem> subtitles)
         {
             Debug.WriteLine("++AddRowsAsync");
 

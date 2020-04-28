@@ -425,6 +425,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 elementItem.IsOpened = false;
             }
 
+            MessageCenter.Instance.Send(new Message.View.CaptionElementsEditView.ChangedTabMessage(this));
+
             if (SelectedTab == null || !tab.Equals(SelectedTab)) return;
             var lastTab = Tabs.LastOrDefault();
             if (lastTab != null)
@@ -1317,6 +1319,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 
                 AddTab(caption.Label,
                     kind,
+                    caption.Language,
+                    caption.Country,
                     caption,
                     rows,
                     _workBarViewModel.VideoItem?.Id,
@@ -1424,7 +1428,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 _browser.Main.LoadingManager.Show();
 
-                _subtitleListItemValidator.IsEnabled = false;
+                //_subtitleListItemValidator.IsEnabled = false;
 
                 var label = CheckConflictLabel(param.Label);
 
@@ -1432,39 +1436,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 string videoId = "";
                 string captionAssetId = "";
 
-                var subtitles = _subtitleService.Load(text, param.SubtitleFormat);
+                var rows = _subtitleService.Load(text, param.SubtitleFormat);
 
                 var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
                 videoId = workBar.VideoItem?.Id;
                 captionAssetId = workBar.CaptionAssetItem?.Id;
 
-                var newTab = new SubtitleTabItemViewModel(label,
-                    OnRowCollectionChanged,
-                    OnValidateRequested,
-                    OnTabSelected,
-                    OnItemSelected,
-                    OnDoubleClickedItem,
-                    param.Kind,
-                    OnDisplayTextChanged,
+                AddTab(label, 
+                    param.Kind, 
                     param.LanguageCode,
-                    param.CountryCode)
-                {
-                    IsSelected = true,
-                    FilePath = param.FilePath,
-                    VideoId = videoId,
-                    CaptionAssetId = captionAssetId
-                };
-
-                if (subtitles != null)
-                    newTab.AddRowsAsync(subtitles.ToList());
-
-                this.InvokeOnUi(() =>
-                {
-                    Tabs.Add(newTab);
-                });
-
-                _subtitleListItemValidator.IsEnabled = true;
-                _subtitleListItemValidator.Validate(SelectedTab.Rows);
+                    param.CountryCode,
+                    null,
+                    rows,
+                    videoId,
+                    param.FilePath,
+                    captionAssetId
+                    );
 
                 if (param.FilePath.IsNotNullAndAny())
                 {
@@ -1611,14 +1598,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private async void AddTab(string name, 
-            CaptionKind kind, 
+            CaptionKind kind,
+            string languageCode,
+            string countryCode,
             Caption caption,
-            IList<SubtitleItem> subtitleContentList,
+            IEnumerable<SubtitleItem> subtitleContentList,
             string videoId = "",
             string filePath = "",
             string captionAssetId = "", 
-            bool isSelected = false
-            )
+            bool isSelected = true)
         {
 
             Debug.WriteLine("+ AddTab");
@@ -1634,8 +1622,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 OnDoubleClickedItem,
                 kind,
                 OnDisplayTextChanged,
-                caption?.Language,
-                caption?.Country,
+                languageCode,
+                countryCode,
                 caption)
             {
                 VideoId = videoId,
@@ -1643,7 +1631,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 FilePath = filePath,
                 IsSelected = isSelected,
             };
-            if (subtitleContentList.Any())
+            if (subtitleContentList != null && subtitleContentList.Any())
                 await newTab.AddRowsAsync(subtitleContentList);
 
             this.InvokeOnUi(() =>
@@ -1654,12 +1642,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator.IsEnabled = true;
             _subtitleListItemValidator.Validate(newTab.Rows);
             
-
             CommandManager.InvalidateRequerySuggested();
+
+            CollapseAllPopup();
 
             _browser.Main.LoadingManager.Hide();
 
+            MessageCenter.Instance.Send(new Message.View.CaptionElementsEditView.ChangedTabMessage(this));
+
             Debug.WriteLine("- AddTab");
+        }
+
+        public void CollapseAllPopup()
+        {
+            var leftSideViewmodel = Bootstrapper.Container.Resolve<LeftSideMenuViewModel>();
+            leftSideViewmodel?.Close();
+
+            var captionElementsEditViewmodel = Bootstrapper.Container.Resolve<CaptionElementsEditViewModel>();
+            captionElementsEditViewmodel?.Close();
         }
 
         private void OnEditSubtitle(Message.SubtitleEditor.EditTabMessage message)

@@ -7,6 +7,8 @@
              xmlns:local="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:itemViewModel="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionElementEdit}">
@@ -24,8 +26,13 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
+    <i:Interaction.Behaviors>
+        <behavior:UnfocusedBehavior
+            IsVisible="{Binding Source={StaticResource SubtitleViewModelLocator},Path=CaptionElementEdit.IsShow, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"/>
+    </i:Interaction.Behaviors>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -117,15 +124,32 @@
                         <DataTemplate DataType="itemViewModel:CaptionElementItemViewModel">
                             <Border x:Name="itemBorder" Height="25" Margin="0,0,5,0">
                                 <Grid VerticalAlignment="Center" IsEnabled="{Binding Path=CanDeploy}">
-                                    <CheckBox IsChecked="{Binding Path=IsSelected}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Width="6" 
+                                             Height="6" 
+                                             Fill="#388fec"
+                                             Visibility="{Binding IsDirty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding Path=IsSelected}">
                                         <Grid MinWidth="{Binding ActualWidth, ElementName=itemBorder}" >
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="70" />
-                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="30" />
                                             </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0">
+                                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_local.png"
+                                                       Width="14" Height="10"
+                                                       Visibility="{Binding Path=Id, Converter={StaticResource NullToVisibleNCollapsedConverter}}"/>
+                                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_upload.png"
+                                                       Width="14" Height="10"
+                                                       Visibility="{Binding Path=Id, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
+                                            </Grid>
 
-                                            <TextBlock Grid.Column="0" Text="{Binding Path=Label}"
+                                            <TextBlock Grid.Column="1" Text="{Binding Path=Label}"
                                                        HorizontalAlignment="Left" 
                                                        ToolTip="{Binding Path=Label}"
                                                        TextTrimming="CharacterEllipsis"/>
@@ -133,7 +157,7 @@
                                                            Text="{Binding Path=Language, StringFormat={}[{0}]}"
                                                            HorizontalAlignment="Right"
                                                            Foreground="{StaticResource Brush_PointColor}" />-->
-                                            <TextBlock Grid.Column="1"
+                                            <TextBlock Grid.Column="2"
                                                    Foreground="{StaticResource Brush_PointColor}"
                                                    HorizontalAlignment="Right"
                                                    Margin="0,0,20,0">
@@ -154,7 +178,7 @@
                                         <!--<ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
                                     </CheckBox>
                                 </Grid>
-                                
+
                             </Border>
                             <DataTemplate.Triggers>
                                 <Trigger Property="IsMouseOver"

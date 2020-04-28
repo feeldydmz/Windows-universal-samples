@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -7,17 +12,16 @@ using Megazone.HyperSubtitleEditor.Presentation.Message;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 {
-    // Left Side Menu bar를 숨기기 위해 만들었는데..
-    public class CollapseBehavior : Behavior<FrameworkElement>
+    public class UnfocusedBehavior : Behavior<FrameworkElement>
     {
         public static readonly DependencyProperty IsVisibleProperty =
-            DependencyProperty.Register("IsVisible", typeof(bool), typeof(CollapseBehavior),
+            DependencyProperty.Register("IsVisible", typeof(bool), typeof(UnfocusedBehavior),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    (s, e) => { ((CollapseBehavior) s).OnIsOpenPropertyChanged((bool) e.NewValue); }));
+                    (s, e) => { ((UnfocusedBehavior)s).OnIsOpenPropertyChanged((bool)e.NewValue); }));
 
         public bool IsVisible
         {
-            get => (bool) GetValue(IsVisibleProperty);
+            get => (bool)GetValue(IsVisibleProperty);
             set => SetValue(IsVisibleProperty, value);
         }
 
@@ -26,22 +30,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             if (AssociatedObject != null)
             {
                 AssociatedObject.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
-                if (!newValue)
-                    MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
             }
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
-            AssociatedObject.Loaded += AssociatedObject_Loaded;
 
-            if (Application.Current.MainWindow == null)
-                return;
-
-            //Application.Current.MainWindow.Deactivated -= MainWindow_Deactivated;
-            //Application.Current.MainWindow.Deactivated += MainWindow_Deactivated;
             Application.Current.MainWindow.StateChanged -= MainWindow_StateChanged;
             Application.Current.MainWindow.StateChanged += MainWindow_StateChanged;
             Application.Current.MainWindow.LocationChanged -= MainWindow_LocationChanged;
@@ -52,13 +47,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!IsVisible)
-                return;
-
-            var rect = new Rect(new Point(0, 0),
-                new Point(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight));
-            if (!rect.Contains(e.GetPosition(AssociatedObject)))
-                IsVisible = false;
+            IsVisible = false;
         }
 
         private void MainWindow_LocationChanged(object sender, EventArgs e)
@@ -71,20 +60,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             IsVisible = false;
         }
 
-        private void MainWindow_Deactivated(object sender, EventArgs e)
+        private void AssociatedObjectOnGotFocus(object sender, RoutedEventArgs e)
         {
-            IsVisible = false;
+            Debug.WriteLine("AssociatedObjectOnGotFocus");
+
         }
 
-        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
-        {
-            OnIsOpenPropertyChanged(IsVisible);
-        }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            //AssociatedObject.Loaded -= AssociatedObject_Loaded;
         }
     }
 }

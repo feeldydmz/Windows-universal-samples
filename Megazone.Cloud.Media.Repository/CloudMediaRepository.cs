@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -261,7 +262,10 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
                 .AddQueryParameter("version", request.Version.ToString())
                 .AddJsonString(request.Caption);
 
-            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            Debug.WriteLine(response.ToString());
+
+            return response.Convert<Caption>();
         }
 
         public bool DeleteCaption(CaptionRequest request)
@@ -289,7 +293,11 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("version", request.Version.ToString())
                 .AddJsonString(request.Caption);
-            return RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest).Convert<Caption>();
+
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+            Debug.WriteLine(response.ToString());
+
+            return response.Convert<Caption>();
         }
 
         public bool DeleteCaptionAsset(DeleteAssetRequest request)

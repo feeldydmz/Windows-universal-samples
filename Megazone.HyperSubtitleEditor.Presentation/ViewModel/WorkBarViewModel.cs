@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -315,13 +316,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         {
                             if (video != null)
                                 VideoItem = new VideoItemViewModel(video);
-                            if (captionAsset != null)
-                                CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+                            if (captionAsset == null)
+                                return;
+                            //if (captionAsset != null)
+                            //    CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
                             HasWorkData = true;
                             IsOnlineData = true;
 
-                            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-                            foreach (var tab in subtitle.Tabs)
+                            var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                            foreach (var tab in subtitleViewModel.Tabs)
                             {
                                 var newCaption =
                                     captionAsset?.Elements?.FirstOrDefault(caption => caption.Label.Equals(tab.Name));
@@ -330,24 +333,44 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                     {
                                         subtitleTabItemViewModel.Caption = newCaption;
                                         subtitleTabItemViewModel.UpdateOriginData();
+                                        subtitleTabItemViewModel.SetAsDeployed();
                                     }
                                 }
                             }
-
                             var linkUrl = video != null ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
 
-                            foreach (var caption in message.Param.Captions.ToList())
+                            if (CaptionAssetItem != null)
                             {
-                                var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-                                var tabItem = subtitleViewModel.Tabs.SingleOrDefault(tab =>
-                                    tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) &&
-                                    tab.CountryCode.Equals(caption.Country));
-                                tabItem?.SetAsDeployed();
+                                var diffList = CaptionAssetItem.Elements
+                                    ?.Where(e => captionAsset.Elements.All(u => u.Id != e.Id)).Select(c => c.Source)
+                                    .ToList();
+
+                                var mergedCaptionAssets =
+                                    diffList.Union(captionAsset.Elements).OrderBy(d => d.Id).ToList();
+                                captionAsset.Elements = mergedCaptionAssets;
+
+                                foreach (var asset in mergedCaptionAssets)
+                                {
+                                    Debug.WriteLine($"asset : {asset.Label}");
+                                }
                             }
+                            
+                            CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset);
+
+                            //foreach (var caption in message.Param.Captions.ToList())
+                            //{
+                            //    var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+                            //    var tabItem = subtitleViewModel.Tabs.SingleOrDefault(tab =>
+                            //        tab.Name.Equals(caption.Label) && tab.LanguageCode.Equals(caption.Language) &&
+                            //        tab.CountryCode.Equals(caption.Country));
+                            //    tabItem?.SetAsDeployed();
+                            //}
 
 
                             _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset,
                                 message.Param.Captions.ToList(), linkUrl);
+
+                            subtitleViewModel.CollapseAllPopup();
                         }
                         else
                         {
@@ -422,6 +445,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var stageId = _signInViewModel.SelectedStage.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
 
+                // Create Asset
                 if (string.IsNullOrEmpty(captionAsset.Id))
                 {
                     var assetName = captionAsset.Name;
@@ -467,11 +491,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 }
 
-                var updatedCaptionAsset = await UpdateCaptionAssetAsync(captionAsset.Id, captionList);
-                
+                // Update Asset
+                var updatedCaptionAssets = await UpdateCaptionAssetAsync(captionAsset.Id, captionList);
+
+
+                //var diffList = CaptionAssetItem.Elements.Where(e => updatedCaptionAssets.Elements.All(u => u.Id != e.Id)).Select(c => c.Source).ToList();
+
+
+                //var mergedCaptionAssets = diffList.Union(updatedCaptionAssets.Elements);
+
+                //foreach (var asset in mergedCaptionAssets)
+                //{
+                //    Debug.WriteLine($"asset : {asset.Label}");
+                //}
+
+                //updatedCaptionAssets.Elements = mergedCaptionAssets;
+                //CaptionAssetItem.
+
+                //var 
+
+                //foreach (var captionElementItem in CaptionAssetItem.Elements)
+                //{
+                //    updatedCaptionAssets.Elements.FirstOrDefault(c => c.Id == captionElementItem.Id);
+                //}
+
+                //updatedCaptionAssets?.Elements.Union(CaptionAssetItem.Elements, new CaptionComparer());
                 ////Debug.Assert(updatedCaption != null, "updatedCaption is null.");
 
-                finishAction?.Invoke(!string.IsNullOrEmpty(captionAsset.Id), video, updatedCaptionAsset);
+                finishAction?.Invoke(!string.IsNullOrEmpty(captionAsset.Id), video, updatedCaptionAssets);
                 return;
             }
             catch (Exception e)
@@ -479,6 +526,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Console.WriteLine(e);
                 throw;
             }
+        }
+        public class CaptionComparer : IEqualityComparer<Caption>
+        {
+
+            #region IEqualityComparer<Skill> Members
+
+            public bool Equals(Caption skill, Caption skillToCompare)
+            {
+                return skill.Id == skillToCompare.Id;
+            }
+
+            public int GetHashCode(Caption obj)
+            {
+                return obj.Id.GetHashCode();
+            }
+
+            #endregion
         }
 
         private string GetFileName(Caption caption)
@@ -617,16 +681,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 List<Caption> updatingCaptionList = new List<Caption>();
                 if (captionList.Any())
                 {
-                    var addList = new List<Caption>();
+                    var createCaptionList = new List<Caption>();
                     foreach (var workingCaption in captionList)
                     {
                         var findCaption =
                             oldCaptions.SingleOrDefault(caption => caption.Id.Equals(workingCaption.Id));
 
-                        // updatingCaptionList 에 값이 없다면 새로 추가된 caption
+                        // findCaption 에 값이 없다면 새로 추가된 caption
                         if (findCaption == null)
                         {
-                            addList.Add(workingCaption);
+                            createCaptionList.Add(workingCaption);
                         }
                         else
                         {
@@ -634,17 +698,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         }
                     }
 
-                    List<Caption> newCaptions = new List<Caption>();
-                    if (addList.Any())
+                    List<Caption> createdCaptionAssetList = new List<Caption>();
+                    if (createCaptionList.Any())
                     {
                         // 추가된 자막 파일은 지정된 Asset에 추가한다.
-                        foreach (var caption in addList)
+                        foreach (var caption in createCaptionList)
                         {
                             var newCaptionElement =
                                 await CreateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
 
                             if (newCaptionElement != null)
-                                newCaptions.Add(newCaptionElement);
+                                createdCaptionAssetList.Add(newCaptionElement);
                         }
                     }
 
@@ -655,7 +719,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         var response =
                             await UpdateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
 
-                        newCaptions.Insert(i, caption);
+                        createdCaptionAssetList.Insert(i, caption);
 
                         if (response == null)
                         {
@@ -664,7 +728,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     }
 
                     var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
-                        asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, newCaptions);
+                        asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, createdCaptionAssetList);
 
                     return updateAsset;
                 }

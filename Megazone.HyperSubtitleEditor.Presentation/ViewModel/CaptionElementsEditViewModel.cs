@@ -9,10 +9,10 @@ using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
+using Megazone.HyperSubtitleEditor.Presentation;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -77,6 +77,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             AssetName = null;
             AssetId = null;
 
+            MessageCenter.Instance.Regist<Message.View.CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
+
+        }
+
+        ~CaptionElementsEditViewModel()
+        {
+            MessageCenter.Instance.Unregist<Message.View.CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
         }
 
         public async void Show()
@@ -159,26 +166,73 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             //var editedCaptionList = _subtitleViewModel.Tabs.Select(CreateCaptionElementItemViewModel).ToList();
 
-            var tempCaptionList = _workBarViewModel.CaptionAssetItem.Elements.ToList();
+            var elementItemViewModels = _workBarViewModel.CaptionAssetItem?.Elements?.ToList();
 
-            foreach (var element in tempCaptionList)
+            if (elementItemViewModels != null)
             {
-                var result = _subtitleViewModel.Tabs.FirstOrDefault(t => t.Caption?.Id == element.Id);
-
-                //var item = tempCaptionList.FirstOrDefault(c => c.Id == tab.Caption?.Id);
-                element.CanDeploy = true;
-
-                if (result != null)
+                foreach (var elementItem in elementItemViewModels)
                 {
-                    element.IsOpened = true;
-                }
-                else
-                {
-                    element.IsOpened = false;
+                    elementItem.CanDeploy = true;
+                    elementItem.IsOpened = false;
+                    elementItem.IsDirty = false;
                 }
             }
 
-            return tempCaptionList;
+            
+
+            foreach (var tab in _subtitleViewModel.Tabs)
+            {
+                var elementItem = elementItemViewModels?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
+
+                if (elementItem != null)
+                {
+                    elementItem.IsOpened = true;
+                    elementItem.IsDirty = tab.IsDirty;
+                }
+                else
+                {
+                    var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
+                                tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
+                                tab.Caption?.Size ?? 0);
+
+                    var newElementItem = new CaptionElementItemViewModel(caption)
+                    {
+                        IsOpened = true,
+                            //!string.IsNullOrEmpty(tab.Name)
+                            //             && !string.IsNullOrEmpty(tab.LanguageCode)
+                            //             && !string.IsNullOrEmpty(tab.CountryCode),
+
+                        CanDeploy = false
+                    };
+
+                    elementItemViewModels.Add(newElementItem);
+                }
+            }
+
+            return elementItemViewModels;
+
+            ////-------------------------
+            //var tempCaptionList = _workBarViewModel.CaptionAssetItem.Elements.ToList();
+
+            //foreach (var element in tempCaptionList)
+            //{
+            //    var tab = _subtitleViewModel.Tabs.FirstOrDefault(t => t.Caption?.Id == element.Id);
+
+            //    //var item = tempCaptionList.FirstOrDefault(c => c.Id == tab.Caption?.Id);
+            //    element.CanDeploy = true;
+
+            //    if (tab != null)
+            //    {
+            //        element.IsOpened = true;
+            //    }
+            //    else
+            //    {
+            //        element.IsOpened = false;
+            //    }
+            //}
+
+            //return tempCaptionList;
+            ////-------------------------
 
             //foreach (var item in editedCaptionList)
             //{
@@ -214,6 +268,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //    }
         //}
 
-
+        private async void OnChangedTab(Message.View.CaptionElementsEditView.ChangedTabMessage message)
+        {
+            if (IsShow)
+                CaptionItems = await MakeList();
+        }
     }
 }

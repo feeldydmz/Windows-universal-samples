@@ -148,6 +148,7 @@
     <Compile Include="Behavior\PopupHeightControlBehavior.cs" />
     <Compile Include="Behavior\ProjectSelectBehavior.cs" />
     <Compile Include="Behavior\SubtitleItemsFilterBehavior.cs" />
+    <Compile Include="Behavior\UnfocusedBehavior.cs" />
     <Compile Include="Behavior\VideoElementLogBehavior.cs" />
     <Compile Include="Behavior\VideoElementSeekingBehavior.cs" />
     <Compile Include="Behavior\VideoElementStopBehavior.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Message\ReinitializeAppContextMessage.cs" />
     <Compile Include="Message\SignIn.cs" />
     <Compile Include="Message\SubtitleEditor.cs" />
+    <Compile Include="Message\View\CaptionElementsEditView.cs" />
     <Compile Include="Message\View\SubtitleView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AssetEditorViewModel.cs" />

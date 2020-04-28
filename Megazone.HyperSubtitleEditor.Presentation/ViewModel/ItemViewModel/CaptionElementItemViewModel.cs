@@ -15,6 +15,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private bool _isDraft;
         private bool _isPreferred;
         private bool _isSelected;
+        private bool _isDirty;
         private bool _isOpened;
 
         public CaptionElementItemViewModel(Caption caption)
@@ -58,11 +59,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _isPreferred, value);
         }
 
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set => Set(ref _isDirty, value);
+        }
+
         public bool IsSelected
         {
             get => _isSelected;
             set => Set(ref _isSelected, value);
         }
+
 
         public bool IsOpened
         {

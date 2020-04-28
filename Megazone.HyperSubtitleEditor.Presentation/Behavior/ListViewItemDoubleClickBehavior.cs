@@ -53,6 +53,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
             // 더블클릭
             if (e.ClickCount >= 2)
                 Command.Execute(null);
+
+            // 마우스 이벤트를 MainWindow로 전달
+            MouseButtonEventArgs arg = new MouseButtonEventArgs(
+                Mouse.PrimaryDevice, 0, MouseButton.Left | MouseButton.Right);
+            arg.RoutedEvent = Window.MouseDownEvent;
+
+            Application.Current?.MainWindow?.RaiseEvent(arg); 
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
