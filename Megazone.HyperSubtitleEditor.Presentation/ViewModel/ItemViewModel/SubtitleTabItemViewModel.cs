@@ -211,9 +211,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public void Reset()
         {
+            var removeRows = new List<ISubtitleListItemViewModel>();
             foreach (var row in Rows)
             {
-                row.ResetData();
+                if (row.hasOriginText)
+                {
+                    row.ResetData();
+                }
+                else
+                {
+                    removeRows.Add(row);
+                }
+            }
+
+            foreach (var row in removeRows)
+            {
+                Rows.Remove(row);
             }
 
             _isRowCollectionChanged = false;

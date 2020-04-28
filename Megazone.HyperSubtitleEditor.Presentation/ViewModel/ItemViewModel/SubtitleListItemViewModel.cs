@@ -176,6 +176,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _isNowPlaying, value);
         }
 
+        public bool hasOriginText => OriginalData.Texts != null;
+
         public void CheckIsNowPlaying(TimeSpan position)
         {
             IsNowPlaying = _startTime <= position && _endTime >= position;
@@ -192,7 +194,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             OriginalData.StartTime = StartTime;
             OriginalData.EndTime = EndTime;
-            OriginalData.Texts = Texts;
+
+            if (Texts == null)
+            {
+                Texts = new List<IText>();
+                OriginalData.Texts = Texts;
+            }
 
             AnalyzeText(Duration, Texts);
         }
