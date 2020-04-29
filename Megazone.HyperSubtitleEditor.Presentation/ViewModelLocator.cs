@@ -29,8 +29,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation
         public FindAndReplaceViewModel FindAndReplace => Bootstrapper.Container.Resolve<FindAndReplaceViewModel>();
         public SignInViewModel SignIn => Bootstrapper.Container.Resolve<SignInViewModel>();
 
-        public CaptionAssetListViewModel CaptionAssetList =>
-            Bootstrapper.Container.Resolve<CaptionAssetListViewModel>();
+        public CaptionAssetMenuViewModel CaptionAssetMenu =>
+            Bootstrapper.Container.Resolve<CaptionAssetMenuViewModel>();
 
         public VideoListViewModel VideoList => Bootstrapper.Container.Resolve<VideoListViewModel>();
         public McmDeployViewModel McmDeploy => Bootstrapper.Container.Resolve<McmDeployViewModel>();
@@ -43,5 +43,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation
 
         public CaptionElementsEditViewModel CaptionElementEdit =>
             Bootstrapper.Container.Resolve<CaptionElementsEditViewModel>();
+        public CaptionAssetListViewModel CaptionAssetList =>
+            Bootstrapper.Container.Resolve<CaptionAssetListViewModel>();
+
     }
 }

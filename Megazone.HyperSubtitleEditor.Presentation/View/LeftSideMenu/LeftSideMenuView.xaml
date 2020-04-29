@@ -350,7 +350,7 @@
                                                      Content="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, Converter={StaticResource StringToUpperConverter}}"
                                                      GroupName="McmMenuGroup"
                                                      Margin="3"
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LoadCommand}" />
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu.LoadCommand}" />
 
                                     </StackPanel>
                                     <Button Grid.Column="2"

@@ -13,7 +13,7 @@
              xmlns:custom="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList}"
+             DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu}"
              AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
              x:Name="Root">
     <i:Interaction.Triggers>
@@ -244,7 +244,11 @@
 
                 <!--Caption 검색 결과-->
                 <Border Grid.Row="3">
-                    <Grid>
+                    <custom:CaptionAssetListView
+                        CaptionAssetList="{Binding ElementName=Root, Path=DataContext.CaptionAssetItems, Mode=TwoWay}"
+                        SelectedCaptionAsset="{Binding ElementName=Root, Path=DataContext.SelectedCaptionAssetItem, Mode=TwoWay}"
+                        ChangedListSelection ="{Binding ElementName=Root, Path=DataContext.CaptionAssetSectionChangedCommand}"/>
+                    <!--<Grid>
                         <ListBox x:Name="AssetListBox"
                                  ItemsSource="{Binding Path=CaptionAssetItems}"
                                  SelectedItem="{Binding Path=SelectedCaptionAssetItem, Mode=TwoWay}"
@@ -271,19 +275,19 @@
                                             <RadioButton Grid.Column="0" Grid.Row="0"
                                                          IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
                                                          VerticalAlignment="Top"
-                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.CaptionAssetSectionChangedCommand}"/>
-                                            <!--에셋정보-->
+                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu.CaptionAssetSectionChangedCommand}"/>
+                                            --><!--에셋정보--><!--
                                             <Grid Grid.Column="2" Grid.Row="0">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="10" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <!--TODO: DataTemplateSelector 이용하는 방식으로-->
+                                                --><!--TODO: DataTemplateSelector 이용하는 방식으로-->
                                                 <!--<StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                     <Image Style="{StaticResource Style_CaptionBadgeImage}" />
                                                     <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
-                                                </StackPanel>-->
+                                                </StackPanel>--><!--
 
                                                 <ContentControl
                                                     Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
@@ -317,7 +321,7 @@
                                                 </Grid>
                                             </Grid>
 
-                                            <!--캡션정보-->
+                                            --><!--캡션정보--><!--
                                             <Grid Grid.Column="2" Grid.Row="2"
                                                   Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                 <ItemsControl x:Name="CaptionItemsControl"
@@ -375,7 +379,7 @@
                                 HorizontalAlignment="Center"
                                 Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
                         </Border>
-                    </Grid>
+                    </Grid>-->
                 </Border>
 
                 <Grid Grid.Row="4" Margin="0,0,20,0">

@@ -93,8 +93,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Refresh()
         {
             var videoListViewModel = Bootstrapper.Container.Resolve<VideoListViewModel>();
-            var captionAssetListViewModel = Bootstrapper.Container.Resolve<CaptionAssetListViewModel>();
-
+            var captionAssetListViewModel = Bootstrapper.Container.Resolve<CaptionAssetMenuViewModel>();
+            
             videoListViewModel.ClearSearchParameter();
             videoListViewModel.LoadCommand?.Execute(null);
 
