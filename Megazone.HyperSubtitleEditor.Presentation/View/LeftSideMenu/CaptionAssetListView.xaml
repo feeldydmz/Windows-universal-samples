@@ -30,12 +30,12 @@
     </UserControl.Resources>
     <Grid >
         <ListBox x:Name="AssetListBox"
-                 ItemsSource="{Binding ElementName=captionAssetListRoot, Path=CaptionAssetList, Mode=TwoWay}"
-                 SelectedItem="{Binding ElementName=captionAssetListRoot, Path=SelectedCaptionAsset, Mode=TwoWay}"
+                 ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
+                 SelectedItem="{Binding SelectedCaptionAssetItem, Mode=TwoWay}"
                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding ElementName=captionAssetListRoot, Path=ChangedListSelection}" />
+                                    Command="{Binding CaptionAssetSectionChangedCommand}" />
             </i:Interaction.Behaviors>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
@@ -118,7 +118,7 @@
 
                                                 <CheckBox Grid.Column="0"
                                                                           IsChecked="{Binding Path=IsSelected}"
-                                                                          Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
+                                                                          Command="{Binding ElementName=captionAssetListRoot, Path=DataContext.CaptionElementSelectionChangedCommand}"
                                                                           CommandParameter="{Binding}" />
                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Label}"
                                                                            TextTrimming="CharacterEllipsis"

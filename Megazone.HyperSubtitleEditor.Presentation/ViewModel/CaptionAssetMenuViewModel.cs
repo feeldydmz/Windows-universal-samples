@@ -35,13 +35,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly LanguageLoader _languageLoader;
         private readonly SignInViewModel _signInViewModel;
+        private CaptionAssetListViewModel _captionAssetList;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems;
 
-        private ICommand _captionAssetSectionChangedCommand;
         private IEnumerable<DisplayItem> _captionKindItems;
-        private ICommand _captionSelectionChangedCommand;
         private ICommand _confirmCommand;
         private ICommand _enterCommand;
         private ICommand _initializeCommand;
@@ -57,7 +55,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadCommand;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
-        private CaptionAssetItemViewModel _selectedCaptionAssetItem;
         private DisplayItem _selectedCaptionKindItem;
         private DisplayItem _selectedKeywordType;
 
@@ -75,15 +72,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _cloudMediaService = cloudMediaService;
             _signInViewModel = signInViewModel;
             _languageLoader = languageLoader;
-        }
 
-        public ICommand CaptionAssetSectionChangedCommand
-        {
-            get
-            {
-                return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand(OnCaptionAssetSectionChanged);
-            }
+            CaptionAssetList = new CaptionAssetListViewModel();
         }
 
         public ICommand SelectedPageNoChangedCommand
@@ -125,16 +115,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _enterCommand = _enterCommand ?? new RelayCommand<string>(Enter); }
         }
 
-        public ICommand CaptionSelectionChangedCommand
-        {
-            get
-            {
-                return _captionSelectionChangedCommand = _captionSelectionChangedCommand ??
-                                                         new RelayCommand<CaptionElementItemViewModel>(
-                                                             OnCaptionSelectionChanged, CanCaptionSelectionChanged);
-            }
-        }
-
         public bool IsConfirmButtonVisible
         {
             get => _isConfirmButtonVisible;
@@ -147,17 +127,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isBusy, value);
         }
 
-        public CaptionAssetItemViewModel SelectedCaptionAssetItem
-        {
-            get => _selectedCaptionAssetItem;
-            set => Set(ref _selectedCaptionAssetItem, value);
-        }
-
-        public IEnumerable<CaptionAssetItemViewModel> CaptionAssetItems
-        {
-            get => _captionAssetItems;
-            set => Set(ref _captionAssetItems, value);
-        }
+        public CaptionAssetItemViewModel SelectedCaptionAssetItem => CaptionAssetList.SelectedCaptionAssetItem;
 
         public int TotalCount
         {
@@ -223,27 +193,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _selectedLanguage, value);
         }
 
+        public CaptionAssetListViewModel CaptionAssetList
+        {
+            get => _captionAssetList;
+            set => Set(ref _captionAssetList, value);
+        }
+
         private async void OnSelectedPageNoChanged(int selectedPageNo)
         {
             if (_isLoading)
                 return;
             await SearchAsync(Keyword, selectedPageNo - 1, true);
-        }
-
-        private void OnCaptionAssetSectionChanged()
-        {
-            SelectedCaptionAssetItem?.SelectAll();
-            if (CaptionAssetItems != null)
-                foreach (var captionAssetItem in CaptionAssetItems)
-                    if (!captionAssetItem.Equals(SelectedCaptionAssetItem))
-                        captionAssetItem.Initialize();
-
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
-        {
-            return SelectedCaptionAssetItem?.Elements?.Any(element => element.Equals(arg)) ?? false;
         }
 
         private void Initialize()
@@ -335,19 +295,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     SelectedPageNo = 1;
                     TotalCount = 0;
-                    CaptionAssetItems = null;
                 }
 
-                SelectedCaptionAssetItem = null;
+                CaptionAssetList.SelectedCaptionAssetItem = null;
+
                 var results = await GetCaptionAssetListAsync(new Pagination(pageIndex), conditions,
                     _cancellationTokenSource.Token);
 
                 if (results == null) return;
 
                 TotalCount = results.TotalCount;
-                CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(
+                var captionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(
                     results.List?.Select(captionAsset => new CaptionAssetItemViewModel(captionAsset)).ToList() ??
                     new List<CaptionAssetItemViewModel>());
+
+
+                CaptionAssetList.CaptionAssetItems = captionAssetItems;
             }
             catch (Exception e)
             {
@@ -442,31 +405,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             return conditions;
-        }
-
-        private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
-        {
-            if (SelectedCaptionAssetItem == null)
-                return;
-
-            var captionAssetItem = CaptionAssetItems.SingleOrDefault(assetItem =>
-                assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
-
-            if (!SelectedCaptionAssetItem?.Equals(captionAssetItem) ?? true)
-            {
-                CaptionAssetItems?.ToList().ForEach(asset =>
-                {
-                    if (!asset.Equals(captionAssetItem))
-                        asset.Initialize();
-                });
-
-                if (SelectedCaptionAssetItem != captionAssetItem)
-                    SelectedCaptionAssetItem = captionAssetItem;
-            }
-
-            var isAnySeleted = captionAssetItem.Elements?.Any(element => element.IsSelected);
-
-            if (isAnySeleted == false) SelectedCaptionAssetItem = null;
         }
 
         private bool CanConfirm()

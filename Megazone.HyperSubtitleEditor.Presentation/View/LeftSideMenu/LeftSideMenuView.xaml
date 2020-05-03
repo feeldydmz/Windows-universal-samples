@@ -32,6 +32,7 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -39,6 +40,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -313,7 +315,7 @@
                 </Border>
             </Grid>
 
-            <Border Grid.Column="1" MaxWidth="392" BorderBrush="#dfe3ee" BorderThickness="1,0,0,0" Background="#f4f6f8">
+            <Border Grid.Column="1" BorderBrush="#dfe3ee" BorderThickness="1,0,0,0" Background="#f4f6f8">
 
                 <Grid>
                     <!-- [Media Cloud Media] -->
@@ -373,6 +375,7 @@
                             </Border>
 
                             <Border Grid.Row="1"
+                                    Width="396"
                                     Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <leftMenuView:McmCaptionAssetMenuView />
                             </Border>
@@ -392,6 +395,10 @@
                         <leftMenuView:RecentlyMenuView />
                     </Border>
                 </Grid>
+            </Border>
+            <Border Grid.Column="2" BorderThickness="0" 
+                    Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.SelectedVideoItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                <TextBlock Text="Second Caption List" Foreground="Red"/>
             </Border>
         </Grid>
         <Border BorderBrush="#dfe3ee" BorderThickness="1" />
