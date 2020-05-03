@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,11 +34,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly SignInViewModel _signInViewModel;
 
         private ICommand _addDataCommand;
-        private ICommand _backCommand;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        private ICommand _captionAssetSectionChangedCommand;
-        private ICommand _captionSelectionChangedCommand;
         private ICommand _closeCommand;
         private ICommand _confirmCommand;
 
@@ -90,15 +88,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _browser = browser;
             _cloudMediaService = cloudMediaService;
             _signInViewModel = signInViewModel;
-        }
-
-        public ICommand CaptionAssetSectionChangedCommand
-        {
-            get
-            {
-                return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand(OnCaptionAssetSectionChanged);
-            }
         }
 
         public ICommand SelectedPageNoChangedCommand
@@ -154,25 +143,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get { return _refreshCommand = _refreshCommand ?? new RelayCommand(Refresh); }
         }
 
-
-        public ICommand BackCommand
-        {
-            get { return _backCommand = _backCommand ?? new RelayCommand(Back); }
-        }
-
         public ICommand EnterCommand
         {
             get { return _enterCommand = _enterCommand ?? new RelayCommand<string>(Enter); }
-        }
-
-        public ICommand CaptionSelectionChangedCommand
-        {
-            get
-            {
-                return _captionSelectionChangedCommand = _captionSelectionChangedCommand ??
-                                                         new RelayCommand<CaptionElementItemViewModel>(
-                                                             OnCaptionSelectionChanged, CanCaptionSelectionChanged);
-            }
         }
 
         public ICommand DurationStartTimeChangedCommand
@@ -204,6 +177,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isConfirmButtonVisible;
             set => Set(ref _isConfirmButtonVisible, value);
         }
+
 
         public TimeSpan DurationStartTime
         {
@@ -356,22 +330,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 DurationEndTime = TimeSpan.FromSeconds(DurationStartTime.TotalSeconds);
         }
 
-        private void OnCaptionAssetSectionChanged()
-        {
-            SelectedVideoItem?.SelectedCaptionAsset?.SelectAll();
-            SelectedVideoItem?.Update();
-            if (SelectedVideoItem?.CaptionAssetItems != null)
-                foreach (var captionAssetItem in SelectedVideoItem.CaptionAssetItems)
-                    if (!captionAssetItem.Equals(SelectedVideoItem?.SelectedCaptionAsset))
-                        captionAssetItem.Initialize();
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
-        {
-            return SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any(element => element.Equals(arg)) ?? false;
-        }
-
         private void Initialize()
         {
             _isInitialized = false;
@@ -402,6 +360,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void Close()
         {
+            if (OldVideoItem != null) OldVideoItem.CaptionAssetList = null;
+
+            OldVideoItem = null;
             IsOpen = false;
             CloseAction?.Invoke();
         }
@@ -427,8 +388,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
         }
 
+        private VideoItemViewModel OldVideoItem { get; set; }
+
         private async void LoadCaptionAsync(VideoItemViewModel videoItem)
         {
+            Debug.WriteLine("LoadCaptionAsync start");
             IsNextButtonVisible = false;
             IsConfirmButtonVisible = true;
 
@@ -445,22 +409,34 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (string.IsNullOrEmpty(videoId))
                     return;
 
-                if (videoItem.CanUpdate)
+                if (OldVideoItem?.Id == videoItem.Id)
                 {
-                    videoItem?.CaptionAssetItems?.Clear();
-                    var authorization = _signInViewModel.GetAuthorizationAsync().Result;
-                    var stageId = _signInViewModel.SelectedStage?.Id;
-                    var projectId = _signInViewModel.SelectedProject.ProjectId;
-
-                    var result = await _cloudMediaService.GetVideoAsync(
-                        new GetVideoParameter(authorization, stageId, projectId, videoId),
-                        _cancellationTokenSource.Token);
-
-                    videoItem.UpdateSource(result);
-                    if (videoItem.CaptionAssetItems != null)
-                        if (videoItem.CaptionAssetItems is IList<CaptionAssetItemViewModel> list)
-                            list.Add(CaptionAssetItemViewModel.Empty);
+                    Debug.WriteLine("Old Caption Equal");
+                    return;
                 }
+
+                var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+                var stageId = _signInViewModel.SelectedStage?.Id;
+                var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+                var result = await _cloudMediaService.GetVideoAsync(
+                    new GetVideoParameter(authorization, stageId, projectId, videoId),
+                    _cancellationTokenSource.Token);
+
+                videoItem.UpdateSource(result);
+                //if (videoItem.CaptionAssetList!= null)
+                //    if (videoItem.CaptionAssetList.CaptionAssetItems is IList<CaptionAssetItemViewModel> list)
+                //        list.Add(CaptionAssetItemViewModel.Empty);
+                //    else
+                //    {
+                //        Debug.WriteLine("not insert empty");
+                //    }
+
+                if (OldVideoItem != null) OldVideoItem.CaptionAssetList = null;
+
+                OldVideoItem = videoItem;
+
+                Debug.WriteLine("LoadCaptionAsync end");
             }
             finally
             {
@@ -472,19 +448,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async void Refresh()
         {
             await SearchAsync(Keyword, 0);
-        }
-
-        private void Back()
-        {
-            IsConfirmButtonVisible = false;
-            SelectedVideoItem?.Update();
-            SelectedVideoItem?.Initialize();
-            SelectedVideoItem = null;
-            SetTitleAction?.Invoke($"{Resource.CNT_VIDEO}");
-            IsShowCaption = false;
-            if (IsBusy)
-                _cancellationTokenSource.Cancel();
-            IsNextButtonVisible = true;
         }
 
         private async void Enter(string keyword)
@@ -582,47 +545,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return conditions;
         }
 
-        private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
-        {
-            if (SelectedVideoItem == null)
-                return;
-
-            var captionAssetItem = SelectedVideoItem.CaptionAssetItems.SingleOrDefault(assetItem =>
-                assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
-
-            if (!SelectedVideoItem.SelectedCaptionAsset?.Equals(captionAssetItem) ?? true)
-            {
-                SelectedVideoItem.CaptionAssetItems?.ToList().ForEach(asset =>
-                {
-                    if (!asset.Equals(captionAssetItem))
-                        asset.Initialize();
-                });
-                SelectedVideoItem.SelectedCaptionAsset = captionAssetItem;
-            }
-
-            SelectedVideoItem.Update();
-        }
-
         private bool CanConfirm()
         {
-            if (IsShowCaption)
-            {
-                if (IsBusy)
-                    return false;
-
-                if (SelectedVideoItem?.CaptionAssetItems?.Any() ?? false)
-                    //if (SelectedVideoItem?.SelectedCaptionAsset != null
-                    //    && SelectedVideoItem.SelectedCaptionAsset.Source == null)
-                    //    return true;
-
-                    //if (SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Any() ?? false)
-                    //    return SelectedVideoItem.SelectedCaptionCount > 0;
-                    //return false;
-
-                    return SelectedVideoItem?.SelectedCaptionAsset != null;
-
+            if (IsBusy)
                 return false;
-            }
+
+            if (SelectedVideoItem?.CaptionAssetList?.CaptionAssetItems?.Any() ?? false)
+                return SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem != null;
 
             return false;
         }
@@ -647,9 +576,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // 선택된 video 정보를 메인 
             var video = SelectedVideoItem?.Source;
-            var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
+            var asset = SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Source;
             var selectedCaptionList =
-                SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
+                SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,

@@ -61,6 +61,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Add과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ADD {
+            get {
+                return ResourceManager.GetString("CNT_ADD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Add track과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_ADD_CAPTION {

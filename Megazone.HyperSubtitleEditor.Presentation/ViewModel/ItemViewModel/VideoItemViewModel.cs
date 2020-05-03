@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
+using Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class VideoItemViewModel : ViewModelBase
     {
         private IList<CaptionAssetItemViewModel> _captionAssetItems;
+        private CaptionAssetListViewModel _captionAssetList;
         private IList<string> _encryptions;
 
         private bool _hasSelectedCaption;
         private string _primaryImageUrl;
-        private CaptionAssetItemViewModel _selectedCaptionAsset;
+        //private CaptionAssetItemViewModel _selectedCaptionAsset;
 
         private int _selectedCaptionCount;
 
@@ -38,20 +41,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             TotalCaptionCount = video.Captions?.Sum(asset => asset.Elements?.Count() ?? 0) ?? 0;
             var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
-            CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+            //CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+
+            CaptionAssetList = new CaptionAssetListViewModel(list);
+
             Encryptions = video.Encryptions?.ToList();
         }
 
-        public CaptionAssetItemViewModel SelectedCaptionAsset
-        {
-            get => _selectedCaptionAsset;
-            set => Set(ref _selectedCaptionAsset, value);
-        }
+        //public CaptionAssetItemViewModel SelectedCaptionAsset
+        //{
+        //    get => _selectedCaptionAsset;
+        //    set => Set(ref _selectedCaptionAsset, value);
+        //}
 
-        public IList<CaptionAssetItemViewModel> CaptionAssetItems
+        //public IList<CaptionAssetItemViewModel> CaptionAssetItems
+        //{
+        //    get => _captionAssetItems;
+        //    set => Set(ref _captionAssetItems, value);
+        //}
+
+        public CaptionAssetListViewModel CaptionAssetList
         {
-            get => _captionAssetItems;
-            set => Set(ref _captionAssetItems, value);
+            get => _captionAssetList;
+            set => Set(ref _captionAssetList, value);
         }
 
         public IList<string> Encryptions
@@ -92,7 +104,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string Status { get; }
         public TimeSpan Duration { get; }
         public DateTime CreatedAt { get; }
-        public bool CanUpdate { get; private set; } = true;
 
         private string GetPrimaryImage(Video video)
         {
@@ -120,41 +131,42 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         internal void UpdateSource(Video source)
         {
             Source = source;
-            if (CaptionAssetItems?.Any() ?? false)
-                CaptionAssetItems?.Clear();
 
             var list = source.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
-
-            CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
+          
             TotalCaptionCount = list.Sum(asset => asset.Source.Elements?.Count() ?? 0);
-            CanUpdate = false;
+
+            list.Add(CaptionAssetItemViewModel.Empty);
+            CaptionAssetList = new CaptionAssetListViewModel(list);
+
+            Debug.WriteLine($"TotalCaptionCount {TotalCaptionCount} ");
         }
 
-        public void Update()
-        {
-            if (SelectedCaptionAsset?.Source != null)
-            {
-                SelectedCaptionCount = SelectedCaptionAsset?.Elements?.Count(element => element.IsSelected) ?? 0;
-                HasSelectedCaption = SelectedCaptionCount > 0;
-            }
-            else
-            {
-                SelectedCaptionCount = 0;
-                HasSelectedCaption = false;
-            }
+        //public void Update()
+        //{
+        //    if (SelectedCaptionAsset?.Source != null)
+        //    {
+        //        SelectedCaptionCount = SelectedCaptionAsset?.Elements?.Count(element => element.IsSelected) ?? 0;
+        //        HasSelectedCaption = SelectedCaptionCount > 0;
+        //    }
+        //    else
+        //    {
+        //        SelectedCaptionCount = 0;
+        //        HasSelectedCaption = false;
+        //    }
 
-            if (!HasSelectedCaption &&
-                SelectedCaptionAsset?.Elements != null &&
-                SelectedCaptionAsset?.Elements.Count() != 0)
-                SelectedCaptionAsset = null;
-        }
+        //    if (!HasSelectedCaption &&
+        //        SelectedCaptionAsset?.Elements != null &&
+        //        SelectedCaptionAsset?.Elements.Count() != 0)
+        //        SelectedCaptionAsset = null;
+        //}
 
-        public void Initialize()
-        {
-            SelectedCaptionAsset = null;
-            SelectedCaptionCount = 0;
-            HasSelectedCaption = false;
-        }
+        //public void Initialize()
+        //{
+        //    SelectedCaptionAsset = null;
+        //    SelectedCaptionCount = 0;
+        //    HasSelectedCaption = false;
+        //}
     }
 }

@@ -28,11 +28,12 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
             </ResourceDictionary>
     </UserControl.Resources>
-    <Grid >
+    <Grid>
         <ListBox x:Name="AssetListBox"
                  ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
                  SelectedItem="{Binding SelectedCaptionAssetItem, Mode=TwoWay}"
-                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
+                 Background="White">
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
                                     Command="{Binding CaptionAssetSectionChangedCommand}" />
@@ -55,7 +56,7 @@
                             <RadioButton Grid.Column="0" Grid.Row="0"
                                                          IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
                                                          VerticalAlignment="Top"
-                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu.CaptionAssetSectionChangedCommand}"/>
+                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.CaptionAssetSectionChangedCommand}"/>
                             <!--에셋정보-->
                             <Grid Grid.Column="2" Grid.Row="0">
                                 <Grid.ColumnDefinitions>
@@ -139,11 +140,10 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <TextBlock
-                                                    Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                                    Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
-                                                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    TextAlignment="Center" />
+                                <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                           Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           TextAlignment="Center" />
                             </Grid>
                         </Grid>
                     </Border>

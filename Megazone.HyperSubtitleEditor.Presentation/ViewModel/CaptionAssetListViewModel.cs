@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _captionAssetSectionChangedCommand;
         private ICommand _captionElementSelectionChangedCommand;
 
+        private bool _isNewCaptionAsset;
+
         
         public ICommand CaptionAssetSectionChangedCommand
         {
@@ -30,6 +33,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _captionAssetSectionChangedCommand ?? new RelayCommand(OnCaptionAssetSectionChanged);
             }
         }
+
         public ICommand CaptionElementSelectionChangedCommand
         {
             get
@@ -39,6 +43,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                                              OnCaptionSelectionChanged, CanCaptionSelectionChanged);
             }
         }
+
         public IEnumerable<CaptionAssetItemViewModel> CaptionAssetItems
         {
             get => _captionAssetItems;
@@ -49,6 +54,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _selectedCaptionAssetItem;
             set => Set(ref _selectedCaptionAssetItem, value);
+        }
+
+        public bool IsNewCaptionAsset
+        {
+            get => _isNewCaptionAsset;
+            set => Set(ref _isNewCaptionAsset, value);
+        }
+
+        public CaptionAssetListViewModel(IEnumerable<CaptionAssetItemViewModel> captionAssetItems = null)
+        {
+            CaptionAssetItems = captionAssetItems;
         }
 
         private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
@@ -89,6 +105,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var captionAssetItem in CaptionAssetItems)
                     if (!captionAssetItem.Equals(SelectedCaptionAssetItem))
                         captionAssetItem.Initialize();
+
+            IsNewCaptionAsset = SelectedCaptionAssetItem?.Source == null;
+
+            Debug.WriteLine($"IsNewCaptionAsset : {IsNewCaptionAsset}");
 
             CommandManager.InvalidateRequerySuggested();
         }

@@ -33,6 +33,8 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:StringToUpperConverter x:Key="StringToUpperConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter"/>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -396,9 +398,49 @@
                     </Border>
                 </Grid>
             </Border>
-            <Border Grid.Column="2" BorderThickness="0" 
-                    Visibility="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.SelectedVideoItem, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                <TextBlock Text="Second Caption List" Foreground="Red"/>
+            <Border Grid.Column="2" 
+                    BorderThickness="1" 
+                    BorderBrush="#e0e2e6"
+                    Background="White"
+                    DataContext="{Binding VideoList, Source={StaticResource SubtitleViewModelLocator}}"
+                    Visibility="{Binding Path=SelectedVideoItem.CaptionAssetList, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--<TextBlock Text="Second Caption List" Foreground="Red"/>-->
+                    <leftMenuView:CaptionAssetListView Grid.Row="0" 
+                                                   DataContext="{Binding SelectedVideoItem.CaptionAssetList, Mode=TwoWay}" 
+                                                   Visibility="{Binding Path=VideoList.SelectedVideoItem, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
+                    <Border Grid.Row="1"
+                            BorderBrush="#e0e2e6"
+                            BorderThickness="0,1,0,0">
+                        <Grid Grid.IsSharedSizeScope="True"
+                             >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1"  Margin="16,15"
+                                    IsDefault="true"
+                                    Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding ConfirmCommand}" >
+                                <Button.Style >
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ButtonDefault}">
+                                        <Setter Property="Content" Value="{x:Static resources:Resource.CNT_OPEN}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding VideoList.SelectedVideoItem.CaptionAssetList.IsNewCaptionAsset, Source={StaticResource SubtitleViewModelLocator} }" 
+                                                         Value="True">
+                                                <Setter Property="Content" Value="{x:Static resources:Resource.CNT_ADD}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
         <Border BorderBrush="#dfe3ee" BorderThickness="1" />

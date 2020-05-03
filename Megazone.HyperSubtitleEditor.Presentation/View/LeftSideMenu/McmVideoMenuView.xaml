@@ -9,10 +9,11 @@
              xmlns:itemVm="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:custom="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
-             AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
+             AllowDrop="False" ClipToBounds="True"
              x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -33,7 +34,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
-
+           
             <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
             <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
@@ -183,8 +184,15 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <Border Grid.Row="0">
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="396"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>-->
+        <!--<Border Grid.Row="0" Grid.Column="1"  Visibility="Visible">
+            <TextBlock Width="100">dddddddd</TextBlock>
+            --><!--<custom:CaptionAssetListView Width="300"/>--><!--
+        </Border>-->
+        <Border Grid.Row="0" Grid.Column="0">
             <Grid>
                 <Border>
                     <Grid>
@@ -348,7 +356,7 @@
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
                                         <Border Height="{StaticResource VideoListBoxItemHeight}" Width="358"
                                                 ToolTip="{Binding Path=Name}">
-                                            <Grid Margin="0, 15">
+                                            <Grid >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="10" />
                                                     <ColumnDefinition Width="68" />
@@ -366,7 +374,7 @@
                                                 </Grid>
 
                                                 <!--비디오 정보-->
-                                                <Grid Grid.Column="3">
+                                                <Grid Grid.Column="3" Margin="0, 15">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*" />
                                                         <RowDefinition Height="*" />
@@ -407,18 +415,19 @@
 
 
                                                 <Button Grid.ColumnSpan="6" Grid.Column="0"
+                                                        Background="Red"
                                                         Style="{StaticResource Style_IconMenuButton}"
                                                         Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}"
                                                         CommandParameter="{Binding}" Opacity="0.01"
                                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                                    <Button.Triggers>
+                                                    <!--<Button.Triggers>
                                                         <EventTrigger RoutedEvent="Button.Click">
                                                             <BeginStoryboard Name="CaptionBoardOpenStoryboard">
                                                                 <Storyboard>
                                                                     <DoubleAnimation
                                                                         Storyboard.Target="{Binding ElementName=CaptionBorder}"
                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                                        Duration="0:0:0.3" From="350" To="0"
+                                                                        Duration="0:0:0.3" From="0" To="350"
                                                                         SpeedRatio="1"
                                                                         FillBehavior="HoldEnd" />
                                                                     <DoubleAnimation
@@ -430,7 +439,7 @@
                                                                 </Storyboard>
                                                             </BeginStoryboard>
                                                         </EventTrigger>
-                                                    </Button.Triggers>
+                                                    </Button.Triggers>-->
                                                 </Button>
                                             </Grid>
                                         </Border>
@@ -454,7 +463,7 @@
                 </Border>
 
                 <!--Caption 뷰-->
-                <Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}"
+                <!--<Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}"
                         RenderTransformOrigin=".5,.5"
                         Visibility="{Binding Path=IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Border.RenderTransform>
@@ -467,7 +476,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <!--비디오 정보 박스 -->
+                        --><!--비디오 정보 박스 --><!--
                         <Border Grid.Row="0" Margin="0, 0">
                             <Button x:Name="CaptionBackButton" Command="{Binding Path=BackCommand}"
                                     Style="{StaticResource Style_LayoutButton}" HorizontalAlignment="Stretch"
@@ -519,13 +528,13 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!--대표이미지-->
+                                        --><!--대표이미지--><!--
                                         <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
                                             <Image Source="{StaticResource Bitmap_NoFoundImage}" />
                                             <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
                                         </Grid>
 
-                                        <!--비디오 정보-->
+                                        --><!--비디오 정보--><!--
                                         <Grid Grid.Column="3" VerticalAlignment="Center">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
@@ -559,13 +568,14 @@
                             </Button>
                         </Border>
 
-                        <!--구분선-->
+                        --><!--구분선--><!--
                         <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
-                        <!--구분선-->
-                        <Rectangle Grid.Row="1" Fill="#dfe3ee" Height="1" VerticalAlignment="Bottom" />
+                        --><!--구분선--><!--
+                        <Rectangle Grid.Row="1" Fill="#dfe3ee" Height="1" VerticalAlignment="Bottom" />-->
 
-                        <ListBox Grid.Row="2" x:Name="AssetListBox"
+                        <!--<custom:CaptionAssetListView />-->
+                        <!--<ListBox Grid.Row="2" x:Name="AssetListBox"
                                  ItemsSource="{Binding Path=SelectedVideoItem.CaptionAssetItems}"
                                  SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
                                  ItemContainerStyle="{StaticResource Style_VideoListBoxItem}">
@@ -592,18 +602,18 @@
                                                          IsChecked="{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
                                                          VerticalAlignment="Top" 
                                                          Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CaptionAssetSectionChangedCommand}"/>
-                                            <!--에셋정보-->
+                                            --><!--에셋정보--><!--
                                             <Grid Grid.Column="2" Grid.Row="0">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="10" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <!--TODO: DataTemplateSelector 이용하는 방식으로-->
+                                                --><!--TODO: DataTemplateSelector 이용하는 방식으로-->
                                                 <!--<StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                     <Image Style="{StaticResource Style_CaptionBadgeImage}" />
                                                     <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
-                                                </StackPanel>-->
+                                                </StackPanel>--><!--
 
                                                 <ContentControl
                                                     Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
@@ -632,7 +642,7 @@
                                                 </Grid>
                                             </Grid>
 
-                                            <!--캡션정보-->
+                                            --><!--캡션정보--><!--
                                             <Grid Grid.Column="2" Grid.Row="2"
                                                   Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                                 <ItemsControl x:Name="CaptionItemsControl"
@@ -678,7 +688,7 @@
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                        </ListBox>
+                        </ListBox>--><!--
 
                         <Border Grid.Row="2"
                                 Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
@@ -692,7 +702,7 @@
                             </Border>
                         </Border>
                     </Grid>
-                </Border>
+                </Border>-->
             </Grid>
         </Border>
 
@@ -701,44 +711,16 @@
                  Style="{StaticResource Style_IndeterminateControl}" />
 
         <!--하단 버튼 영역-->
-        <Border Grid.Row="1">
+        <!--<Border Grid.Row="1">
             <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                 </Grid.ColumnDefinitions>
-                <!--<Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_NEXT}" IsDefault="{Binding Path=IsNextButtonVisible}"
-                        Command="{Binding NextStepCommand}" Visibility="{Binding Path=IsNextButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard Name="CaptionBoardOpenStoryboard">
-                                <Storyboard>
-                                    <DoubleAnimation
-                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                            Duration="0:0:0.3" From="350" To="0"
-                                            SpeedRatio="1"
-                                            FillBehavior="HoldEnd" />
-                                    <DoubleAnimation
-                                            Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                            Storyboard.TargetProperty="Opacity"
-                                            BeginTime="0:0:0"
-                                            Duration="0:0:0.3" From="0" To="1"
-                                            FillBehavior="HoldEnd" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Button.Unloaded">
-                            <StopStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                            <RemoveStoryboard BeginStoryboardName="CaptionBoardOpenStoryboard" />
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>-->
-
                 <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="true"
                         Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding ConfirmCommand}" />
             </Grid>
-        </Border>
+        </Border>-->
     </Grid>
 </UserControl>

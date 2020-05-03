@@ -190,9 +190,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             List<MetadataCaptionAssetInfo> captions= new List<MetadataCaptionAssetInfo>();
 
-            if (_workBarViewModel?.VideoItem?.CaptionAssetItems != null)
+            if (_workBarViewModel?.VideoItem?.CaptionAssetList?.CaptionAssetItems != null)
             {
-                foreach (var captionAssetItem in _workBarViewModel?.VideoItem?.CaptionAssetItems)
+                foreach (var captionAssetItem in _workBarViewModel?.VideoItem?.CaptionAssetList?.CaptionAssetItems)
                 {
                     //var caption = $"{captionAssetItem.Name} ({captionAssetItem.Id})";
 

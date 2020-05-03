@@ -826,4 +826,7 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   <data name="CNT_IMPORT_CAPTION" xml:space="preserve">
     <value>Import subtitle file</value>
   </data>
+  <data name="CNT_ADD" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

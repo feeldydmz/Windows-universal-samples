@@ -313,16 +313,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             await SearchAsync(Keyword, 0);
         }
 
-        private void Back()
-        {
-            SelectedVideoItem?.Update();
-            SelectedVideoItem?.Initialize();
-            SetTitleAction?.Invoke($"{Resource.CNT_VIDEO}");
-            if (IsBusy)
-                _cancellationTokenSource.Cancel();
-            IsNextButtonVisible = true;
-            IsConfirmButtonVisible = false;
-        }
+        //private void Back()
+        //{
+        //    SelectedVideoItem?.Update();
+        //    SelectedVideoItem?.Initialize();
+        //    SetTitleAction?.Invoke($"{Resource.CNT_VIDEO}");
+        //    if (IsBusy)
+        //        _cancellationTokenSource.Cancel();
+        //    IsNextButtonVisible = true;
+        //    IsConfirmButtonVisible = false;
+        //}
 
         private async void Enter(string keyword)
         {
@@ -452,10 +452,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             // 선택된 video 정보를 메인 
             var video = SelectedVideoItem?.Source;
-            var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
-            var selectedCaptionList =
-                SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
-                    .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
+            //TODO 아래 내용이 사용되고 있지 않은데 지워도 되는지 확인
+            //var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
+            //var selectedCaptionList =
+            //    SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
+            //        .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new CloudMedia.VideoOpenRequestedMessage(this, video));
         }

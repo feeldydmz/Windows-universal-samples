@@ -244,7 +244,7 @@
 
                 <!--Caption 검색 결과-->
                 <Border Grid.Row="3">
-                    <custom:CaptionAssetListView DataContext="{Binding CaptionAssetList, Mode=TwoWay}"/>
+                    <custom:CaptionAssetListView DataContext="{Binding CaptionAssetList, Mode=TwoWay}"/> 
                 </Border>
 
                 <Grid Grid.Row="4" Margin="0,0,20,0">
