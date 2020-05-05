@@ -47,14 +47,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isConfirmButtonVisible;
         private bool _isInitialized;
         private bool _isLoading;
+        private bool _isAdvancedSearch;
         private string _keyword;
+        private string _nameOfSearch;
+        private string _idOfSearch;
         private IEnumerable<DisplayItem> _keywordTypeItems;
-        private string _label;
+        private string _labelOfSearch;
 
         private IEnumerable<LanguageItem> _languages;
         private ICommand _loadCommand;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
+        private ICommand _searchOptionChangeCommand;
         private DisplayItem _selectedCaptionKindItem;
         private DisplayItem _selectedKeywordType;
 
@@ -104,6 +108,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(Search); }
         }
+        public ICommand SearchOptionChangeCommand
+        {
+            get
+            {
+                return _searchOptionChangeCommand = _searchOptionChangeCommand ?? new RelayCommand(ChangedSearchOption);
+            }
+        }
+
 
         public ICommand RefreshCommand
         {
@@ -127,6 +139,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isBusy, value);
         }
 
+        public bool IsAdvancedSearch
+        {
+            get => _isAdvancedSearch;
+            set => Set(ref _isAdvancedSearch, value);
+        }
         public CaptionAssetItemViewModel SelectedCaptionAssetItem => CaptionAssetList.SelectedCaptionAssetItem;
 
         public int TotalCount
@@ -175,10 +192,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _keyword, value);
         }
 
-        public string Label
+        public string LabelOfSearch
         {
-            get => _label;
-            set => Set(ref _label, value);
+            get => _labelOfSearch;
+            set => Set(ref _labelOfSearch, value);
+        }
+        public string NameOfSearch
+        {
+            get => _nameOfSearch;
+            set => Set(ref _nameOfSearch, value);
+        }
+
+        public string IdOfSearch
+        {
+            get => _idOfSearch;
+            set => Set(ref _idOfSearch, value);
         }
 
         public IEnumerable<LanguageItem> Languages
@@ -235,8 +263,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             Keyword = "";
             SelectedCaptionKindItem = null;
-            Label = "";
+            LabelOfSearch = "";
+            IdOfSearch = "";
+            NameOfSearch = "";
             SelectedLanguage = null;
+        }
+
+        public void Close()
+        {
+            ClearSearchParameter();
         }
 
         private async void Load()
@@ -274,11 +309,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             await SearchAsync(keyword, 0);
         }
+        private void ChangedSearchOption()
+        {
+            IsAdvancedSearch = !IsAdvancedSearch;
+
+            ClearSearchParameter();
+        }
 
         private async Task SearchAsync(string keyword, int pageIndex, bool isPaging = false)
         {
             var kinds = SelectedCaptionKindItem != null ? new[] {SelectedCaptionKindItem.Key} : null;
-            var conditions = MakeSearchConditions(Keyword, kinds, Label, SelectedLanguage);
+            var conditions = MakeSearchConditions(Keyword, 
+                                                  NameOfSearch,
+                                                  IdOfSearch, 
+                                                  kinds, 
+                                                  LabelOfSearch, 
+                                                  SelectedLanguage);
             await SearchCaptionAssetAsync(pageIndex, conditions, isPaging);
         }
 
@@ -349,7 +395,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return null;
         }
 
-        private Dictionary<string, string> MakeSearchConditions(string keyword, IEnumerable<string> kinds, string label,
+        private Dictionary<string, string> MakeSearchConditions(string keyword, string name, string id, IEnumerable<string> kinds, string label,
             LanguageItem language)
         {
             // 검색조건
@@ -359,49 +405,49 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {"type", "CAPTION"}, {"hasAssociations", "true"}, {"status", "ACTIVE"}
             };
 
-            if (!string.IsNullOrEmpty(keyword))
-                conditions.Add(SelectedKeywordType.Key, keyword);
-
-            var kindList = kinds?.ToList() ?? new List<string>();
-            if (kindList.Any())
+            if (!IsAdvancedSearch)
             {
-                var values = new StringBuilder();
-                var count = 0;
-                foreach (var kind in kindList.Where(kind => !string.IsNullOrEmpty(kind)))
+                conditions.Add("q", Keyword);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(keyword))
+                    conditions.Add(SelectedKeywordType.Key, keyword);
+
+                var kindList = kinds?.ToList() ?? new List<string>();
+                if (kindList.Any())
                 {
-                    if (count > 0)
-                        values.Append(",");
-                    values.Append(kind);
-                    count++;
+                    var values = new StringBuilder();
+                    var count = 0;
+                    foreach (var kind in kindList.Where(kind => !string.IsNullOrEmpty(kind)))
+                    {
+                        if (count > 0)
+                            values.Append(",");
+                        values.Append(kind);
+                        count++;
+                    }
+
+                    var valuesString = values.ToString();
+                    if (!string.IsNullOrEmpty(valuesString))
+                        conditions.Add("kinds", valuesString);
                 }
 
-                var valuesString = values.ToString();
-                if (!string.IsNullOrEmpty(valuesString))
-                    conditions.Add("kinds", valuesString);
-            }
+                if (!string.IsNullOrEmpty(name))
+                    conditions.Add("name", name);
 
+                if (!string.IsNullOrEmpty(id))
+                    conditions.Add("id", id);
 
-            if (!string.IsNullOrEmpty(label))
-                conditions.Add("label", label);
+                if (!string.IsNullOrEmpty(label))
+                    conditions.Add("label", label);
 
-            //if (!string.IsNullOrEmpty(language))
-            //{
-            //    var array = language.Split('-');
-            //    if (array.Length == 2)
-            //    {
-            //        var languageCode = array[0];
-            //        var countryCode = array[1];
-            //        conditions.Add("language", languageCode);
-            //        conditions.Add("country", countryCode);
-            //    }
-            //}
-
-            if (!string.IsNullOrEmpty(language?.Code))
-            {
-                var languageCode = language.Code.Split('-')[0];
-                var countryCode = language.Code.Split('-')[1];
-                conditions.Add("language", languageCode);
-                conditions.Add("country", countryCode);
+                if (!string.IsNullOrEmpty(language?.Code))
+                {
+                    var languageCode = language.Code.Split('-')[0];
+                    var countryCode = language.Code.Split('-')[1];
+                    conditions.Add("language", languageCode);
+                    conditions.Add("country", countryCode);
+                }
             }
 
             return conditions;

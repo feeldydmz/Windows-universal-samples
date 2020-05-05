@@ -142,6 +142,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Advanced search과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ADVANCED_SEARCH {
+            get {
+                return ResourceManager.GetString("CNT_ADVANCED_SEARCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   All subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_ALL_CAPTIONS {
@@ -1227,6 +1236,15 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_PUBLISH_CONFIRM {
             get {
                 return ResourceManager.GetString("CNT_PUBLISH_CONFIRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Quick search과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_QUICK_SEARCH {
+            get {
+                return ResourceManager.GetString("CNT_QUICK_SEARCH", resourceCulture);
             }
         }
         

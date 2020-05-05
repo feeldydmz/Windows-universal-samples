@@ -14,6 +14,8 @@
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList}"
              AllowDrop="False" ClipToBounds="True"
+             Unloaded="McmVideoMenuView_OnUnloaded"
+             LostFocus="McmVideoMenuView_OnLostFocus"
              x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -34,10 +36,11 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
-           
-            <system:Double x:Key="VideoListBoxItemWidth">350</system:Double>
+
+            <system:Double x:Key="VideoListBoxItemWidth">285</system:Double>
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
-            <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
+            <Thickness x:Key="LayoutLeftMargin">15,14,0,10</Thickness>
+            <Thickness x:Key="advancedSearchOptionMargin">0,2,0,1</Thickness>
 
 
             <Style x:Key="Style_VideoListBoxItem" TargetType="{x:Type ListBoxItem}">
@@ -177,6 +180,131 @@
                 </Setter>
             </Style>
 
+
+            <Style x:Key="Style_PlaceHolder" TargetType="{x:Type TextBox}" >
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="White"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Grid>
+                                <TextBox
+                                    Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="textSource"
+                                    Background="Transparent"
+                                    Panel.ZIndex="2"
+                                    Foreground="#333333" 
+                                    BorderThickness="0"
+                                    FontSize="11"/>
+                                <TextBox Text="{TemplateBinding Tag}"
+                                         Background="{TemplateBinding Background}"
+                                         Panel.ZIndex="1"
+                                         BorderThickness="0">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Padding" Value="3,0,0,0" />
+                                            <Setter Property="Foreground" Value="Transparent" />
+                                            <Style.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Path=Text, Source={x:Reference textSource}}"
+                                                    Value="">
+                                                    <Setter Property="Foreground" Value="#333333" />
+                                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Path=IsFocused, Source={x:Reference textSource}}" Value="True">
+                                                    <Setter Property="Foreground" Value="Transparent" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Style_SearchButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="Background" Value="#11193f" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="2,0,0,2" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <!--<Setter Property="Background" Value="#10000000" />-->
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Style_RefreshButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="Background" Value="#11193f" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="0,2,2,0" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <!--<Setter Property="Background" Value="#10000000" />-->
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -184,17 +312,9 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="396"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>-->
-        <!--<Border Grid.Row="0" Grid.Column="1"  Visibility="Visible">
-            <TextBlock Width="100">dddddddd</TextBlock>
-            --><!--<custom:CaptionAssetListView Width="300"/>--><!--
-        </Border>-->
         <Border Grid.Row="0" Grid.Column="0">
             <Grid>
-                <Border>
+                <Border Background="White">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -204,14 +324,264 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <!--검색 패널-->
-                        <Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}">
+                        <Grid Grid.Row="0" Margin="15,14,15,10" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Text" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}"/>
+                                            <Setter Property="FontWeight" Value="bold"/>
+                                            <Setter Property="Foreground" Value="#222222"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAdvancedSearch}"
+                                                             Value="True">
+                                                    <Setter Property="Text" Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
+                                        Margin="219,0,0,0"
+                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding Path=SearchOptionChangeCommand}">
+                                    <Grid>
+                                        <Image
+                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
+                                            Width="13" Height="13" />
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+
+
+                            <!-- 빠른 검색 -->
+                             <Border Grid.Row="1" 
+                                     BorderBrush="#a0a8b6" 
+                                     BorderThickness="1" 
+                                     Margin="{StaticResource advancedSearchOptionMargin}"
+                                     CornerRadius="2"
+                                     Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                                 <TextBox x:Name="KeywordTextBox"
+                                         Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource Style_PlaceHolder}"
+                                         Tag="{x:Static resources:Resource.CNT_SEARCH}">
+                                    <i:Interaction.Behaviors>
+                                        <mz:KeyEventToRunCommandBehavior
+                                            Command="{Binding Path=EnterCommand}"
+                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
+                                            Key="Enter" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                             </Border>
+
+                            <!--고급 검색--> 
+                            <Grid Grid.Row="1" 
+                                  Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <!--<RowDefinition Height="30"/>-->
+                                </Grid.RowDefinitions>
+
+                                <Border BorderBrush="#a0a8b6" 
+                                        BorderThickness="1" 
+                                        Margin="{StaticResource advancedSearchOptionMargin}"
+                                        CornerRadius="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{x:Static resources:Resource.CNT_NAME}" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                        <Rectangle Grid.Column="1"
+                                                   Height="15" 
+                                                   Width="1"
+                                                   Fill="#a0a8b6"/>
+                                        <TextBox Grid.Column="2"
+                                                 Style="{StaticResource Style_PlaceHolder}"
+                                                 Text="{Binding NameOfSearch, Mode=TwoWay}"
+                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Row="1"  
+                                        BorderBrush="#a0a8b6" 
+                                        BorderThickness="1"
+                                        Margin="{StaticResource advancedSearchOptionMargin}"
+                                        CornerRadius="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{x:Static resources:Resource.CNT_ID}" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                        <Rectangle Grid.Column="1"
+                                                   Height="15" 
+                                                   Width="1"
+                                                   Fill="#a0a8b6"/>
+                                        <TextBox Grid.Column="2"
+                                                 Style="{StaticResource Style_PlaceHolder}"
+                                                 Text="{Binding IdOfSearch, Mode=TwoWay}"
+                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                                    </Grid>
+                                </Border>
+
+                                <!--<Border Grid.Row="2"  
+                                        BorderBrush="#a0a8b6" 
+                                        BorderThickness="1" 
+                                        Margin="{StaticResource advancedSearchOptionMargin}"
+                                        CornerRadius="2"
+                                        Visibility="Collapsed">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="25"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="카테고리 검색" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                        <Image Grid.Column="1" 
+                                               Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                               Width="25" 
+                                               Height="25"/>
+                                    </Grid>
+                                </Border>-->
+
+                                <Border Grid.Row="2"  
+                                        BorderBrush="#a0a8b6" 
+                                        BorderThickness="1" 
+                                        Margin="{StaticResource advancedSearchOptionMargin}"
+                                        CornerRadius="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Rectangle Grid.Column="0" Grid.ColumnSpan="2"
+                                               Fill="White"
+                                               Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1"
+                                               RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch" />-->
+                                        <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Foreground="#333333" />
+                                        <Rectangle Grid.Column="1"
+                                                   Height="15" 
+                                                   Width="1"
+                                                   Fill="#a0a8b6"/>
+                                        <StackPanel Grid.Column="2" 
+                                                    Orientation="Horizontal" 
+                                                    Margin="8,0,0,0">
+                                            <mz:TimeSpinner Time="{Binding Path=DurationStartTime}"
+                                                            BorderThickness="0"
+                                                            IsShowMilliseconds="False" 
+                                                            Foreground="#333333">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="TimeChanged">
+                                                        <i:InvokeCommandAction
+                                                        Command="{Binding Path=DurationStartTimeChangedCommand}"
+                                                        CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </mz:TimeSpinner>
+
+                                            <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0"
+                                                   Foreground="#333333" />
+
+                                            <mz:TimeSpinner Time="{Binding Path=DurationEndTime}"
+                                                            BorderThickness="0"
+                                                            IsShowMilliseconds="False" 
+                                                            Foreground="#333333">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="TimeChanged">
+                                                        <i:InvokeCommandAction
+                                                        Command="{Binding Path=DurationEndTimeChangedCommand}"
+                                                        CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </mz:TimeSpinner>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+
+                            <!--검색 버튼 영역-->
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center">
+
+                                <Border Height="1" 
+                                        BorderBrush="#e0e2e6"
+                                        BorderThickness="1"
+                                        VerticalAlignment="Top"
+                                        Margin="0,10,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1"/>
+                                        <ColumnDefinition Width="25"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Style="{StaticResource Style_SearchButton}"
+                                            ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch"
+                                            Command="{Binding Path=SearchCommand}"
+                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                            <Image
+                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                                Width="25" Height="25" />
+                                            <TextBlock Text="{x:Static resources:Resource.CNT_SEARCH}"
+                                                       Foreground="White"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Rectangle Grid.Column="1" Width="1" Fill="#293053"/>
+
+                                    <Button Grid.Column="2" Style="{StaticResource Style_RefreshButton}"
+                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Command="{Binding Path=RefreshCommand}">
+                                        <Grid Margin="3">
+                                            <Image
+                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png"
+                                                Width="13" 
+                                                Height="13" />
+                                        </Grid>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <!--<Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <!--검색항목-->
+                            --><!--검색항목--><!--
                             <Grid Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -223,76 +593,6 @@
                                     <RowDefinition Height="3" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-
-                                <!--키워드 검색-->
-                                <ComboBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=KeywordTypeItems}"
-                                          SelectedItem="{Binding Path=SelectedKeywordType}" MaxWidth="90" Width="90">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Display}" Foreground="#333333" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <TextBox Grid.Column="1"
-                                         Grid.ColumnSpan="2"
-                                         Grid.Row="0"
-                                         Margin="5,0,0,0"
-                                         x:Name="KeywordTextBox"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
-                                    <i:Interaction.Behaviors>
-                                        <mz:KeyEventToRunCommandBehavior
-                                            Command="{Binding Path=EnterCommand}"
-                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
-                                            Key="Enter" />
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
-
-                                <!--Duration 검색-->
-                                <Grid Grid.ColumnSpan="3" Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Rectangle Grid.Column="0" Grid.ColumnSpan="2"
-                                               Fill="White"
-                                               Stroke="{StaticResource Brush_GrayBoxBorderBrush}" StrokeThickness="1"
-                                               RadiusX="2" RadiusY="2" HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Stretch" />
-                                    <TextBlock Text="{x:Static resources:Resource.CNT_DURATION}"
-                                               VerticalAlignment="Center"
-                                               TextAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Margin="10,0,0,0"
-                                               Foreground="#333333" />
-
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
-                                        <mz:TimeSpinner Time="{Binding Path=DurationStartTime}"
-                                                        IsShowMilliseconds="False" Foreground="#333333">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="TimeChanged">
-                                                    <i:InvokeCommandAction
-                                                        Command="{Binding Path=DurationStartTimeChangedCommand}"
-                                                        CommandParameter="{Binding}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </mz:TimeSpinner>
-
-                                        <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0"
-                                                   Foreground="#333333" />
-
-                                        <mz:TimeSpinner Time="{Binding Path=DurationEndTime}"
-                                                        IsShowMilliseconds="False" Foreground="#333333">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="TimeChanged">
-                                                    <i:InvokeCommandAction
-                                                        Command="{Binding Path=DurationEndTimeChangedCommand}"
-                                                        CommandParameter="{Binding}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </mz:TimeSpinner>
-                                    </StackPanel>
-                                </Grid>
                             </Grid>
 
                             <Grid Grid.Column="1" Grid.Row="0" Margin="8,0,0,0">
@@ -329,7 +629,7 @@
                                     </Grid>
                                 </Button>
                             </Grid>
-                        </Grid>
+                        </Grid>-->
 
                         <!--구분선-->
                         <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
@@ -354,15 +654,16 @@
                                 </i:Interaction.Behaviors>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
-                                        <Border Height="{StaticResource VideoListBoxItemHeight}" Width="358"
+                                        <Border Height="{StaticResource VideoListBoxItemHeight}" 
+                                                Width="{StaticResource VideoListBoxItemWidth}"
                                                 ToolTip="{Binding Path=Name}">
                                             <Grid >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="10" />
                                                     <ColumnDefinition Width="68" />
-                                                    <ColumnDefinition Width="20" />
+                                                    <ColumnDefinition Width="10" />
                                                     <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="20" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
@@ -384,7 +685,8 @@
                                                     <Image Style="{StaticResource Style_VideoBadgeImage}"
                                                            HorizontalAlignment="Left" />
 
-                                                    <Grid Grid.Row="1" VerticalAlignment="Center"
+                                                    <Grid Grid.Row="1" 
+                                                          VerticalAlignment="Center"
                                                           HorizontalAlignment="Left">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
@@ -392,16 +694,20 @@
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0"
                                                                    Text="{Binding Path=Name}"
+                                                                   FontSize="11"
                                                                    FontWeight="Bold"
                                                                    TextTrimming="CharacterEllipsis" />
                                                         <TextBlock Grid.Column="1"
+                                                                   FontSize="11"
                                                                    Text="{Binding Path=Id, StringFormat='{}({0})'}"
                                                                    Margin="3,0" />
                                                     </Grid>
                                                     <Grid Grid.Row="2" VerticalAlignment="Center">
                                                         <TextBlock
-                                                            Text="{Binding Path=Duration, StringFormat={}Duration - {0:hh':'mm':'ss}}"
-                                                            TextAlignment="Center" VerticalAlignment="Center"
+                                                            Text="{Binding Path=Duration, StringFormat={}{0:hh':'mm':'ss}}"
+                                                            FontSize="11"
+                                                            TextAlignment="Center" 
+                                                            VerticalAlignment="Center"
                                                             HorizontalAlignment="Left" />
                                                     </Grid>
                                                 </Grid>
@@ -414,12 +720,15 @@
                                                 </Grid>
 
 
-                                                <Button Grid.ColumnSpan="6" Grid.Column="0"
-                                                        Background="Red"
+                                                <Button Grid.Column="0"
+                                                        Grid.ColumnSpan="6"
+                                                        BorderThickness="0"
                                                         Style="{StaticResource Style_IconMenuButton}"
                                                         Command="{Binding Path=DataContext.LoadCaptionCommand, ElementName=Root}"
-                                                        CommandParameter="{Binding}" Opacity="0.01"
-                                                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                        CommandParameter="{Binding}" 
+                                                        Opacity="0.01"
+                                                        VerticalAlignment="Stretch" 
+                                                        HorizontalAlignment="Stretch">
                                                     <!--<Button.Triggers>
                                                         <EventTrigger RoutedEvent="Button.Click">
                                                             <BeginStoryboard Name="CaptionBoardOpenStoryboard">
@@ -461,266 +770,11 @@
                         </Grid>
                     </Grid>
                 </Border>
-
-                <!--Caption 뷰-->
-                <!--<Border x:Name="CaptionBorder" Background="{StaticResource Brush_CommonBackground}"
-                        RenderTransformOrigin=".5,.5"
-                        Visibility="{Binding Path=IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Border.RenderTransform>
-                        <TranslateTransform X="400" />
-                    </Border.RenderTransform>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-
-                        --><!--비디오 정보 박스 --><!--
-                        <Border Grid.Row="0" Margin="0, 0">
-                            <Button x:Name="CaptionBackButton" Command="{Binding Path=BackCommand}"
-                                    Style="{StaticResource Style_LayoutButton}" HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch">
-                                <Button.Triggers>
-                                    <EventTrigger RoutedEvent="Button.Click">
-                                        <BeginStoryboard Name="CaptionBoardCloseStoryboard">
-                                            <Storyboard>
-                                                <DoubleAnimation
-                                                    Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                    Duration="0:0:0.3" To="400"
-                                                    AccelerationRatio="0.7"
-                                                    SpeedRatio="1" />
-                                                <DoubleAnimation
-                                                    Storyboard.Target="{Binding ElementName=CaptionBorder}"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    BeginTime="0:0:0.1"
-                                                    Duration="0:0:0.2" From="1" To="0"
-                                                    FillBehavior="HoldEnd" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </Button.Triggers>
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Border>
-                                        <Grid>
-                                            <Image
-                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_left.png"
-                                                Width="12" Height="12"
-                                                Margin="20,0,6,0"
-                                                VerticalAlignment="Center" />
-                                        </Grid>
-                                    </Border>
-                                    <Grid Grid.Column="1" DataContext="{Binding Path=SelectedVideoItem}"
-                                          Height="{StaticResource VideoListBoxItemHeight}"
-                                          Width="{StaticResource VideoListBoxItemWidth}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="10" />
-                                            <ColumnDefinition Width="68" />
-                                            <ColumnDefinition Width="20" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="5" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-
-                                        --><!--대표이미지--><!--
-                                        <Grid Grid.Column="1" VerticalAlignment="Center" Width="68" Height="68">
-                                            <Image Source="{StaticResource Bitmap_NoFoundImage}" />
-                                            <Image Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
-                                        </Grid>
-
-                                        --><!--비디오 정보--><!--
-                                        <Grid Grid.Column="3" VerticalAlignment="Center">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="3" />
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="3" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
-                                            <Image Style="{StaticResource Style_VideoBadgeImage}"
-                                                   HorizontalAlignment="Left" />
-
-                                            <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="3" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" FontWeight="Bold"
-                                                           TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Grid.Column="2"
-                                                           Text="{Binding Path=Id, StringFormat='{}({0})'}" />
-                                            </Grid>
-                                            <TextBlock Grid.Row="4"
-                                                       Text="{Binding Path=Duration, StringFormat={}Duration - {0:hh':'mm':'ss}}"
-                                                       TextAlignment="Center" VerticalAlignment="Center"
-                                                       HorizontalAlignment="Left" />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                        </Border>
-
-                        --><!--구분선--><!--
-                        <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
-
-                        --><!--구분선--><!--
-                        <Rectangle Grid.Row="1" Fill="#dfe3ee" Height="1" VerticalAlignment="Bottom" />-->
-
-                        <!--<custom:CaptionAssetListView />-->
-                        <!--<ListBox Grid.Row="2" x:Name="AssetListBox"
-                                 ItemsSource="{Binding Path=SelectedVideoItem.CaptionAssetItems}"
-                                 SelectedItem="{Binding Path=SelectedVideoItem.SelectedCaptionAsset}"
-                                 ItemContainerStyle="{StaticResource Style_VideoListBoxItem}">
-                            <i:Interaction.Behaviors>
-                                <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding Path=CaptionAssetSectionChangedCommand}" />
-                            </i:Interaction.Behaviors>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
-                                    <Border Width="360">
-                                        <Grid Margin="0, 15">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="10" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="0" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="10" />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <RadioButton Grid.Column="0" Grid.Row="0"
-                                                         IsChecked="{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                                         VerticalAlignment="Top" 
-                                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CaptionAssetSectionChangedCommand}"/>
-                                            --><!--에셋정보--><!--
-                                            <Grid Grid.Column="2" Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="10" />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                --><!--TODO: DataTemplateSelector 이용하는 방식으로-->
-                                                <!--<StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                                    <Image Style="{StaticResource Style_CaptionBadgeImage}" />
-                                                    <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
-                                                </StackPanel>--><!--
-
-                                                <ContentControl
-                                                    Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                                    <Grid>
-                                                        <Rectangle Fill="{StaticResource Brush_Badge_Caption_Color}"
-                                                                   RadiusY="2" RadiusX="3" />
-                                                        <TextBlock Text="{Binding Path=Kind}" Margin="4,1"
-                                                                   Foreground="White" FontWeight="Bold" />
-                                                    </Grid>
-                                                </ContentControl>
-
-                                                <Grid Grid.Column="2" VerticalAlignment="Center"
-                                                      HorizontalAlignment="Left">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding Path=Name}"
-                                                               FontWeight="Bold" MaxWidth="255"
-                                                               TextTrimming="CharacterEllipsis" />
-                                                    <TextBlock Grid.Column="1"
-                                                               Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                                               Margin="3,0"
-                                                               Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}" />
-                                                </Grid>
-                                            </Grid>
-
-                                            --><!--캡션정보--><!--
-                                            <Grid Grid.Column="2" Grid.Row="2"
-                                                  Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                                <ItemsControl x:Name="CaptionItemsControl"
-                                                              ItemsSource="{Binding Path=Elements}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
-                                                            <Grid Margin="0,3">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                    <ColumnDefinition Width="13" />
-                                                                    <ColumnDefinition />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                </Grid.ColumnDefinitions>
-
-                                                                <CheckBox Grid.Column="0"
-                                                                          IsChecked="{Binding Path=IsSelected}"
-                                                                          Command="{Binding ElementName=Root, Path=DataContext.CaptionSelectionChangedCommand}"
-                                                                          CommandParameter="{Binding}" />
-                                                                <TextBlock Grid.Column="2" Text="{Binding Path=Label}" />
-                                                                <TextBlock Grid.Column="3"
-                                                                           Foreground="{StaticResource Brush_PointColor}"
-                                                                           HorizontalAlignment="Right">
-                                                                    <TextBlock.Text>
-                                                                        <MultiBinding StringFormat="{}[{0}-{1}]">
-                                                                            <MultiBinding.Bindings>
-                                                                                <Binding Path="Language" />
-                                                                                <Binding Path="Country" />
-                                                                            </MultiBinding.Bindings>
-                                                                        </MultiBinding>
-                                                                    </TextBlock.Text>
-                                                                </TextBlock>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <TextBlock
-                                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                                    Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
-                                                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    TextAlignment="Center" />
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>--><!--
-
-                        <Border Grid.Row="2"
-                                Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                            <Border
-                                Visibility="{Binding ElementName=VideoListBox, Path=SelectedItem, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
-                                <TextBlock
-                                    Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
-                            </Border>
-                        </Border>
-                    </Grid>
-                </Border>-->
             </Grid>
         </Border>
 
         <Control Grid.Row="0" Grid.RowSpan="2" x:Name="LoadingProgressView"
                  Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
                  Style="{StaticResource Style_IndeterminateControl}" />
-
-        <!--하단 버튼 영역-->
-        <!--<Border Grid.Row="1">
-            <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition SharedSizeGroup="ButtonWidth" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="true"
-                        Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        Command="{Binding ConfirmCommand}" />
-            </Grid>
-        </Border>-->
     </Grid>
 </UserControl>

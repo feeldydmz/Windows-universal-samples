@@ -829,4 +829,10 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   <data name="CNT_ADD" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="CNT_ADVANCED_SEARCH" xml:space="preserve">
+    <value>Advanced search</value>
+  </data>
+  <data name="CNT_QUICK_SEARCH" xml:space="preserve">
+    <value>Quick search</value>
+  </data>
 </root>

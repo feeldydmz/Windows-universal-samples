@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -23,6 +24,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
+using Application = System.Windows.Application;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -59,19 +61,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool _isNextButtonVisible = true;
         private bool _isOpen;
-        private bool _isShowCaption;
+        //private bool _isShowCaption;
+        private bool _isAdvancedSearch;
 
         private string _keyword;
+        private string _nameOfSearch;
+        private string _idOfSearch;
+
         private IEnumerable<DisplayItem> _keywordTypeItems;
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
+        private ICommand _unloadCommand;
 
         private ICommand _nextStepCommand;
 
         private ICommand _openCommand;
 
         private ICommand _refreshCommand;
+        private ICommand _searchOptionChangeCommand;
         private ICommand _searchCommand;
         private DisplayItem _selectedKeywordType;
         private int _selectedPageNo = 1;
@@ -108,6 +116,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
         }
+        public ICommand UnloadCommand
+        {
+            get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
+        }
 
         public ICommand AddDataCommand
         {
@@ -141,6 +153,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand RefreshCommand
         {
             get { return _refreshCommand = _refreshCommand ?? new RelayCommand(Refresh); }
+        }
+
+        public ICommand SearchOptionChangeCommand
+        {
+            get
+            {
+                return _searchOptionChangeCommand = _searchOptionChangeCommand ?? new RelayCommand(ChangedSearchOption);
+            }
         }
 
         public ICommand EnterCommand
@@ -239,10 +259,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _keyword, value);
         }
 
-        public bool IsShowCaption
+        public string NameOfSearch
         {
-            get => _isShowCaption;
-            set => Set(ref _isShowCaption, value);
+            get => _nameOfSearch;
+            set => Set(ref _nameOfSearch, value);
+        }
+
+        public string IdOfSearch
+        {
+            get => _idOfSearch;
+            set => Set(ref _idOfSearch, value);
+        }
+        
+        //public bool IsShowCaption
+        //{
+        //    get => _isShowCaption;
+        //    set => Set(ref _isShowCaption, value);
+        //}
+
+        public bool IsAdvancedSearch
+        {
+            get => _isAdvancedSearch;
+            set => Set(ref _isAdvancedSearch, value);
         }
 
         public bool IsOpen
@@ -349,6 +387,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void ClearSearchParameter()
         {
             Keyword = "";
+            IdOfSearch = "";
+            NameOfSearch = "";
+
             DurationStartTime = TimeSpan.FromSeconds(0);
             DurationEndTime = TimeSpan.FromSeconds(0);
         }
@@ -363,6 +404,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (OldVideoItem != null) OldVideoItem.CaptionAssetList = null;
 
             OldVideoItem = null;
+            IsConfirmButtonVisible = false;
+            SelectedVideoItem = null;
+
+            ClearSearchParameter();
+
             IsOpen = false;
             CloseAction?.Invoke();
         }
@@ -383,6 +429,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsOpen = true;
         }
 
+        private async void Unload()
+        {
+            Console.WriteLine("Unload");
+        }
+
         private bool CanLoadCaption(VideoItemViewModel videoItem)
         {
             return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
@@ -401,7 +452,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 SetTitleAction?.Invoke($"{Resource.CNT_VIDEO} - {videoItem.Name}");
-                IsShowCaption = true;
+                //IsShowCaption = true;
                 ValidCancellationTokenSource();
                 SelectedVideoItem = videoItem;
 
@@ -448,6 +499,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async void Refresh()
         {
             await SearchAsync(Keyword, 0);
+        }
+
+        private void ChangedSearchOption()
+        {
+            IsAdvancedSearch = !IsAdvancedSearch;
+
+            ClearSearchParameter();
         }
 
         private async void Enter(string keyword)
@@ -529,17 +587,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             TimeSpan endDuration)
         {
             var conditions = new Dictionary<string, string>();
-            if (!string.IsNullOrEmpty(keyword))
-                conditions.Add(SelectedKeywordType.Key, keyword);
 
-            if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
+            if (!IsAdvancedSearch)
             {
-                var startTime = startDuration.TotalMilliseconds;
-                var endTime =
-                    endDuration.TotalSeconds > startDuration.TotalSeconds
-                        ? endDuration.TotalMilliseconds
-                        : startDuration.TotalMilliseconds + 999;
-                conditions.Add("duration", $"{startTime}~{endTime}");
+                conditions.Add("q", Keyword);
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(NameOfSearch))
+                    conditions.Add("name", NameOfSearch);
+
+                if (!string.IsNullOrEmpty(IdOfSearch))
+                    conditions.Add("id", IdOfSearch);
+
+                if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
+                {
+                    var startTime = startDuration.TotalMilliseconds;
+                    var endTime =
+                        endDuration.TotalSeconds > startDuration.TotalSeconds
+                            ? endDuration.TotalMilliseconds
+                            : startDuration.TotalMilliseconds + 999;
+                    conditions.Add("duration", $"{startTime}~{endTime}");
+                }
             }
 
             return conditions;

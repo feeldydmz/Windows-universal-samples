@@ -26,7 +26,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     {
         private readonly IBrowser _browser;
         private readonly RecentlyLoader _recentlyLoader;
-        private readonly VideoListViewModel _videoList;
+        private readonly VideoListViewModel _videoMenu;
+        private readonly CaptionAssetMenuViewModel _captionMenu;
         private ICommand _closeCommand;
         private bool _hasRegisteredMessageHandlers;
         private bool _isOpen;
@@ -41,11 +42,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _RefreshCommand;
         private ICommand _unloadCommand;
 
-        public LeftSideMenuViewModel(IBrowser browser, RecentlyLoader recentlyLoader, VideoListViewModel videoList)
+        public LeftSideMenuViewModel(IBrowser browser, 
+                                     RecentlyLoader recentlyLoader,
+                                     VideoListViewModel videoMenu,
+                                     CaptionAssetMenuViewModel captionMenu)
         {
             _browser = browser;
             _recentlyLoader = recentlyLoader;
-            _videoList = videoList;
+            _videoMenu = videoMenu;
+            _captionMenu = captionMenu;
         }
 
         public bool IsOpen
@@ -203,7 +208,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void Close()
         {
             IsOpen = false;
-            _videoList.Close();
+            _videoMenu.Close();
+            _captionMenu.Close();
         }
     }
 }

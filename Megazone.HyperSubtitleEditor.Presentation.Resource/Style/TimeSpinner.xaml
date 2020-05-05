@@ -136,7 +136,7 @@
                         <Border x:Name="FocusedRectangle" BorderBrush="{DynamicResource Brush_PointColor}"
                                 BorderThickness="1" CornerRadius="1,0,0,1" Visibility="Collapsed" />
 
-                        <!--스핀버튼 영역-->
+                        <!--스핀버튼 영역--><!--
                         <Grid Grid.Column="1">
                             <Grid.Resources>
                                 <Style x:Key="Style_SpinControlButtonBase" TargetType="{x:Type RepeatButton}">
@@ -236,7 +236,7 @@
                                     </Style>
                                 </RepeatButton.Style>
                             </RepeatButton>
-                        </Grid>
+                        </Grid>-->
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">

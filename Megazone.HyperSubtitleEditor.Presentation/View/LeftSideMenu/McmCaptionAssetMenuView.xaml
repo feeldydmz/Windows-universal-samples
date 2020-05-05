@@ -14,7 +14,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu}"
-             AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
+             AllowDrop="False" ClipToBounds="True" 
              x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -36,10 +36,11 @@
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
 
-            <system:Double x:Key="ListBoxItemWidth">350</system:Double>
-            <Thickness x:Key="LayoutLeftMargin">20,14,0,10</Thickness>
+            <Thickness x:Key="AdvancedSearchOptionMargin">0,2,0,1</Thickness>
 
-            <Style x:Key="style_placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style x:Key="Style_PlaceHolder" TargetType="{x:Type TextBox}" >
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="White"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
@@ -52,15 +53,17 @@
                                     x:Name="textSource"
                                     Background="Transparent"
                                     Panel.ZIndex="2"
-                                    Foreground="#333333" />
+                                    Foreground="#333333" 
+                                    BorderThickness="0"
+                                    FontSize="11"/>
                                 <TextBox Text="{TemplateBinding Tag}"
                                          Background="{TemplateBinding Background}"
-                                         Panel.ZIndex="1">
+                                         Panel.ZIndex="1"
+                                         BorderThickness="0">
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
                                             <Setter Property="Padding" Value="3,0,0,0" />
                                             <Setter Property="Foreground" Value="Transparent" />
-                                            <Setter Property="Padding" Value="8,0,0,0"/>
                                             <Style.Triggers>
                                                 <DataTrigger
                                                     Binding="{Binding Path=Text, Source={x:Reference textSource}}"
@@ -81,6 +84,84 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style x:Key="Style_SearchButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="Background" Value="#11193f" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="2,0,0,2" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <!--<Setter Property="Background" Value="#10000000" />-->
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Style_RefreshButton" TargetType="{x:Type Button}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+                <Setter Property="Background" Value="#11193f" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="11px" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="0,2,2,0" Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="BorderBrush" Value="#FFa0a8b6" />-->
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <!--<Setter Property="Background" Value="#10000000" />-->
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -89,7 +170,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0">
+        <Border Grid.Row="0"
+                Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -102,58 +184,128 @@
                 <!--구분선-->
                 <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
-                <!--검색 패널-->
-                <Grid Grid.Row="1" Margin="{StaticResource LayoutLeftMargin}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1" 
+                      Margin="15,14,15,10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <!--검색항목-->
-                    <Grid Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="3" />
-                            <RowDefinition />
-                            <RowDefinition Height="3" />
-                            <RowDefinition />
-                            <RowDefinition Height="3" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Text" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}"/>
+                                    <Setter Property="FontWeight" Value="bold"/>
+                                    <Setter Property="Foreground" Value="#222222"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAdvancedSearch}"
+                                                     Value="True">
+                                            <Setter Property="Text" Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                        <!--키워드 검색-->
-                        <ComboBox Grid.Column="0" Grid.Row="0"
-                                  Width="90"
-                                  Foreground="#333333"
-                                  ItemsSource="{Binding Path=KeywordTypeItems}"
-                                  SelectedItem="{Binding Path=SelectedKeywordType}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type itemVm:DisplayItem}">
-                                    <TextBlock Text="{Binding Path=Display}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBox Grid.Column="2" Grid.Row="0" x:Name="KeywordTextBox"
-                                 Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}">
+                        <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
+                                        Margin="219,0,0,0"
+                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding Path=SearchOptionChangeCommand}">
+                            <Grid>
+                                <Image
+                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
+                                            Width="13" Height="13" />
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+
+                    <!-- 빠른 검색 -->
+                    <Border Grid.Row="1" 
+                            BorderBrush="#a0a8b6" 
+                            BorderThickness="1" 
+                            Margin="{StaticResource AdvancedSearchOptionMargin}"
+                            CornerRadius="2"
+                            Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                        <TextBox x:Name="KeywordTextBox"
+                                         Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource Style_PlaceHolder}"
+                                         Tag="{x:Static resources:Resource.CNT_SEARCH}">
                             <i:Interaction.Behaviors>
                                 <mz:KeyEventToRunCommandBehavior
-                                    Command="{Binding Path=EnterCommand}"
-                                    CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
-                                    Key="Enter" />
+                                            Command="{Binding Path=EnterCommand}"
+                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
+                                            Key="Enter" />
                             </i:Interaction.Behaviors>
                         </TextBox>
+                    </Border>
 
-                        <!--Kind 검색-->
-                        <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static resources:Resource.CNT_KIND}" 
-                                   VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left"/>-->
+                    <!--고급 검색-->
+                    <Grid Grid.Row="1" 
+                                  Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <!--<RowDefinition Height="30"/>-->
+                        </Grid.RowDefinitions>
 
+                        <Border BorderBrush="#a0a8b6" 
+                                        BorderThickness="1" 
+                                        Margin="{StaticResource AdvancedSearchOptionMargin}"
+                                        CornerRadius="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Static resources:Resource.CNT_NAME}" 
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <Rectangle Grid.Column="1"
+                                           Height="15" 
+                                           Width="1"
+                                           Fill="#a0a8b6"/>
+                                <TextBox Grid.Column="2"
+                                         Style="{StaticResource Style_PlaceHolder}"
+                                         Text="{Binding NameOfSearch, Mode=TwoWay}"
+                                         Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                            </Grid>
+                        </Border>
 
-                        <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
+                        <Border Grid.Row="1"  
+                                        BorderBrush="#a0a8b6" 
+                                        BorderThickness="1"
+                                        Margin="{StaticResource AdvancedSearchOptionMargin}"
+                                        CornerRadius="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Static resources:Resource.CNT_ID}" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                <Rectangle Grid.Column="1"
+                                                   Height="15" 
+                                                   Width="1"
+                                                   Fill="#a0a8b6"/>
+                                <TextBox Grid.Column="2"
+                                                 Style="{StaticResource Style_PlaceHolder}"
+                                                 Text="{Binding IdOfSearch, Mode=TwoWay}"
+                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                            </Grid>
+                        </Border>
+
+                        <!--캡션종료-->
+                        <custom:PlaceholdCombobox Grid.Row="2"
                                                   MyItemsSource="{Binding Path=CaptionKindItems}"
                                                   MySelectedItem="{Binding Path=SelectedCaptionKindItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   DefaultText="{x:Static resources:Resource.CNT_KIND}"
@@ -164,37 +316,41 @@
                                 </DataTemplate>
                             </custom:PlaceholdCombobox.MyDataTemplate>
                         </custom:PlaceholdCombobox>
-                        <!-- <ComboBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" -->
-                        <!--                           ItemsSource="{Binding Path=CaptionKindItems}" -->
-                        <!--                           SelectedItem="{Binding Path=SelectedCaptionKindItem}" -->
-                        <!--                           Foreground="#333333"> -->
-                        <!--     <ComboBox.ItemTemplate> -->
-                        <!--         <DataTemplate DataType="{x:Type itemVm:DisplayItem}"> -->
-                        <!--             <TextBlock Text="{Binding Path=Display}" /> -->
-                        <!--         </DataTemplate> -->
-                        <!--     </ComboBox.ItemTemplate> -->
-                        <!-- </ComboBox> -->
 
-                        <!--Label 검색-->
-                        <TextBlock Grid.Column="0" Grid.Row="4"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Center"
-                                   Text="{x:Static resources:Resource.CNT_LABEL}"
-                                   HorizontalAlignment="Left" />
+                        <Border Grid.Row="3"  
+                                BorderBrush="#a0a8b6" 
+                                BorderThickness="1"
+                                Margin="{StaticResource AdvancedSearchOptionMargin}"
+                                CornerRadius="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Static resources:Resource.CNT_LABEL}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <Rectangle Grid.Column="1"
+                                           Height="15" 
+                                           Width="1"
+                                           Fill="#a0a8b6"/>
+                                <TextBox x:Name="LabelTextBox"
+                                         Grid.Column="2"
+                                         Style="{StaticResource Style_PlaceHolder}"
+                                         Tag="{x:Static resources:Resource.CNT_SEARCH}"
+                                         Text="{Binding Path=LabelOfSearch, UpdateSourceTrigger=PropertyChanged}">
+                                    <i:Interaction.Behaviors>
+                                        <mz:KeyEventToRunCommandBehavior
+                                            Command="{Binding Path=EnterCommand}"
+                                            CommandParameter="{Binding ElementName=LabelTextBox, Path=Text}"
+                                            Key="Enter" />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
+                        </Border>
 
-                        <TextBox x:Name="LabelTextBox" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4"
-                                 Style="{StaticResource style_placeHolder}"
-                                 Tag="{x:Static resources:Resource.CNT_LABEL}"
-                                 Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}">
-                            <i:Interaction.Behaviors>
-                                <mz:KeyEventToRunCommandBehavior
-                                    Command="{Binding Path=EnterCommand}"
-                                    CommandParameter="{Binding ElementName=LabelTextBox, Path=Text}"
-                                    Key="Enter" />
-                            </i:Interaction.Behaviors>
-                        </TextBox>
-
-                        <custom:PlaceholdCombobox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6"
+                        <custom:PlaceholdCombobox Grid.Row="4"
                                                   MyItemsSource="{Binding Path=Languages}"
                                                   MySelectedItem="{Binding Path=SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   MyDataTemplateSelector="{StaticResource LanguageItemTemplateSelector}"
@@ -202,41 +358,55 @@
                                                   Foreground="#333333" />
                     </Grid>
 
-                    <!--검색버튼-->
-                    <Grid Grid.Column="1" Grid.Row="0" Margin="8,0,35,0" VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="4" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <!--검색 버튼 영역-->
+                    <StackPanel Grid.Row="2"
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center">
 
-                        <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
-                                Margin="0"
-                                ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Command="{Binding Path=RefreshCommand}">
-                            <Grid>
-                                <Image
-                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
-                                    Width="25" Height="25" />
-                            </Grid>
-                        </Button>
+                        <Border Height="1" 
+                                        BorderBrush="#e0e2e6"
+                                        BorderThickness="1"
+                                        VerticalAlignment="Top"
+                                        Margin="0,10,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="25"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource Style_SearchButton}"
+                                            ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch"
+                                            Command="{Binding Path=SearchCommand}"
+                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
+                                <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                    <Image
+                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                                Width="25" Height="25" />
+                                    <TextBlock Text="{x:Static resources:Resource.CNT_SEARCH}"
+                                                       Foreground="White"
+                                                       VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
 
-                        <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}"
-                                Margin="0"
-                                ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Command="{Binding Path=SearchCommand}"
-                                CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
-                            <Grid>
-                                <Image
-                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
-                                    Width="25" Height="25" />
-                            </Grid>
-                        </Button>
-                    </Grid>
+                            <Rectangle Grid.Column="1" Width="1" Fill="#293053"/>
+
+                            <Button Grid.Column="2" Style="{StaticResource Style_RefreshButton}"
+                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Command="{Binding Path=RefreshCommand}">
+                                <Grid Margin="3">
+                                    <Image
+                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png"
+                                                Width="13" 
+                                                Height="13" />
+                                </Grid>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
 
                 <!--구분선-->

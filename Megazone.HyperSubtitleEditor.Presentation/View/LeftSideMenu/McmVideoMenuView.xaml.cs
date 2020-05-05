@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
@@ -25,6 +26,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu
 
             //    vm.CloseAction = () => { CaptionBackButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); };
             //}
+        }
+
+        private void McmVideoMenuView_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is VideoListViewModel vm)
+            {
+              vm.Close();
+            }
+        }
+
+        private void McmVideoMenuView_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            Console.Write("DD");
         }
     }
 }

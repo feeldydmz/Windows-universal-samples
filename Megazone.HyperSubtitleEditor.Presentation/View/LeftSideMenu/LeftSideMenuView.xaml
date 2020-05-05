@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:leftMenuView="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
+             xmlns:behavior="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.Behavior"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}"
@@ -191,8 +192,10 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <RadioButton x:Name="McmRadioButton" GroupName="LeftSideMainMenuGroup"
-                                     MouseEnter="OnMouseEnter" Click="McmRadioButton_OnClick">
+                        <RadioButton x:Name="McmRadioButton" 
+                                     GroupName="LeftSideMainMenuGroup"
+                                     MouseEnter="OnMouseEnter" 
+                                     Click="McmRadioButton_OnClick">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:InvokeCommandAction
@@ -328,7 +331,7 @@
                         </Border.RenderTransform>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="55" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
@@ -349,7 +352,13 @@
                                                      GroupName="McmMenuGroup"
                                                      IsChecked="True"
                                                      Margin="3,3,15,3"
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" />
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" >
+                                            <i:Interaction.Behaviors>
+                                                <behavior:LeftSideRadioMenuButtonBehavior 
+                                                    CloseCommand="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CloseCommand}"/>
+                                            </i:Interaction.Behaviors>
+                                        </RadioButton>
+
                                         <RadioButton x:Name="AssetRadioButton"
                                                      Content="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, Converter={StaticResource StringToUpperConverter}}"
                                                      GroupName="McmMenuGroup"
@@ -372,12 +381,13 @@
                             </Border>
 
                             <Border Grid.Row="1"
+                                    Width="320"
                                     Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <leftMenuView:McmVideoMenuView />
+                                <leftMenuView:McmVideoMenuView/>
                             </Border>
 
                             <Border Grid.Row="1"
-                                    Width="396"
+                                    Width="320"
                                     Visibility="{Binding ElementName=AssetRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <leftMenuView:McmCaptionAssetMenuView />
                             </Border>
@@ -398,12 +408,14 @@
                     </Border>
                 </Grid>
             </Border>
+
+            <!--McmVideoMenuView에서 비디오 선택시 나오는 캡션 에셋 리스트 팝업--> 
             <Border Grid.Column="2" 
                     BorderThickness="1" 
                     BorderBrush="#e0e2e6"
                     Background="White"
                     DataContext="{Binding VideoList, Source={StaticResource SubtitleViewModelLocator}}"
-                    Visibility="{Binding Path=SelectedVideoItem.CaptionAssetList, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                    Visibility="{Binding Path=SelectedVideoItem.CaptionAssetList, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -411,18 +423,19 @@
                     </Grid.RowDefinitions>
                     <!--<TextBlock Text="Second Caption List" Foreground="Red"/>-->
                     <leftMenuView:CaptionAssetListView Grid.Row="0" 
-                                                   DataContext="{Binding SelectedVideoItem.CaptionAssetList, Mode=TwoWay}" 
-                                                   Visibility="{Binding Path=VideoList.SelectedVideoItem, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
+                                                   DataContext="{Binding SelectedVideoItem.CaptionAssetList, Mode=TwoWay}"
+                                                   Visibility="{Binding Path=CaptionAssetItems, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}"/>
                     <Border Grid.Row="1"
                             BorderBrush="#e0e2e6"
                             BorderThickness="0,1,0,0">
                         <Grid Grid.IsSharedSizeScope="True"
-                             >
+                              Visibility="{Binding Path=SelectedVideoItem.CaptionAssetList, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="1"  Margin="16,15"
+                            <Button Grid.Column="1" 
+                                    Margin="16,15"
                                     IsDefault="true"
                                     Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Command="{Binding ConfirmCommand}" >
@@ -443,7 +456,7 @@
                 </Grid>
             </Border>
         </Grid>
-        <Border BorderBrush="#dfe3ee" BorderThickness="1" />
+        <!--<Border BorderBrush="#dfe3ee" BorderThickness="1" />-->
     </Grid>
 </UserControl>
     
