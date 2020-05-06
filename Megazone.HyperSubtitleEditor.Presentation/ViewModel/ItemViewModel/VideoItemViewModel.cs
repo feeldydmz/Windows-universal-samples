@@ -24,7 +24,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private int _totalCaptionCount;
 
-        public VideoItemViewModel(Video video)
+        public VideoItemViewModel(Video video, bool isSearchResult = false)
         {
             Source = video;
             Id = video.Id;
@@ -39,26 +39,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             HasCaptions = video.Captions?.Any() ?? false;
             PrimaryImageUrl = GetPrimaryImage(video);
             TotalCaptionCount = video.Captions?.Sum(asset => asset.Elements?.Count() ?? 0) ?? 0;
-            var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
-                       new List<CaptionAssetItemViewModel>();
-            //CaptionAssetItems = new ObservableCollection<CaptionAssetItemViewModel>(list);
 
-            CaptionAssetList = new CaptionAssetListViewModel(list);
+            if (isSearchResult)
+            {
+                CaptionAssetList = null;
+            }
+            else {
+                var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
+                           new List<CaptionAssetItemViewModel>();
+
+                CaptionAssetList = new CaptionAssetListViewModel(list);
+            }
 
             Encryptions = video.Encryptions?.ToList();
+            HasCaption = video.HasCaption;
         }
-
-        //public CaptionAssetItemViewModel SelectedCaptionAsset
-        //{
-        //    get => _selectedCaptionAsset;
-        //    set => Set(ref _selectedCaptionAsset, value);
-        //}
-
-        //public IList<CaptionAssetItemViewModel> CaptionAssetItems
-        //{
-        //    get => _captionAssetItems;
-        //    set => Set(ref _captionAssetItems, value);
-        //}
 
         public CaptionAssetListViewModel CaptionAssetList
         {
@@ -104,6 +99,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         public string Status { get; }
         public TimeSpan Duration { get; }
         public DateTime CreatedAt { get; }
+        public bool HasCaption { get; }
 
         private string GetPrimaryImage(Video video)
         {

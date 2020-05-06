@@ -9,6 +9,8 @@
             Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <system:Double x:Key="LeftSideMenuListItemWidth">285</system:Double>
+
     <SolidColorBrush x:Key="Brush_CommonBackground" Color="White" />
     <!--<SolidColorBrush x:Key="Brush_CommonBackground" Color="#FF323743" />-->
     <SolidColorBrush x:Key="Brush_ColumnHeaderBackground" Color="#FF262931" />
@@ -1391,6 +1393,10 @@
 
     <Style x:Key="Style_VideoBadgeImage" TargetType="Image">
         <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_badge_video.png" />
+        <Setter Property="Stretch" Value="None" />
+    </Style>
+    <Style x:Key="Style_VideoExistCaptionBadgeImage" TargetType="Image">
+        <Setter Property="Source" Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_exsit_caption.png" />
         <Setter Property="Stretch" Value="None" />
     </Style>
     <Style x:Key="Style_CaptionBadgeImage" TargetType="Image">

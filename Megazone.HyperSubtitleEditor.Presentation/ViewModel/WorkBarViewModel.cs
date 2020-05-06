@@ -271,8 +271,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (video != null)
                 {
                     VideoItem = new VideoItemViewModel(video);
-                    VideoItem.CaptionAssetList.SelectedCaptionAssetItem =
-                        VideoItem.CaptionAssetList.CaptionAssetItems?.SingleOrDefault(asset => asset.Id.Equals(assetId));
+
+                    if (VideoItem.CaptionAssetList != null)
+                        VideoItem.CaptionAssetList.SelectedCaptionAssetItem =
+                            VideoItem.CaptionAssetList.CaptionAssetItems?.SingleOrDefault(asset => asset.Id.Equals(assetId));
                 }
 
                 var captionAsset = string.IsNullOrEmpty(assetId)

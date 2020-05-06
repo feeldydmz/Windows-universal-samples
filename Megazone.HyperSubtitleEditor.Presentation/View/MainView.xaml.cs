@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -14,6 +13,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
+using Microsoft.Win32;
 using Unity;
 using Application = System.Windows.Application;
 using UserControl = System.Windows.Controls.UserControl;
@@ -31,6 +31,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             Self = this;
             InitializeComponent();
+            CheckExplorerVersionRegistry();
             Loaded += MainView_Loaded;
         }
 
@@ -338,10 +339,74 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         private void MainView_Loaded(object sender, RoutedEventArgs e)
         {
             RootViewContainer.Child = new SubtitleView();
-
             if (Application.Current.MainWindow != null)
                 Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
+
+        private void CheckExplorerVersionRegistry()
+        {
+            try
+            {
+                string regSearchKey;
+
+                var is64BitProcess = Environment.Is64BitOperatingSystem;
+
+                if (is64BitProcess)
+                {
+                    regSearchKey =
+                        "SOFTWARE\\WOW6432Node\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION";
+                }
+                else
+                {
+                    regSearchKey =
+                        "SOFTWARE\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION";
+                }
+
+                // 서브키를 얻어온다. 없으면 null
+                RegistryKey rk = Registry.LocalMachine.OpenSubKey(regSearchKey, false);
+                // 없으면 서브키를 만든다.
+                var processName = System.AppDomain.CurrentDomain.FriendlyName;
+                if (rk != null)
+                {
+                    var returnValue = rk.GetValue(processName);
+
+                    if (returnValue == null)
+                    {
+                        CreateExplorerVersionRegistry(regSearchKey, processName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        private void CreateExplorerVersionRegistry(string keyPath, string processName)
+        {
+            try
+            {
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.FileName = "reg.exe";
+                    proc.StartInfo.UseShellExecute = true;
+                    //proc.StartInfo.RedirectStandardOutput = true;
+                    //proc.StartInfo.RedirectStandardError = true;
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.Arguments =
+                        $"add \"HKEY_LOCAL_MACHINE\\{keyPath}\" /v {processName} /t REG_DWORD /d 10001 /f";
+                    proc.StartInfo.Verb = "runas";
+                    proc.Start();
+                    //string stdout = proc.StandardOutput.ReadToEnd();
+                    //string stderr = proc.StandardError.ReadToEnd();
+                    //proc.WaitForExit();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
 
         public void RestartMainWindow()
         {

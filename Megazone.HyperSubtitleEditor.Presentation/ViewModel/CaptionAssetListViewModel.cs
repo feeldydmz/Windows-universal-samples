@@ -16,7 +16,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class CaptionAssetListViewModel : ViewModelBase
     {
-        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems;
+        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems = null;
         private CaptionAssetItemViewModel _selectedCaptionAssetItem;
 
         private ICommand _captionAssetSectionChangedCommand;

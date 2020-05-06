@@ -37,7 +37,7 @@
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
 
-            <system:Double x:Key="VideoListBoxItemWidth">285</system:Double>
+            <!--<system:Double x:Key="VideoListBoxItemWidth">285</system:Double>-->
             <system:Double x:Key="VideoListBoxItemHeight">98</system:Double>
             <Thickness x:Key="LayoutLeftMargin">15,14,0,10</Thickness>
             <Thickness x:Key="advancedSearchOptionMargin">0,2,0,1</Thickness>
@@ -355,7 +355,7 @@
                                         Command="{Binding Path=SearchOptionChangeCommand}">
                                     <Grid>
                                         <Image
-                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
+                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
                                             Width="13" Height="13" />
                                     </Grid>
                                 </Button>
@@ -574,63 +574,6 @@
                             </StackPanel>
                         </Grid>
 
-                        <!--<Grid Grid.Row="0" Margin="{StaticResource LayoutLeftMargin}" Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            --><!--검색항목--><!--
-                            <Grid Grid.Column="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="5" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="3" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                            </Grid>
-
-                            <Grid Grid.Column="1" Grid.Row="0" Margin="8,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="4" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-
-                                <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
-                                        Margin="0"
-                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                        VerticalAlignment="Top"
-                                        HorizontalAlignment="Left"
-                                        Command="{Binding Path=RefreshCommand}">
-                                    <Grid>
-                                        <Image
-                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_refresh_nor.png"
-                                            Width="25" Height="25" />
-                                    </Grid>
-                                </Button>
-
-                                <Button Grid.Column="2" Style="{StaticResource Style_IconMenuButton}"
-                                        Margin="0"
-                                        ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
-                                        VerticalAlignment="Top"
-                                        HorizontalAlignment="Left"
-                                        Command="{Binding Path=SearchCommand}"
-                                        CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
-                                    <Grid>
-                                        <Image
-                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
-                                            Width="25" Height="25" />
-                                    </Grid>
-                                </Button>
-                            </Grid>
-                        </Grid>-->
-
                         <!--구분선-->
                         <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
@@ -655,7 +598,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="itemVm:VideoItemViewModel">
                                         <Border Height="{StaticResource VideoListBoxItemHeight}" 
-                                                Width="{StaticResource VideoListBoxItemWidth}"
+                                                Width="{StaticResource LeftSideMenuListItemWidth}"
                                                 ToolTip="{Binding Path=Name}">
                                             <Grid >
                                                 <Grid.ColumnDefinitions>
@@ -682,8 +625,19 @@
                                                         <RowDefinition Height="*" />
                                                     </Grid.RowDefinitions>
 
-                                                    <Image Style="{StaticResource Style_VideoBadgeImage}"
-                                                           HorizontalAlignment="Left" />
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Style="{StaticResource Style_VideoBadgeImage}"
+                                                               HorizontalAlignment="Left" />
+
+                                                        <Rectangle Height="10" Width="1" Fill="#e0e2e6"
+                                                                   Margin="8,0,0,0"
+                                                                   Visibility="{Binding HasCaption, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                        <Image Style="{StaticResource Style_VideoExistCaptionBadgeImage}"
+                                                               Margin="8,0,0,0"
+                                                               HorizontalAlignment="Left" 
+                                                               Visibility="{Binding HasCaption, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                    </StackPanel>
 
                                                     <Grid Grid.Row="1" 
                                                           VerticalAlignment="Center"

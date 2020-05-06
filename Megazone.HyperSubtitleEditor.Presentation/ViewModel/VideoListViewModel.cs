@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -72,7 +73,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
-        private ICommand _unloadCommand;
 
         private ICommand _nextStepCommand;
 
@@ -115,10 +115,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
-        }
-        public ICommand UnloadCommand
-        {
-            get { return _unloadCommand = _unloadCommand ?? new RelayCommand(Unload); }
         }
 
         public ICommand AddDataCommand
@@ -410,6 +406,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ClearSearchParameter();
 
             IsOpen = false;
+            IsBusy = false;
             CloseAction?.Invoke();
         }
 
@@ -429,11 +426,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsOpen = true;
         }
 
-        private async void Unload()
-        {
-            Console.WriteLine("Unload");
-        }
-
         private bool CanLoadCaption(VideoItemViewModel videoItem)
         {
             return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
@@ -445,7 +437,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             Debug.WriteLine("LoadCaptionAsync start");
             IsNextButtonVisible = false;
-            IsConfirmButtonVisible = true;
+
+            //if (OldVideoItem != null)
+            //{
+            //    OldVideoItem.CaptionAssetList.CaptionAssetItems = null;
+            //    OldVideoItem.CaptionAssetList = null;
+            //}
 
             // 선택된 비디오에서 caption asset을 선택하면, 자막정보를 가져온다.
             IsBusy = true;
@@ -483,9 +480,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 //        Debug.WriteLine("not insert empty");
                 //    }
 
-                if (OldVideoItem != null) OldVideoItem.CaptionAssetList = null;
+               
+
 
                 OldVideoItem = videoItem;
+                IsConfirmButtonVisible = true;
 
                 Debug.WriteLine("LoadCaptionAsync end");
             }
@@ -520,6 +519,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task SearchAsync(string keyword, int pageIndex, bool isPaging = false)
         {
+            IsConfirmButtonVisible = false;
+
             var conditions = MakeSearchConditions(keyword, DurationStartTime, DurationEndTime);
             await SearchVideoAsync(pageIndex, conditions, isPaging);
         }
@@ -545,7 +546,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 TotalCount = results.TotalCount;
                 VideoItems = new ObservableCollection<VideoItemViewModel>(
-                    results.List?.Select(video => new VideoItemViewModel(video)).ToList() ??
+                    results.List?.Select(video => new VideoItemViewModel(video, true)).ToList() ??
                     new List<VideoItemViewModel>());
             }
             catch (Exception e)

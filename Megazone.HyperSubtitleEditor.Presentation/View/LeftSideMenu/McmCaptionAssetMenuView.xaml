@@ -209,15 +209,14 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
-                                        Margin="219,0,0,0"
-                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding Path=SearchOptionChangeCommand}">
+                        <Button Style="{StaticResource Style_IconMenuButton}"
+                                Margin="219,0,0,0"
+                                ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                VerticalAlignment="Center"
+                                Command="{Binding Path=SearchOptionChangeCommand}">
                             <Grid>
-                                <Image
-                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
-                                            Width="13" Height="13" />
+                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
+                                       Width="13" Height="13" />
                             </Grid>
                         </Button>
                     </StackPanel>
