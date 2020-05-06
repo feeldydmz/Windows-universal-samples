@@ -467,11 +467,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject.ProjectId;
 
-                var result = await _cloudMediaService.GetVideoAsync(
+                var video = await _cloudMediaService.GetVideoAsync(
                     new GetVideoParameter(authorization, stageId, projectId, videoId),
                     _cancellationTokenSource.Token);
 
-                videoItem.UpdateSource(result);
+                videoItem.UpdateSource(video);
                 //if (videoItem.CaptionAssetList!= null)
                 //    if (videoItem.CaptionAssetList.CaptionAssetItems is IList<CaptionAssetItemViewModel> list)
                 //        list.Add(CaptionAssetItemViewModel.Empty);

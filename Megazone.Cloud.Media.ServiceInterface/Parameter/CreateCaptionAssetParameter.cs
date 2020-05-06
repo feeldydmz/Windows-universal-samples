@@ -7,14 +7,15 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
     public class CreateCaptionAssetParameter : RequiredParameter
     {
         public CreateCaptionAssetParameter(Authorization authorization, string stageId, string projectId,
-            string assetName, IEnumerable<Caption> captions) : base(authorization, stageId, projectId)
+            string assetName, string folderPath) : base(authorization, stageId, projectId)
         {
             AssetName = assetName;
-            Captions = captions;
+            FolderPath = folderPath;
         }
 
         public string AssetName { get; }
 
-        public IEnumerable<Caption> Captions { get; }
+        public string FolderPath { get; }
+        //public IEnumerable<Caption> Captions { get; }
     }
 }

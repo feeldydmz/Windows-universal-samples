@@ -48,7 +48,7 @@
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
                 <!--<Setter Property="Background" Value="{DynamicResource Brush_ListItemBackground}" />-->
-                <Setter Property="Background" Value="#f4f6f8" />
+                <Setter Property="Background" Value="White" />
                 <Setter Property="Padding" Value="10,0" />
                 <Setter Property="Foreground" Value="#FF222222" />
                 <Setter Property="BorderBrush" Value="#FFcdd2da" />
@@ -66,9 +66,9 @@
                                             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
                                         </Style>
                                     </Grid.Resources>
-                                    <Rectangle x:Name="PART_Select" Fill="#FF61a5ef" Opacity="0.3" Visibility="Hidden"
+                                    <Rectangle x:Name="PART_Select" Fill="#f5f9ff" Opacity="0.3" Visibility="Hidden"
                                                IsHitTestVisible="False" />
-                                    <Rectangle x:Name="PART_Over" Fill="White" Opacity="1" RadiusX="1"
+                                    <Rectangle x:Name="PART_Over" Fill="#f5f9ff" Opacity="1" RadiusX="1"
                                                RadiusY="1" Visibility="Hidden" IsHitTestVisible="False" />
                                     <ContentPresenter Content="{TemplateBinding Content}"
                                                       ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -124,7 +124,7 @@
                                         <Condition Property="IsSelected" Value="True" />
                                     </MultiTrigger.Conditions>
                                     <!--<Setter Property="Visibility" Value="Visible" TargetName="PART_Select" />-->
-                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Background" Value="#f5f9ff" />
                                 </MultiTrigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" Value="0.4" />
@@ -662,7 +662,8 @@
                                                             FontSize="11"
                                                             TextAlignment="Center" 
                                                             VerticalAlignment="Center"
-                                                            HorizontalAlignment="Left" />
+                                                            HorizontalAlignment="Left" 
+                                                            Foreground="#697382"/>
                                                     </Grid>
                                                 </Grid>
 

@@ -227,7 +227,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             var selectedCaptionList = CaptionItems.Where(x => x.IsSelected).Select(item => item.Source).ToList();
             return new CaptionAsset(null, AssetName, "ACTIVE", "CAPTION", "TEXT", "DIRECT", 0, 1, null,
-                selectedCaptionList);
+                selectedCaptionList, "");
         }
     }
 }

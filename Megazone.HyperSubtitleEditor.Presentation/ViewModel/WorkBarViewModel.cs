@@ -238,7 +238,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 CaptionAssetItem =
                     new CaptionAssetItemViewModel(new CaptionAsset(null, assetName, null, null, null, null, 0, 0, null,
-                        null));
+                        null,""));
             }
         }
 
@@ -459,10 +459,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 //--------------
                 if (string.IsNullOrEmpty(captionAsset.Id))
                 {
+                    var folderPath = video.Sources.First().FolderPath;
+                    folderPath = folderPath.Substring(0, folderPath.LastIndexOf("/"));
+
                     var assetName = captionAsset.Name;
                     var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
                         new CreateCaptionAssetParameter(authorization, stageId, projectId, assetName,
-                            null),
+                            folderPath),
                         CancellationToken.None);
 
                     var assetId = createAsset?.Id;
@@ -746,7 +749,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     }
 
                     var updateAsset = new CaptionAsset(asset.Id, asset.Name, asset.Status, asset.Type, asset.MediaType,
-                        asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, createdCaptionAssetList);
+                        asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, createdCaptionAssetList, asset.FolderPath);
 
                     return updateAsset;
                 }
