@@ -102,7 +102,7 @@
 
         
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="{x:Static resources:Resource.CNT_ID}"
+            <TextBlock Text="Id"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 

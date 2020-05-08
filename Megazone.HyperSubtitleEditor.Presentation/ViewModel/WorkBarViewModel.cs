@@ -459,8 +459,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 //--------------
                 if (string.IsNullOrEmpty(captionAsset.Id))
                 {
-                    var folderPath = video.Sources.First().FolderPath;
-                    folderPath = folderPath.Substring(0, folderPath.LastIndexOf("/"));
+                    var folderPath = "";
+                    if (video != null)
+                    {
+                        folderPath = video.Sources.First().FolderPath;
+                        folderPath = folderPath.Substring(0, folderPath.LastIndexOf("/"));
+                    }
 
                     var assetName = captionAsset.Name;
                     var createAsset = await _cloudMediaService.CreateCaptionAssetAsync(
