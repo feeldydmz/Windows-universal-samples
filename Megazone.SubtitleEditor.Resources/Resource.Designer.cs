@@ -205,6 +205,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Edit Asset Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ASSET_NAME_EDIT {
+            get {
+                return ResourceManager.GetString("CNT_ASSET_NAME_EDIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Auto Login과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_AUTO_LOGIN {

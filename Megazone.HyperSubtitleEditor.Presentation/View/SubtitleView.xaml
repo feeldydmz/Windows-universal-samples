@@ -1145,7 +1145,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                        <!--드래그앤 드롭을 담당하는 영역과 IsHitTest Visible만 다름. 추후 변경을 위해 나머지 구조는 유사하게 해놓음-->
+                                        <!--드래그 앤 드롭을 담당하는 영역과 IsHitTest Visible만 다름. 추후 변경을 위해 나머지 구조는 유사하게 해놓음-->
                                         <Grid>
                                             <Border
                                                 BorderBrush="{TemplateBinding BorderBrush}"

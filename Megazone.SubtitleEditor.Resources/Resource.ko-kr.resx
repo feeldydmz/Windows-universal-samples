@@ -205,7 +205,7 @@
     <value>배포</value>
   </data>
   <data name="CNT_DOWNLOAD_EXCEL_TEMPLET" xml:space="preserve">
-    <value>Excel 양식 다운로드</value>
+    <value>엑셀 양식 다운로드</value>
   </data>
   <data name="CNT_DURATION" xml:space="preserve">
     <value>지속 시간</value>
@@ -847,5 +847,8 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   </data>
   <data name="CNT_QUICK_SEARCH" xml:space="preserve">
     <value>빠른 검색</value>
+  </data>
+  <data name="CNT_ASSET_NAME_EDIT" xml:space="preserve">
+    <value>에셋 이름 수정</value>
   </data>
 </root>

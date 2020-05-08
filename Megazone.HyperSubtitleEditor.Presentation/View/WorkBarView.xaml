@@ -132,8 +132,12 @@
                     </Button>
                 </Grid>
 
-                <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0">
-                    <Rectangle Fill="#78828e" Height="25" Width="1"/>
+                
+
+                <StackPanel Grid.Column="4" 
+                            Orientation="Horizontal" 
+                            Margin="0">
+                    <Rectangle Fill="#4f586d" Height="25" Width="1"/>
                     <Button Style="{StaticResource Style_IconMenuButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"
                             Command="{StaticResource ResetWorkBarCommand}">
                         <Grid HorizontalAlignment="Center">

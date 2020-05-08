@@ -45,7 +45,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 var now = DateTime.Now.ToString("yyyyMMddHHmmss");
 
                 var savePath = _fileManager.OpenSaveFileDialog(this.MyDocuments(), "Excel files (*.xlsx)|*.xlsx",
-                    "HyperSubtitleEditor_Excel_" + now + ".xlsx");
+                    "CloudPlexMediaSubtitleEditor_" + now + ".xlsx");
 
                 if (string.IsNullOrEmpty(savePath))
                     return;

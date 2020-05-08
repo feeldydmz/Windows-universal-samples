@@ -835,4 +835,7 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   <data name="CNT_QUICK_SEARCH" xml:space="preserve">
     <value>Quick search</value>
   </data>
+  <data name="CNT_ASSET_NAME_EDIT" xml:space="preserve">
+    <value>Edit Asset Name</value>
+  </data>
 </root>

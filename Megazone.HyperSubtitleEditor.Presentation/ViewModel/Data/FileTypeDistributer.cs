@@ -236,7 +236,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public static bool IsSupportedSubtitleFormat(string fileExtension)
         {
-            return fileExtension == ".vtt";
+            return fileExtension == ".vtt" || fileExtension == ".smi" || fileExtension == ".srt";
         }
     }
 }

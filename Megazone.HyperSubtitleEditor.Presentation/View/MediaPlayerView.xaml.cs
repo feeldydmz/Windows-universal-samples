@@ -386,5 +386,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         }
 
         #endregion
+
+        private void TypeUrlList_OnDropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb)
+            {
+                if (cb.Items.Count == 1)
+                    cb.IsDropDownOpen = false;
+            }
+        }
     }
 }
