@@ -210,7 +210,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ICommand OpenRecentlyCommand
         {
-            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
+            get
+            {
+                return _openRecentlyCommand =
+                    _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently);
+            }
         }
         
         public SubtitleTabItemViewModel SelectedTab
@@ -1532,8 +1536,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (param.FilePath.IsNotNullAndAny())
                 {
+                    SubtitleFormatKind subtitleKind =  GetSubTitleFormatKindByFileName(param.FilePath);
                     _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(param.FilePath)
-                        .SetFormat("VTT").Create());
+                        .SetFormat(subtitleKind).Create());
                 }
 
                 this.InvokeOnUi(() =>
@@ -1623,7 +1628,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 });
             });
 
-            _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(filePath).SetFormat("EXCEL").Create());
+            _recentlyLoader.Save(new RecentlyItem.OfflineRecentlyCreator().SetLocalFileFullPath(filePath).SetFormat(SubtitleFormatKind.Excel).Create());
         }
 
 

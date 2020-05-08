@@ -93,7 +93,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
                         recentlyItem.Video?.Id == item.Video?.Id))
                         toRemove.Add(recentlyItem);
-
+                else if (item.Video == null && item.CaptionAsset == null)
+                {
+                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
+                        recentlyItem.LocalFileFullPath== item.LocalFileFullPath))
+                        toRemove.Add(recentlyItem);
+                }
 
                 if (toRemove.Count() != 0) _recentlyItems.RemoveAll(toRemove.Contains);
 

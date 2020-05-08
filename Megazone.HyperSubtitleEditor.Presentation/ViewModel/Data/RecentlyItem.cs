@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Core.VideoTrack;
 using Newtonsoft.Json;
 using Unity;
 
@@ -30,7 +31,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         [JsonProperty] public string LocalFileFullPath { get; private set; }
 
-        [JsonProperty] public string Format { get; private set; }
+        [JsonProperty] public SubtitleFormatKind Format { get; private set; }
 
         [JsonProperty] public string FirstName { get; private set; }
 
@@ -136,7 +137,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public class OfflineRecentlyCreator : OnlineRecentlyCreator
         {
-            private string _format;
+            private SubtitleFormatKind _format;
             private string _localFileFullPath;
 
             public override RecentlyItem Create()
@@ -146,7 +147,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 recently.LocalFileFullPath = _localFileFullPath;
                 recently.Format = _format;
 
-                recently.FirstName = Path.GetFileNameWithoutExtension(recently.LocalFileFullPath); ;
+                recently.FirstName = Path.GetFileName(recently.LocalFileFullPath);
                 recently.SecondName = recently.LocalFileFullPath;
 
                 return recently;
@@ -158,7 +159,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 return this;
             }
 
-            public OfflineRecentlyCreator SetFormat(string format)
+            public OfflineRecentlyCreator SetFormat(SubtitleFormatKind format)
             {
                 _format = format;
                 return this;
