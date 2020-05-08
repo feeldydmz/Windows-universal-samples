@@ -238,7 +238,7 @@
                         Visibility="{Binding IsPreview, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                     <Image  Width="21" Height="15" Margin="10,0,9,0"
                         Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" />
-                    <TextBlock Text="자막의 원본 비디오"
+                    <TextBlock Text="{x:Static resources:Resource.CNT_ORIGINAL_VIDEO_CAPTION}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="White"
@@ -249,7 +249,7 @@
                         Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                     <Image  Width="21" Height="15" Margin="10,0,9,0"
                         Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_preview_title.png" />
-                    <TextBlock Text="미리보기 비디오"
+                    <TextBlock Text="{x:Static resources:Resource.CNT_PREVIEW_VIDEO}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="White"
@@ -270,7 +270,7 @@
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" Width="14" Height="12" Margin="2,0,8,0"
                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_reset.png" />
-                            <TextBlock Grid.Column="1" Text="원본 보기" />
+                            <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_ORIGINAL_VIDEO_VIEW}" />
                         </Grid>
                     </Button>
                     <Rectangle 
@@ -279,7 +279,7 @@
                         Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"/>
                 </StackPanel>
                 <Button Grid.Column="4" Style="{StaticResource Style_VideoBarButton}" Margin="5,0"
-                    Content="미리보기 교체"
+                    Content="{x:Static resources:Resource.CNT_PREVIEW_VIDEO_REPLACE}"
                     Command="{StaticResource ShowOpenVideoAddressWindowCommand}"/>
             </Grid>
 

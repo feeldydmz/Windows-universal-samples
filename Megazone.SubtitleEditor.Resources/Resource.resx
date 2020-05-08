@@ -765,7 +765,7 @@ platform, please contact our sales team. We'll assist you with more details.</va
     If you select No, a new job starts in the current window.</value>
   </data>
   <data name="MSG_CREATE_NEW_AGAIN" xml:space="preserve">
-    <value>새 어플리케이션에서 만드시겠습니까?</value>
+    <value>Would you like to create it in new application?</value>
   </data>
   <data name="CNT_NEW" xml:space="preserve">
     <value>New</value>
@@ -792,10 +792,11 @@ Do you want to the program ends?</value>
 Continue?</value>
   </data>
   <data name="MSG_CAPTION_ASSET_RESET_CONFIRM" xml:space="preserve">
-    <value>진행 중인 작업이 있습니다.
-편집 내용이 모두 초기화 됩니다.
+    <value>There is work in progress. 
+    All edits are initialized.
 
-계속 진행하시겠습니까?</value>
+Continue?
+  </value>
   </data>
   <data name="MSG_CHANGE_PROJECT_WARNING" xml:space="preserve">
     <value>You can open it from the project named {1} in the stage named {0}. Please switch project in order to load the data.</value>
@@ -837,5 +838,17 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   </data>
   <data name="CNT_ASSET_NAME_EDIT" xml:space="preserve">
     <value>Edit Asset Name</value>
+  </data>
+  <data name="CNT_PREVIEW_VIDEO" xml:space="preserve">
+    <value>Preview Video</value>
+  </data>
+  <data name="CNT_PREVIEW_VIDEO_REPLACE" xml:space="preserve">
+    <value>Replace Preview</value>
+  </data>
+  <data name="CNT_ORIGINAL_VIDEO_VIEW" xml:space="preserve">
+    <value>View Original</value>
+  </data>
+  <data name="CNT_ORIGINAL_VIDEO_CAPTION" xml:space="preserve">
+    <value>Original video of caption</value>
   </data>
 </root>

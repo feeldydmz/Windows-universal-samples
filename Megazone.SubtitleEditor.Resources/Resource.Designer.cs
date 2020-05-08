@@ -1132,6 +1132,24 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Original video of caption과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ORIGINAL_VIDEO_CAPTION {
+            get {
+                return ResourceManager.GetString("CNT_ORIGINAL_VIDEO_CAPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   View Original과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_ORIGINAL_VIDEO_VIEW {
+            get {
+                return ResourceManager.GetString("CNT_ORIGINAL_VIDEO_VIEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Paste row(s)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_PASTE_ROW {
@@ -1164,6 +1182,24 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string CNT_PLAY_FORWARD_BY_HALF_SEC {
             get {
                 return ResourceManager.GetString("CNT_PLAY_FORWARD_BY_HALF_SEC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Preview Video과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PREVIEW_VIDEO {
+            get {
+                return ResourceManager.GetString("CNT_PREVIEW_VIDEO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Replace Preview과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_PREVIEW_VIDEO_REPLACE {
+            get {
+                return ResourceManager.GetString("CNT_PREVIEW_VIDEO_REPLACE", resourceCulture);
             }
         }
         
@@ -1744,10 +1780,11 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   진행 중인 작업이 있습니다.
-        ///편집 내용이 모두 초기화 됩니다.
+        ///   There is work in progress. 
+        ///    All edits are initialized.
         ///
-        ///계속 진행하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///Continue?
+        ///  과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_CAPTION_ASSET_RESET_CONFIRM {
             get {
@@ -1794,7 +1831,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   새 어플리케이션에서 만드시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Would you like to create it in new application?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_CREATE_NEW_AGAIN {
             get {

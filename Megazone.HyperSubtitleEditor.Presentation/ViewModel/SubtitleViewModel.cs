@@ -1763,20 +1763,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnCleanUpSubtitle(Message.SubtitleEditor.CleanUpSubtitleMessage message)
         {
-            if (_workBarViewModel.HasWorkData)
-            {
-                //TODO 다국어
-                if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                        "작업 중인 내용이 있습니다. 열여진 탭을 모두 닫고, 새 작업을 만드시겠습니까?",
-                        MessageBoxButton.OKCancel,
-                        Application.Current.MainWindow,
-                        TextAlignment.Center)) == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
+            CleanUpSubtitle();
+            //if (_workBarViewModel.HasWorkData)
+            //{
+            //    ////TODO 다국어
+            //    //if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+            //    //        "작업 중인 내용이 있습니다. 열여진 탭을 모두 닫고, 새 작업을 만드시겠습니까?",
+            //    //        MessageBoxButton.OKCancel,
+            //    //        Application.Current.MainWindow,
+            //    //        TextAlignment.Center)) == MessageBoxResult.Cancel)
+            //    //{
+            //    //    return;
+            //    //}
 
-                CleanUpSubtitle();
-            }
+            //    CleanUpSubtitle();
+            //}
         }
 
         private void OnChangeRecentlyItem(Message.RecentlyLoader.ChangeItemMessage message)
