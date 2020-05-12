@@ -488,8 +488,9 @@
                                                    Fill="#a0a8b6"/>
                                         <StackPanel Grid.Column="2" 
                                                     Orientation="Horizontal" 
-                                                    Margin="8,0,0,0">
-                                            <mz:TimeSpinner Time="{Binding Path=DurationStartTime}"
+                                                    Margin="0,0,0,0">
+                                            <mz:TimeSpinner Style="{StaticResource TimeSpinnerDuration}"
+                                                            Time="{Binding Path=DurationStartTime}"
                                                             BorderThickness="0"
                                                             IsShowMilliseconds="False" 
                                                             Foreground="#333333">
@@ -505,7 +506,8 @@
                                             <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0"
                                                    Foreground="#333333" />
 
-                                            <mz:TimeSpinner Time="{Binding Path=DurationEndTime}"
+                                            <mz:TimeSpinner Style="{StaticResource TimeSpinnerDuration}"
+                                                            Time="{Binding Path=DurationEndTime}"
                                                             BorderThickness="0"
                                                             IsShowMilliseconds="False" 
                                                             Foreground="#333333">

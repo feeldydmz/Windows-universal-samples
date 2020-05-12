@@ -26,7 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public bool CanExecute(object parameter)
         {
-            return _workBarViewModel.HasWorkData && _subtitleViewModel.HasTab;
+            return _workBarViewModel.HasWorkData;
         }
 
         public void Execute(object parameter)

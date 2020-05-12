@@ -25,6 +25,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public bool CanExecute(object parameter)
         {
+            var hasAny = _subtitleViewModel.Tabs?.Any(tab => !string.IsNullOrEmpty(tab.FilePath) || !string.IsNullOrEmpty(tab.CaptionAssetId)) ?? false;
+
             var returnValue = _subtitleViewModel.Tabs?.Any(tab =>
             {
                 //로컬 : 로컬 파일 경로를 가지고 있는 것
@@ -36,7 +38,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 }
                 else
                 {
-                    return false;
+                    return hasAny && tab.CheckDirty();
                 }
             });
 

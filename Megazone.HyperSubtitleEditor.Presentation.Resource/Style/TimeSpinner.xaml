@@ -136,7 +136,7 @@
                         <Border x:Name="FocusedRectangle" BorderBrush="{DynamicResource Brush_PointColor}"
                                 BorderThickness="1" CornerRadius="1,0,0,1" Visibility="Collapsed" />
 
-                        <!--스핀버튼 영역--><!--
+                        <!--스핀버튼 영역-->
                         <Grid Grid.Column="1">
                             <Grid.Resources>
                                 <Style x:Key="Style_SpinControlButtonBase" TargetType="{x:Type RepeatButton}">
@@ -236,7 +236,154 @@
                                     </Style>
                                 </RepeatButton.Style>
                             </RepeatButton>
-                        </Grid>-->
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="FocusedRectangle" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="TimeSpinnerDuration" TargetType="{x:Type mz:TimeSpinner}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Style_DefaultFocusVisual}" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush_CommonForeground}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="6,0" />
+        <!--<Setter Property="MinWidth" Value="160" />-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type mz:TimeSpinner}">
+                    <ControlTemplate.Resources>
+                        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBox}">
+                                <Setter Property="SelectionBrush" Value="#FF75adea" />
+                                <Setter Property="SelectionOpacity" Value="0.5" />
+                                <Setter Property="CaretBrush" Value="{DynamicResource Brush_PointColor}" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="BorderBrush" Value="{x:Null}" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Margin" Value="-3,0" />
+                                <Setter Property="Padding" Value="2,0" />
+                                <!--<Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>-->
+                            </Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <!--<Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>-->
+                            </Style>
+                        </Grid.Resources>
+
+                        <!--배경 영역-->
+                        <Border Grid.ColumnSpan="2" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"
+                                Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Border BorderThickness="0,0,0,0" BorderBrush="Black" Opacity="0.1" Margin="0,0,0,-2"
+                                        CornerRadius="3" />
+                                <Border x:Name="InnerBorder" CornerRadius="1" BorderBrush="Transparent" Opacity="0.1"
+                                        BorderThickness="1,1,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <!--입력 영역-->
+                        <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                            <!-- Focus갈 수 있는 요소를 배치할 경우 아래 이름을 맞추시요 -->
+                            <TextBox x:Name="Part_Hours" Grid.Column="0" MaxLength="2" MinWidth="24"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     HorizontalContentAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <mz:NumericTextBoxBehavior
+                                        Value="{Binding Path=Hours, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        AllowDecimalPoint="False" IsFilledZero="True" />
+                                    <mz:KeyboardNavigatingOnNumericTextBoxBehavior
+                                        NextElement="{Binding ElementName=Part_Minutes}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
+                            <TextBlock Grid.Column="1" Text=":" />
+
+                            <TextBox x:Name="Part_Minutes" Grid.Column="2" MaxLength="2" MinWidth="24"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     HorizontalContentAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <mz:NumericTextBoxBehavior
+                                        Value="{Binding Path=Minutes, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        AllowDecimalPoint="False" IsFilledZero="True" />
+                                    <mz:KeyboardNavigatingOnNumericTextBoxBehavior
+                                        PrevElement="{Binding ElementName=Part_Hours}"
+                                        NextElement="{Binding ElementName=Part_Seconds}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
+                            <TextBlock Grid.Column="3" Text=":" />
+
+                            <TextBox x:Name="Part_Seconds" Grid.Column="4" MaxLength="2" MinWidth="24"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     HorizontalContentAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <mz:NumericTextBoxBehavior
+                                        Value="{Binding Path=Seconds, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        AllowDecimalPoint="False" IsFilledZero="True" />
+                                    <mz:KeyboardNavigatingOnNumericTextBoxBehavior
+                                        PrevElement="{Binding ElementName=Part_Minutes}"
+                                        NextElement="{Binding ElementName=Part_Milliseconds}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
+                            <!--<TextBlock Grid.Column="5" Text="." />-->
+
+                            <TextBox x:Name="Part_Milliseconds" Grid.Column="6" MaxLength="3" MinWidth="32"
+                                     TextAlignment="Left" Foreground="{TemplateBinding Foreground}"
+                                     HorizontalContentAlignment="Center"
+                                     Visibility="{TemplateBinding IsShowMilliseconds, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <i:Interaction.Behaviors>
+                                    <mz:NumericTextBoxBehavior
+                                        Value="{Binding Path=Milliseconds, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                        AllowDecimalPoint="False" IsFilledZero="True" />
+                                    <mz:KeyboardNavigatingOnNumericTextBoxBehavior
+                                        PrevElement="{Binding ElementName=Part_Seconds}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </StackPanel>
+
+                        <!--포커스때 보이는 테두리-->
+                        <Border x:Name="FocusedRectangle" BorderBrush="{DynamicResource Brush_PointColor}"
+                                BorderThickness="1" CornerRadius="1,0,0,1" Visibility="Collapsed" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
