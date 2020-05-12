@@ -636,10 +636,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
-            var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            if (subtitleVm.Tabs?.Any() ?? false)
+            var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            if (subtitleViewModel.Tabs?.Any() ?? false)
             {
-                if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
+                if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
                 {
                     var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 

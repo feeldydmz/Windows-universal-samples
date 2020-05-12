@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.Core.Extension;
@@ -26,24 +27,39 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
         }
         public bool CanExecute(object parameter)
         {
-            return _workBar.HasWorkData;
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
+            var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
-            if (!result.HasValue) return;
+            if (subtitleViewModel.Tabs?.Any() ?? false)
+            {
+                if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
+                {
+                    var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 
-            if (result.Value)
-            {
-                var param = new CreateNewWindowMessageParameter(null, null, null);
-                MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this, param));
+                    if (!result.HasValue) return;
+
+                    if (result.Value)
+                    {
+                        MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this, 
+                            new CreateNewWindowMessageParameter(null, null, null)));
+
+                        return;
+                    }
+                    else
+                    {
+                        MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
+
+                        return;
+                    }
+                }
             }
-            else
-            {
-                MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
-            }
+
+            MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this,
+                new CreateNewWindowMessageParameter(null, null, null)));
         }
 
         public event EventHandler CanExecuteChanged

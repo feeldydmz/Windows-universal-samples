@@ -460,7 +460,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Confirm()
         {
-            var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+            var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();
             //var tabList = subtitleVm.Tabs?.ToList() ?? new List<ISubtitleTabItemViewModel>();
 
             var asset = SelectedCaptionAssetItem?.Source;
@@ -468,9 +468,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected).Select(itemVm => itemVm.Source)
                     .ToList() ?? new List<Caption>();
 
-            if (subtitleVm.Tabs?.Any() ?? false)
+            if (subtitleViewModel.Tabs?.Any() ?? false)
             {
-                if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
+                if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
                 {
                     var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 
