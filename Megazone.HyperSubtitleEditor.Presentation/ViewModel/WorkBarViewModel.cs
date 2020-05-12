@@ -155,8 +155,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
             MessageCenter.Instance.Regist<CloudMedia.DeployRequestedMessage>(Deploy);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedByIdMessage>(OnCaptionOpenByIdRequest);
         }
+
 
         private void UnregisterMessageHandlers()
         {
@@ -165,9 +167,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.CaptionElementCreateNewMessage>(OnCaptionElementCreateNew);
             MessageCenter.Instance.Unregist<CloudMedia.DeployRequestedMessage>(Deploy);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
+            MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedByIdMessage>(OnCaptionOpenByIdRequest);
         }
 
+        private void OnImportExcelFile(Message.Excel.FileImportMessage message)
+        {
+            IsOnlineData = false;
+            HasWorkData = true;
+        }
 
         private void OnFileOpened(Message.SubtitleEditor.FileOpenedMessage message)
         {

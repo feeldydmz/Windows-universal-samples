@@ -1602,7 +1602,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var filePath = message.FilePath;
             var sheetInfos = message.SheetInfos;
-            var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            var workBarViewModel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
 
             _browser.Main.LoadingManager.Show();
 
@@ -1640,8 +1640,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             subtitle.LanguageCode,
                             subtitle.CountryCode)
                         {
-                            VideoId = workBar.VideoItem?.Id,
-                            CaptionAssetId = workBar?.CaptionAssetItem?.Id
+                            VideoId = workBarViewModel.VideoItem?.Id,
+                            CaptionAssetId = workBarViewModel?.CaptionAssetItem?.Id
                         };
                         newTab.AddDatasheet(subtitle.Datasets);
                         if (firstTab == null)

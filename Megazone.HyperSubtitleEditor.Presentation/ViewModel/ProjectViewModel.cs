@@ -350,7 +350,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
         }
 
-        public void StartProjectByPass(string stageId, string projectId)
+        public async void StartProjectByPass(string stageId, string projectId)
         {
             SelectedStage = StageItems.Single(stage => stage.Id.Equals(stageId));
 
@@ -370,6 +370,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var videoId = AppContext.McmOpenData.VideoId;
             var assetId = AppContext.McmOpenData.AssetId;
             var captionIds = AppContext.McmOpenData.CaptionIds;
+
+            await _languageLoader.LoadAsync();
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this, 
                 new CaptionOpenRequestedByIdMessageParameter(videoId, assetId, captionIds)));
