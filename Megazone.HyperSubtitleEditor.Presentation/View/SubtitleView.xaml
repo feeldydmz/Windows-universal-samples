@@ -393,7 +393,7 @@
                                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}">
                                    
                                 </MenuItem>-->
-                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="최신 파일">
+                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="{x:Static resources:Resource.CNT_RECENT_FILE}">
                                     <MenuItem.ItemContainerStyle>
                                         <Style TargetType="{x:Type MenuItem}">
                                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
@@ -1078,7 +1078,7 @@
                                             Value="{DynamicResource Style_DefaultFocusVisual}" />
                                 <Setter Property="Background" Value="Transparent" />
                                 <Setter Property="Focusable" Value="False" />
-                                <Setter Property="BorderThickness" Value="1,1,1,0" />
+                                <Setter Property="BorderThickness" Value="1,1,1,1" />
                                 <Setter Property="BorderBrush" Value="#FFa6adba" />
                                 <Setter Property="Width" Value="28" />
                                 <Setter Property="Template">
@@ -1103,7 +1103,7 @@
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Opacity" Value="0.4" TargetName="Container" />
+                                                    <Setter Property="Background" Value="#EEFFFFFF" TargetName="Container"/>
                                                 </Trigger>
                                                 <Trigger Property="IsPressed" Value="True">
                                                     <Setter Property="Opacity" Value="0.7" TargetName="Container" />
@@ -1112,6 +1112,7 @@
                                                     <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditCloseIcon" />
                                                     <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditIcon" />
                                                     <Setter Property="Background" Value="White"/>
+                                                    <Setter Property="BorderThickness" Value="1,1,1,0"/>
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="False">
                                                     <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditCloseIcon" />
