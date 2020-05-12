@@ -174,17 +174,17 @@
                 Background="White">
             <Grid>
                 <Grid.RowDefinitions>
+                    <!--<RowDefinition Height="Auto" />-->
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition/>
                     <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
 
                 <!--구분선-->
                 <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
-                <Grid Grid.Row="1" 
+                <Grid Grid.Row="0" 
                       Margin="15,14,15,10" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
@@ -215,7 +215,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding Path=SearchOptionChangeCommand}">
                             <Grid>
-                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Video_Replace_Act.png"
+                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
                                        Width="13" Height="13" />
                             </Grid>
                         </Button>
@@ -409,14 +409,17 @@
                 </Grid>
 
                 <!--구분선-->
-                <Rectangle Grid.Row="2" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
+                <Rectangle Grid.Row="1" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
                 <!--Caption 검색 결과-->
-                <Border Grid.Row="3">
+                <Border Grid.Row="2">
                     <custom:CaptionAssetListView DataContext="{Binding CaptionAssetList, Mode=TwoWay}"/> 
                 </Border>
 
-                <Grid Grid.Row="4" Margin="0,0,20,0">
+                <!--구분선-->
+                <Rectangle Grid.Row="3" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
+
+                <Grid Grid.Row="3" Margin="0,0,20,0">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Style.Triggers>
@@ -440,7 +443,6 @@
                         </i:Interaction.Triggers>
                     </view:PaginationView>
                 </Grid>
-
             </Grid>
         </Border>
 
@@ -449,7 +451,8 @@
                  Style="{StaticResource Style_IndeterminateControl}" />
 
         <!--하단 버튼 영역-->
-        <Border Grid.Row="1">
+        <Border Grid.Row="1"
+                Background="White">
             <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
