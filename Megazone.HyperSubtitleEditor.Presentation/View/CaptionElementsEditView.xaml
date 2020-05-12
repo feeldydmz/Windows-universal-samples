@@ -123,8 +123,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="itemViewModel:CaptionElementItemViewModel">
                             <Border x:Name="itemBorder" Height="25" Margin="0,0,5,0">
-                                <Grid VerticalAlignment="Center" IsEnabled="{Binding Path=CanDeploy}">
+                                <Grid VerticalAlignment="Center" >
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
                                         <ColumnDefinition Width="20"/>
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
@@ -132,48 +133,61 @@
                                              Height="6" 
                                              Fill="#388fec"
                                              Visibility="{Binding IsDirty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding Path=IsSelected}">
-                                        <Grid MinWidth="{Binding ActualWidth, ElementName=itemBorder}" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="20"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="70" />
-                                                <ColumnDefinition Width="30" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0">
-                                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_local.png"
+                                    
+                                    <Grid Grid.Column="2" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="70" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0"
+                                              HorizontalAlignment="Left">
+                                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_local.png"
                                                        Width="14" Height="10"
                                                        Visibility="{Binding Path=Id, Converter={StaticResource NullToVisibleNCollapsedConverter}}"/>
-                                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_upload.png"
+                                            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_edit_upload.png"
                                                        Width="14" Height="10"
                                                        Visibility="{Binding Path=Id, Converter={StaticResource NullToCollapsedNVisibleConverter}}"/>
-                                            </Grid>
+                                        </Grid>
 
-                                            <TextBlock Grid.Column="1" Text="{Binding Path=Label}"
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=Label}"
                                                        HorizontalAlignment="Left" 
                                                        ToolTip="{Binding Path=Label}"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                            <!--<TextBlock Grid.Column="1"
+                                                       TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDirty}" Value="True">
+                                                            <Setter Property="Foreground" Value="#388fec"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <!--<TextBlock Grid.Column="1"
                                                            Text="{Binding Path=Language, StringFormat={}[{0}]}"
                                                            HorizontalAlignment="Right"
                                                            Foreground="{StaticResource Brush_PointColor}" />-->
-                                            <TextBlock Grid.Column="2"
+                                        <TextBlock Grid.Column="2"
                                                    Foreground="{StaticResource Brush_PointColor}"
                                                    HorizontalAlignment="Right"
                                                    Margin="0,0,20,0">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}[{0}-{1}]">
-                                                        <MultiBinding.Bindings>
-                                                            <Binding Path="Language" />
-                                                            <Binding Path="Country" />
-                                                        </MultiBinding.Bindings>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                            <!--<Border Background="Transparent" Grid.Column="0"  Grid.ColumnSpan="2" Height="20"/>-->
-                                            <!--<Border Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Red" BorderThickness="2"/>-->
-                                        </Grid>
-                                        
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}[{0}-{1}]">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding Path="Language" />
+                                                        <Binding Path="Country" />
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <!--<Border Background="Transparent" Grid.Column="0"  Grid.ColumnSpan="2" Height="20"/>-->
+                                        <!--<Border Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Red" BorderThickness="2"/>-->
+                                    </Grid>
+                                    <CheckBox Grid.Column="1" Grid.ColumnSpan="2"
+                                              IsChecked="{Binding Path=IsSelected}"
+                                              IsEnabled="{Binding Path=CanDeploy}">
                                         <!--<Border Background="Transparent" Grid.ColumnSpan="2" Height="20"/>-->
                                         <!--<ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
                                     </CheckBox>

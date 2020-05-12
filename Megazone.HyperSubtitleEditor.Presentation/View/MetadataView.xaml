@@ -71,7 +71,6 @@
 
             <mz:ImageButton Grid.Column="1"
                             Command="{Binding CloseVideoInfoPopupCommand}"
-                            ToolTip="{x:Static resources:Resource.CNT_LOG_OUT}"
                             Style="{StaticResource Style_TransparentImageButton}"
                             NormalImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"
                             PressedImage="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_metadata_close.png"

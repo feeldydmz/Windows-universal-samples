@@ -213,6 +213,9 @@
   <data name="CNT_EDIT" xml:space="preserve">
     <value>편집</value>
   </data>
+  <data name="CNT_CAPTION_LIST_EDIT" xml:space="preserve">
+    <value>캡션 리스트 편집</value>
+  </data>
   <data name="CNT_EDIT_CAPTION_INFO" xml:space="preserve">
     <value>캡션 정보 수정</value>
   </data>
