@@ -524,6 +524,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             CleanUpSubtitle();
 
+            RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
             //var isStartForStandAlone = message.IsStartForStandAlone;
 
             //if (isStartForStandAlone)
@@ -1993,29 +1994,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OpenRecently(RecentlyItem recentlyItem)
         {
             //var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            if (Tabs?.Any() ?? false)
-            {
-                if (Tabs.Any(tab => tab.CheckDirty()))
-                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
-                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
-                            MessageBoxButton.OKCancel,
-                            Application.Current.MainWindow)) !=
-                        MessageBoxResult.OK)
-                        return;
+            //if (Tabs?.Any() ?? false)
+            //{
+            //    if (Tabs.Any(tab => tab.CheckDirty()))
+            //        if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
+            //                Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
+            //                MessageBoxButton.OKCancel,
+            //                Application.Current.MainWindow)) !=
+            //            MessageBoxResult.OK)
+            //            return;
 
-                var removeTabs = Tabs.ToList();
-                foreach (var tab in removeTabs)
-                {
-                    CloseTab(tab as SubtitleTabItemViewModel);
-                }
-            }
+            //    var removeTabs = Tabs.ToList();
+            //    foreach (var tab in removeTabs)
+            //    {
+            //        CloseTab(tab as SubtitleTabItemViewModel);
+            //    }
+            //}
 
-            // 선택된 video 정보를 메인 
-            //var video = recentlyItem.Video;
-            //var asset = recentlyItem.CaptionAsset;
             var localFileFullPath = recentlyItem.LocalFileFullPath;
-            //var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
-
+            
             ImportSubtitleFile(localFileFullPath);
         }
 

@@ -247,7 +247,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     return;
                 var firstFilePath = filePaths.First();
                 if (File.Exists(firstFilePath))
-                    OpenMedia(firstFilePath, true);
+                    InitMedia(firstFilePath, true);
             }
         }
 
