@@ -461,28 +461,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Confirm()
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-            var tabList = subtitleVm.Tabs?.ToList() ?? new List<ISubtitleTabItemViewModel>();
-            if (subtitleVm.Tabs?.Any() ?? false)
-            {
-                if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
-                {
-                    if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING, 
-                            Resource.MSG_UNSAVED_IN_PROGRESS_OPEN_CAPTION,
-                            MessageBoxButton.OKCancel, 
-                            Application.Current.MainWindow)) == MessageBoxResult.Cancel)
-                        return;
-                }
-
-                var removeTabs = subtitleVm.Tabs.ToList();
-                foreach (var tab in removeTabs)
-                    MessageCenter.Instance.Send(
-                        new Message.SubtitleEditor.CloseTabMessage(this, tab as SubtitleTabItemViewModel));
-            }
+            //var tabList = subtitleVm.Tabs?.ToList() ?? new List<ISubtitleTabItemViewModel>();
 
             var asset = SelectedCaptionAssetItem?.Source;
             var selectedCaptionList =
                 SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected).Select(itemVm => itemVm.Source)
                     .ToList() ?? new List<Caption>();
+
+            if (subtitleVm.Tabs?.Any() ?? false)
+            {
+                if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
+                {
+                    var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
+
+                    if (!result.HasValue) return;
+
+                    if (result.Value)
+                    {
+                        var param = new CreateNewWindowMessageParameter(null, asset, selectedCaptionList );
+                        MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this, param));
+
+                        return;
+                    }
+                }
+                
+                MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
+            }
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(null, asset, selectedCaptionList, true)));

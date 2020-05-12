@@ -18,6 +18,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             foreach (var argument in argumentList)
                 switch (argument.Key)
                 {
+                    case "authorization":
+                        creator.SetAuthorization(argument.Value);
+                        break;
                     case "stageId":
                         creator.SetStageId(argument.Value);
                         break;
@@ -45,21 +48,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public struct McmData
         {
+            public string Authorization { get; }
             public string StageId { get; }
             public string ProjectId { get; }
             public string VideoId { get; private set; }
             public string AssetId { get; private set; }
+            public IEnumerable<string> CaptionIds { get; private set; }
 
-            public McmData(string stageId, string projectId)
+            public McmData(string authorization, 
+                string stageId, 
+                string projectId)
             {
+                Authorization = authorization;
                 StageId = stageId;
                 ProjectId = projectId;
                 VideoId = null;
                 AssetId = null;
+                CaptionIds = null;
             }
 
             public class Creator
             {
+                private string _authorization;
                 private string _assetId;
                 private IEnumerable<string> _captionIds;
                 private string _projectId;
@@ -68,10 +78,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
                 public McmData Create()
                 {
-                    var configuration = new McmData(_stageId, _projectId)
-                        {VideoId = _videoId, AssetId = _assetId};
+                    var configuration = new McmData(_authorization, _stageId, _projectId)
+                    {
+                        VideoId = _videoId, 
+                        AssetId = _assetId,
+                        CaptionIds = _captionIds
+                    };
 
                     return configuration;
+                }
+                public Creator SetAuthorization(string authorization)
+                {
+                    _authorization = authorization;
+                    return this;
                 }
 
                 public Creator SetStageId(string stageId)
@@ -100,7 +119,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
                 public Creator SetCaptionIds(IEnumerable<string> captionIds)
                 {
-                    _captionIds = _captionIds?.ToList();
+                    _captionIds = captionIds?.ToList();
                     return this;
                 }
             }

@@ -21,12 +21,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class LoadStageProjectMessage : MessageBase
         {
-            public LoadStageProjectMessage(object sender, UserProfile userProfile) : base(sender)
+            public LoadStageProjectMessage(object sender, UserProfile userProfile, bool isStartForStandAlone) : base(sender)
             {
                 UserProfile = userProfile;
+                IsStartForStandAlone = isStartForStandAlone;
             }
 
             public UserProfile UserProfile { get; }
+
+            public bool IsStartForStandAlone { get; }
         }
     }
 }

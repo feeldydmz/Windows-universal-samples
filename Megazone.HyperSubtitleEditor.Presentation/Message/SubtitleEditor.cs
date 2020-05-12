@@ -213,6 +213,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
             }
         }
 
+        internal class CreateNewWindowMessage : MessageBase
+        {
+            public CreateNewWindowMessage(object sender, CreateNewWindowMessageParameter param) : base(sender)
+            {
+                Param = param;
+            }
+
+            public CreateNewWindowMessageParameter Param { get; }
+        }
+
         internal class CaptionOpenRequestedMessage : MessageBase
         {
             public CaptionOpenRequestedMessage(object sender, CaptionOpenMessageParameter param) : base(sender)

@@ -10,7 +10,6 @@
              Width="446" Height="294"
              Title="{x:Static resources:Resource.CNT_NEW}"
              ResizeMode="NoResize">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -59,9 +58,6 @@
 
                 </Border>
                 </StackPanel>
-
-                
-
             </Grid>
 
         </Border>

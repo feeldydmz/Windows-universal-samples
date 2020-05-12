@@ -4,15 +4,17 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
+using DocumentFormat.OpenXml.Presentation;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
+using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
@@ -38,6 +40,7 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
+using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -87,6 +90,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private VideoItemViewModel _videoItem;
         private WorkBarViewModel _workBarViewModel;
+        private SignInViewModel _signInViewModel;
 
         public SubtitleViewModel(SubtitleParserProxy subtitleService,
             ILogger logger,
@@ -96,7 +100,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IBrowser browser,
             ICloudMediaService cloudMediaService,
             RecentlyLoader recentlyLoader,
-            WorkBarViewModel workBarViewModel)
+            WorkBarViewModel workBarViewModel,
+            SignInViewModel signInViewModel)
         {
             _subtitleService = subtitleService;
             _logger = logger;
@@ -107,6 +112,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _subtitleListItemValidator = subtitleListItemValidator;
             _recentlyLoader = recentlyLoader;
             _workBarViewModel = workBarViewModel;
+            _signInViewModel = signInViewModel;
 
             MediaPlayer = new MediaPlayerViewModel(OnMediaPositionChanged, OnMediaPlayStateChanged);
             WorkContext = new McmWorkContext();
@@ -405,11 +411,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnDoubleClickedItem(ISubtitleListItemViewModel syncItem)
         {
-            Debug.WriteLine($"--- OnDoubleClickedItem Start time : {syncItem.StartTime.ToString()}");
-
             if (!string.IsNullOrEmpty(MediaPlayer?.MediaSource))
                 MediaPlayer.SyncPosition(syncItem.StartTime);
-            //SelectedItem = row;
         }
 
         private void OnItemSelected(ISubtitleListItemViewModel row)
@@ -510,6 +513,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
             MessageCenter.Instance.Regist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
+            MessageCenter.Instance.Regist<Message.SubtitleEditor.CreateNewWindowMessage>(OnCreateNewWindow);
 
             MessageCenter.Instance.Regist<Message.RecentlyLoader.ChangeItemMessage>(OnChangeRecentlyItem);
         }
@@ -520,7 +524,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             CleanUpSubtitle();
 
-            RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
+            //var isStartForStandAlone = message.IsStartForStandAlone;
+
+            //if (isStartForStandAlone)
+            //{
+            //    var videoId = AppContext.McmOpenData.VideoId;
+            //    var assetId = AppContext.McmOpenData.AssetId;
+            //    var captionIds = AppContext.McmOpenData.CaptionIds;
+
+            //    _workBarViewModel.LoadAssetById(videoId, assetId, captionIds);
+
+            //}
+
+            //RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
+
+
             //var removeTabs = Tabs.ToList();
 
             //if (removeTabs != null)
@@ -536,6 +554,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             //ClearCurrentPositionText();
         }
+
+       
 
         private void UnregisterMessageHandlers()
         {
@@ -586,6 +606,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.AdjustTimeMessage>(AdjustTime);
             MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.CleanUpSubtitleMessage>(OnCleanUpSubtitle);
+            MessageCenter.Instance.Unregist<Message.SubtitleEditor.CreateNewWindowMessage>(OnCreateNewWindow);
 
             MessageCenter.Instance.Unregist<Message.RecentlyLoader.ChangeItemMessage>(OnChangeRecentlyItem);
         }
@@ -677,7 +698,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //    {
         //        var workBar = Bootstrapper.Container.Resolve<WorkBarViewModel>();
         //        var caption = await workBar.GetCaptionAssetAsync(tabs.FirstOrDefault()?.CaptionAssetId);
-        //        var video = await workBar.GetVideoAsync(tabs.FirstOrDefault()?.VideoId);
+        //        var video = await workBar.GetVideoAsync(tabs.FirstOrDefault()?.VideoInfo);
 
         //        this.InvokeOnUi(() =>
         //        {
@@ -701,7 +722,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         //                {
         //                    IsSelected = tab.IsSelected,
         //                    FilePath = tab.FilePath,
-        //                    VideoId = tab.VideoId,
+        //                    VideoInfo = tab.VideoInfo,
         //                    CaptionAssetId = tab.CaptionAssetId
         //                };
 
@@ -1101,7 +1122,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task ExportSubtitleAsync(string savePath, SubtitleFormatKind subtitleFormat)
         {
-            Debug.WriteLine("-- start ExportSubtitleAsync");
+            _logger.Debug.Write("start");
             if (string.IsNullOrEmpty(savePath))
                 return;
 
@@ -1128,7 +1149,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _browser.Main.LoadingManager.Hide();
             }
 
-            Debug.WriteLine("-- end ExportSubtitleAsync");
+            _logger.Debug.Write("end");
 
             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_SAVE_SUCCESS,
                 MessageBoxButton.OK,
@@ -1225,86 +1246,92 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public async void OnOpenCaptionRequest(Message.SubtitleEditor.CaptionOpenRequestedMessage requestedMessage)
         {
+            _logger.Debug.Write("start");
             if (requestedMessage.Param == null)
                 return;
 
-            // 게시에 필요한 정보.
-            var video = requestedMessage.Param.Video;
-            var captionAsset = requestedMessage.Param.Asset;
-            var captionList = requestedMessage.Param.Captions?.ToList() ?? new List<Caption>();
-
-            ClearCurrentPositionText();
-
-            var metaDataViewmodel = Bootstrapper.Container.Resolve<MetadataViewModel>();
-            metaDataViewmodel.Close();
-
-            WorkContext = new McmWorkContext(video, captionAsset);
-
-            if (!string.IsNullOrEmpty(video?.Name))
-                _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
-
-            _browser.Main.LoadingManager.Show();
-
-            if (MediaPlayer.MediaSource != null)
-                MediaPlayer.RemoveMediaItem();
-
-            // video영상을 가져온다.
-            if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
-                MediaPlayer.InitMedia(WorkContext, true);
-            //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
-
-            var texts = await LoadCaptionTextListAsync(captionList);
-
-            _subtitleListItemValidator.IsEnabled = false;
-
-            Debug.WriteLine("++OnOpenCaptionRequest");
-            foreach (var caption in captionList)
+            try
             {
-                var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
-                Enum.TryParse(caption.Kind, true, out CaptionKind kind);
+                _browser.Main.LoadingManager.Show();
 
-                var newTab = new SubtitleTabItemViewModel(caption.Label,
-                    OnRowCollectionChanged,
-                    OnValidateRequested,
-                    OnTabSelected,
-                    OnItemSelected,
-                    OnDoubleClickedItem,
-                    kind,
-                    OnDisplayTextChanged,
-                    SourceLocationKind.Cloud,
-                    caption.Language,
-                    caption.Country,
-                    caption)
-                {
-                    IsSelected = false,
-                    VideoId = video?.Id,
-                    CaptionAssetId = captionAsset.Id
-                };
+                // 게시에 필요한 정보.
+                var video = requestedMessage.Param.Video;
+                var captionAsset = requestedMessage.Param.Asset;
+                var captionList = requestedMessage.Param.Captions?.ToList() ?? new List<Caption>();
 
-                if (!string.IsNullOrEmpty(text))
+                ClearCurrentPositionText();
+
+                var metaDataViewmodel = Bootstrapper.Container.Resolve<MetadataViewModel>();
+                metaDataViewmodel.Close();
+
+                WorkContext = new McmWorkContext(video, captionAsset);
+
+                if (!string.IsNullOrEmpty(video?.Name))
+                    _browser.Main.SetWindowTitle($"{Resource.CNT_APPLICATION_NAME} - {video.Name}");
+
+                if (MediaPlayer.MediaSource != null)
+                    MediaPlayer.RemoveMediaItem();
+
+                // video영상을 가져온다.
+                if (!string.IsNullOrEmpty(WorkContext.VideoMediaUrl))
+                    MediaPlayer.InitMedia(WorkContext, true);
+                //MediaPlayer.OpenMedia(WorkContext.VideoMediaUrl, false);
+
+                var texts = await LoadCaptionTextListAsync(captionList);
+
+                _subtitleListItemValidator.IsEnabled = false;
+
+                foreach (var caption in captionList)
                 {
-                    var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
-                    if (rows != null)
-                       newTab.AddRowsAsync(rows);
+                    var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
+                    Enum.TryParse(caption.Kind, true, out CaptionKind kind);
+
+                    var newTab = new SubtitleTabItemViewModel(caption.Label,
+                        OnRowCollectionChanged,
+                        OnValidateRequested,
+                        OnTabSelected,
+                        OnItemSelected,
+                        OnDoubleClickedItem,
+                        kind,
+                        OnDisplayTextChanged,
+                        SourceLocationKind.Cloud,
+                        caption.Language,
+                        caption.Country,
+                        caption)
+                    {
+                        IsSelected = false,
+                        VideoId = video?.Id,
+                        CaptionAssetId = captionAsset.Id
+                    };
+
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
+                        if (rows != null)
+                            newTab.AddRowsAsync(rows);
+                    }
+
+                    Tabs.Add(newTab);
                 }
 
-                Tabs.Add(newTab);
+                if (captionList.Any())
+                    Tabs.First().IsSelected = true;
+
+                _subtitleListItemValidator.IsEnabled = true;
+                _subtitleListItemValidator.Validate(SelectedTab?.Rows);
+                
+                _logger.Debug.Write("end");
             }
-            Debug.WriteLine("--OnOpenCaptionRequest");
-
-            if (captionList.Any())
-                Tabs.First().IsSelected = true;
-
-            _browser.Main.LoadingManager.Hide();
-            _subtitleListItemValidator.IsEnabled = true;
-            _subtitleListItemValidator.Validate(SelectedTab?.Rows);
-
-            CommandManager.InvalidateRequerySuggested();
-
-            
+            catch (Exception e)
+            {
+                throw;
+            }
+            finally
+            {
+                _browser.Main.LoadingManager.Hide();
+                CommandManager.InvalidateRequerySuggested();
+            }
         }
-
-
 
         private async void OnOpenCaptionElementUpdate(Message.SubtitleEditor.CaptionElementUpdateMessage message)
         {
@@ -1312,38 +1339,45 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             // 닫힐 탭
             var closeItems = param.CloseCaptionElements;
 
-            foreach (var closeItem in closeItems)
+            try
             {
-                CloseTab(closeItem);
+                foreach (var closeItem in closeItems)
+                {
+                    CloseTab(closeItem);
+                }
+
+                // 열릴 탭
+                var openItems = param.OpenCaptionElements;
+
+                var captionList = openItems.Select(c => c.Key).ToList();
+
+                var texts = await LoadCaptionTextListAsync(captionList);
+
+                foreach (var pairItem in openItems)
+                {
+                    var caption = pairItem.Key;
+                    var sourceLocation = pairItem.Value;
+
+                    var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
+                    var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
+                    Enum.TryParse(caption.Kind, true, out CaptionKind kind);
+
+                    AddTab(caption.Label,
+                        kind,
+                        caption.Language,
+                        caption.Country,
+                        caption,
+                        rows,
+                        _workBarViewModel.VideoItem?.Id,
+                        "",
+                        caption.Id,
+                        sourceLocation
+                    );
+                }
             }
-
-            // 열릴 탭
-            var openItems = param.OpenCaptionElements;
-
-            var captionList = openItems.Select(c => c.Key).ToList();
-
-            var texts = await LoadCaptionTextListAsync(captionList);
-
-            foreach (var pairItem in openItems)
+            catch (Exception e)
             {
-                var caption = pairItem.Key;
-                var sourceLocation = pairItem.Value;
-
-                var text = texts.ContainsKey(caption.Id) ? texts[caption.Id] : null;
-                var rows = _subtitleService.Load(text, SubtitleFormatKind.WebVtt)?.ToList();
-                Enum.TryParse(caption.Kind, true, out CaptionKind kind);
-                
-                AddTab(caption.Label,
-                    kind,
-                    caption.Language,
-                    caption.Country,
-                    caption,
-                    rows,
-                    _workBarViewModel.VideoItem?.Id,
-                    "",
-                    caption.Id,
-                    sourceLocation
-                );
+                throw;
             }
         }
 
@@ -1361,7 +1395,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
                 catch (WebException e)
                 {
-                    Console.WriteLine(e);
+                    //Console.WriteLine(e);
+                    throw;
                 }
 
             return dic;
@@ -1458,7 +1493,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             try
             {
-                Debug.WriteLine("Start OnCaptionElementCreateNew");
+                _logger.Debug.Write("start");
 
                 _browser.Main.LoadingManager.Show();
 
@@ -1482,7 +1517,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 _browser.Main.LoadingManager.Hide();
 
-                Debug.WriteLine("End OnCaptionElementCreateNew");
+                _logger.Debug.Write("end");
             }
             catch (Exception ex)
             {
@@ -1504,7 +1539,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async Task OpenFileAsync(FileOpenedMessageParameter param)
         {
             try {
-                Debug.WriteLine("Start FileOpenAsync");
+                _logger.Debug.Write("FileOpenAsync Start");
 
                 _browser.Main.LoadingManager.Show();
 
@@ -1546,7 +1581,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _browser.Main.LoadingManager.Hide();
                 });
 
-                Debug.WriteLine("End OnOpenFile");
+                _logger.Debug.Write("FileOpenAsync End");
             }
             catch (Exception ex)
             {
@@ -1693,8 +1728,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SourceLocationKind sourceLocation,
             bool isSelected = true)
         {
-
-            Debug.WriteLine("+ AddTab");
+            _logger.Debug.Write("start");
             _browser.Main.LoadingManager.Show();
 
             _subtitleListItemValidator.IsEnabled = false;
@@ -1736,7 +1770,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             MessageCenter.Instance.Send(new Message.View.CaptionElementsEditView.ChangedTabMessage(this));
 
-            Debug.WriteLine("- AddTab");
+            _logger.Debug.Write("end");
         }
 
         public void CollapseAllPopup()
@@ -1783,6 +1817,56 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             //    CleanUpSubtitle();
             //}
+        }
+
+        private void OnCreateNewWindow(Message.SubtitleEditor.CreateNewWindowMessage message)
+        {
+            _logger.Debug.Write("start");
+
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+            var subtitleEditorFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{this.GetApplicationName()}";
+
+            if (!File.Exists(subtitleEditorFilePath)) return;
+
+            _signInViewModel.SaveAuthorization();
+
+            var videoId = message.Param?.VideoInfo?.Id;
+            var captionAssetId = message.Param?.Caption?.Id;
+            var captionAssetElements = message.Param?.CaptionAssetElements;
+
+            var captionAssetElementSb = new StringBuilder();
+            if (captionAssetElements != null)
+                foreach (var assetElement in captionAssetElements)
+                {
+                    if (captionAssetElementSb.Length > 0)
+                    {
+                        captionAssetElementSb.Append(",");
+                    }
+
+                    captionAssetElementSb.Append(assetElement.Id);
+                }
+
+            var parameters = $"stageId={stageId}&projectId={projectId}&videoId={videoId}&assetId={captionAssetId}&captionIds={captionAssetElementSb.ToString()}";
+            //Debug.WriteLine($"parameters : {parameters}");
+
+            var process = new Process();
+
+            var processInfo = new ProcessStartInfo
+            {
+                FileName = subtitleEditorFilePath,
+                Arguments = parameters,
+                CreateNoWindow = false,
+                UseShellExecute = false
+            };
+
+            process.StartInfo = processInfo;
+
+            process.Start();
+
+            _logger.Debug.Write("end");
         }
 
         private void OnChangeRecentlyItem(Message.RecentlyLoader.ChangeItemMessage message)

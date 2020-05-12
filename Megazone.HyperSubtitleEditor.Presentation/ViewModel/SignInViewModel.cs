@@ -18,6 +18,7 @@ using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Newtonsoft.Json;
+using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -209,7 +210,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private async void OpenProjectViewAsync()
+        private async void OpenProjectViewAsync(bool isStartForStandAlone = false)
         {
             try
             {
@@ -230,7 +231,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 UserName = user.Name;
                 LoginId = user.Username;
 
-                MessageCenter.Instance.Send(new SignIn.LoadStageProjectMessage(this, user));
+                MessageCenter.Instance.Send(new SignIn.LoadStageProjectMessage(this, user, isStartForStandAlone));
 
                 CloseAction?.Invoke();
             }
@@ -245,7 +246,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        private void SaveAuthorization()
+        public void SaveAuthorization()
         {
             try
             {
@@ -290,18 +291,26 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void Load()
         {
             IsAutoLogin = _config.Subtitle.AutoLogin;
-            if (!_config.Subtitle.AutoLogin)
+
+            // McmOpenDta 에 stageId 와 projectId가 있다면 새창열기로 자막 에디터를 실행시킨 것
+            var hasStagAndProjectId = !string.IsNullOrEmpty(AppContext.McmOpenData.StageId) &&
+                                      !string.IsNullOrEmpty(AppContext.McmOpenData.ProjectId);
+
+            if (!hasStagAndProjectId)
             {
-                SetSourceUri(AuthorizationRepository.LOGIN_URL);
-                return;
+                if (!_config.Subtitle.AutoLogin)
+                {
+                    SetSourceUri(AuthorizationRepository.LOGIN_URL);
+                    return;
+                }
             }
 
             _authorization = LoadAuthorization();
 
-            if (_authorization != null)
-                OpenProjectViewAsync();
-            else
-                SetSourceUri(AuthorizationRepository.LOGIN_URL);
+             if (_authorization != null)
+                 OpenProjectViewAsync(hasStagAndProjectId);
+             else
+                 SetSourceUri(AuthorizationRepository.LOGIN_URL);
         }
 
         public void NavigateToProject(string code)

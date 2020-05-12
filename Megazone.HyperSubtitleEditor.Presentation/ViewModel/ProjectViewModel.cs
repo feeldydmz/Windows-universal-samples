@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,11 +17,13 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
+using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Newtonsoft.Json;
 using Unity;
+using AppContext = Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data.AppContext;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -289,6 +292,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void StartProject(ProjectItemViewModel projectItem)
         {
+            if (projectItem == null)
+                return;
+
             var workingProject = _signInViewModel.SelectedProject;
 
             // 현재 작업중인 프로젝트 선택시
@@ -342,6 +348,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             await _languageLoader.LoadAsync();
 
             MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
+        }
+
+        public void StartProjectByPass(string stageId, string projectId)
+        {
+            SelectedStage = StageItems.Single(stage => stage.Id.Equals(stageId));
+
+            var projectItem = SelectedStage.ProjectItems.Single(project => project.ProjectId.Equals(projectId));
+
+            if (projectItem == null)
+                return;
+
+            projectItem.IsSelected = true;
+
+            _signInViewModel.SelectedStage = SelectedStage;
+
+            _signInViewModel.SelectedProject = projectItem;
+
+            IsProjectViewVisible = false;
+
+            var videoId = AppContext.McmOpenData.VideoId;
+            var assetId = AppContext.McmOpenData.AssetId;
+            var captionIds = AppContext.McmOpenData.CaptionIds;
+
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this, 
+                new CaptionOpenRequestedByIdMessageParameter(videoId, assetId, captionIds)));
         }
 
         private void OnStagePerPageNumberChanged(int obj)
@@ -480,6 +511,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                var isStartForStandAlone = message.IsStartForStandAlone;
+
                 IsLoadingProjectPage = true;
                 IsBusy = true;
                 IsProjectViewVisible = true;
@@ -582,6 +615,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
 
                 IsBusy = false;
+
+                if (isStartForStandAlone)
+                {
+                    StartProjectByPass(AppContext.McmOpenData.StageId, AppContext.McmOpenData.ProjectId);
+
+                }
+
             }
             catch (Exception e)
             {
