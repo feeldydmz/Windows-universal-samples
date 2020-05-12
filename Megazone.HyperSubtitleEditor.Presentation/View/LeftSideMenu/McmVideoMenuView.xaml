@@ -348,9 +348,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-                                <Button Grid.Column="0" Style="{StaticResource Style_IconMenuButton}"
-                                        Margin="219,0,0,0"
-                                        ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                <Button Margin="219,0,0,0"
                                         VerticalAlignment="Center"
                                         Command="{Binding Path=SearchOptionChangeCommand}">
                                     <Grid>
@@ -358,6 +356,18 @@
                                             Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
                                             Width="13" Height="13" />
                                     </Grid>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_IconMenuButton}">
+                                            <Setter Property="ToolTip" Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAdvancedSearch, Mode=TwoWay}"
+                                                             Value="True">
+                                                    <Setter Property="ToolTip" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+
+                                    </Button.Style>
                                 </Button>
                             </StackPanel>
 
