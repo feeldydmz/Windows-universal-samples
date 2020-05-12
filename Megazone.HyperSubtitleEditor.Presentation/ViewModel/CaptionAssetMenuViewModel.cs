@@ -481,6 +481,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         var param = new CreateNewWindowMessageParameter(null, asset, selectedCaptionList );
                         MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this, param));
 
+                        MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
+
                         return;
                     }
                 }

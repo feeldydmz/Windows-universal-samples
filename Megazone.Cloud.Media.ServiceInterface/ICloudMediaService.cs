@@ -37,5 +37,6 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<Caption> CreateCaptionElementsAsync(CreateAssetElementParameter parameter,CancellationToken cancellationToken);
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
         Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken);
+        string GetWebHostEndPoint();
     }
 }

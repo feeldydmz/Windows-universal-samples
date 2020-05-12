@@ -22,12 +22,14 @@ namespace Megazone.Cloud.Media.Service
 #if STAGING
         private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
         private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.stg.continuum.co.kr"; // stage
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.media.stg.continuum.co.kr";
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
             "https://api.cloudplex.dev.megazone.io"; // develop version
 
         private const string UPLOAD_HOST_ENDPOINT =
             "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com";
 #else
         //private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.megazone.io"; // production version
         //private const string UPLOAD_HOST_ENDPOINT = "https://upload.media.megazone.io";// production
@@ -37,6 +39,8 @@ namespace Megazone.Cloud.Media.Service
 
         private const string UPLOAD_HOST_ENDPOINT =
             "http://mz-cm-upload-load-balancer-830877039.ap-northeast-2.elb.amazonaws.com"; // develop
+
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.media.megazone.io";
 #endif
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
@@ -411,6 +415,11 @@ namespace Megazone.Cloud.Media.Service
                     stageId, projectId, assetId, version));
                 Debug.Assert(!result, "Asset 삭제 실패.");
             }, cancellationToken);
+        }
+
+        public string GetWebHostEndPoint()
+        {
+            return CLOUD_PLEX_WEB_HOST_ENDPOINT;
         }
     }
 
