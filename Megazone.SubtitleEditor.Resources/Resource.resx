@@ -216,6 +216,9 @@
   <data name="CNT_EDIT" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="CNT_CAPTION_LIST_EDIT" xml:space="preserve">
+    <value>Caption List Edit</value>
+  </data>
   <data name="CNT_EDIT_CAPTION_INFO" xml:space="preserve">
     <value>Edit track info</value>
   </data>

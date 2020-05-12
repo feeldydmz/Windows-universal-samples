@@ -277,6 +277,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Caption List Edit과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CAPTION_LIST_EDIT {
+            get {
+                return ResourceManager.GetString("CNT_CAPTION_LIST_EDIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Max length of subtitle과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_CAPTION_MAX_LENGTH {
