@@ -395,16 +395,21 @@
                                 </MenuItem>-->
                                 <MenuItem ItemsSource="{Binding RecentlyItems}" Header="{x:Static resources:Resource.CNT_RECENT_LOCAL_FILE}">
                                     <MenuItem.ItemContainerStyle>
-                                        <Style TargetType="{x:Type MenuItem}">
+                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Style_MenuItemDefault}">
                                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
                                             <Setter Property="CommandParameter" Value="{Binding}" />
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                     <MenuItem.ItemTemplate>
-                                        <HierarchicalDataTemplate DataType="{x:Type data:RecentlyItem}">
-                                            <TextBlock Foreground="Black"
-                                                Text="{Binding FirstName}"/>
-                                        </HierarchicalDataTemplate>
+                                        <DataTemplate DataType="{x:Type data:RecentlyItem}">
+                                        <TextBlock x:Name="recentlyMenuItem" Foreground="Black"
+                                                   Text="{Binding FirstName}"/>
+                                        <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}}, Path=IsHighlighted}" Value="True">
+                                                    <Setter Property="Foreground" Value="White" TargetName="recentlyMenuItem"/>
+                                                </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                        </DataTemplate>
                                     </MenuItem.ItemTemplate>
                                     <MenuItem.Style>
                                         <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Style_MenuItemDefault}">
