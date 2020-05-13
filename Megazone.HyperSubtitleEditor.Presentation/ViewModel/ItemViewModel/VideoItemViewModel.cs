@@ -135,8 +135,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             list.Add(CaptionAssetItemViewModel.Empty);
             CaptionAssetList = new CaptionAssetListViewModel(list);
-
-            Debug.WriteLine($"TotalCaptionCount {TotalCaptionCount} ");
         }
 
         //public void Update()

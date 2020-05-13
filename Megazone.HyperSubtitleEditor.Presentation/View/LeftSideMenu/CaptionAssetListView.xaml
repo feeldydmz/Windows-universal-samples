@@ -28,6 +28,7 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
             </ResourceDictionary>
     </UserControl.Resources>
+    
     <Grid>
         <ListBox x:Name="AssetListBox"
                  ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
@@ -37,7 +38,7 @@
                  >
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
-                                    Command="{Binding CaptionAssetSectionChangedCommand}" />
+                                    Command="{Binding LeftButtonUpCommand}" />
             </i:Interaction.Behaviors>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type itemVm:CaptionAssetItemViewModel}">
@@ -71,7 +72,7 @@
                                          Grid.Column="0" 
                                          VerticalAlignment="Top"
                                          IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.CaptionAssetSectionChangedCommand}"/>
+                                         Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetList.LeftButtonUpCommand}"/>
                             <!--에셋정보-->
                             <Grid Grid.Column="2" Grid.Row="0">
                                 <Grid.ColumnDefinitions>
@@ -208,6 +209,19 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Visibility="{Binding IsCaptionAssetEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_Caption_Empty_Guide.png"
+                   Stretch="None"/>
+            <TextBlock Text="{x:Static resources:Resource.MSG_CAPTION_LIST_ADD_GUIDE}"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Foreground="#697382"
+                       Margin="0,15,0,0"/>
+        </StackPanel>
 
         <!--<Border
                             Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">

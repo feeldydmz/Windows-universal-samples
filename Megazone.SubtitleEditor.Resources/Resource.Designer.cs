@@ -1802,6 +1802,16 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Please add captions and
+        ///    apply to videos.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CAPTION_LIST_ADD_GUIDE {
+            get {
+                return ResourceManager.GetString("MSG_CAPTION_LIST_ADD_GUIDE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   The language will be applied after a restart.
         ///Would you like to restart now?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
-using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -25,12 +21,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private bool _isNewCaptionAsset;
 
         
-        public ICommand CaptionAssetSectionChangedCommand
+        public ICommand LeftButtonUpCommand
         {
             get
             {
                 return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand(OnCaptionAssetSectionChanged);
+                    _captionAssetSectionChangedCommand ?? new RelayCommand(CaptionAsstSelectionChanged);
             }
         }
 
@@ -44,10 +40,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        
         public IEnumerable<CaptionAssetItemViewModel> CaptionAssetItems
         {
             get => _captionAssetItems;
             set => Set(ref _captionAssetItems, value);
+        }
+
+        public bool IsCaptionAssetEmpty
+        {
+            get
+            {
+                // Id가 없는 CaptionAsset이 있다면 (캡션 새로 만들기 버튼임)
+                if (_captionAssetItems != null && _captionAssetItems.Any(c => string.IsNullOrEmpty(c.Id)))
+                {
+                    return !(_captionAssetItems.Any(c => !string.IsNullOrEmpty(c.Id)));
+                }
+
+                return false;
+            }
         }
 
         public CaptionAssetItemViewModel SelectedCaptionAssetItem
@@ -65,6 +76,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public CaptionAssetListViewModel(IEnumerable<CaptionAssetItemViewModel> captionAssetItems = null)
         {
             CaptionAssetItems = captionAssetItems;
+
+            if (CaptionAssetItems == null) return;
+            
+            SelectFirstItem();
+        }
+
+        private void SelectFirstItem()
+        {
+            var captionAssetItemViewModels = CaptionAssetItems.ToList();
+            if (captionAssetItemViewModels.Any())
+            {
+                SelectedCaptionAssetItem = captionAssetItemViewModels.First();
+                CaptionAsstSelectionChanged();
+            }
         }
 
         private bool CanCaptionSelectionChanged(CaptionElementItemViewModel arg)
@@ -98,7 +123,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
 
-        private void OnCaptionAssetSectionChanged()
+        private void CaptionAsstSelectionChanged()
         {
             SelectedCaptionAssetItem?.SelectAll();
             if (CaptionAssetItems != null)

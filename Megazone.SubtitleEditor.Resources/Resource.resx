@@ -854,4 +854,8 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
   <data name="CNT_ORIGINAL_VIDEO_CAPTION" xml:space="preserve">
     <value>Original video of caption</value>
   </data>
+  <data name="MSG_CAPTION_LIST_ADD_GUIDE" xml:space="preserve">
+    <value>Please add captions and
+    apply to videos.</value>
+  </data>
 </root>
