@@ -44,19 +44,6 @@
 
         <!--에셋정보-->
         <StackPanel Grid.Row="0">
-            <!--<Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>-->
-            <!--TODO: DataTemplateSelector 이용하는 방식으로-->
-            <!--<StackPanel Orientation="Horizontal" Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                <Image Style="{StaticResource Style_CaptionBadgeImage}" />
-                <TextBlock Text="{Binding Path=Kind}" Margin="6, 0" />
-            </StackPanel>-->
-
             <StackPanel Orientation="Horizontal"
                         Margin="21,21,0,0">
                 <Grid Width="50" Height="17" HorizontalAlignment="Left" VerticalAlignment="Top">

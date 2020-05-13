@@ -104,7 +104,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //IsShow = true;
 
             AssetId = _workBarViewModel.CaptionAssetItem?.Id;
-            AssetName = _workBarViewModel.CaptionAssetItem?.Name;
+            AssetName = _workBarViewModel.CaptionAssetItem?.Name ?? "Untitled";
 
             CaptionItems =  await MakeList();
         }
