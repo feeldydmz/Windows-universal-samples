@@ -700,6 +700,9 @@ platform, please contact our sales team. We'll assist you with more details.</va
   <data name="CNT_RECENT_FILE" xml:space="preserve">
     <value>Recent File</value>
   </data>
+  <data name="CNT_RECENT_LOCAL_FILE" xml:space="preserve">
+    <value>Import Recent Local File</value>
+  </data>
   <data name="CNT_SHARE_FILE" xml:space="preserve">
     <value>Shared File</value>
   </data>

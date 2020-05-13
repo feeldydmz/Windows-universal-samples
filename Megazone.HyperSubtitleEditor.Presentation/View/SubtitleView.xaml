@@ -393,7 +393,7 @@
                                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}">
                                    
                                 </MenuItem>-->
-                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="{x:Static resources:Resource.CNT_RECENT_FILE}">
+                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="{x:Static resources:Resource.CNT_RECENT_LOCAL_FILE}">
                                     <MenuItem.ItemContainerStyle>
                                         <Style TargetType="{x:Type MenuItem}">
                                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
