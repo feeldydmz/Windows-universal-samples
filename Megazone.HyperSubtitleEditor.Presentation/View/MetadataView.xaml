@@ -101,7 +101,7 @@
 
         
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <TextBlock Text="Id"
+            <TextBlock Text="ID"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
@@ -118,10 +118,6 @@
                        Style="{StaticResource CaptionText}" />
             <TextBlock Text="{Binding MediaType}" Style="{StaticResource ContentText}" />
         </StackPanel>-->
-
-
-        
-        
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Orientation="Vertical">
             <Rectangle Height="1" Width="305" Fill="#2d3344" HorizontalAlignment="Left"/>
@@ -159,6 +155,11 @@
             <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_STATUS}"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal">
+                <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
+                         Margin="0,6,5,0"
+                         Stroke="#A4A5A6" 
+                         Fill="#A4A5A6" 
+                         VerticalAlignment="Center" />  
                 <Ellipse Width="8"
                          Height="8"
                          Fill="#2E9812"
