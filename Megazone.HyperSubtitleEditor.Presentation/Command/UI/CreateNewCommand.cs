@@ -36,8 +36,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
             if (subtitleViewModel.Tabs?.Any() ?? false)
             {
-                if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
-                {
+                //if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
+                //{
                     var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
 
                     if (!result.HasValue) return;
@@ -55,7 +55,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
                         return;
                     }
-                }
+                //}
             }
 
             MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this,
