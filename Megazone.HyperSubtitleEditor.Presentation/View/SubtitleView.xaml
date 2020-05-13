@@ -1118,6 +1118,9 @@
                                                     <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditCloseIcon" />
                                                     <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditIcon" />
                                                 </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Opacity" Value="0.4" TargetName="Container" />
+                                                </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
