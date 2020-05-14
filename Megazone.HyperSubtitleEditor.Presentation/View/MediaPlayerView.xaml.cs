@@ -72,6 +72,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 new FrameworkPropertyMetadata(false));
 
 
+        public static readonly DependencyProperty HeaderDataProperty =
+            DependencyProperty.Register("HeaderData", typeof(MediaHeaderData), typeof(MediaPlayerView));
+
+
         public MediaPlayerView()
         {
             InitializeComponent();
@@ -93,6 +97,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         {
             get => (bool) GetValue(IsPlayingProperty);
             set => SetValue(IsPlayingProperty, value);
+        }
+
+        public MediaHeaderData HeaderData
+        {
+            get => (MediaHeaderData)GetValue(HeaderDataProperty);
+            set => SetValue(HeaderDataProperty, value);
         }
 
         public bool IsThumbnailVisible
@@ -168,15 +178,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             if (!string.IsNullOrEmpty(oldValue))
                 StopMedia();
 
-            OpenMedia(newValue, StreamIndex);
-            //PlayMedia(newValue, StreamIndex);
+            if (!string.IsNullOrEmpty(newValue))
+                OpenMedia(newValue, StreamIndex);
         }
 
         private void OnStreamIndexProperty(int newValue, int oldValue)
         {
             StopMedia();
 
-            OpenMedia(MediaSource, newValue);
+//            OpenMedia(MediaSource, newValue);
         }
 
         public event Action<decimal> OnPositionChanged;
@@ -255,7 +265,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void OnPlayStateChanged(MediaPlayStates playState)
         {
-            IsThumbnailVisible = playState == MediaPlayStates.Manual ||
+            IsThumbnailVisible = playState == MediaPlayStates.Opened || 
+                                 playState == MediaPlayStates.Manual ||
                                  playState == MediaPlayStates.Stop ||
                                  playState == MediaPlayStates.Closed;
         }
@@ -276,6 +287,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 case MediaPlayStates.Manual:
                     break;
                 case MediaPlayStates.Opened:
+                    HeaderData = VideoElement.MediaData;
                     break;
                 case MediaPlayStates.Closed:
                     break;
@@ -308,31 +320,25 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void OpenMedia(string mediaSource = null, int streamIndex = 0)
         {
+            //var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
+
+            //if (VideoElement == null)
+            //    return;
+
+            //if (string.IsNullOrWhiteSpace(mediaSource))
+            //    return;
+
+            //if (VideoElement.PlayState != MediaPlayStates.Pause)
+            //{
+            //    if (VideoElement.IsPlaying)
+            //        VideoElement.Stop();
+
             var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
 
-            if (VideoElement == null)
-                return;
-
-            if (string.IsNullOrWhiteSpace(mediaSource))
-                return;
-
-            if (VideoElement.PlayState != MediaPlayStates.Pause)
-            {
-                if (VideoElement.IsPlaying)
-                    VideoElement.Stop();
-
-                if (string.IsNullOrEmpty(VideoElement.Source))
-                    VideoElement.Source = mediaSource;
-
-                else if (!VideoElement.Source.Equals(mediaSource)) VideoElement.Source = mediaSource;
-
-                if (!VideoElement.StreamIndex.Equals(streamIndex)) VideoElement.StreamIndex = streamIndex;
-
-                VideoElement.Authorization = authorization;
-            }
-
-            //if (VideoElement.CanPlay)
-                VideoElement.Open();
+            VideoElement.Source = mediaSource;
+            VideoElement.Authorization = authorization;
+            
+            VideoElement.Open();
         }
 
         private void PlayMedia(string mediaSource = null, int streamIndex = 0)

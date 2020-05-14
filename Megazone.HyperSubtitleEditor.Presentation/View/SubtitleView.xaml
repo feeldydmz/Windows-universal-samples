@@ -1524,6 +1524,7 @@
                                        PlaybackReadyTimeOut="5"
                                        CurrentPosition="{Binding CurrentMediaPosition, Mode=OneWayToSource}"
                                        IsPlaying="{Binding IsMediaPlaying, Mode=OneWayToSource}"
+                                       HeaderData="{Binding HeaderData, Mode=TwoWay}"
                                        Volume="0.5">
                     <i:Interaction.Behaviors>
                         <behavior:MediaPlayerPlayStateChangedToCommandBehavior

@@ -14,6 +14,7 @@ using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.VideoTrack;
 using Megazone.Core.Windows.Control.VideoPlayer;
+using Megazone.Core.Windows.Control.VideoPlayer.MediaControllers.FFmpegControls;
 using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -48,7 +49,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private int _streamIndex;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
-        private MediaHeaderData _videoData;
+        private MediaHeaderData _headerData;
         private readonly SignInViewModel _signinViewModel;
 
         private IEnumerable<MediaKind> _videoTypes;
@@ -68,7 +69,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 return
                     _dropToSetMediaCommand =
-                        _dropToSetMediaCommand ?? new RelayCommand<object>(SetMediaCommand, CanDropToSetMedia);
+                        _dropToSetMediaCommand ?? new RelayCommand<object>(DropToSetMedia, CanDropToSetMedia);
             }
         }
 
@@ -106,6 +107,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _timeSeeker;
             set => Set(ref _timeSeeker, value);
+        }
+
+        public MediaHeaderData HeaderData
+        {
+            get => _headerData;
+            set => Set(ref _headerData, value);
         }
 
         public IList<IText> CurrentPositionText
@@ -220,8 +227,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         // TODO : Video 를 받아 처리하도록 개선 필요.
         public bool IsLocalFile { get; set; }
 
+        public MediaPlayStates PlayState { get; set; }
+
         private void OnMediaPlayStateChanged(MediaPlayStates state)
         {
+            Debug.WriteLine($"OnMediaPlayStateChanged : {state}");
+            PlayState = state;
+
+            switch (state)
+            {
+                
+                case MediaPlayStates.Opened:
+                    OnOpenedVideo();
+                    break;
+                case MediaPlayStates.Buffering:
+                    break;
+                case MediaPlayStates.Closed:
+                case MediaPlayStates.Manual:
+                case MediaPlayStates.Seeking:
+                case MediaPlayStates.Play:
+                case MediaPlayStates.Pause:
+                case MediaPlayStates.Stop:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+
+
             _onMediaPlayStateChanged?.Invoke(state);
         }
 
@@ -237,7 +269,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             InitMedia(OriginWorkContext, false);
         }
 
-        private void SetMediaCommand(object parameter)
+        private void DropToSetMedia(object parameter)
         {
             if (!(parameter is IDataObject dataObject)) return;
             if (dataObject.GetDataPresent(DataFormats.FileDrop))
@@ -299,20 +331,35 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public void OpenMedia(string firstFilePath, bool isLocalFile, VideoResolutionInfo resolution = null)
+        public async void OpenMedia(string firstFilePath, bool isLocalFile, VideoResolutionInfo resolution = null)
         {
-            MediaSource = firstFilePath;
+            try
+            {
+                this.CreateTask(() => {
+                    MediaSource = firstFilePath;
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error.Write("OpenMedia : ", ex.Message);
+                throw ex;
+            }
+        }
 
-            var videoHeaderData = GetVideoHeaderData(firstFilePath);
+        void OnOpenedVideo()
+        {
+            Debug.WriteLine("+ OnOpendVideo");
 
-            if (!isLocalFile)
+            SetMediaHeaderData(null);
+
+            if (!IsLocalFile)
                 //MPEG-DASH 재생 해상도의 인덱스를 구한다
-                if (videoHeaderData?.MpegDashStreamIndex != null && resolution != null)
+                if (HeaderData?.MpegDashStreamIndex != null && CurrentResolution != null)
                     try
                     {
                         var indexValue =
-                            videoHeaderData.MpegDashStreamIndex.Single(item =>
-                                item.Value.Height.Equals(resolution.Height));
+                            HeaderData.MpegDashStreamIndex.Single(item =>
+                                item.Value.Height.Equals(CurrentResolution.Height));
                         StreamIndex = indexValue.Key;
                     }
                     catch (InvalidOperationException ex)
@@ -320,10 +367,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         _logger.Error.Write(ex.Message);
                     }
 
-            LoadMediaItem(firstFilePath, isLocalFile, videoHeaderData);
+            SetMediaHeaderData(HeaderData);
+
+            Debug.WriteLine("OnOpendVideo 3");
+
+            if (HeaderData != null)
+            {
+                //var fullPath = IsLocalFile ? HeaderData.Source.LocalPath : HeaderData.Source.AbsoluteUri;
+                LoadMediaItem(HeaderData.Source, IsLocalFile, HeaderData);
+            }
+            
+            Debug.WriteLine("OnOpendVideo 4");
         }
 
-        private string GetTempThumbnailFilePath(string fullPath, bool isLocalFile = false)
+        private string GetTempThumbnailFilePath(Uri uri, bool isLocalFile)
         {
             var folderPath = this.TempFolder();
             if (folderPath == null)
@@ -332,14 +389,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var fileHeader = Guid.NewGuid().ToString() + DateTime.UtcNow.DateTimeToEpoch();
             if (isLocalFile)
             {
-                var fi = new FileInfo(fullPath);
+                var fi = new FileInfo(uri.LocalPath);
                 if (!fi.Exists) return null;
                 return folderPath + "\\" + fileHeader + "_" + fi.Name.Replace(fi.Extension, string.Empty) + ".jpg";
             }
 
-            var lastIndexOfSlash = fullPath.LastIndexOf("/", StringComparison.Ordinal);
+            var lastIndexOfSlash = uri.LocalPath.LastIndexOf("/", StringComparison.Ordinal);
             if (lastIndexOfSlash == -1) return null;
-            var fileName = fullPath.Substring(lastIndexOfSlash + 1);
+            var fileName = uri.LocalPath.Substring(lastIndexOfSlash + 1);
             var indexOfFirstDot = fileName.IndexOf(".", StringComparison.Ordinal);
             if (indexOfFirstDot == -1) return null;
             fileName = fileName.Substring(0, indexOfFirstDot) + ".jpg";
@@ -368,11 +425,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
 
-        private void LoadMediaItem(string fullPath, bool isLocalFile, MediaHeaderData videoData)
+        private async void LoadMediaItem(Uri uri, bool isLocalFile, MediaHeaderData videoData)
         {
             ThumbnailSource = null;
-            SetMediaHeaderData(null);
+            //SetMediaHeaderData(null);
             _cancellationTokenSource = new CancellationTokenSource();
+            var authorization = getAuthorization();
+
+            var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
+
             this.CreateTask(() =>
             {
                 try
@@ -386,18 +447,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     {
                         var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
                         {
-                            SaveThumbnailPath = GetTempThumbnailFilePath(fullPath, isLocalFile),
+                            SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
                             TimeoutMilliseconds = 7000,
-                            LocalFilePath = isLocalFile ? fullPath : new Uri(fullPath).AbsoluteUri,
-                            ThumbnailAtSeconds = (double) videoData.StartTime
+                            LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
+                            ThumbnailAtSeconds = (double) videoData.StartTime,
+                            Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}" : null
                         });
                         if (thumbnail != null)
                             this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
-                        this.InvokeOnUi(() =>
-                        {
-                            _videoData = videoData;
-                            SetMediaHeaderData(_videoData);
-                        });
+                        //this.InvokeOnUi(() =>
+                        //{
+                        //    _videoData = videoData;
+                        //    SetMediaHeaderData(_videoData);
+                        //});
                     }
                 }
                 catch (Exception ex)
