@@ -84,11 +84,17 @@ namespace Megazone.HyperSubtitleEditor
 
             var parameterList =
                 arguments
-                .Split('&')
-                .Select(
+                    .Split('&')
+                    .Where(part =>
+                    {
+                        var array = part.Split('=');
+                        return array.Length > 1;
+                    })
+                    .Select(
                     part =>
                     {
                         var array = part.Split('=');
+
                         return new KeyValuePair<string, string>(array[0], array[1]);
                     }).ToList();
 
