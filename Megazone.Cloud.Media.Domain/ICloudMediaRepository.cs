@@ -28,6 +28,8 @@ namespace Megazone.Cloud.Media.Domain
         Caption CreateCaption(CaptionRequest request);
         Caption UpdateCaptionElement(CaptionRequest request);
         Caption CreateCaptionElement(CaptionRequest request);
+
+        IEnumerable<Caption> CreateCaptionElementBulk(CaptionBulkRequest request);
         bool DeleteCaption(CaptionRequest request);
 
         Settings GetSetting(SettingRequest request);

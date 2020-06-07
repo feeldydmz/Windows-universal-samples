@@ -335,6 +335,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
+                GetThumbnailAsync(new Uri(firstFilePath), isLocalFile);
+
                 this.CreateTask(() => {
                     MediaSource = firstFilePath;
                 });
@@ -434,6 +436,66 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
 
+            //this.CreateTask(() =>
+            //{
+            //    try
+            //    {
+            //        //var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
+            //        //{
+            //        //    Url = fullPath,
+            //        //    IsRequestThumbnail = false
+            //        //}, _cancellationTokenSource);
+            //        if (videoData != null)
+            //        {
+            //            var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
+            //            {
+            //                SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
+            //                TimeoutMilliseconds = 7000,
+            //                LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
+            //                ThumbnailAtSeconds = (double) videoData.StartTime,
+            //                Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}" : null
+            //            });
+            //            if (thumbnail != null)
+            //                this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
+            //            //this.InvokeOnUi(() =>
+            //            //{
+            //            //    _videoData = videoData;
+            //            //    SetMediaHeaderData(_videoData);
+            //            //});
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.Error.Write(ex);
+            //    }
+            //});
+        }
+
+        private async void GetThumbnailAsync(Uri uri, bool isLocalFile)
+        {
+            ThumbnailSource = null;
+            //SetMediaHeaderData(null);
+            _cancellationTokenSource = new CancellationTokenSource();
+            var authorization = getAuthorization();
+
+            WorkBarViewModel workBarViewmodel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+
+
+            //var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
+            var isAdaptiveHttpStreaming = false;
+
+            if (workBarViewmodel.VideoItem?.Source?.Sources?.Count() > 0)
+            {
+                var type = workBarViewmodel.VideoItem?.Source?.Sources.FirstOrDefault()?.Type;
+
+                if (type == "HLS" || type == "DASH")
+                {
+                    isAdaptiveHttpStreaming = true;
+                }
+            }
+
+            
+
             this.CreateTask(() =>
             {
                 try
@@ -443,14 +505,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     //    Url = fullPath,
                     //    IsRequestThumbnail = false
                     //}, _cancellationTokenSource);
-                    if (videoData != null)
-                    {
+                    
                         var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
                         {
                             SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
                             TimeoutMilliseconds = 7000,
                             LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
-                            ThumbnailAtSeconds = (double) videoData.StartTime,
+                            ThumbnailAtSeconds = (double)2,
                             Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}" : null
                         });
                         if (thumbnail != null)
@@ -460,7 +521,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         //    _videoData = videoData;
                         //    SetMediaHeaderData(_videoData);
                         //});
-                    }
+                    
                 }
                 catch (Exception ex)
                 {

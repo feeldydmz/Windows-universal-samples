@@ -248,6 +248,8 @@ namespace Megazone.Cloud.Media.Service
                 var stageId = parameter.StageId;
                 var projectId = parameter.ProjectId;
                 var assetId = parameter.AssetId;
+                var status = parameter.Status;
+                var folderPath = parameter.FolderPath;
 
                 var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
                     stageId, projectId, assetId));
@@ -257,8 +259,8 @@ namespace Megazone.Cloud.Media.Service
 
                 var assetName = string.IsNullOrEmpty(parameter.Name) ? asset.Name : parameter.Name;
 
-                var updateAsset = new CaptionAsset(asset.Id, assetName, asset.Status, asset.Type, asset.MediaType,
-                    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, asset.Elements, asset.FolderPath);
+                var updateAsset = new CaptionAsset(asset.Id, assetName, status, asset.Type, asset.MediaType,
+                    asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, asset.Elements, folderPath);
 
                 var response = _cloudMediaRepository.UpdateCaptionAsset(
                     new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId,
@@ -284,7 +286,7 @@ namespace Megazone.Cloud.Media.Service
             }, cancellationToken);
         }
 
-        public async Task<Caption> CreateCaptionElementsAsync(CreateAssetElementParameter parameter,
+        public async Task<Caption> CreateCaptionElementAsync(CreateAssetElementParameter parameter,
             CancellationToken cancellationToken)
         {
             var accessToken = parameter.Authorization.AccessToken;
@@ -299,6 +301,23 @@ namespace Megazone.Cloud.Media.Service
                 new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, element)), 
                 cancellationToken);
         }
+
+        public async Task<IEnumerable<Caption>> CreateCaptionElementBulkAsync(CreateAssetElementBulkParameter parameter,
+            CancellationToken cancellationToken)
+        {
+            var accessToken = parameter.Authorization.AccessToken;
+            var stageId = parameter.StageId;
+            var projectId = parameter.ProjectId;
+            var assetId = parameter.AssetId;
+            var elements = parameter.Elements;
+            var version = parameter.AssetVersion;
+
+            return await Task.Factory.StartNew(() =>
+                    _cloudMediaRepository.CreateCaptionElementBulk(
+                        new CaptionBulkRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, elements)),
+                cancellationToken);
+        }
+
 
         public async Task<VideoList> GetVideosAsync(GetVideosParameter parameter, CancellationToken cancellationToken)
         {

@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Extensions;
 
@@ -303,6 +306,27 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
             }
 
             return response.Convert<Caption>();
+        }
+
+        public IEnumerable<Caption> CreateCaptionElementBulk(CaptionBulkRequest request)
+        {
+                var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/bulk",
+                    Method.POST)
+                .AddHeader("Authorization", $"Bearer {request.AccessToken}")
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("version", request.Version.ToString())
+                .AddJsonString(new { Elements = request.Captions }); 
+
+            var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
+
+            if (response.StatusCode == HttpStatusCode.OK && response.Content.Contains("errorCode"))
+            {
+                return null;
+            }
+
+            var captionAsset = response.Convert<CaptionAsset>();
+
+            return captionAsset.Elements;
         }
 
         public bool DeleteCaptionAsset(DeleteAssetRequest request)

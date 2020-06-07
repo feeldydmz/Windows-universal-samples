@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,6 +53,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _openAssetEditorCommand;
         private ICommand _unloadCommand;
         private VideoItemViewModel _videoItem;
+        private Settings _cloudSettings;
 
          public WorkBarViewModel(IBrowser browser, ICloudMediaService cloudMediaService, ILogger logger,
             SignInViewModel signInViewModel, SubtitleParserProxy subtitleService, RecentlyLoader recentlyLoader)
@@ -157,8 +159,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Regist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Regist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Regist<CloudMedia.CaptionOpenRequestedByIdMessage>(OnCaptionOpenByIdRequest);
+            MessageCenter.Instance.Regist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
         }
 
+    
 
         private void UnregisterMessageHandlers()
         {
@@ -169,6 +173,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             MessageCenter.Instance.Unregist<Message.SubtitleEditor.FileOpenedMessage>(OnFileOpened);
             MessageCenter.Instance.Unregist<Message.Excel.FileImportMessage>(OnImportExcelFile);
             MessageCenter.Instance.Unregist<CloudMedia.CaptionOpenRequestedByIdMessage>(OnCaptionOpenByIdRequest);
+            MessageCenter.Instance.Unregist<ProjectSelect.ProjectChangeMessage>(OnProjectChanged);
         }
 
         private void OnImportExcelFile(Message.Excel.FileImportMessage message)
@@ -180,8 +185,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void OnFileOpened(Message.SubtitleEditor.FileOpenedMessage message)
         {
             IsOnlineData = VideoItem != null || CaptionAssetItem != null;
-//                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
-//                    null));
+            //                new CaptionAssetItemViewModel(new CaptionAsset(null, "untitle", null, null, null, null, 0, 0, null,
+            //                    null));
+            //CaptionAssetItem =
+            //    new CaptionAssetItemViewModel(new CaptionAsset(null, "untitled", null, null, null, null, 0, 0, null,
+            //        null, ""));
 
             HasWorkData = true;
         }
@@ -213,9 +221,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     var stageId = _signInViewModel.SelectedStage?.Id;
                     var projectId = _signInViewModel.SelectedProject?.ProjectId;
                     var assetId = message.CaptionAsset?.Id;
+                    var folderPath = message.CaptionAsset?.FolderPath;
+                    var status = message.CaptionAsset?.Status;
 
                     var captionAsset = await _cloudMediaService.UpdateCaptionAssetAsync(
-                        new UpdateCaptionAssetParameter(authorization, stageId, projectId, assetId, assetName),
+                        new UpdateCaptionAssetParameter(authorization, stageId, projectId, assetId, assetName, folderPath, status),
                         CancellationToken.None);
 
                     if (captionAsset != null)
@@ -297,6 +307,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                         subtitleTabItemViewModel.Caption = newCaption;
                                         subtitleTabItemViewModel.UpdateOriginData();
                                         subtitleTabItemViewModel.SetAsDeployed();
+                                        subtitleTabItemViewModel.SourceLocation = SourceLocationKind.Cloud;
                                     }
                                 }
                             }
@@ -405,16 +416,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     if (!string.IsNullOrEmpty(assetId))
                     {
                         var version = createAsset.Version;
-                        List<Caption> newCaptions = new List<Caption>();
                         // upload caption files.
                         foreach (var caption in captionList)
                         {
-                            var newCaptionElement =  await CreateCaptionElementWithUploadAsync(assetId, version, caption);
-                            newCaptions.Add(newCaptionElement);
-                            ++version;
+                            var assetUploadUrl = await CreateCaptionUploadAsync(assetId, caption);
+                            caption.Url = assetUploadUrl.Url;
                         }
 
-                        createAsset.Elements = newCaptions;
+                        var elements  = await _cloudMediaService.CreateCaptionElementBulkAsync(new CreateAssetElementBulkParameter(
+                            authorization, stageId, projectId, assetId, version,
+                            captionList), CancellationToken.None);
+
+                        createAsset.Elements = elements;
+
+                        if (string.IsNullOrEmpty(folderPath))
+                        {
+                            var relativePath = _cloudSettings.Asset.OutputStoragePath.Value.TrimEnd('/') + "/" + assetId;
+
+                            var prefixUri = new Uri(new Uri(_cloudSettings.Asset.OutputStoragePrefix.Value), relativePath);
+                            folderPath = prefixUri.AbsoluteUri;
+                            //folderPath = $"{_cloudSettings.Asset.OutputStoragePrefix}";
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(video?.Id))
@@ -481,6 +503,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return _subtitleService.ConvertToText(subtitles, SubtitleFormatKind.WebVtt);
         }
 
+        private async Task<AssetUploadUrl> CreateCaptionUploadAsync(string assetId, Caption caption)
+        {
+            var authorization = _signInViewModel.GetAuthorizationAsync().Result;
+            var stageId = _signInViewModel.SelectedStage.Id;
+            var projectId = _signInViewModel.SelectedProject.ProjectId;
+
+            var uploadData = GetTextBy(caption);
+            var fileName = GetFileName(caption);
+
+            var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, true);
+
+            return assetUploadUrl;
+        }
+
         private async Task<Caption> CreateCaptionElementWithUploadAsync(string assetId, int assetVersion, Caption caption)
         {
             try
@@ -496,13 +532,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 if (assetUploadUrl != null)
                 {
+                    Debug.WriteLine($"assetUploadUrl.Url : {assetUploadUrl.Url}");
+
                     caption.Url = assetUploadUrl.Url;
-                    var response = await _cloudMediaService.CreateCaptionElementsAsync(
+                    var response = await _cloudMediaService.CreateCaptionElementAsync(
                         new CreateAssetElementParameter(authorization, stageId, projectId, assetId, assetVersion,
                             caption), CancellationToken.None);
 
                     if (response == null)
                         throw new Exception($"Caption element, create fail (element name : {caption.Label})");
+
+                    Debug.WriteLine($"response.Label : {response.Label}");
+                    
 
                     return response;
                 }
@@ -606,18 +647,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         }
                     }
 
-                    List<Caption> createdCaptionAssetList = new List<Caption>();
+                    //List<Caption> createdCaptionAssetList = new List<Caption>();
+                    List<Caption> createdCaptionAssetList = null;
                     if (createCaptionList.Any())
                     {
-                        // 추가된 자막 파일은 지정된 Asset에 추가한다.
+                        //// 추가된 자막 파일은 지정된 Asset에 추가한다.
+                        //foreach (var caption in createCaptionList)
+                        //{
+                        //    var newCaptionElement =
+                        //        await CreateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
+
+                        //    if (newCaptionElement != null)
+                        //        createdCaptionAssetList.Add(newCaptionElement);
+                        //}
+
                         foreach (var caption in createCaptionList)
                         {
-                            var newCaptionElement =
-                                await CreateCaptionElementWithUploadAsync(assetId, asset.Version, caption);
-
-                            if (newCaptionElement != null)
-                                createdCaptionAssetList.Add(newCaptionElement);
+                            var assetUploadUrl = await CreateCaptionUploadAsync(assetId, caption);
+                            caption.Url = assetUploadUrl.Url;
                         }
+
+                        var elements = await _cloudMediaService.CreateCaptionElementBulkAsync(new CreateAssetElementBulkParameter(
+                            authorization, stageId, projectId, assetId, asset.Version,
+                            createCaptionList), CancellationToken.None);
+
+                        createdCaptionAssetList = elements?.ToList();
                     }
 
                     // update를 하면 asset의 version이 변경 되므로 제일 마지막 로직에 배치
@@ -816,5 +870,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return await _cloudMediaService.GetVideoAsync(
                 new GetVideoParameter(authorization, stageId, projectId, videoId), CancellationToken.None);
         }
+        private async void OnProjectChanged(ProjectSelect.ProjectChangeMessage message)
+        {
+            _cloudSettings = await GetMcmSettingAsync();
+        }
+
     }
 }

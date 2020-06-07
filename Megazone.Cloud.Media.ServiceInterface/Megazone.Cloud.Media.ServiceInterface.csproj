@@ -47,6 +47,7 @@
     <Compile Include="Model\PagingResultModel.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Model\VideoList.cs" />
+    <Compile Include="Parameter\CreateAssetElementBulkParameter.cs" />
     <Compile Include="Parameter\CreateAssetElementParameter.cs" />
     <Compile Include="Parameter\GetUploadUrlParameter.cs" />
     <Compile Include="Parameter\RegisterCaptionAssetParameter.cs" />

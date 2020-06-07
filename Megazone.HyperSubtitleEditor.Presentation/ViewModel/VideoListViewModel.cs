@@ -306,7 +306,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             try
             {
-                var conditions = MakeSearchConditions(Keyword, DurationStartTime, DurationEndTime);
+                var conditions = MakeSearchConditions();
                 var nextPageIndex = SelectedPageNo;
                 var countPerPage = 30;
                 var results = await GetVideoListAsync(new Pagination(nextPageIndex, countPerPage), conditions,
@@ -349,7 +349,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_isLoading)
                 return;
-            await SearchAsync(Keyword, selectedPageNo - 1, true);
+            await SearchAsync( selectedPageNo - 1, true);
         }
 
         private void OnDurationEndTimeChanged()
@@ -421,7 +421,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             OnLoadAction?.Invoke();
             IsConfirmButtonVisible = false;
             _isLoading = true;
-            await SearchAsync(Keyword, 0);
+            await SearchAsync( 0);
             _isLoading = false;
             IsOpen = true;
         }
@@ -497,7 +497,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void Refresh()
         {
-            await SearchAsync(Keyword, 0);
+            await SearchAsync( 0);
         }
 
         private void ChangedSearchOption()
@@ -509,19 +509,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void Enter(string keyword)
         {
-            await SearchAsync(keyword, 0);
+            await SearchAsync(0);
         }
 
         private async void Search(string keyword)
         {
-            await SearchAsync(keyword, 0);
+            await SearchAsync(0);
         }
 
-        private async Task SearchAsync(string keyword, int pageIndex, bool isPaging = false)
+        private async Task SearchAsync(int pageIndex, bool isPaging = false)
         {
             IsConfirmButtonVisible = false;
 
-            var conditions = MakeSearchConditions(keyword, DurationStartTime, DurationEndTime);
+            var conditions = MakeSearchConditions();
             await SearchVideoAsync(pageIndex, conditions, isPaging);
         }
 
@@ -584,8 +584,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return null;
         }
 
-        private Dictionary<string, string> MakeSearchConditions(string keyword, TimeSpan startDuration,
-            TimeSpan endDuration)
+        private Dictionary<string, string> MakeSearchConditions()
         {
             var conditions = new Dictionary<string, string>();
 
@@ -602,13 +601,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (!string.IsNullOrEmpty(IdOfSearch))
                     conditions.Add("id", IdOfSearch);
 
-                if (startDuration.TotalSeconds > 0 || endDuration.TotalSeconds > 0)
+                if (DurationStartTime.TotalSeconds > 0 || DurationEndTime.TotalSeconds > 0)
                 {
-                    var startTime = startDuration.TotalMilliseconds;
+                    var startTime = DurationStartTime.TotalMilliseconds;
                     var endTime =
-                        endDuration.TotalSeconds > startDuration.TotalSeconds
-                            ? endDuration.TotalMilliseconds
-                            : startDuration.TotalMilliseconds + 999;
+                        DurationEndTime.TotalSeconds > DurationStartTime.TotalSeconds
+                            ? DurationEndTime.TotalMilliseconds
+                            : DurationStartTime.TotalMilliseconds + 999;
                     conditions.Add("duration", $"{startTime}~{endTime}");
                 }
             }

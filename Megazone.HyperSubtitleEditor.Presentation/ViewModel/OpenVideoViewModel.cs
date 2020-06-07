@@ -455,7 +455,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //TODO 아래 내용이 사용되고 있지 않은데 지워도 되는지 확인
             //var asset = SelectedVideoItem?.SelectedCaptionAsset?.Source;
             //var selectedCaptionList =
-            //    SelectedVideoItem?.SelectedCaptionAsset?.Elements?.Where(caption => caption.IsSelected)
+            //    SelectedVideoItem?.SelectedCaptionAsset?.Captions?.Where(caption => caption.IsSelected)
             //        .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new CloudMedia.VideoOpenRequestedMessage(this, video));

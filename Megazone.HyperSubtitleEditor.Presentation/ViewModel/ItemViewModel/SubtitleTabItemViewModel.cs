@@ -198,6 +198,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public bool CheckDirty()
         {
+            //if (string.IsNullOrEmpty(FilePath))
+            //{
+            //    return false;
+            //}
+
             if (_isDirty) return true;
             var isBaseInfoChanged = _originalData.Name != Name ||
                                     _originalData.Kind != Kind ||

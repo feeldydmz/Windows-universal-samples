@@ -34,7 +34,10 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<AssetUploadUrl> GetUploadUrlAsync(GetUploadUrlParameter parameter, CancellationToken cancellationToken);
         Task<Settings> GetSettingsAsync(GetSettingsParameter parameter, CancellationToken cancellationToken);
         Task<bool> UploadCaptionFileAsync(UploadCaptionFileParameter parameter, CancellationToken cancellationToken);
-        Task<Caption> CreateCaptionElementsAsync(CreateAssetElementParameter parameter,CancellationToken cancellationToken);
+        Task<Caption> CreateCaptionElementAsync(CreateAssetElementParameter parameter,CancellationToken cancellationToken);
+
+        Task<IEnumerable<Caption>> CreateCaptionElementBulkAsync(CreateAssetElementBulkParameter parameter,
+            CancellationToken cancellationToken);
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
         Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken);
         string GetWebHostEndPoint();

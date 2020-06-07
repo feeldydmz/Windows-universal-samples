@@ -371,7 +371,6 @@
                                 </Button>
                             </StackPanel>
 
-
                             <!-- 빠른 검색 -->
                              <Border Grid.Row="1" 
                                      BorderBrush="#a0a8b6" 
@@ -386,7 +385,6 @@
                                     <i:Interaction.Behaviors>
                                         <mz:KeyEventToRunCommandBehavior
                                             Command="{Binding Path=EnterCommand}"
-                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}"
                                             Key="Enter" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
@@ -412,17 +410,24 @@
                                             <ColumnDefinition Width="1"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{x:Static resources:Resource.CNT_NAME}" 
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0,0,0"/>
-                                        <Rectangle Grid.Column="1"
+                                            <TextBlock Text="{x:Static resources:Resource.CNT_NAME}" 
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0,0,0"/>
+                                            <Rectangle Grid.Column="1"
                                                    Height="15" 
                                                    Width="1"
                                                    Fill="#a0a8b6"/>
-                                        <TextBox Grid.Column="2"
-                                                 Style="{StaticResource Style_PlaceHolder}"
-                                                 Text="{Binding NameOfSearch, Mode=TwoWay}"
-                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                                            <TextBox x:Name="CaptionName" 
+                                                     Grid.Column="2"
+                                                     Style="{StaticResource Style_PlaceHolder}"
+                                                     Text="{Binding NameOfSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{x:Static resources:Resource.CNT_SEARCH}">
+                                                <i:Interaction.Behaviors>
+                                                    <mz:KeyEventToRunCommandBehavior
+                                                        Command="{Binding Path=EnterCommand}"
+                                                        Key="Enter" />
+                                                </i:Interaction.Behaviors>
+                                            </TextBox>
                                     </Grid>
                                 </Border>
 
@@ -444,10 +449,16 @@
                                                    Height="15" 
                                                    Width="1"
                                                    Fill="#a0a8b6"/>
-                                        <TextBox Grid.Column="2"
+                                        <TextBox x:Name="CaptionId" Grid.Column="2"
                                                  Style="{StaticResource Style_PlaceHolder}"
-                                                 Text="{Binding IdOfSearch, Mode=TwoWay}"
-                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}"/>
+                                                 Text="{Binding IdOfSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Tag="{x:Static resources:Resource.CNT_SEARCH}">
+                                            <i:Interaction.Behaviors>
+                                                <mz:KeyEventToRunCommandBehavior
+                                                    Command="{Binding Path=EnterCommand}"
+                                                    Key="Enter" />
+                                            </i:Interaction.Behaviors>
+                                        </TextBox>
                                     </Grid>
                                 </Border>
 
@@ -504,13 +515,18 @@
                                                             BorderThickness="0"
                                                             IsShowMilliseconds="False" 
                                                             Foreground="#333333">
-                                                <i:Interaction.Triggers>
+                                                <!--<i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="TimeChanged">
                                                         <i:InvokeCommandAction
                                                         Command="{Binding Path=DurationStartTimeChangedCommand}"
                                                         CommandParameter="{Binding}" />
                                                     </i:EventTrigger>
-                                                </i:Interaction.Triggers>
+                                                </i:Interaction.Triggers>-->
+                                                <i:Interaction.Behaviors>
+                                                    <mz:KeyEventToRunCommandBehavior
+                                                        Command="{Binding Path=EnterCommand}"
+                                                        Key="Enter" />
+                                                </i:Interaction.Behaviors>
                                             </mz:TimeSpinner>
 
                                             <TextBlock Text="~" VerticalAlignment="Center" Margin="3,0"
@@ -521,13 +537,18 @@
                                                             BorderThickness="0"
                                                             IsShowMilliseconds="False" 
                                                             Foreground="#333333">
-                                                <i:Interaction.Triggers>
+                                                <!--<i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="TimeChanged">
                                                         <i:InvokeCommandAction
                                                         Command="{Binding Path=DurationEndTimeChangedCommand}"
                                                         CommandParameter="{Binding}" />
                                                     </i:EventTrigger>
-                                                </i:Interaction.Triggers>
+                                                </i:Interaction.Triggers>-->
+                                                <i:Interaction.Behaviors>
+                                                    <mz:KeyEventToRunCommandBehavior
+                                                        Command="{Binding Path=EnterCommand}"
+                                                        Key="Enter" />
+                                                </i:Interaction.Behaviors>
                                             </mz:TimeSpinner>
                                         </StackPanel>
                                     </Grid>

@@ -200,6 +200,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                 Texts = new List<IText>();
                 OriginalData.Texts = Texts;
             }
+            else
+            {
+                OriginalData.Texts = Texts;
+            }
 
             AnalyzeText(Duration, Texts);
         }

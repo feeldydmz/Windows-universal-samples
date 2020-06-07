@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
@@ -177,7 +178,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             //if (_workBarViewModel?.VideoItem?.Source?.Sources != null)
             //    foreach (var renditionAsset in _workBarViewModel.VideoItem.Source.Sources)
-            //    foreach (var renditionAssetElement in renditionAsset.Elements)
+            //    foreach (var renditionAssetElement in renditionAsset.Captions)
             //        if (renditionAssetElement.VideoSetting != null)
             //        {
             //            var videoSetting = renditionAssetElement.VideoSetting;
@@ -204,7 +205,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 //var caption = $"{_workBarViewModel?.CaptionAssetItem.Name} ({_workBarViewModel?.CaptionAssetItem.Id})";
 
-                captions.Add(new MetadataCaptionAssetInfo(_workBarViewModel?.CaptionAssetItem.Name, _workBarViewModel?.CaptionAssetItem.Id));
+                var hasCaption =  captions.FirstOrDefault(c=>c.Id== _workBarViewModel.CaptionAssetItem.Id);
+
+                if (hasCaption == null)
+                    captions.Add(new MetadataCaptionAssetInfo(_workBarViewModel?.CaptionAssetItem.Name, _workBarViewModel?.CaptionAssetItem.Id));
             }
 
             Captions = captions;

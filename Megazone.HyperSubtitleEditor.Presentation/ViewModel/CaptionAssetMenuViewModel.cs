@@ -231,7 +231,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_isLoading)
                 return;
-            await SearchAsync(Keyword, selectedPageNo - 1, true);
+            await SearchAsync(selectedPageNo - 1, true);
         }
 
         private void Initialize()
@@ -291,23 +291,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             languageList.Insert(0, new LanguageItem(null));
             Languages = languageList;
 
-            await SearchAsync(Keyword, 0);
+            await SearchAsync(0);
             _isLoading = false;
         }
 
         private async void Refresh()
         {
-            await SearchAsync(Keyword, 0);
+            await SearchAsync(0);
         }
 
         private async void Enter(string keyword)
         {
-            await SearchAsync(keyword, 0);
+            await SearchAsync(0);
         }
 
         private async void Search(string keyword)
         {
-            await SearchAsync(keyword, 0);
+            await SearchAsync(0);
         }
         private void ChangedSearchOption()
         {
@@ -316,7 +316,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             ClearSearchParameter();
         }
 
-        private async Task SearchAsync(string keyword, int pageIndex, bool isPaging = false)
+        private async Task SearchAsync(int pageIndex, bool isPaging = false)
         {
             var kinds = SelectedCaptionKindItem != null ? new[] {SelectedCaptionKindItem.Key} : null;
             var conditions = MakeSearchConditions(Keyword, 

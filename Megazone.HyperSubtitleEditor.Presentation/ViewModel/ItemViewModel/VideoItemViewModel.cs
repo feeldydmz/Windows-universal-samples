@@ -141,7 +141,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         //{
         //    if (SelectedCaptionAsset?.Source != null)
         //    {
-        //        SelectedCaptionCount = SelectedCaptionAsset?.Elements?.Count(element => element.IsSelected) ?? 0;
+        //        SelectedCaptionCount = SelectedCaptionAsset?.Captions?.Count(element => element.IsSelected) ?? 0;
         //        HasSelectedCaption = SelectedCaptionCount > 0;
         //    }
         //    else
@@ -151,8 +151,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         //    }
 
         //    if (!HasSelectedCaption &&
-        //        SelectedCaptionAsset?.Elements != null &&
-        //        SelectedCaptionAsset?.Elements.Count() != 0)
+        //        SelectedCaptionAsset?.Captions != null &&
+        //        SelectedCaptionAsset?.Captions.Count() != 0)
         //        SelectedCaptionAsset = null;
         //}
 

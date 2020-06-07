@@ -178,7 +178,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 //elementItemViewModelOfCloud 가 null 이라면 tab에 있는 모든 caption element는 로컬 파일이고
                 //newElementItem 에 도 null이 됨
-                var newElementItem = elementItemViewModelOfCloud?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
+                var newElementItem = _workBarViewModel.CaptionAssetItem?.Elements?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
 
                 if (newElementItem != null)
                 {
