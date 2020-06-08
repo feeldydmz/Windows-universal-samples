@@ -62,8 +62,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     _secondId = "";
             }
         }
-
-        [JsonIgnore]
+        
         public IEnumerable<Caption> LatestCaptions { get; set; }
 
         public class OnlineRecentlyCreator

@@ -106,10 +106,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public ICommand OpenRecentlyCommand
         {
-            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently, CanRecentlyItem); }
+            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand(OpenRecently, CanRecentlyItem); }
         }
 
-        private bool CanRecentlyItem(RecentlyItem arg)
+        private bool CanRecentlyItem()
         {
             return SelectedItem != null;
         }
@@ -137,7 +137,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             captionAssetListViewModel.LoadCommand?.Execute(null);
         }
 
-        private void OpenRecently(RecentlyItem recentlyItem)
+        private void OpenRecently()
         {
             var subtitleVm = Bootstrapper.Container.Resolve<SubtitleViewModel>();
             if (subtitleVm.Tabs?.Any() ?? false)
@@ -157,10 +157,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             // 선택된 video 정보를 메인 
-            var video = recentlyItem.Video;
-            var asset = recentlyItem.CaptionAsset;
+            var video = SelectedItem.Video;
+            var asset = SelectedItem.CaptionAsset;
             //var localFileFullPath = recentlyItem.LocalFileFullPath;
-            var selectedCaptionList = recentlyItem.Captions?.ToList() ?? new List<Caption>();
+            var selectedCaptionList = SelectedItem.Captions?.ToList() ?? new List<Caption>();
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
                 new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));

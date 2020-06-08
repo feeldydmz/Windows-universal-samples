@@ -55,6 +55,9 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource Brush_ListBoxItemBorder}"
+                        BorderThickness="0,1,0,0"/>
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17, 12">
                     <Button Command="{StaticResource CloseLeftSideMenuCommand}" Margin="0,0,0,0"
                             Style="{StaticResource Style_IconMenuButton}">
@@ -75,13 +78,14 @@
                     <Rectangle 
                         Width="135" 
                         Height="1" 
-                        Fill="#a6adba"
+                        Fill="{StaticResource Brush_ListBoxItemBorder}"
                         Margin="50,0,0,0"
                         HorizontalAlignment="Left"/>
                 </Border>
 
                 <Border Grid.Row="3">
-                    <StackPanel Style="{x:Null}">
+                    <StackPanel Style="{x:Null}"
+                                Margin="50,0,15,0">
                         <StackPanel.Resources>
                             <Style x:Key="FocusVisual">
                                 <Setter Property="Control.Template">
@@ -164,7 +168,7 @@
                                                 <Trigger Property="IsChecked" Value="true">
                                                     <Setter Property="Opacity" TargetName="PART_ButtonBorder" Value="1" />
                                                     <Setter Property="Background" TargetName="PART_ButtonBorder"
-                                                            Value="#e5e9ec" />
+                                                            Value="#e6eff9" />
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="{x:Null}">
                                                     <Setter Property="Opacity" TargetName="PART_ButtonBorder"
@@ -228,19 +232,20 @@
                                     <RemoveStoryboard BeginStoryboardName="McmBoardOpenStoryboard" />
                                 </EventTrigger>
                             </RadioButton.Triggers>
-                            <Grid Width="200">
+                            <Grid Width="130">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="25" />
+                                    <ColumnDefinition Width="18" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1"
-                                           FontSize="11"
+                                <TextBlock Grid.Column="0"
+                                           FontSize="12"
                                            Foreground="#222222"
-                                           Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" />
+                                           Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" 
+                                           Margin="10,0,0,0"/>
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       HorizontalAlignment="Left"
                                        Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
@@ -300,19 +305,20 @@
                                     <RemoveStoryboard BeginStoryboardName="RecentlyFileListOpenStoryboard" />
                                 </EventTrigger>
                             </RadioButton.Triggers>
-                            <Grid Width="200">
+                            <Grid Width="130">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="25" />
+                                    <ColumnDefinition Width="18" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1"
-                                           FontSize="11"
+                                <TextBlock Grid.Column="0"
+                                           FontSize="12"
                                            Foreground="#222222"
-                                           Text="{x:Static resources:Resource.CNT_RECENT_FILE}" />
+                                           Text="{x:Static resources:Resource.CNT_RECENT_FILE}" 
+                                           Margin="10,0,0,0"/>
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
+                                       HorizontalAlignment="Left"
                                        Width="12" Height="12" />
                             </Grid>
                         </RadioButton>
