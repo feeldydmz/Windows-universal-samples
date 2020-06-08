@@ -36,7 +36,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadRecentlyCommand;
 
         private ICommand _openRecentlyCommand;
+        private ICommand _selectedItemCommand;
+        private ICommand _clearRecentlyListCommand;
 
+        private RecentlyItem _selectedItem;
         private List<RecentlyItem> _recentlyItems;
 
         private ICommand _RefreshCommand;
@@ -51,6 +54,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _recentlyLoader = recentlyLoader;
             _videoMenu = videoMenu;
             _captionMenu = captionMenu;
+        }
+
+        public RecentlyItem SelectedItem
+        {
+            get => _selectedItem;
+            set => Set(ref _selectedItem, value);
         }
 
         public bool IsOpen
@@ -84,12 +93,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _loadRecentlyCommand = _loadRecentlyCommand ?? new RelayCommand(LoadRecently); }
         }
+        
+        public ICommand SelectedItemCommand
+        {
+            get { return _selectedItemCommand = _selectedItemCommand ?? new RelayCommand<RecentlyItem>(SelectedRecentlyItem); }
+        }
+
+        private void SelectedRecentlyItem(RecentlyItem selectedItem)
+        {
+            SelectedItem = selectedItem;
+        }
 
         public ICommand OpenRecentlyCommand
         {
-            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently); }
+            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand<RecentlyItem>(OpenRecently, CanRecentlyItem); }
         }
 
+        private bool CanRecentlyItem(RecentlyItem arg)
+        {
+            return SelectedItem != null;
+        }
+
+        public ICommand ClearRecentlyListCommand
+        {
+            get { return _clearRecentlyListCommand = _clearRecentlyListCommand ?? new RelayCommand<RecentlyItem>(ClearRecentlyList); }
+        }
+
+        
         public ICommand RefreshCommand
         {
             get { return _RefreshCommand = _RefreshCommand ?? new RelayCommand(Refresh); }
@@ -148,6 +178,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //}
 
             MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
+        }
+
+        private void ClearRecentlyList(RecentlyItem obj)
+        {
+            _recentlyLoader.ClearAll();
+
+            LoadRecently();
         }
 
         private void LoadRecently()

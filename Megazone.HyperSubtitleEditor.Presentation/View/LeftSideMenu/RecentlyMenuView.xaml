@@ -6,11 +6,12 @@
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:item="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
+             xmlns:domain="clr-namespace:Megazone.Cloud.Media.Domain.Assets;assembly=Megazone.Cloud.Media.Domain"
              xmlns:leftMenuView="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
-             AllowDrop="False" ClipToBounds="True" MaxWidth="392" Width="392"
+             AllowDrop="False" ClipToBounds="True" MaxWidth="320" Width="320"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -27,26 +28,81 @@
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
 
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
-        <Border Margin="0, 20, 0, 20">
+        <Border Background="White">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
+                    <RowDefinition Height="56" />
                     <RowDefinition />
+                    <RowDefinition Height="56"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}" Margin="20, 0" />
-                <ItemsControl x:Name="RecentlyItemControl" Grid.Row="2" ItemsSource="{Binding Path=RecentlyItems}"
+                <Grid Grid.Row="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png"
+                               Width="16" 
+                               Height="16"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"/>
+                        <TextBlock Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Foreground="#666666"
+                                   FontWeight="Bold"
+                                   Margin="8,0,0,0"/>
+                        <Button Margin="120,0,0,0"
+                                Command="{Binding ClearRecentlyListCommand}"
+                                IsEnabled="{Binding ElementName=RecentlyItemControl, Path=HasItems}">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_TransparentPureButton}">
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_delete.png"
+                                       Stretch="UniformToFill"
+                                       Height="15"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,2"/>
+                                <TextBlock Text="{x:Static resources:Resource.CNT_CLEAR_ALL}"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Foreground="#222222"
+                                           Margin="8,0,0,0"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                    <Border Grid.Row="0" Grid.RowSpan="2"
+                            BorderBrush="{StaticResource Brush_ListBoxItemBorder}" 
+                            BorderThickness="0,1,0,1"/>
+                </Grid>
+                <ItemsControl x:Name="RecentlyItemControl" 
+                              Grid.Row="1" 
+                              ItemsSource="{Binding Path=RecentlyItems}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type item:RecentlyItem}">
-                            <Button Width="350"
-                                    Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}"
-                                    CommandParameter="{Binding}">
+                            <Grid>
+                                <Border BorderThickness="0,0,0,1"
+                                        BorderBrush="{StaticResource Brush_ListBoxItemBorder}"/>
+                                <!--<Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.OpenRecentlyCommand}"
+                                    CommandParameter="{Binding}">-->
+                                <Button Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=LeftSideMenu.SelectedItemCommand}"
+                                        CommandParameter="{Binding}">
                                 <Button.Style>
                                     <Style TargetType="Button">
                                         <Setter Property="UseLayoutRounding" Value="True" />
@@ -59,7 +115,8 @@
                                         <Setter Property="VerticalContentAlignment" Value="Center" />
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
                                         <Setter Property="BorderBrush" Value="Transparent" />
-                                        <Setter Property="BorderThickness" Value="1" />
+                                        <!--<Setter Property="BorderBrush" Value="{StaticResource Brush_ListBoxItemBorder}" />-->
+                                        <!--<Setter Property="BorderThickness" Value="0,1,0,1" />-->
                                         <Setter Property="Foreground" Value="#FF222222" />
                                         <Setter Property="FontSize" Value="11px" />
                                         <Setter Property="Template">
@@ -90,80 +147,170 @@
                                         </Setter>
                                     </Style>
                                 </Button.Style>
-                                <Grid Width="330" Height="65">
+                                <Grid Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                                      Margin="15,15,10,15">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <!--<ColumnDefinition Width="10" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />-->
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
-                                        <!--<RowDefinition Height="*" />-->
+                                        <RowDefinition Height="1" />
                                     </Grid.RowDefinitions>
-
+                                    <StackPanel Grid.Row="0"
+                                                Orientation="Horizontal">
                                     <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
-                                        <Image
-                                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png"
-                                            Width="16" Height="16"
-                                            Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        <!--CAPTION 표시-->
+                                        <ContentControl Margin="0,4,0,4"
+                                                        Visibility="{Binding Video, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
+                                            <Grid x:Name="CaptionBadge">
+                                                <Rectangle Fill="{StaticResource Brush_Badge_Caption_Color}"
+                                                           RadiusY="2" RadiusX="3" />
+                                                <TextBlock Text="CAPTION" Margin="4,2,4,0"
+                                                           Foreground="White" 
+                                                           FontWeight="Bold" 
+                                                           FontSize="10"/>
+                                            </Grid>
+                                        </ContentControl>
 
-                                        <Image
-                                            Width="16" Height="16"
-                                            Visibility="{Binding Path=IsOnLine, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                                            <Image.Style>
-                                                <Style TargetType="Image">
-                                                    <Setter Property="Source"
-                                                            Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_projet_file_small.jpg" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Path=Format}" Value="VTT">
-                                                            <Setter Property="Source"
-                                                                    Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_icon_vtt_small.png" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Path=Format}" Value="EXCEL">
-                                                            <Setter Property="Source"
-                                                                    Value="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_excel_small.png" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Image.Style>
-                                        </Image>
+                                        <!--VIDEO 표시-->
+                                        <ContentControl Margin="0,4,0,4"
+                                                        Visibility="{Binding Video, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                            <Grid>
+                                                <Rectangle Fill="{StaticResource Brush_Badge_Video_Color}"
+                                                           RadiusY="2" RadiusX="3" />
+                                                <TextBlock Text="VIDEO" 
+                                                           Margin="10,2,10,0"
+                                                           Foreground="White" 
+                                                           FontWeight="Bold" 
+                                                           FontSize="10"/>
+                                            </Grid>
+                                        </ContentControl>
                                     </Grid>
-
-                                    <TextBlock Grid.Column="2" Grid.Row="0" 
+                                    <TextBlock MaxWidth="140"
                                                Text="{Binding Path=FirstName}"
                                                ToolTip="{Binding Path=FirstName}"
                                                TextTrimming="CharacterEllipsis" 
                                                VerticalAlignment="Center"
-                                               HorizontalAlignment="Left" />
-                                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=FirstId}"
-                                               VerticalAlignment="Center" />
+                                               HorizontalAlignment="Left" 
+                                               Foreground="#222222"
+                                               FontWeight="Bold"
+                                               Margin="8,0,0,0"/>
+                                    <TextBlock Text="{Binding Path=FirstId}"
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Left"
+                                               Foreground="{StaticResource Brush_MinorWhiteForeground}"
+                                               Margin="4,0,0,0"/>
 
-                                    <TextBlock Grid.Column="2" Grid.Row="1" 
+                                    <!--<TextBlock Grid.Column="2" Grid.Row="1" 
                                                Text="{Binding Path=SecondName}"
                                                ToolTip="{Binding Path=SecondName}"
                                                TextTrimming="CharacterEllipsis" 
                                                VerticalAlignment="Center"
-                                               HorizontalAlignment="Left" />
-                                    <TextBlock Grid.Column="4" Grid.Row="1" 
+                                               HorizontalAlignment="Left" />-->
+                                    <!--<TextBlock Grid.Column="4" Grid.Row="1" 
                                                Text="{Binding Path=SecondId}"
-                                               VerticalAlignment="Center" />
+                                               VerticalAlignment="Center" />-->
+
+                                    </StackPanel>
+
+                                    <!--캡션정보-->
+                                    <Grid Grid.Column="0" 
+                                          Grid.ColumnSpan="4" 
+                                          Grid.Row="1" 
+                                          Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                        <ItemsControl x:Name="CaptionItemsControl"
+                                                      ItemsSource="{Binding Path=LatestCaptions}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type domain:Caption}">
+                                                    <Grid Margin="0,8,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <!--<ColumnDefinition Width="13" />
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition Width="Auto" />-->
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <StackPanel Orientation="Horizontal">
+                                                        <Image Style="{StaticResource Style_VideoExistCaptionBadgeImage}"
+                                                               Margin="8,0,0,0"
+                                                               HorizontalAlignment="Left" 
+                                                               Visibility="{Binding HasCaption, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                        <!--<CheckBox Grid.Column="0"
+                                                                          IsChecked="{Binding Path=IsSelected}"
+                                                                          Command="{Binding ElementName=captionAssetListRoot, Path=DataContext.CaptionElementSelectionChangedCommand}"
+                                                                          CommandParameter="{Binding}" />-->
+                                                        <TextBlock Text="{Binding Path=Label}"
+                                                                   MaxWidth="140"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   ToolTip="{Binding Path=Label}" 
+                                                                   Margin="8,0,0,0"/>
+                                                        <TextBlock Text="{Binding Id, StringFormat='{}({0})'}"
+                                                                   Foreground="{StaticResource Brush_MinorWhiteForeground}"
+                                                                   Margin="8,0,0,0">
+                                                            <!--<TextBlock.Text>
+                                                                <MultiBinding StringFormat="{}[{0}-{1}]">
+                                                                    <MultiBinding.Bindings>
+                                                                        <Binding Path="Language" />
+                                                                        <Binding Path="Country" />
+                                                                    </MultiBinding.Bindings>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>-->
+                                                        </TextBlock>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <!--<TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                                           Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           TextAlignment="Center" />-->
+                                    </Grid>
+                                    
                                 </Grid>
+
                             </Button>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <TextBlock x:Name="EmptyListBlock"
-                           Grid.Row="2"
-                           Foreground="#545871"
-                           Text="{Binding Source={x:Null}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           FontSize="15"
-                           Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
+
+                <StackPanel Grid.Row="1"
+                            Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_no_data.png"
+                               Height="49"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,100,0,0"/>
+                        <TextBlock x:Name="EmptyListBlock"
+                               Foreground="#697382"
+                               Text="{Binding Source={x:Static resources:Resource.MSG_EMPTY_RECENTLY_LIST_FILE}}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               TextAlignment="Center"
+                               Margin="0,15,0,0"/>
+                </StackPanel>
+                <!--하단 버튼 영역-->
+                <Border Grid.Row="2"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{StaticResource Brush_ListBoxItemBorder}">
+                    <Grid Margin="20,10" Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="ButtonWidth" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_OPEN}" IsDefault="True"
+                                Command="{Binding OpenRecentlyCommand}" />
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
     </Grid>
 </UserControl>
+    

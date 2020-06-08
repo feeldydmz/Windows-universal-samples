@@ -494,8 +494,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
             }
 
-            
-
             this.CreateTask(() =>
             {
                 try

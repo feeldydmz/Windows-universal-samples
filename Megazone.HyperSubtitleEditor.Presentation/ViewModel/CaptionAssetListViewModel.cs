@@ -132,9 +132,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         captionAssetItem.Initialize();
 
             IsNewCaptionAsset = SelectedCaptionAssetItem?.Source == null;
-
-            Debug.WriteLine($"IsNewCaptionAsset : {IsNewCaptionAsset}");
-
             CommandManager.InvalidateRequerySuggested();
         }
     }

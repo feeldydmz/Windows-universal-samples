@@ -114,7 +114,8 @@ namespace Megazone.Cloud.Media.Service
                     null,
                     null,
                     null,
-                    asset.Encryptions);
+                    asset.Encryptions,
+                    asset.FolderPath);
 
                 return video;
             });
@@ -150,7 +151,8 @@ namespace Megazone.Cloud.Media.Service
                         null,
                         null,
                         null,
-                        asset.Encryptions);
+                        asset.Encryptions,
+                        asset.FolderPath);
 
                     videoList.Add(item);
                 }

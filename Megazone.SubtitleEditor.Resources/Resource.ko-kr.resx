@@ -764,8 +764,15 @@ PC 환경에 따라 차이가 있을 수 있습니다.</value>
   <data name="MSG_EMPTY_LIST" xml:space="preserve">
     <value>Empty {0} List.</value>
   </data>
+  <data name="MSG_EMPTY_RECENTLY_LIST_FILE" xml:space="preserve">
+    <value>최근 파일 목록이
+비어있습니다.</value>
+  </data>
   <data name="CNT_OPEN_RECENTLY_FILE" xml:space="preserve">
-    <value>최근 파일 열기</value>
+    <value>최근 파일</value>
+  </data>
+  <data name="CNT_CLEAR_ALL" xml:space="preserve">
+    <value>모두 지우기</value>
   </data>
   <data name="CNT_VIDEO_LIST" xml:space="preserve">
     <value>Video List</value>

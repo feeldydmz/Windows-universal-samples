@@ -23,7 +23,7 @@
     <SolidColorBrush x:Key="Brush_HeaderLineBrush" Color="#FFbec4ce" />
     <SolidColorBrush x:Key="Brush_HeaderAreaBackBrush" Color="#FFf5f7fa" />
 
-
+    <SolidColorBrush x:Key="Brush_ListBoxItemBorder" Color="#e0e2e6" />
 
     <!--성공 등의 녹색 컬러-->
     <SolidColorBrush x:Key="Brush_GreenForeground" Color="#FF39b966" />
@@ -50,7 +50,7 @@
     <!--기본 텍스트 Foreground-->
     <SolidColorBrush x:Key="Brush_CommonForeground" Color="Black" />
     <!--약간 덜 희미한 흰색 Foreground. ComboBox나 프로필 팝업 등에서 사용-->
-    <SolidColorBrush x:Key="Brush_MinorWhiteeForeground" Color="#FF697382" />
+    <SolidColorBrush x:Key="Brush_MinorWhiteForeground" Color="#FF697382" />
     <!--팝업의 오류 텍스트, 잔여 작업목록 수 등에서 Foreground로 사용되거나 포인트 라인등에서 사용되는 포인트컬러-->
     <SolidColorBrush x:Key="Brush_PointColor" Color="#FF5fa5f0" />
 
@@ -1013,7 +1013,7 @@
                                     <Setter Property="MinHeight" Value="24" />
                                     <Setter Property="Background" Value="#FFffffff" />
                                     <Setter Property="BorderBrush" Value="#FFa4acb9" />
-                                    <Setter Property="Foreground" Value="{DynamicResource Brush_MinorWhiteeForeground}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource Brush_MinorWhiteForeground}" />
                                     <Setter Property="BorderThickness" Value="1" />
                                     <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
                                     <Setter Property="HorizontalContentAlignment" Value="Right" />

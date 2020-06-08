@@ -659,8 +659,26 @@
                                                     </Grid.RowDefinitions>
 
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Style="{StaticResource Style_VideoBadgeImage}"
-                                                               HorizontalAlignment="Left" />
+                                                        <!--VIDEO 표시-->
+                                                        <ContentControl Margin="0,4,0,4"
+                                                                        Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                                            <Grid>
+                                                                <Rectangle Fill="{StaticResource Brush_Badge_Video_Color}"
+                                                                           RadiusY="2" RadiusX="3" />
+                                                                <TextBlock Text="VIDEO" 
+                                                                           Margin="10,2,10,0"
+                                                                           Foreground="White" 
+                                                                           FontWeight="Bold" 
+                                                                           FontSize="10"/>
+                                                                <!--<TextBlock Text="{Binding Path=Kind}" Margin="4,1"
+                                                                   Foreground="White" FontWeight="Bold" />-->
+                                                            </Grid>
+                                                        </ContentControl>
+                                                        <!--<Image Style="{StaticResource Style_VideoBadgeImage}"
+                                                               Stretch="Fill"
+                                                               Width="50"
+                                                               Height="15"
+                                                               HorizontalAlignment="Stretch" />-->
 
                                                         <Rectangle Height="10" Width="1" Fill="#e0e2e6"
                                                                    Margin="8,0,0,0"

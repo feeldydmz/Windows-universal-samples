@@ -124,6 +124,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        public void ClearAll()
+        {
+            _recentlyItems.Clear();
+
+            var jsonString = JsonConvert.SerializeObject(_recentlyItems);
+            File.WriteAllText(GetSavePath(), jsonString);
+
+            MessageCenter.Instance.Send(new Message.RecentlyLoader.ChangeItemMessage(this));
+        }
+
         private string GetSavePath()
         {
             return $"{this.AppDataPath()}\\Recently\\Recently.dat";

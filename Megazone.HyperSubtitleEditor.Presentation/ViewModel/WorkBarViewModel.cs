@@ -314,18 +314,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                             var linkUrl = video != null ? GetVideoUrl(video) : GetAssetUrl(captionAsset);
 
-                            if (CaptionAssetItem != null)
-                            {
-                                var diffList = CaptionAssetItem.Elements
-                                    ?.Where(e => captionAsset.Elements.All(u => u.Id != e.Id)).Select(c => c.Source)
-                                    .ToList();
+                            var diffList = CaptionAssetItem?.Elements
+                                ?.Where(e => captionAsset.Elements.All(u => u.Id != e.Id)).Select(c => c.Source)
+                                .ToList();
 
-                                var mergedCaptionAssets =
+                            if (diffList != null)
+                            {
+                                captionAsset.Elements =
                                     diffList.Union(captionAsset.Elements).OrderBy(d => d.Id).ToList();
-                                captionAsset.Elements = mergedCaptionAssets;
                             }
-                            
+
                             CaptionAssetItem = new CaptionAssetItemViewModel(captionAsset, SourceLocationKind.Cloud);
+
+                            _recentlyLoader.Save(new RecentlyItem.OnlineRecentlyCreator().SetVideo(video)
+                                .SetCaptionAsset(captionAsset).SetCaptions(captionAsset.Elements).Create());
 
                             _browser.Main.ShowMcmDeployConfirmDialog(video, captionAsset,
                                 message.Param.Captions.ToList(), linkUrl);
@@ -401,8 +403,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     var folderPath = "";
                     if (video != null)
                     {
-                        folderPath = video.Sources.First().FolderPath;
-                        folderPath = folderPath.Substring(0, folderPath.LastIndexOf("/"));
+                        //folderPath = video.Sources.First().FolderPath;
+                        folderPath = video.FolderPath;
+                        //folderPath = folderPath.Substring(0, folderPath.LastIndexOf("/"));
                     }
 
                     var assetName = captionAsset.Name;
@@ -647,8 +650,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         }
                     }
 
-                    //List<Caption> createdCaptionAssetList = new List<Caption>();
-                    List<Caption> createdCaptionAssetList = null;
+                    List<Caption> createdCaptionAssetList = new List<Caption>();
+                    //List<Caption> createdCaptionAssetList = null;
                     if (createCaptionList.Any())
                     {
                         //// 추가된 자막 파일은 지정된 Asset에 추가한다.
@@ -673,7 +676,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                         createdCaptionAssetList = elements?.ToList();
                     }
-
+                    
                     // update를 하면 asset의 version이 변경 되므로 제일 마지막 로직에 배치
                     for (int i = 0; i < updatingCaptionList.Count; i++)
                     {

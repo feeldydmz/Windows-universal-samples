@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.VideoTrack;
+using Megazone.Core.Windows.Xaml.Behaviors.Primitives;
 using Newtonsoft.Json;
 using Unity;
 
@@ -49,8 +51,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
         }
 
         [JsonProperty] public string SecondName { get; private set; }
-
-        [JsonProperty]
+        
         public string SecondId
         {
             get => _secondId;
@@ -61,6 +62,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     _secondId = "";
             }
         }
+
+        [JsonIgnore]
+        public IEnumerable<Caption> LatestCaptions { get; set; }
 
         public class OnlineRecentlyCreator
         {
@@ -76,6 +80,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             public virtual RecentlyItem Create()
             {
+
+                var latestCaptions = (_captions != null && _captions.Count() > 2) 
+                    ? _captions.ToList().GetRange(0, 2) 
+                    : _captions;
+
                 var recently = new RecentlyItem
                 {
                     StageId = _signIn.SelectedStage?.Id,
@@ -84,7 +93,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                     Video = _video,
                     CreatedTime = DateTime.UtcNow,
                     CaptionAsset = _captionAsset,
-                    Captions = _captions
+                    Captions = _captions,
+                    LatestCaptions = latestCaptions
                 };
 
                 if (recently.Video == null && recently.CaptionAsset != null)

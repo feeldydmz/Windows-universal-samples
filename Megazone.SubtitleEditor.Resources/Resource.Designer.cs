@@ -313,6 +313,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Clear All과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CNT_CLEAR_ALL {
+            get {
+                return ResourceManager.GetString("CNT_CLEAR_ALL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Close과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_CLOSE {
@@ -1105,7 +1114,7 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
-        ///   Open Recently File과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Recently File과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string CNT_OPEN_RECENTLY_FILE {
             get {
@@ -1959,6 +1968,16 @@ namespace Megazone.SubtitleEditor.Resources {
         public static string MSG_EMPTY_LIST {
             get {
                 return ResourceManager.GetString("MSG_EMPTY_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   The list of recent files
+        ///is empty.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_EMPTY_RECENTLY_LIST_FILE {
+            get {
+                return ResourceManager.GetString("MSG_EMPTY_RECENTLY_LIST_FILE", resourceCulture);
             }
         }
         

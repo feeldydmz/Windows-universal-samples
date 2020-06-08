@@ -1811,7 +1811,7 @@
 
                                     <!--전체 길이-->
                                     <StackPanel Grid.Column="2" TextBlock.FontSize="11px"
-                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteeForeground}"
+                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteForeground}"
                                                 Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock
                                             Text="{Binding Source={x:Static resources:Resource.CNT_TOTAL_LENGTH}, StringFormat='{}{0} : '}" />
@@ -1832,7 +1832,7 @@
 
                                     <!--단어/초-->
                                     <StackPanel Grid.Column="3" TextBlock.FontSize="11px"
-                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteeForeground}"
+                                                TextBlock.Foreground="{DynamicResource Brush_MinorWhiteForeground}"
                                                 Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock
                                             Text="{Binding Source={x:Static resources:Resource.CNT_CHARS_PER_SECOND}, StringFormat='{}{0} : '}" />
