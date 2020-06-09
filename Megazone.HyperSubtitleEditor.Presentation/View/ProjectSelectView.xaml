@@ -469,7 +469,7 @@
                                                                Text="{Binding Path=Name}" />
                                                 </StackPanel>
                                             </Border>
-                                            <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="1,1,1,0"
+                                            <Border Grid.Row="1" Margin="0,4,0,0" BorderThickness="0,1,0,0"
                                                     BorderBrush="{StaticResource Brush_ProjectSelect_Border_Brush_Color}">
                                                 <ListBox x:Name="ProjectListBox"
                                                          ItemsSource="{Binding Path=ProjectItems}"
