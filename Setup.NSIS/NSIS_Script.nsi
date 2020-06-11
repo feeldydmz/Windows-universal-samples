@@ -565,6 +565,7 @@ Section "MainSection" SEC01
 
   ${If} $CanUpdate == "True"
 	RMDir /r "$LOCALAPPDATA\${COMPANY_NAME}\${PRODUCT_NAME}"
+	RMDir /r "$LOCALAPPDATA\Temp\Megazone.Core.Windows.Control.VideoPlayer"
     # 현재 설치위치에 있는  설치파일을 삭제한다.
     IfFileExists "$INSTDIR" DeleteCurrentInstallPath InstallContinue
     DeleteCurrentInstallPath:

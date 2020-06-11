@@ -516,7 +516,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             StageTotal = 0;
             TotalPage = 0;
 
-            MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
+            //MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
         }
 
         private async void LoadStageProject(SignIn.LoadStageProjectMessage message)

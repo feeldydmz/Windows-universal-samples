@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Net;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
@@ -36,6 +38,18 @@ namespace Megazone.Cloud.Media.Repository
 
         public static T Convert<T>(this IRestResponse restResponse)
         {
+            switch (restResponse.StatusCode)
+            {
+                case HttpStatusCode.ServiceUnavailable:
+                case HttpStatusCode.BadGateway:
+                case HttpStatusCode.BadRequest:
+                case HttpStatusCode.Forbidden:
+                case HttpStatusCode.InternalServerError:
+                    throw new Exception(restResponse.Content);
+                default:
+                    break;
+            }
+
             return JsonConvert.DeserializeObject<T>(restResponse.Content);
         }
     }

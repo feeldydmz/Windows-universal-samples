@@ -23,8 +23,8 @@ namespace Megazone.Cloud.Media.Service
        private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.dev.megazone.io"; // develop version
        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop version
 #elif STAGING
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.media.stg.continuum.co.kr"; // stage version
-        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.media.stg.continuum.co.kr";
+        private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.stg.megazone.io"; // stage version
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.stg.megazone.io";
 #elif DEBUG
         private const string CLOUD_MEDIA_ENDPOINT =
             "https://api.cloudplex.dev.megazone.io"; // develop version
