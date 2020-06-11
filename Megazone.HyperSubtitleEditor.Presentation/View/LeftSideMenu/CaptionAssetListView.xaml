@@ -33,9 +33,7 @@
         <ListBox x:Name="AssetListBox"
                  ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
                  SelectedItem="{Binding SelectedCaptionAssetItem, Mode=TwoWay}"
-                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
-                 
-                 >
+                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
                                     Command="{Binding LeftButtonUpCommand}" />
@@ -213,7 +211,7 @@
 
         <Grid Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
             <TextBlock
-                Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_ASSET}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>
         </Grid>

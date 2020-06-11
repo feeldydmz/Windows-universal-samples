@@ -393,16 +393,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 var fi = new FileInfo(uri.LocalPath);
                 if (!fi.Exists) return null;
-                return folderPath + "\\" + fileHeader + "_" + fi.Name.Replace(fi.Extension, string.Empty) + ".jpg";
+                return folderPath + "\\" + fileHeader + ".jpg";
             }
 
-            var lastIndexOfSlash = uri.LocalPath.LastIndexOf("/", StringComparison.Ordinal);
-            if (lastIndexOfSlash == -1) return null;
-            var fileName = uri.LocalPath.Substring(lastIndexOfSlash + 1);
-            var indexOfFirstDot = fileName.IndexOf(".", StringComparison.Ordinal);
-            if (indexOfFirstDot == -1) return null;
-            fileName = fileName.Substring(0, indexOfFirstDot) + ".jpg";
-            return folderPath + "\\" + fileHeader + "_" + fileName;
+            return folderPath + "\\" + fileHeader + ".jpg";
         }
 
         internal void RemoveMediaItem()
@@ -484,26 +478,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
             var isAdaptiveHttpStreaming = false;
 
-            if (workBarViewmodel.VideoItem?.Source?.Sources?.Count() > 0)
+            var extension =  Path.GetExtension(uri.LocalPath).Replace(".", "");
+
+            if (extension.Equals("mpd") || extension.Equals("m3u8"))
             {
-                var type = workBarViewmodel.VideoItem?.Source?.Sources.FirstOrDefault()?.Type;
-
-                if (type == "HLS" || type == "DASH")
-                {
-                    isAdaptiveHttpStreaming = true;
-                }
+                isAdaptiveHttpStreaming = true;
             }
-
+            
             this.CreateTask(() =>
             {
                 try
                 {
-                    //var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
-                    //{
-                    //    Url = fullPath,
-                    //    IsRequestThumbnail = false
-                    //}, _cancellationTokenSource);
-                    
                         var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
                         {
                             SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
@@ -514,12 +499,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         });
                         if (thumbnail != null)
                             this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
-                        //this.InvokeOnUi(() =>
-                        //{
-                        //    _videoData = videoData;
-                        //    SetMediaHeaderData(_videoData);
-                        //});
-                    
                 }
                 catch (Exception ex)
                 {
