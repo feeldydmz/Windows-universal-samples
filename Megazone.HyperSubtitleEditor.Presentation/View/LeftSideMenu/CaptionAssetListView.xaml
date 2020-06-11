@@ -28,13 +28,13 @@
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
             </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid>
+
+    <Grid Background="White">
         <ListBox x:Name="AssetListBox"
                  ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
                  SelectedItem="{Binding SelectedCaptionAssetItem, Mode=TwoWay}"
                  ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
-                 Background="White"
+                 
                  >
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
@@ -210,6 +210,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Grid Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+            <TextBlock
+                Text="{Binding Source={x:Static resources:Resource.CNT_LEFT_SIDE_MENU_VIDEO}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+        </Grid>
 
         <StackPanel Orientation="Vertical"
                     VerticalAlignment="Center"
