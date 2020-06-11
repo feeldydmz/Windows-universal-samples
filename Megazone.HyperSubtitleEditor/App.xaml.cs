@@ -66,6 +66,7 @@ namespace Megazone.HyperSubtitleEditor
             //InitializeMcmData(new string[] { "megazone.hypersubtitleeditor.v1://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com/contents?stageId=mz-cm-v1&projectId=mz-cm-v1&videoId=1310&assetId=5910&captionIds='1,2,3,4,5,6'" });
             //InitializeMcmData(new string[] { "stageId=mz-cm-v1&projectId=mz-cm-v1&videoId=&assetId=15879869464u8a&captionIds=490,491" });
             //InitializeMcmData(new string[] { "stageId=mz-cm-v1&projectId=mz-cm-v1&videoId=1588831786qRiN&assetId=1588754547Beq6&captionIds=514" });
+            //InitializeMcmData(new string[] { "stageId=mz-cm-v1&projectId=mz-cm-v1" });
             InitializeMcmData(e.Args);
 #else
             //InitializeAppContext(e.Args);

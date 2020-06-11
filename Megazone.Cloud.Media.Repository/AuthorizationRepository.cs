@@ -30,7 +30,15 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Basic {clientAuthorization}")
                 .AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
 
-            var exResult = RestSharpExtension.CreateRestClient($"https://{Domain}").Execute(restRequest);
+            var rest = new RestClient($"https://{Domain}")
+            {
+                UserAgent = "Hyper series/Megazone.Cloud.Media.SubtitleEditor"
+            };
+
+            var exResult = rest.Execute(restRequest);
+
+
+            //var exResult = RestSharpExtension.CreateRestClient($"https://{Domain}").Execute(restRequest);
 
 
             //// TODO 나중에 Get 방식으로 받는 코드로 교체

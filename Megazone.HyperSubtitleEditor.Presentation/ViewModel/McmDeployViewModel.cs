@@ -155,10 +155,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 return new CaptionElementItemViewModel(caption)
                 {
+                    //...여기에 checkSave
                     IsSelected = !string.IsNullOrEmpty(tab.Name) 
                                  && !string.IsNullOrEmpty(tab.LanguageCode) 
                                  && !string.IsNullOrEmpty(tab.CountryCode)
-                                 && tab.IsDirty,
+                                 && tab.CheckSave(),
 
                     CanDeploy = !string.IsNullOrEmpty(tab.Name) && !string.IsNullOrEmpty(tab.LanguageCode) &&
                                 !string.IsNullOrEmpty(tab.CountryCode)

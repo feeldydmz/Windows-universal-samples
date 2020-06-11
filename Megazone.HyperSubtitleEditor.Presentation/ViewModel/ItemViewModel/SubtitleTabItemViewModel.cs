@@ -198,20 +198,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public bool CheckDirty()
         {
-            //if (string.IsNullOrEmpty(FilePath))
-            //{
-            //    return false;
-            //}
-
             if (_isDirty) return true;
+
+            bool isNewCaption = SourceLocation == SourceLocationKind.CreatedByEditor;
+
             var isBaseInfoChanged = _originalData.Name != Name ||
                                     _originalData.Kind != Kind ||
                                     _originalData.LanguageCode != LanguageCode ||
                                     _originalData.CountryCode != CountryCode;
 
             var hasDirtyRow = Rows != null && Rows.Any(r => r.IsDirty());
-            IsDirty = isBaseInfoChanged || _isRowCollectionChanged || hasDirtyRow;
+            IsDirty = isBaseInfoChanged || _isRowCollectionChanged || hasDirtyRow || isNewCaption;
             return IsDirty;
+        }
+
+        public bool CheckSave()
+        {
+            return _isDirty || (SourceLocation == SourceLocationKind.LocalFile);
         }
 
         public void Reset()

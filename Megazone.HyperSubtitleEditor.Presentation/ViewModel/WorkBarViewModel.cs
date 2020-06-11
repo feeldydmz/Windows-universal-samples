@@ -272,6 +272,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var captionAssetId = message.Param.CaptionAssetId;
             var captionElements = message.Param.CaptionElements;
 
+            if (string.IsNullOrEmpty(videoId) && string.IsNullOrEmpty(captionAssetId))
+            {
+                _logger.Debug.Write("videoId, captionAssetId is null");
+                return;
+            }
+
             LoadAssetById(videoId, captionAssetId, captionElements);
         }
 
@@ -724,8 +730,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public Task<Settings> GetMcmSettingAsync()
         {
             var authorization = _signInViewModel.GetAuthorizationAsync().Result;
-            var stageId = _signInViewModel.SelectedStage.Id;
-            var projectId = _signInViewModel.SelectedProject.ProjectId;
+            var stageId = _signInViewModel.SelectedStage?.Id;
+            var projectId = _signInViewModel.SelectedProject?.ProjectId;
             return _cloudMediaService.GetSettingsAsync(new GetSettingsParameter(authorization, stageId, projectId),
                 CancellationToken.None);
         }

@@ -525,6 +525,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             CleanUpSubtitle();
 
             RecentlyItems = _recentlyLoader.GetRecentlyItems(false).ToList();
+
+            MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
             //var isStartForStandAlone = message.IsStartForStandAlone;
 
             //if (isStartForStandAlone)

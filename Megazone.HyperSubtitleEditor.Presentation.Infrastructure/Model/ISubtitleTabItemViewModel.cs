@@ -25,7 +25,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model
         SourceLocationKind SourceLocation { get; set; }
         void SetAsDeployed();
         bool CheckDirty();
-
+        bool CheckSave();
         void Reset();
     }
 }

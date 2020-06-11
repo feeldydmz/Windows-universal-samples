@@ -422,7 +422,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private void CalculateTotalPage()
         {
             if (StageTotal == 0 || StagePerPageNumber == 0)
+            {
+                TotalPage = 0;
+                IsNavigationBarVisible = false;
                 return;
+            }
 
             TotalPage = Convert.ToInt32(Math.Ceiling(StageTotal / (decimal) StagePerPageNumber));
 
@@ -505,6 +509,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             StageItems = null;
             CurrentPageStageItems = null;
             SelectedStage = null;
+            IsEmptyProjectPage = false;
+            IsRightNavigateButtonVisible = false;
+            IsLeftNavigateButtonVisible = false;
+            IsNavigationBarVisible = false;
+            StageTotal = 0;
+            TotalPage = 0;
 
             MessageCenter.Instance.Send(new ProjectSelect.ProjectChangeMessage(this));
         }

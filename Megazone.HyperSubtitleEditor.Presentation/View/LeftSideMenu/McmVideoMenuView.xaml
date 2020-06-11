@@ -209,13 +209,13 @@
                                             <Setter Property="Foreground" Value="Transparent" />
                                             <Style.Triggers>
                                                 <DataTrigger
-                                                    Binding="{Binding Path=Text, Source={x:Reference textSource}}"
+                                                    Binding="{Binding Path=Text, ElementName=textSource}"
                                                     Value="">
                                                     <Setter Property="Foreground" Value="#333333" />
                                                     <Setter Property="VerticalContentAlignment" Value="Center" />
                                                 </DataTrigger>
                                                 <DataTrigger
-                                                    Binding="{Binding Path=IsFocused, Source={x:Reference textSource}}" Value="True">
+                                                    Binding="{Binding Path=IsFocused, ElementName=textSource}" Value="True">
                                                     <Setter Property="Foreground" Value="Transparent" />
                                                 </DataTrigger>
                                             </Style.Triggers>
