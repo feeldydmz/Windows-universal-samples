@@ -26,7 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand(CaptionAsstSelectionChanged);
+                    _captionAssetSectionChangedCommand ?? new RelayCommand<CaptionAssetItemViewModel>(CaptionAsstSelectionChanged);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (captionAssetItemViewModels.Any())
             {
                 SelectedCaptionAssetItem = captionAssetItemViewModels.First();
-                CaptionAsstSelectionChanged();
+                CaptionAsstSelectionChanged(SelectedCaptionAssetItem);
             }
         }
 
@@ -123,8 +123,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
 
-        private void CaptionAsstSelectionChanged()
+        private void CaptionAsstSelectionChanged(CaptionAssetItemViewModel selectedItem)
         {
+            SelectedCaptionAssetItem = SelectedCaptionAssetItem ?? selectedItem;
+
             SelectedCaptionAssetItem?.SelectAll();
             if (CaptionAssetItems != null)
                 foreach (var captionAssetItem in CaptionAssetItems)
