@@ -10,7 +10,7 @@
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
              xmlns:viewModelData="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="400"
+             d:DesignHeight="400" d:DesignWidth="500"
              d:DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=Subtitle.MediaPlayer}"
              Name="MediaPlayer"
              Loaded="MediaPlayerView_OnLoaded"
@@ -256,13 +256,13 @@
                            FontSize="12"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="2" Visibility="{Binding WorkBar.VideoItem, Source={StaticResource SubtitleViewModelLocator}, 
-                Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                <StackPanel Orientation="Horizontal" Grid.Column="2" 
+                            Visibility="{Binding WorkBar.VideoItem, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                     <Button  
                         Style="{StaticResource Style_VideoBarButton}" 
                         Margin="5,0"
                         Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
-                        Command="{Binding ChangeWithOriginalSourceCommand}">
+                        Command="{Binding ChangeToOriginalSourceCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>

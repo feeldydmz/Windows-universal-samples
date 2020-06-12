@@ -192,7 +192,13 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
                         <TextBlock VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
@@ -209,9 +215,10 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <Button Margin="219,0,0,0"
+                        <Button Grid.Column="2"
                                 VerticalAlignment="Center"
-                                Command="{Binding Path=SearchOptionChangeCommand}">
+                                Command="{Binding Path=SearchOptionChangeCommand}"
+                                Margin="0,0,2,0">
                             <Grid>
                                 <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
                                        Width="13" Height="13" />
@@ -228,7 +235,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                    </StackPanel>
+                    </Grid>
 
 
                     <!-- 빠른 검색 -->

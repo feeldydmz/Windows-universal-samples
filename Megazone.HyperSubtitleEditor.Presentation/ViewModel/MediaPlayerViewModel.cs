@@ -42,7 +42,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _playStateChangedCommand;
         private ICommand _positionChangedCommand;
-        private ICommand _changeWithOriginalSourceCommand;
+        private ICommand _changeToOriginalSourceCommand;
         private IEnumerable<VideoResolutionInfo> _resolutions;
 
         private int _seekCount;
@@ -130,12 +130,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        public ICommand ChangeWithOriginalSourceCommand
+        public ICommand ChangeToOriginalSourceCommand
         {
             get
             {
-                return _changeWithOriginalSourceCommand =
-                    _changeWithOriginalSourceCommand ?? new RelayCommand(OnChangeWithOriginalSource);
+                return _changeToOriginalSourceCommand =
+                    _changeToOriginalSourceCommand ?? new RelayCommand(OnChangeToOriginalSource);
             }
         }
 
@@ -262,11 +262,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _onMediaPositionChanged?.Invoke(value);
         }
 
-        private void OnChangeWithOriginalSource()
+        private void OnChangeToOriginalSource()
         {
             var videoMediaUrl = OriginWorkContext?.VideoMediaUrl;
 
-            InitMedia(OriginWorkContext, false);
+            InitMedia(OriginWorkContext, true);
         }
 
         private void DropToSetMedia(object parameter)
