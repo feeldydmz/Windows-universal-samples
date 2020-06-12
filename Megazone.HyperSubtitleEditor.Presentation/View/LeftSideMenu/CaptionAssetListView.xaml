@@ -47,11 +47,6 @@
                                 <Style TargetType="{x:Type Grid}">
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="Margin" Value="0, 15"/>
-                                    <!--<Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Source}" Value="null">
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>-->
                                 </Style>
                             </Grid.Style>
 
@@ -66,7 +61,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <RadioButton Grid.Row="0"
+                            <RadioButton x:Name="radioButton" Grid.Row="0"
                                          Grid.Column="0" 
                                          VerticalAlignment="Top"
                                          IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
@@ -164,24 +159,39 @@
                                   Grid.Row="2"
                                   Visibility="{Binding Path=Source, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
                                 <ItemsControl x:Name="CaptionItemsControl"
-                                                              ItemsSource="{Binding Path=Elements}">
+                                              ItemsSource="{Binding Path=Elements}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="itemVm:CaptionElementItemViewModel">
                                             <Grid Margin="0,3">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="13" />
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox Grid.Column="0"
-                                                                          IsChecked="{Binding Path=IsSelected}"
-                                                                          Command="{Binding ElementName=captionAssetListRoot, Path=DataContext.CaptionElementSelectionChangedCommand}"
-                                                                          CommandParameter="{Binding}" />
-                                                <TextBlock Grid.Column="2" Text="{Binding Path=Label}"
-                                                                           TextTrimming="CharacterEllipsis"
-                                                                           ToolTip="{Binding Path=Label}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="StackPanel">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" 
+                                                                             Value="false">
+                                                                    <Setter Property="Opacity" Value="0.5" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </StackPanel.Style>
+                                                    <CheckBox x:Name="assetElementCheckBox"
+                                                              IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"
+                                                              Command="{Binding ElementName=captionAssetListRoot, Path=DataContext.CaptionElementSelectionChangedCommand}"
+                                                              CommandParameter="{Binding}">
+                                                    </CheckBox>
+
+                                                    <TextBlock Text="{Binding Path=Label}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding Path=Label}"
+                                                               Margin="13,0,0,0"/>
+                                                </StackPanel>
+
                                                 <TextBlock Grid.Column="3"
                                                                            Foreground="{StaticResource Brush_PointColor}"
                                                                            Margin="14,0,0,0">
@@ -197,6 +207,7 @@
                                             </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
+                                    
                                 </ItemsControl>
                                 <TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
                                            Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
@@ -207,7 +218,9 @@
                         </Grid>
                     </Border>
                 </DataTemplate>
+
             </ListBox.ItemTemplate>
+            
         </ListBox>
 
         <Grid Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
@@ -229,14 +242,5 @@
                        Foreground="#697382"
                        Margin="0,15,0,0"/>
         </StackPanel>
-
-        <!--<Border
-                            Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-            <TextBlock
-                                Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Visibility="{Binding ElementName=AssetListBox, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}" />
-        </Border>-->
     </Grid>
 </UserControl>

@@ -36,7 +36,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 return _captionElementSelectionChangedCommand = _captionElementSelectionChangedCommand ??
                                                          new RelayCommand<CaptionElementItemViewModel>(
-                                                             OnCaptionSelectionChanged, CanCaptionSelectionChanged);
+                                                             OnCaptionSelectionChanged);
             }
         }
 
@@ -99,9 +99,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OnCaptionSelectionChanged(CaptionElementItemViewModel item)
         {
-            if (SelectedCaptionAssetItem == null)
-                return;
-
             var captionAssetItem = CaptionAssetItems.SingleOrDefault(assetItem =>
                 assetItem.Elements?.Any(element => element.Equals(item)) ?? false);
 
