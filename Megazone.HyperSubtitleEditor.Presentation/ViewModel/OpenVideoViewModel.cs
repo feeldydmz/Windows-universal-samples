@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -463,7 +465,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenUrl()
         {
-            MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlPath, false));
+            var matches = Regex.Match(UrlPath, @"/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/");
+
+            if (matches.Success)
+                MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlPath, false));
         }
 
         private void OpenFilePath()
