@@ -630,7 +630,8 @@
                                      SelectedItem="{Binding Path=SelectedVideoItem}"
                                      ItemContainerStyle="{StaticResource Style_VideoListBoxItem}"
                                      VirtualizingPanel.IsVirtualizing="True"
-                                     VirtualizingPanel.VirtualizationMode="Standard">
+                                     VirtualizingPanel.VirtualizationMode="Standard"
+                                     Background="White">
                                 <i:Interaction.Behaviors>
                                     <behavior:ListBoxDataLoadBehavior
                                         Command="{Binding Path=AddDataCommand}" />

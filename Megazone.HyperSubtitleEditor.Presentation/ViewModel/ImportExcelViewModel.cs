@@ -147,7 +147,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     Sheets.Add(excelItemViewModel);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // ignored
             }

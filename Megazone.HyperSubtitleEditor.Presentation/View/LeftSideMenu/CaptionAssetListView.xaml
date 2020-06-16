@@ -33,7 +33,8 @@
         <ListBox x:Name="AssetListBox"
                  ItemsSource="{Binding CaptionAssetItems, Mode=TwoWay}"
                  SelectedItem="{Binding SelectedCaptionAssetItem, Mode=TwoWay}"
-                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}">
+                 ItemContainerStyle="{StaticResource Style_ListBoxItemFreeSize}"
+                 Background="White">
             <i:Interaction.Behaviors>
                 <mz:ListBoxSelectionChangedCommandBehavior
                                     Command="{Binding LeftButtonUpCommand}" />
