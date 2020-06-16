@@ -295,8 +295,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return;
 
             var authorization = _signInViewModel.GetAuthorizationAsync().Result;
-            var stageId = _signInViewModel.SelectedStage?.Id;
-            var projectId = _signInViewModel.SelectedStage?.SelectedProject?.ProjectId;
+            var stageId = _signInViewModel.SelectedProject?.StageId;
+            var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
             //var result = await _cloudMediaService.GetVideoAsync(
             //    new GetVideoParameter(authorization, stageId, projectId, videoId),
