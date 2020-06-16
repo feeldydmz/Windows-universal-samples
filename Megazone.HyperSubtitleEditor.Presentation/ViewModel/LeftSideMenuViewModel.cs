@@ -39,8 +39,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _selectedItemCommand;
         private ICommand _clearRecentlyListCommand;
 
-        private RecentlyItem _selectedItem;
-        private List<RecentlyItem> _recentlyItems;
+        private RecentlyItemViewModel _selectedItem;
+        private List<RecentlyItemViewModel> _recentlyItems;
 
         private ICommand _RefreshCommand;
         private ICommand _unloadCommand;
@@ -56,7 +56,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _captionMenu = captionMenu;
         }
 
-        public RecentlyItem SelectedItem
+        public RecentlyItemViewModel SelectedItem
         {
             get => _selectedItem;
             set => Set(ref _selectedItem, value);
@@ -68,7 +68,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _isOpen, value);
         }
 
-        public List<RecentlyItem> RecentlyItems
+        //public List<RecentlyItem> RecentlyItems
+        //{
+        //    get => _recentlyItems;
+        //    set => Set(ref _recentlyItems, value);
+        //}
+        public List<RecentlyItemViewModel> RecentlyItems
         {
             get => _recentlyItems;
             set => Set(ref _recentlyItems, value);
@@ -96,10 +101,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         
         public ICommand SelectedItemCommand
         {
-            get { return _selectedItemCommand = _selectedItemCommand ?? new RelayCommand<RecentlyItem>(SelectedRecentlyItem); }
+            get { return _selectedItemCommand = _selectedItemCommand ?? new RelayCommand<RecentlyItemViewModel>(SelectedRecentlyItem); }
         }
 
-        private void SelectedRecentlyItem(RecentlyItem selectedItem)
+        private void SelectedRecentlyItem(RecentlyItemViewModel selectedItem)
         {
             SelectedItem = selectedItem;
         }
@@ -157,13 +162,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             // 선택된 video 정보를 메인 
-            var video = SelectedItem.Video;
-            var asset = SelectedItem.CaptionAsset;
+            //var video = SelectedItem.Video;
+            //var asset = SelectedItem.CaptionAsset;
             //var localFileFullPath = recentlyItem.LocalFileFullPath;
-            var selectedCaptionList = SelectedItem.Captions?.ToList() ?? new List<Caption>();
+            //var selectedCaptionList = SelectedItem.Captions?.ToList() ?? new List<Caption>();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
-                new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
+            //MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedMessage(this,
+            //    new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
+
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this,
+                new CaptionOpenRequestedByIdMessageParameter(SelectedItem?.Video.Id, SelectedItem?.RelatedCaptionId, SelectedItem?.CaptionElementIds)));
 
             //if (localFileFullPath.IsNullOrEmpty())
             //{
@@ -200,7 +208,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             foreach (var removeItem in removeItems) tempList.Remove(removeItem);
 
-            RecentlyItems = tempList;
+            RecentlyItems = tempList.Select(r=> new RecentlyItemViewModel(r)).ToList();
         }
 
         private void Load()

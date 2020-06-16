@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mz="http://schemas.megazone.co.kr"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:item="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data"
+             xmlns:viewModelItem="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel"
              xmlns:domain="clr-namespace:Megazone.Cloud.Media.Domain.Assets;assembly=Megazone.Cloud.Media.Domain"
              xmlns:leftMenuView="clr-namespace:Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu"
              xmlns:resources="clr-namespace:Megazone.SubtitleEditor.Resources;assembly=Megazone.SubtitleEditor.Resources"
@@ -93,14 +93,15 @@
                          Grid.Row="1" 
                          ItemsSource="{Binding Path=RecentlyItems}"
                          SelectedItem="{Binding SelectedItem}"
-                         Background="White">
+                         Background="White"
+                         BorderThickness="0">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource Style_ListBoxItemFreeSize}">
                             <Setter Property="Padding" Value="0"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type item:RecentlyItem}">
+                        <DataTemplate DataType="viewModelItem:RecentlyItemViewModel">
                             <Border Width="320">
                                 <Grid Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
                                 <Border BorderThickness="0,0,0,1"
@@ -121,7 +122,7 @@
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0"
                                                 Orientation="Horizontal">
-                                    <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
+                                    <Grid VerticalAlignment="Center">
                                         <!--CAPTION 표시-->
                                         <ContentControl Margin="0,4,0,4"
                                                         Visibility="{Binding Video, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
@@ -149,8 +150,8 @@
                                             </Grid>
                                         </ContentControl>
                                     </Grid>
-                                    <TextBlock Text="{Binding Path=FirstName}"
-                                               ToolTip="{Binding Path=FirstName}"
+                                    <TextBlock Text="{Binding Path=Name}"
+                                               ToolTip="{Binding Path=Name}"
                                                TextTrimming="CharacterEllipsis" 
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Left" 
@@ -158,7 +159,7 @@
                                                FontWeight="Bold"
                                                MaxWidth="130"
                                                Margin="8,0,0,0"/>
-                                    <TextBlock Text="{Binding Path=FirstId}"
+                                    <TextBlock Text="{Binding Path=Id}"
                                                VerticalAlignment="Center" 
                                                HorizontalAlignment="Left"
                                                Foreground="{StaticResource Brush_MinorWhiteForeground}"
@@ -179,59 +180,25 @@
                                     <!--캡션정보-->
                                     <Grid Grid.Column="0" 
                                           Grid.Row="1" 
-                                          Visibility="{Binding Path=Video, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                        <ItemsControl x:Name="CaptionItemsControl"
-                                                      ItemsSource="{Binding Path=LatestCaptions}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type domain:Caption}">
-                                                    <Grid Margin="0,8,0,0">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" />
-                                                            <!--<ColumnDefinition Width="13" />
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition Width="Auto" />-->
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <StackPanel Orientation="Horizontal">
-                                                        <Image Style="{StaticResource Style_VideoExistCaptionBadgeImage}"
+                                          Visibility="{Binding Path=HasRelatedCaption, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          Margin="0,8,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Style="{StaticResource Style_VideoExistCaptionBadgeImage}"
                                                                Margin="8,0,0,0"
-                                                               HorizontalAlignment="Left" 
-                                                               Visibility="{Binding HasCaption, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                                        <!--<CheckBox Grid.Column="0"
-                                                                          IsChecked="{Binding Path=IsSelected}"
-                                                                          Command="{Binding ElementName=captionAssetListRoot, Path=DataContext.CaptionElementSelectionChangedCommand}"
-                                                                          CommandParameter="{Binding}" />-->
-                                                        <TextBlock Text="{Binding Path=Label}"
+                                                               HorizontalAlignment="Left"/>
+                                                <TextBlock Text="{Binding RelatedCaptionName}"
                                                                    MaxWidth="130"
                                                                    TextTrimming="CharacterEllipsis"
-                                                                   ToolTip="{Binding Path=Label}" 
+                                                                   ToolTip="{Binding Path=RelatedCaptionName}" 
                                                                    Margin="8,0,0,0"/>
-                                                        <TextBlock Text="{Binding Id, StringFormat='{}({0})'}"
+                                                <TextBlock Text="{Binding RelatedCaptionId, StringFormat='{}({0})'}"
                                                                    Foreground="{StaticResource Brush_MinorWhiteForeground}"
+                                                                   ToolTip="{Binding RelatedCaptionId, StringFormat='{}({0})'}" 
                                                                    Margin="8,0,0,0">
-                                                            <!--<TextBlock.Text>
-                                                                <MultiBinding StringFormat="{}[{0}-{1}]">
-                                                                    <MultiBinding.Bindings>
-                                                                        <Binding Path="Language" />
-                                                                        <Binding Path="Country" />
-                                                                    </MultiBinding.Bindings>
-                                                                </MultiBinding>
-                                                            </TextBlock.Text>-->
-                                                        </TextBlock>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <!--<TextBlock Text="{Binding Source={x:Static resources:Resource.CNT_CAPTION}, StringFormat='{x:Static resources:Resource.MSG_EMPTY_LIST}'}"
-                                           Visibility="{Binding ElementName=CaptionItemsControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}"
-                                           VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           TextAlignment="Center" />-->
+                                                </TextBlock>
+                                            </StackPanel>
                                     </Grid>
-                                    
                                 </Grid>
-
-                            
                             </Grid>
                             </Border>
                         </DataTemplate>

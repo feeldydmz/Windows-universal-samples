@@ -281,6 +281,12 @@
                         <RadioButton x:Name="RecentlyRadioButton" GroupName="LeftSideMainMenuGroup"
                                      MouseEnter="OnMouseEnter"
                                      Command="{Binding Path=LoadRecentlyCommand}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction
+                                        Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CloseCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <RadioButton.Triggers>
                                 <EventTrigger RoutedEvent="RadioButton.Checked">
                                     <BeginStoryboard Name="RecentlyFileListOpenStoryboard">

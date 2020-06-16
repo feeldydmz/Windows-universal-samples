@@ -519,6 +519,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async Task SearchAsync(int pageIndex, bool isPaging = false)
         {
+            OldVideoItem = null;
             IsConfirmButtonVisible = false;
 
             var conditions = MakeSearchConditions();
