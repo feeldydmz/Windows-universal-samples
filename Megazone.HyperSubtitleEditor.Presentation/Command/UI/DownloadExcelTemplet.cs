@@ -37,7 +37,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
                 var assembly = Assembly.GetExecutingAssembly();
                 const string resourceName =
-                    "Megazone.HyperSubtitleEditor.Presentation.Excel.HyperSubtitleEditor_Caption_Format.xlsx";
+                    "Megazone.HyperSubtitleEditor.Presentation.Excel.CloudPlexCaptionEditor_Caption_Format.xlsx";
 
                 var fileStream = File.Create(savePath);
 

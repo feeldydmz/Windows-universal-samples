@@ -262,6 +262,7 @@
     <Compile Include="ViewModel\CaptionElementsEditViewModel.cs" />
     <Compile Include="ViewModel\Data\AuthorizationInfo.cs" />
     <Compile Include="ViewModel\Data\DefaultProjectSerialize.cs" />
+    <Compile Include="ViewModel\ItemViewModel\RecentlyItemViewModel.cs" />
     <Compile Include="ViewModel\MetadataViewModel.cs" />
     <Compile Include="ViewModel\Data\RecentlyItem.cs" />
     <Compile Include="ViewModel\RecentlyLoader.cs" />
@@ -439,8 +440,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Excel\HyperSubtitleEditor_Caption_Format.xlsx" />
     <None Include="app.config" />
+    <EmbeddedResource Include="Excel\CloudPlexCaptionEditor_Caption_Format.xlsx" />
     <None Include="packages.config" />
     <Content Include="PreferedLanguageInfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

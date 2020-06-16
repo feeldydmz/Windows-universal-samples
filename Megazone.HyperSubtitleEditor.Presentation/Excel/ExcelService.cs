@@ -61,7 +61,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                 if (!string.IsNullOrEmpty(splitLanguageAndCountry[0]))
                                     excelFileInfo.LanguageCode = splitLanguageAndCountry[0];
 
-                                if (!string.IsNullOrEmpty(splitLanguageAndCountry[1]))
+                                if (splitLanguageAndCountry.Length > 1 && !string.IsNullOrEmpty(splitLanguageAndCountry[1]))
                                     excelFileInfo.CountryCode = splitLanguageAndCountry[1];
                             }
 
@@ -75,7 +75,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return result;
             }
@@ -188,7 +188,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
         public bool CreateFile(IEnumerable<Subtitle> subtitles, string saveFilePath)
         {
             const string resourceName =
-                "Megazone.HyperSubtitleEditor.Presentation.Excel.HyperSubtitleEditor_Caption_Format.xlsx";
+                "Megazone.HyperSubtitleEditor.Presentation.Excel.CloudPlexCaptionEditor_Caption_Format.xlsx";
             const string exampleSheetName = "Example";
 
             try
