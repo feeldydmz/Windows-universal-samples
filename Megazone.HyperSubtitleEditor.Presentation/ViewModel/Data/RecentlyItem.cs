@@ -99,7 +99,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 if (recently.Video == null && recently.CaptionAsset != null)
                 {
                     recently.FirstName = recently.CaptionAsset.Name;
-                    recently.FirstId = $"({recently.CaptionAsset.Id})";
+                    recently.FirstId = recently.CaptionAsset.Id;
 
                     recently.SecondName = "";
                     recently.SecondId = "";
@@ -107,7 +107,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 else if (recently.Video != null && recently.CaptionAsset == null)
                 {
                     recently.FirstName = recently.Video.Name;
-                    recently.FirstId = $"({recently.Video.Id})";
+                    recently.FirstId = recently.Video.Id;
 
                     recently.SecondName = "";
                     recently.SecondId = "";
@@ -115,10 +115,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 else if (recently.Video != null && recently.CaptionAsset != null)
                 {
                     recently.FirstName = recently.Video.Name;
-                    recently.FirstId = $"({recently.Video.Id})";
+                    recently.FirstId = recently.Video.Id;
 
                     recently.SecondName = recently.CaptionAsset.Name;
-                    recently.SecondId = $"({recently.CaptionAsset.Id})";
+                    recently.SecondId = recently.CaptionAsset.Id;
                 }
 
                 return recently;

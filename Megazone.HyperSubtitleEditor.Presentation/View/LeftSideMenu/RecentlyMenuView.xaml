@@ -159,7 +159,7 @@
                                                FontWeight="Bold"
                                                MaxWidth="130"
                                                Margin="8,0,0,0"/>
-                                    <TextBlock Text="{Binding Path=Id}"
+                                            <TextBlock Text="{Binding Path=Id, StringFormat='{}({0})'}"
                                                VerticalAlignment="Center" 
                                                HorizontalAlignment="Left"
                                                Foreground="{StaticResource Brush_MinorWhiteForeground}"

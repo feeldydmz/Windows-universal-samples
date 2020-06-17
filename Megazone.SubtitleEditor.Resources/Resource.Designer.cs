@@ -1849,6 +1849,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Are you sure you want to clear the list?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_CLEAR_RECENTLY_LIST {
+            get {
+                return ResourceManager.GetString("MSG_CLEAR_RECENTLY_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Please try again after checking elastic transcoder authorization.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_CONFIRM_ELASTIC_TRANSCODER_AUTHORITY {

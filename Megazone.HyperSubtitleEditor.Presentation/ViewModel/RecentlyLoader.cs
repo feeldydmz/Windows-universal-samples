@@ -79,24 +79,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 // 기존 최근 열린 작업내용에 있다면 갱신
                 if (item.Video != null && item.CaptionAsset != null)
                     // 비디오 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
-                        recentlyItem.Video?.Id == item.Video?.Id &&
-                        recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
+                    foreach (var recentlyItem in _recentlyItems.Where(r => r.Video?.Id == item.Video?.Id &&
+                        r.CaptionAsset?.Id == item.CaptionAsset?.Id))
                         toRemove.Add(recentlyItem);
                 else if (item.Video == null && item.CaptionAsset != null)
                     // 캡션에셋 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
-                        recentlyItem.CaptionAsset?.Id == item.CaptionAsset?.Id))
+                    foreach (var recentlyItem in _recentlyItems.Where(r => r.CaptionAsset?.Id == item.CaptionAsset?.Id && r.Video == null))
                         toRemove.Add(recentlyItem);
                 else if (item.Video != null && item.CaptionAsset == null)
                     // 비디오 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
-                        recentlyItem.Video?.Id == item.Video?.Id))
+                    foreach (var recentlyItem in _recentlyItems.Where(r => r.Video?.Id == item.Video?.Id))
                         toRemove.Add(recentlyItem);
                 else if (item.Video == null && item.CaptionAsset == null)
                 {
-                    foreach (var recentlyItem in _recentlyItems.Where(recentlyItem =>
-                        recentlyItem.LocalFileFullPath== item.LocalFileFullPath))
+                    foreach (var recentlyItem in _recentlyItems.Where(r => r.LocalFileFullPath== item.LocalFileFullPath))
                         toRemove.Add(recentlyItem);
                 }
 

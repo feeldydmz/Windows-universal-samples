@@ -171,7 +171,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //    new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this,
-                new CaptionOpenRequestedByIdMessageParameter(SelectedItem?.Video.Id, SelectedItem?.RelatedCaptionId, SelectedItem?.CaptionElementIds)));
+                new CaptionOpenRequestedByIdMessageParameter(SelectedItem?.Video?.Id, SelectedItem?.RelatedCaptionId, SelectedItem?.CaptionElementIds)));
 
             //if (localFileFullPath.IsNullOrEmpty())
             //{
@@ -190,9 +190,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void ClearRecentlyList(RecentlyItem obj)
         {
-            _recentlyLoader.ClearAll();
+            var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(
+                Resource.CNT_WARNING,
+                Resource.MSG_CLEAR_RECENTLY_LIST,
+                MessageBoxButton.OKCancel,
+                Application.Current.MainWindow));
 
-            LoadRecently();
+            if (result == MessageBoxResult.OK)
+            {
+                _recentlyLoader.ClearAll();
+
+                LoadRecently();
+            }
         }
 
         private void LoadRecently()

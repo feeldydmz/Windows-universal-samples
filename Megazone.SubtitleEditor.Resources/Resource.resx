@@ -868,4 +868,7 @@ All opened tabs will be closed, and new tab will be opened for the selected vide
     <value>Please add captions and
     apply to videos.</value>
   </data>
+  <data name="MSG_CLEAR_RECENTLY_LIST" xml:space="preserve">
+    <value>Are you sure you want to clear the list?</value>
+  </data>
 </root>
