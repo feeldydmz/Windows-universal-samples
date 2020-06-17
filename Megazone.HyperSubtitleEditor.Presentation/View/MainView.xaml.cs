@@ -196,10 +196,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             return new AdjustTimeWay(wnd.Time, wnd.Range, wnd.Behavior);
         }
 
-        public bool? ShowCreateWorkspaceConfirmWindow()
+        public bool? ShowCreateWorkspaceConfirmWindow(string title = "")
         {
             var wnd = new CreateWorksapceConfirmView
             {
+                Title = string.IsNullOrEmpty(title) ? Resource.CNT_NEW : title,
                 Owner = Application.Current.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };

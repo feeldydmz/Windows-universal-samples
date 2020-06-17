@@ -121,6 +121,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _currentPositionText, value);
         }
 
+        public string ProjectId => _signinViewModel?.SelectedProject?.ProjectId;
+
         public ICommand PositionChangedCommand
         {
             get
@@ -409,12 +411,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private MediaHeaderData GetVideoHeaderData(string fullPath)
         {
             var authorization = getAuthorization();
+            var projectId = _signinViewModel.SelectedProject?.ProjectId;
 
             var videoData = VideoHeaderHelper.GetVideoHeaderData(new GetVideoDataParameters
             {
                 Url = fullPath,
                 IsRequestThumbnail = false,
-                Headers = $"mz-cm-auth:Bearer {authorization}"
+                Headers = $"mz-cm-auth:Bearer {authorization}\r\nprojectId:{projectId}"
         }, _cancellationTokenSource);
 
             return videoData;
@@ -471,6 +474,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //SetMediaHeaderData(null);
             _cancellationTokenSource = new CancellationTokenSource();
             var authorization = getAuthorization();
+            var projectId = _signinViewModel.SelectedProject?.ProjectId;
 
             WorkBarViewModel workBarViewmodel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
 
@@ -495,7 +499,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             TimeoutMilliseconds = 7000,
                             LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
                             ThumbnailAtSeconds = (double)2,
-                            Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}" : null
+                            Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}\r\nprojectId:{projectId}" : null
                         });
                         if (thumbnail != null)
                             this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });

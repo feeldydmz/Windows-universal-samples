@@ -320,30 +320,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void OpenMedia(string mediaSource = null, int streamIndex = 0)
         {
-            //var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
-
-            //if (VideoElement == null)
-            //    return;
-
-            //if (string.IsNullOrWhiteSpace(mediaSource))
-            //    return;
-
-            //if (VideoElement.PlayState != MediaPlayStates.Pause)
-            //{
-            //    if (VideoElement.IsPlaying)
-            //        VideoElement.Stop();
-
             var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
+            var projectId = ((MediaPlayerViewModel)(this.DataContext)).ProjectId;
 
             VideoElement.Source = mediaSource;
             VideoElement.Authorization = authorization;
-            
+            VideoElement.ProjectId = projectId;
+
             VideoElement.Open();
         }
 
         private void PlayMedia(string mediaSource = null, int streamIndex = 0)
         {
             var authorization = ((MediaPlayerViewModel) (this.DataContext)).getAuthorization();
+            var projectId = ((MediaPlayerViewModel)(this.DataContext)).ProjectId;
 
             if (VideoElement == null)
                 return;
@@ -363,6 +353,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 if (!VideoElement.StreamIndex.Equals(streamIndex)) VideoElement.StreamIndex = streamIndex;
 
                 VideoElement.Authorization = authorization;
+                VideoElement.ProjectId = projectId;
             }
 
             if (VideoElement.CanPlay)
