@@ -266,8 +266,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _logger.Debug.Write("end");
         }
 
-        private void OnCaptionOpenByIdRequest(CloudMedia.CaptionOpenRequestedByIdMessage message)
+        private async void OnCaptionOpenByIdRequest(CloudMedia.CaptionOpenRequestedByIdMessage message)
         {
+            //_cloudSettings = await GetMcmSettingAsync();
+
             var videoId = message.Param.VideoId;
             var captionAssetId = message.Param.CaptionAssetId;
             var captionElements = message.Param.CaptionElements;
@@ -437,15 +439,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                             captionList), CancellationToken.None);
 
                         createAsset.Elements = elements;
-
-                        if (string.IsNullOrEmpty(folderPath))
-                        {
-                            var relativePath = _cloudSettings.Asset.OutputStoragePath.Value.TrimEnd('/') + "/" + assetId;
-
-                            var prefixUri = new Uri(new Uri(_cloudSettings.Asset.OutputStoragePrefix.Value), relativePath);
-                            folderPath = prefixUri.AbsoluteUri;
-                            //folderPath = $"{_cloudSettings.Asset.OutputStoragePrefix}";
-                        }
                     }
 
                     if (!string.IsNullOrEmpty(video?.Id))
@@ -881,7 +874,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
         private async void OnProjectChanged(ProjectSelect.ProjectChangeMessage message)
         {
-            _cloudSettings = await GetMcmSettingAsync();
+            //_cloudSettings = await GetMcmSettingAsync();
         }
 
     }
