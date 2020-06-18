@@ -189,7 +189,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
         {
             const string resourceName =
                 "Megazone.HyperSubtitleEditor.Presentation.Excel.CloudPlexCaptionEditor_Caption_Format.xlsx";
-            const string exampleSheetName = "Example";
+            const string exampleSheetName = "ko-KR_제목";
 
             try
             {

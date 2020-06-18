@@ -472,7 +472,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (subtitleViewModel.Tabs.Any(tab => tab.CheckDirty()))
                 {
-                    var result = _browser.Main.ShowCreateWorkspaceConfirmWindow();
+                    var result = _browser.Main.ShowCreateWorkspaceConfirmWindow(Resource.CNT_OPEN);
 
                     if (!result.HasValue) return;
 

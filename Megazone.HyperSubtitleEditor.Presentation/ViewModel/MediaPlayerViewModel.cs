@@ -186,6 +186,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 Debug.WriteLine($"media url : {url}");
 
+                FindStreamIndex();
+
                 OpenMedia(url, IsLocalFile, _currentResolution);
             }
         }
@@ -339,6 +341,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 GetThumbnailAsync(new Uri(firstFilePath), isLocalFile);
 
+                MediaSource = "";
+
                 this.CreateTask(() => {
                     MediaSource = firstFilePath;
                 });
@@ -350,26 +354,42 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
+        void FindStreamIndex()
+        {
+            if (HeaderData?.MpegDashStreamIndex != null && CurrentResolution != null)
+                try
+                {
+                    var indexValue =
+                        HeaderData.MpegDashStreamIndex.Single(item =>
+                            item.Value.Height.Equals(CurrentResolution.Height));
+                    StreamIndex = indexValue.Key;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    _logger.Error.Write(ex.Message);
+                }
+        }
+
         void OnOpenedVideo()
         {
             Debug.WriteLine("+ OnOpendVideo");
 
             SetMediaHeaderData(null);
 
-            if (!IsLocalFile)
-                //MPEG-DASH 재생 해상도의 인덱스를 구한다
-                if (HeaderData?.MpegDashStreamIndex != null && CurrentResolution != null)
-                    try
-                    {
-                        var indexValue =
-                            HeaderData.MpegDashStreamIndex.Single(item =>
-                                item.Value.Height.Equals(CurrentResolution.Height));
-                        StreamIndex = indexValue.Key;
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        _logger.Error.Write(ex.Message);
-                    }
+            //if (!IsLocalFile)
+            //    //MPEG-DASH 재생 해상도의 인덱스를 구한다
+            //    if (HeaderData?.MpegDashStreamIndex != null && CurrentResolution != null)
+            //        try
+            //        {
+            //            var indexValue =
+            //                HeaderData.MpegDashStreamIndex.Single(item =>
+            //                    item.Value.Height.Equals(CurrentResolution.Height));
+            //            StreamIndex = indexValue.Key;
+            //        }
+            //        catch (InvalidOperationException ex)
+            //        {
+            //            _logger.Error.Write(ex.Message);
+            //        }
 
             SetMediaHeaderData(HeaderData);
 
