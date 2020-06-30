@@ -521,8 +521,11 @@
     <value>재생 시도 중
 오류가 발생했습니다.</value>
   </data>
+  <data name="MSG_EXPORT_EXCEL_FILE_SUCCESS" xml:space="preserve">
+    <value>엑셀 파일 생성에 성공하였습니다.</value>
+  </data>
   <data name="MSG_EXPORT_EXCEL_FILE_FAIL" xml:space="preserve">
-    <value>Excel 파일 생성에 실패하였습니다.</value>
+    <value>엑셀 파일 생성에 실패하였습니다.</value>
   </data>
   <data name="MSG_INPUT_MOVE_ROW_NUMBER" xml:space="preserve">
     <value>이동할 행 번호를 입력하세요.</value>

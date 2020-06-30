@@ -84,7 +84,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     this.InvokeOnUi(() =>
                     {
                         if (isSuccess)
+                        {
+                            _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                                Resource.MSG_EXPORT_EXCEL_FILE_SUCCESS,
+                                MessageBoxButton.OK,
+                                Application.Current.MainWindow));
+
                             Process.Start("explorer.exe", Path.GetDirectoryName(savePath));
+                        }
                         else
                             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                                 Resource.MSG_EXPORT_EXCEL_FILE_FAIL,

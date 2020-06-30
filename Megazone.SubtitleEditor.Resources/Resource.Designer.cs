@@ -2009,6 +2009,15 @@ namespace Megazone.SubtitleEditor.Resources {
         }
         
         /// <summary>
+        ///   Succeeded create excel file.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MSG_EXPORT_EXCEL_FILE_SUCCESS {
+            get {
+                return ResourceManager.GetString("MSG_EXPORT_EXCEL_FILE_SUCCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Failed to load the file due to unknown error. Please contact to admin.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string MSG_FILE_IMPORT_UNKOWN_ERROR {

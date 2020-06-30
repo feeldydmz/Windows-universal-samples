@@ -523,6 +523,9 @@ You can load one by dragging a file.
   <data name="MSG_ERROR_TRYING_TO_PLAY" xml:space="preserve">
     <value>Error occurred during play.</value>
   </data>
+  <data name="MSG_EXPORT_EXCEL_FILE_SUCCESS" xml:space="preserve">
+    <value>Succeeded create excel file.</value>
+  </data>
   <data name="MSG_EXPORT_EXCEL_FILE_FAIL" xml:space="preserve">
     <value>Failed to create excel file.</value>
   </data>
