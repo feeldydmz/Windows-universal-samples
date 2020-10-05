@@ -4,7 +4,6 @@ using Megazone.Core.IoC;
 using Megazone.Core.VideoTrack;
 using Megazone.Core.VideoTrack.Model;
 using Megazone.Core.VideoTrack.WebVtt;
-using Megazone.HyperSubtitleEditor.Presentation.Excel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {

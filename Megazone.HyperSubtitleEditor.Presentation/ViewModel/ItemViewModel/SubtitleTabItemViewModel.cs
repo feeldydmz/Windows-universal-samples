@@ -22,16 +22,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     internal class SubtitleTabItemViewModel : ViewModelBase, ISubtitleTabItemViewModel
     {
+        private readonly CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
         private readonly Action<SubtitleTabItemViewModel> _onDisplayTextChangedAction;
+        private readonly Action<ISubtitleListItemViewModel> _onDoubleClickRowAction;
         private readonly Action<SubtitleTabItemViewModel> _onSelectedAction;
         private readonly Action<ISubtitleListItemViewModel> _onSelectedRowAction;
-        private readonly Action<ISubtitleListItemViewModel> _onDoubleClickRowAction;
         private readonly OriginalData _originalData;
         private readonly Action<SubtitleTabItemViewModel> _rowCollectionChangedAction;
         private readonly IList<ISubtitleListItemViewModel> _rows;
         private readonly Action<SubtitleTabItemViewModel> _validateAction;
         private string _countryCode;
         private IList<SubtitleItem> _datasheet;
+
+        private bool _disposed;
 
         private bool _ignoreCollectionChanged;
 
@@ -47,9 +50,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         private IList _selectedRows;
         private ICommand _setFocusToSubtitleTextBox;
-
-        private bool _disposed = false;
-        private readonly CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
 
         public SubtitleTabItemViewModel(string name, Action<SubtitleTabItemViewModel> rowCollectionChangedAction,
             Action<SubtitleTabItemViewModel> validateAction, Action<SubtitleTabItemViewModel> onSelectedAction,
@@ -109,6 +109,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
                         _setFocusToSubtitleTextBox ?? new RelayCommand(OnDoubleClickListItem);
             }
         }
+
+        private CancellationToken CancelToken { get; }
 
         public bool IsDeployedOnce { get; private set; }
         public Caption Caption { get; set; }
@@ -187,8 +189,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             set => Set(ref _isDirty, value);
         }
 
-        private CancellationToken CancelToken { get; set; } = new CancellationToken();
-
 
         public void SetAsDeployed()
         {
@@ -200,7 +200,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             if (_isDirty) return true;
 
-            bool isNewCaption = SourceLocation == SourceLocationKind.CreatedByEditor;
+            var isNewCaption = SourceLocation == SourceLocationKind.CreatedByEditor;
 
             var isBaseInfoChanged = _originalData.Name != Name ||
                                     _originalData.Kind != Kind ||
@@ -214,32 +214,28 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
         public bool CheckSave()
         {
-            return _isDirty || (SourceLocation == SourceLocationKind.LocalFile);
+            return _isDirty || SourceLocation == SourceLocationKind.LocalFile;
         }
 
         public void Reset()
         {
             var removeRows = new List<ISubtitleListItemViewModel>();
             foreach (var row in Rows)
-            {
                 if (row.hasOriginText)
-                {
                     row.ResetData();
-                }
                 else
-                {
                     removeRows.Add(row);
-                }
-            }
 
-            foreach (var row in removeRows)
-            {
-                Rows.Remove(row);
-            }
+            foreach (var row in removeRows) Rows.Remove(row);
 
             _isRowCollectionChanged = false;
             _isAddedFromLocal = false;
             IsDirty = false;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
 
         private void OnDoubleClickListItem()
@@ -334,7 +330,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             await Task.Factory.StartNew(() =>
             {
-
                 Debug.WriteLine("++++AddRowsAsync Task");
 
                 foreach (var subtitleItem in subtitles)
@@ -346,10 +341,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
                     //Rows.Add(item);
                     this.InvokeOnUiSync(DispatcherPriority.Input,
-                        () =>
-                    {
-                        Rows.Add(item);
-                    });
+                        () => { Rows.Add(item); });
                 }
 
                 _ignoreCollectionChanged = false;
@@ -357,7 +349,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
                 Debug.WriteLine("----AddRowsAsync Task");
             }, CancelToken);
-            
+
             //task.Wait();
             Debug.WriteLine("--AddRowsAsync");
         }
@@ -395,9 +387,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             if (dirtyRows != null)
                 foreach (var row in dirtyRows)
-                {
                     row.UpdateOriginData();
-                }
         }
 
         private SubtitleItem PrepareSubtitleItemForNewRow(TimeSpan minDuration,
@@ -507,6 +497,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             IsDirty = false;
         }
 
+
+        ~SubtitleTabItemViewModel()
+        {
+            Dispose();
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _cancelTokenSource?.Cancel();
+                _cancelTokenSource?.Dispose();
+            }
+
+            _disposed = disposing;
+        }
+
         private class OriginalData
         {
             public OriginalData(string name, CaptionKind kind, string languageCode, string countryCode)
@@ -528,30 +536,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             BeforeSelectedItem,
             AfterSelectedItem,
             AtTheEnd
-        }
-        
-
-        ~SubtitleTabItemViewModel()
-        {
-            Dispose();
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-            if (disposing)
-            {
-                _cancelTokenSource?.Cancel();
-                _cancelTokenSource?.Dispose();
-            }
-
-            _disposed = disposing;
-        }
-
-        public void Dispose()
-        {
-            
-            GC.SuppressFinalize(this);
         }
     }
 }

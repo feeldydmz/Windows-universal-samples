@@ -294,10 +294,10 @@
                                                         Source="{Binding Path=PrimaryImageUrl,TargetNullValue={x:Null}}" />
                                                 </Grid>
 
-                                                <Grid Grid.Column="2" 
+                                                <Grid Grid.Column="2"
                                                       Margin="20, 0, 0 , 0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*" />
@@ -363,19 +363,18 @@
                                                     </Grid>
 
                                                     <!-- 비디오 이름과 아이디 표시 -->
-                                                    <Grid Grid.Row="1" 
+                                                    <Grid Grid.Row="1"
                                                           VerticalAlignment="Center"
                                                           HorizontalAlignment="Left">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="140" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" 
-                                                                   FontWeight="Bold" 
+                                                        <TextBlock Grid.Column="0"
+                                                                   FontWeight="Bold"
                                                                    TextTrimming="CharacterEllipsis"
                                                                    Text="{Binding Path=Name}"
-                                                                   ToolTip="{Binding Path=Name}"
-                                                                    />
+                                                                   ToolTip="{Binding Path=Name}" />
                                                         <TextBlock Grid.Column="1"
                                                                    TextTrimming="CharacterEllipsis"
                                                                    Text="{Binding Path=Id, StringFormat='{}({0})'}"

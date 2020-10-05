@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -18,8 +17,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
@@ -35,27 +32,27 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ICloudMediaService _cloudMediaService;
         private readonly LanguageLoader _languageLoader;
         private readonly SignInViewModel _signInViewModel;
-        private CaptionAssetListViewModel _captionAssetList;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private CaptionAssetListViewModel _captionAssetList;
 
         private IEnumerable<DisplayItem> _captionKindItems;
         private ICommand _confirmCommand;
         private ICommand _enterCommand;
+        private string _idOfSearch;
         private ICommand _initializeCommand;
+        private bool _isAdvancedSearch;
         private bool _isBusy;
         private bool _isConfirmButtonVisible;
         private bool _isInitialized;
         private bool _isLoading;
-        private bool _isAdvancedSearch;
         private string _keyword;
-        private string _nameOfSearch;
-        private string _idOfSearch;
         private IEnumerable<DisplayItem> _keywordTypeItems;
         private string _labelOfSearch;
 
         private IEnumerable<LanguageItem> _languages;
         private ICommand _loadCommand;
+        private string _nameOfSearch;
         private ICommand _refreshCommand;
         private ICommand _searchCommand;
         private ICommand _searchOptionChangeCommand;
@@ -108,6 +105,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _searchCommand = _searchCommand ?? new RelayCommand<string>(Search); }
         }
+
         public ICommand SearchOptionChangeCommand
         {
             get
@@ -144,6 +142,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isAdvancedSearch;
             set => Set(ref _isAdvancedSearch, value);
         }
+
         public CaptionAssetItemViewModel SelectedCaptionAssetItem => CaptionAssetList.SelectedCaptionAssetItem;
 
         public int TotalCount
@@ -179,11 +178,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public DisplayItem SelectedCaptionKindItem
         {
             get => _selectedCaptionKindItem;
-            set
-            {
-                Set(ref _selectedCaptionKindItem, value); 
-
-            }
+            set => Set(ref _selectedCaptionKindItem, value);
         }
 
         public string Keyword
@@ -197,6 +192,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _labelOfSearch;
             set => Set(ref _labelOfSearch, value);
         }
+
         public string NameOfSearch
         {
             get => _nameOfSearch;
@@ -309,6 +305,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             await SearchAsync(0);
         }
+
         private void ChangedSearchOption()
         {
             IsAdvancedSearch = !IsAdvancedSearch;
@@ -319,12 +316,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private async Task SearchAsync(int pageIndex, bool isPaging = false)
         {
             var kinds = SelectedCaptionKindItem != null ? new[] {SelectedCaptionKindItem.Key} : null;
-            var conditions = MakeSearchConditions(Keyword, 
-                                                  NameOfSearch,
-                                                  IdOfSearch, 
-                                                  kinds, 
-                                                  LabelOfSearch, 
-                                                  SelectedLanguage);
+            var conditions = MakeSearchConditions(Keyword,
+                NameOfSearch,
+                IdOfSearch,
+                kinds,
+                LabelOfSearch,
+                SelectedLanguage);
             await SearchCaptionAssetAsync(pageIndex, conditions, isPaging);
         }
 
@@ -375,7 +372,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 var authorization = _signInViewModel.GetAuthorizationAsync().Result;
-                
+
                 var stageId = _signInViewModel.SelectedStage?.Id;
                 var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
@@ -395,7 +392,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return null;
         }
 
-        private Dictionary<string, string> MakeSearchConditions(string keyword, string name, string id, IEnumerable<string> kinds, string label,
+        private Dictionary<string, string> MakeSearchConditions(string keyword, string name, string id,
+            IEnumerable<string> kinds, string label,
             LanguageItem language)
         {
             // 검색조건
@@ -478,7 +476,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                     if (result.Value)
                     {
-                        var param = new CreateNewWindowMessageParameter(null, asset, selectedCaptionList );
+                        var param = new CreateNewWindowMessageParameter(null, asset, selectedCaptionList);
                         MessageCenter.Instance.Send(new Message.SubtitleEditor.CreateNewWindowMessage(this, param));
 
                         MessageCenter.Instance.Send(new LeftSideMenu.CloseMessage(this));
@@ -486,7 +484,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                         return;
                     }
                 }
-                
+
                 MessageCenter.Instance.Send(new Message.SubtitleEditor.CleanUpSubtitleMessage(this));
             }
 

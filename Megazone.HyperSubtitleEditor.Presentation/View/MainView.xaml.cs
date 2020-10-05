@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
@@ -15,8 +16,6 @@ using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Microsoft.Win32;
 using Unity;
-using Application = System.Windows.Application;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.View
 {
@@ -192,7 +191,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             wnd.ShowDialog();
-            
+
             return new AdjustTimeWay(wnd.Time, wnd.Range, wnd.Behavior);
         }
 
@@ -208,13 +207,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
 
             if (wnd.DialogResult.HasValue && wnd.DialogResult.Value)
-            {
                 return wnd.IsCreateNewWindow;
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public void ShowOpenVideoAddressWindow(string openTypeString)
@@ -337,6 +331,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             wnd.ShowDialog();
         }
 
+
+        public void RestartMainWindow()
+        {
+            var browser = Bootstrapper.Container.Resolve<IBrowser>();
+            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
+
+            if (subtitle.CheckWorkInProgress())
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                        Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
+                        MessageBoxButton.OKCancel,
+                        Application.Current.MainWindow)) == MessageBoxResult.Cancel)
+                    return;
+
+            if (Application.Current.MainWindow != null)
+            {
+                Application.Current.MainWindow.Closing -= MainWindow_Closing;
+
+                var applicationPath = this.StartUpPath() + this.GetApplicationName();
+
+                // 강제 종료시키고, 재실행하도록 한다.
+                if (Application.Current.MainWindow != null)
+                    Application.Current.MainWindow.Close();
+                Process.Start(applicationPath, "-r");
+            }
+        }
+
         private void MainView_Loaded(object sender, RoutedEventArgs e)
         {
             RootViewContainer.Child = new SubtitleView();
@@ -353,28 +373,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 var is64BitProcess = Environment.Is64BitOperatingSystem;
 
                 if (is64BitProcess)
-                {
                     regSearchKey =
                         "SOFTWARE\\WOW6432Node\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION";
-                }
                 else
-                {
                     regSearchKey =
                         "SOFTWARE\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION";
-                }
 
                 // 서브키를 얻어온다. 없으면 null
-                RegistryKey rk = Registry.LocalMachine.OpenSubKey(regSearchKey, false);
+                var rk = Registry.LocalMachine.OpenSubKey(regSearchKey, false);
                 // 없으면 서브키를 만든다.
-                var processName = System.AppDomain.CurrentDomain.FriendlyName;
+                var processName = AppDomain.CurrentDomain.FriendlyName;
                 if (rk != null)
                 {
                     var returnValue = rk.GetValue(processName);
 
-                    if (returnValue == null)
-                    {
-                        CreateExplorerVersionRegistry(regSearchKey, processName);
-                    }
+                    if (returnValue == null) CreateExplorerVersionRegistry(regSearchKey, processName);
                 }
             }
             catch (Exception e)
@@ -382,11 +395,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
                 Debug.WriteLine(e.Message);
             }
         }
+
         private void CreateExplorerVersionRegistry(string keyPath, string processName)
         {
             try
             {
-                using (Process proc = new Process())
+                using (var proc = new Process())
                 {
                     proc.StartInfo.FileName = "reg.exe";
                     proc.StartInfo.UseShellExecute = true;
@@ -408,50 +422,17 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             }
         }
 
-
-        public void RestartMainWindow()
-        {
-            var browser = Bootstrapper.Container.Resolve<IBrowser>();
-            var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
-
-            if (subtitle.CheckWorkInProgress())
-            {
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
-                        Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
-                        MessageBoxButton.OKCancel,
-                        Application.Current.MainWindow,
-                        TextAlignment.Center)) == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
-            }
-
-            if (Application.Current.MainWindow != null)
-            {
-                Application.Current.MainWindow.Closing -= MainWindow_Closing;
-
-                var applicationPath = this.StartUpPath() + this.GetApplicationName();
-
-                // 강제 종료시키고, 재실행하도록 한다.
-                if (Application.Current.MainWindow != null)
-                    Application.Current.MainWindow.Close();
-                Process.Start(applicationPath, "-r");
-            }
-        }
-
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             var browser = Bootstrapper.Container.Resolve<IBrowser>();
             var subtitle = Bootstrapper.Container.Resolve<SubtitleViewModel>();
 
             if (subtitle.CheckWorkInProgress())
-            {
-                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO, Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
+                if (browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
+                        Resource.MSG_PRGRAM_ENDS_IN_PROGRESS,
                         MessageBoxButton.OKCancel,
-                        Application.Current.MainWindow,
-                        TextAlignment.Center)) == MessageBoxResult.Cancel)
+                        Application.Current.MainWindow)) == MessageBoxResult.Cancel)
                     e.Cancel = true;
-            }
 
             subtitle.Unload();
         }

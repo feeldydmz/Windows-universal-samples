@@ -37,169 +37,172 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="56" />
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="56"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="56" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" >
+                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="1" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png"
-                               Width="16" 
-                               Height="16"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Margin="15,0,0,0"/>
+                        <Image
+                            Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_ico_mcm_small.png"
+                            Width="16"
+                            Height="16"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="15,0,0,0" />
                         <TextBlock Text="{x:Static resources:Resource.CNT_OPEN_RECENTLY_FILE}"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Foreground="#666666"
                                    FontWeight="Bold"
-                                   Margin="8,0,0,0"/>
+                                   Margin="8,0,0,0" />
                         <Button Margin="120,0,0,0"
                                 Command="{Binding ClearRecentlyListCommand}"
                                 IsEnabled="{Binding ElementName=RecentlyItemControl, Path=HasItems}">
                             <Button.Style>
-                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_OpacityObjectButton}">
-                                </Style>
+                                <Style TargetType="{x:Type Button}"
+                                       BasedOn="{StaticResource Style_OpacityObjectButton}" />
                             </Button.Style>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_delete.png"
-                                       Stretch="UniformToFill"
-                                       Height="15"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"/>
+                                <Image
+                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_delete.png"
+                                    Stretch="UniformToFill"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center" />
                                 <TextBlock Text="{x:Static resources:Resource.CNT_CLEAR_ALL}"
                                            Grid.Column="1"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Foreground="#222222"
-                                           Margin="8,0,0,0"/>
+                                           Margin="8,0,0,0" />
                             </Grid>
                         </Button>
                     </StackPanel>
                     <Border Grid.Row="0" Grid.RowSpan="2"
-                            BorderBrush="{StaticResource Brush_ListBoxItemBorder}" 
-                            BorderThickness="0,1,0,1"/>
+                            BorderBrush="{StaticResource Brush_ListBoxItemBorder}"
+                            BorderThickness="0,1,0,1" />
                 </Grid>
 
-                <ListBox x:Name="RecentlyItemControl" 
-                         Grid.Row="1" 
+                <ListBox x:Name="RecentlyItemControl"
+                         Grid.Row="1"
                          ItemsSource="{Binding Path=RecentlyItems}"
                          SelectedItem="{Binding SelectedItem}"
                          Background="White"
                          BorderThickness="0">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource Style_ListBoxItemFreeSize}">
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Padding" Value="0" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="viewModelItem:RecentlyItemViewModel">
                             <Border Width="320">
-                                <Grid Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
-                                <Border BorderThickness="0,0,0,1"
-                                        BorderBrush="{StaticResource Brush_ListBoxItemBorder}"/>
-                                <Grid Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
-                                      Margin="15,15,10,15">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <!--<ColumnDefinition Width="10" />
+                                <Grid
+                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                    <Border BorderThickness="0,0,0,1"
+                                            BorderBrush="{StaticResource Brush_ListBoxItemBorder}" />
+                                    <Grid
+                                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                                        Margin="15,15,10,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <!--<ColumnDefinition Width="10" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="10" />
                                         <ColumnDefinition Width="*" />-->
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="1" />
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0"
-                                                Orientation="Horizontal">
-                                    <Grid VerticalAlignment="Center">
-                                        <!--CAPTION 표시-->
-                                        <ContentControl Margin="0,4,0,4"
-                                                        Visibility="{Binding Video, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
-                                            <Grid x:Name="CaptionBadge">
-                                                <Rectangle Fill="{StaticResource Brush_Badge_Caption_Color}"
-                                                           RadiusY="2" RadiusX="3" />
-                                                <TextBlock Text="CAPTION" Margin="4,2,4,1"
-                                                           Foreground="White" 
-                                                           FontWeight="Bold" 
-                                                           FontSize="10"/>
-                                            </Grid>
-                                        </ContentControl>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="1" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Row="0"
+                                                    Orientation="Horizontal">
+                                            <Grid VerticalAlignment="Center">
+                                                <!--CAPTION 표시-->
+                                                <ContentControl Margin="0,4,0,4"
+                                                                Visibility="{Binding Video, Converter={StaticResource NullToVisibleNCollapsedConverter}}">
+                                                    <Grid x:Name="CaptionBadge">
+                                                        <Rectangle Fill="{StaticResource Brush_Badge_Caption_Color}"
+                                                                   RadiusY="2" RadiusX="3" />
+                                                        <TextBlock Text="CAPTION" Margin="4,2,4,1"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="10" />
+                                                    </Grid>
+                                                </ContentControl>
 
-                                        <!--VIDEO 표시-->
-                                        <ContentControl Margin="0,4,0,4"
-                                                        Visibility="{Binding Video, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                                            <Grid>
-                                                <Rectangle Fill="{StaticResource Brush_Badge_Video_Color}"
-                                                           RadiusY="2" RadiusX="3" />
-                                                <TextBlock Text="VIDEO" 
-                                                           Margin="11,2,11,1"
-                                                           Foreground="White" 
-                                                           FontWeight="Bold" 
-                                                           FontSize="10"/>
+                                                <!--VIDEO 표시-->
+                                                <ContentControl Margin="0,4,0,4"
+                                                                Visibility="{Binding Video, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
+                                                    <Grid>
+                                                        <Rectangle Fill="{StaticResource Brush_Badge_Video_Color}"
+                                                                   RadiusY="2" RadiusX="3" />
+                                                        <TextBlock Text="VIDEO"
+                                                                   Margin="11,2,11,1"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="10" />
+                                                    </Grid>
+                                                </ContentControl>
                                             </Grid>
-                                        </ContentControl>
-                                    </Grid>
-                                    <TextBlock Text="{Binding Path=Name}"
-                                               ToolTip="{Binding Path=Name}"
-                                               TextTrimming="CharacterEllipsis" 
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Left" 
-                                               Foreground="#222222"
-                                               FontWeight="Bold"
-                                               MaxWidth="130"
-                                               Margin="8,0,0,0"/>
+                                            <TextBlock Text="{Binding Path=Name}"
+                                                       ToolTip="{Binding Path=Name}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Left"
+                                                       Foreground="#222222"
+                                                       FontWeight="Bold"
+                                                       MaxWidth="130"
+                                                       Margin="8,0,0,0" />
                                             <TextBlock Text="{Binding Path=Id, StringFormat='{}({0})'}"
-                                               VerticalAlignment="Center" 
-                                               HorizontalAlignment="Left"
-                                               Foreground="{StaticResource Brush_MinorWhiteForeground}"
-                                               Margin="4,0,0,0"/>
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Left"
+                                                       Foreground="{StaticResource Brush_MinorWhiteForeground}"
+                                                       Margin="4,0,0,0" />
 
-                                    <!--<TextBlock Grid.Column="2" Grid.Row="1" 
+                                            <!--<TextBlock Grid.Column="2" Grid.Row="1" 
                                                Text="{Binding Path=SecondName}"
                                                ToolTip="{Binding Path=SecondName}"
                                                TextTrimming="CharacterEllipsis" 
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Left" />-->
-                                    <!--<TextBlock Grid.Column="4" Grid.Row="1" 
+                                            <!--<TextBlock Grid.Column="4" Grid.Row="1" 
                                                Text="{Binding Path=SecondId}"
                                                VerticalAlignment="Center" />-->
 
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <!--캡션정보-->
-                                    <Grid Grid.Column="0" 
-                                          Grid.Row="1" 
-                                          Visibility="{Binding Path=HasRelatedCaption, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                          Margin="0,8,0,0">
+                                        <!--캡션정보-->
+                                        <Grid Grid.Column="0"
+                                              Grid.Row="1"
+                                              Visibility="{Binding Path=HasRelatedCaption, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                              Margin="0,8,0,0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Style="{StaticResource Style_VideoExistCaptionBadgeImage}"
-                                                               Margin="8,0,0,0"
-                                                               HorizontalAlignment="Left"/>
+                                                       Margin="8,0,0,0"
+                                                       HorizontalAlignment="Left" />
                                                 <TextBlock Text="{Binding RelatedCaptionName}"
-                                                                   MaxWidth="130"
-                                                                   TextTrimming="CharacterEllipsis"
-                                                                   ToolTip="{Binding Path=RelatedCaptionName}" 
-                                                                   Margin="8,0,0,0"/>
+                                                           MaxWidth="130"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip="{Binding Path=RelatedCaptionName}"
+                                                           Margin="8,0,0,0" />
                                                 <TextBlock Text="{Binding RelatedCaptionId, StringFormat='{}({0})'}"
-                                                                   Foreground="{StaticResource Brush_MinorWhiteForeground}"
-                                                                   ToolTip="{Binding RelatedCaptionId, StringFormat='{}({0})'}" 
-                                                                   Margin="8,0,0,0">
-                                                </TextBlock>
+                                                           Foreground="{StaticResource Brush_MinorWhiteForeground}"
+                                                           ToolTip="{Binding RelatedCaptionId, StringFormat='{}({0})'}"
+                                                           Margin="8,0,0,0" />
                                             </StackPanel>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -208,18 +211,19 @@
                 <StackPanel Grid.Row="1"
                             Background="White"
                             Visibility="{Binding ElementName=RecentlyItemControl, Path=HasItems, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                        <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_no_data.png"
-                               Height="49"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="0,100,0,0"/>
-                        <TextBlock x:Name="EmptyListBlock"
+                    <Image
+                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_no_data.png"
+                        Height="49"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0,100,0,0" />
+                    <TextBlock x:Name="EmptyListBlock"
                                Foreground="#697382"
                                Text="{Binding Source={x:Static resources:Resource.MSG_EMPTY_RECENTLY_LIST_FILE}}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Top"
                                TextAlignment="Center"
-                               Margin="0,15,0,0"/>
+                               Margin="0,15,0,0" />
                 </StackPanel>
                 <!--하단 버튼 영역-->
                 <Border Grid.Row="2"
@@ -239,4 +243,3 @@
         </Border>
     </Grid>
 </UserControl>
-    

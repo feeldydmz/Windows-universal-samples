@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Annotations;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
-using Megazone.SubtitleEditor.Resources;
 using Unity;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI

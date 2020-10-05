@@ -16,11 +16,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
             public CaptionOpenMessageParameter Param { get; }
         }
+
         internal class CaptionResetMessage : MessageBase
         {
             public CaptionResetMessage(object sender) : base(sender)
             {
-         
             }
         }
 
@@ -59,7 +59,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class CaptionOpenRequestedByIdMessage : MessageBase
         {
-            public CaptionOpenRequestedByIdMessage(object sender, CaptionOpenRequestedByIdMessageParameter param) : base(sender)
+            public CaptionOpenRequestedByIdMessage(object sender, CaptionOpenRequestedByIdMessageParameter param) :
+                base(sender)
             {
                 Param = param;
             }

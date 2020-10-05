@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Megazone.Core.Extension;
-using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Log.Log4Net.Extension;
 using Megazone.Core.VideoTrack;
@@ -19,7 +17,6 @@ using Megazone.Core.Windows.Extension;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Extension;
-using Megazone.HyperSubtitleEditor.Presentation.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
 using Unity;
 
@@ -30,27 +27,29 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly ILogger _logger;
         private readonly Action<MediaPlayStates> _onMediaPlayStateChanged;
         private readonly Action<decimal> _onMediaPositionChanged;
+        private readonly SignInViewModel _signinViewModel;
         private CancellationTokenSource _cancellationTokenSource;
+        private ICommand _changeToOriginalSourceCommand;
 
         private IList<IText> _currentPositionText;
         private VideoResolutionInfo _currentResolution;
         private MediaKind _currentVideoType;
         private ICommand _dropToSetMediaCommand;
         private bool _hasAudioOnly;
+        private MediaHeaderData _headerData;
+
+        private bool _isPreview;
         private string _mediaSource;
         private decimal _naturalDuration;
 
         private ICommand _playStateChangedCommand;
         private ICommand _positionChangedCommand;
-        private ICommand _changeToOriginalSourceCommand;
         private IEnumerable<VideoResolutionInfo> _resolutions;
 
         private int _seekCount;
         private int _streamIndex;
         private BitmapSource _thumbnailSource;
         private MediaTimeSeeker _timeSeeker = new MediaTimeSeeker();
-        private MediaHeaderData _headerData;
-        private readonly SignInViewModel _signinViewModel;
 
         private IEnumerable<MediaKind> _videoTypes;
 
@@ -212,9 +211,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             private set;
         }
 
-        private bool _isPreview;
-
-        public bool  IsPreview
+        public bool IsPreview
         {
             get => _isPreview;
             set => Set(ref _isPreview, value);
@@ -240,7 +237,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             switch (state)
             {
-                
                 case MediaPlayStates.Opened:
                     OnOpenedVideo();
                     break;
@@ -293,10 +289,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             IsLocalFile = false;
 
             IsPreview = !isVideoContainer;
-            if (isVideoContainer)
-            {
-                OriginWorkContext = WorkContext;
-            }
+            if (isVideoContainer) OriginWorkContext = WorkContext;
 
             VideoResolutionsByType = WorkContext.VideoResolutionsByType;
             VideoUrlOfResolutions = WorkContext.VideoUrlOfResolutions;
@@ -343,9 +336,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 MediaSource = "";
 
-                this.CreateTask(() => {
-                    MediaSource = firstFilePath;
-                });
+                this.CreateTask(() => { MediaSource = firstFilePath; });
             }
             catch (Exception ex)
             {
@@ -354,7 +345,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        void FindStreamIndex()
+        private void FindStreamIndex()
         {
             if (HeaderData?.MpegDashStreamIndex != null && CurrentResolution != null)
                 try
@@ -370,7 +361,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 }
         }
 
-        void OnOpenedVideo()
+        private void OnOpenedVideo()
         {
             Debug.WriteLine("+ OnOpendVideo");
 
@@ -396,11 +387,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             Debug.WriteLine("OnOpendVideo 3");
 
             if (HeaderData != null)
-            {
                 //var fullPath = IsLocalFile ? HeaderData.Source.LocalPath : HeaderData.Source.AbsoluteUri;
                 LoadMediaItem(HeaderData.Source, IsLocalFile, HeaderData);
-            }
-            
+
             Debug.WriteLine("OnOpendVideo 4");
         }
 
@@ -438,7 +427,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 Url = fullPath,
                 IsRequestThumbnail = false,
                 Headers = $"mz-cm-auth:Bearer {authorization}\r\nprojectId:{projectId}"
-        }, _cancellationTokenSource);
+            }, _cancellationTokenSource);
 
             return videoData;
         }
@@ -451,7 +440,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _cancellationTokenSource = new CancellationTokenSource();
             var authorization = getAuthorization();
 
-            var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
+            var isAdaptiveHttpStreaming =
+                HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
 
             //this.CreateTask(() =>
             //{
@@ -496,33 +486,32 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var authorization = getAuthorization();
             var projectId = _signinViewModel.SelectedProject?.ProjectId;
 
-            WorkBarViewModel workBarViewmodel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
+            var workBarViewmodel = Bootstrapper.Container.Resolve<WorkBarViewModel>();
 
 
             //var isAdaptiveHttpStreaming = HeaderData.MediaKind == MediaKinds.Dash || HeaderData.MediaKind == MediaKinds.Hls;
             var isAdaptiveHttpStreaming = false;
 
-            var extension =  Path.GetExtension(uri.LocalPath).Replace(".", "");
+            var extension = Path.GetExtension(uri.LocalPath).Replace(".", "");
 
-            if (extension.Equals("mpd") || extension.Equals("m3u8"))
-            {
-                isAdaptiveHttpStreaming = true;
-            }
-            
+            if (extension.Equals("mpd") || extension.Equals("m3u8")) isAdaptiveHttpStreaming = true;
+
             this.CreateTask(() =>
             {
                 try
                 {
-                        var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
-                        {
-                            SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
-                            TimeoutMilliseconds = 7000,
-                            LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
-                            ThumbnailAtSeconds = (double)2,
-                            Headers = isAdaptiveHttpStreaming ? $"mz-cm-auth:Bearer {authorization}\r\nprojectId:{projectId}" : null
-                        });
-                        if (thumbnail != null)
-                            this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
+                    var thumbnail = new FFmpegLauncher().GetThumbnail(new FFmpegLauncher.FFmpegLauncherParameter
+                    {
+                        SaveThumbnailPath = GetTempThumbnailFilePath(uri, isLocalFile),
+                        TimeoutMilliseconds = 7000,
+                        LocalFilePath = isLocalFile ? uri.LocalPath : uri.AbsoluteUri,
+                        ThumbnailAtSeconds = 2,
+                        Headers = isAdaptiveHttpStreaming
+                            ? $"mz-cm-auth:Bearer {authorization}\r\nprojectId:{projectId}"
+                            : null
+                    });
+                    if (thumbnail != null)
+                        this.InvokeOnUi(() => { ThumbnailSource = thumbnail; });
                 }
                 catch (Exception ex)
                 {
@@ -612,7 +601,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //        _logger.Error.Write(ex);
             //    }
             //});
-
         }
 
         public void PlayForwardBy(TimeSpan timespan)

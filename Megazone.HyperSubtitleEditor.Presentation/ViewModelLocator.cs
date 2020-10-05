@@ -43,8 +43,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation
 
         public CaptionElementsEditViewModel CaptionElementEdit =>
             Bootstrapper.Container.Resolve<CaptionElementsEditViewModel>();
+
         public CaptionAssetListViewModel CaptionAssetList =>
             Bootstrapper.Container.Resolve<CaptionAssetListViewModel>();
-
     }
 }

@@ -93,10 +93,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                             Process.Start("explorer.exe", Path.GetDirectoryName(savePath));
                         }
                         else
+                        {
                             _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                                 Resource.MSG_EXPORT_EXCEL_FILE_FAIL,
                                 MessageBoxButton.OK,
                                 Application.Current.MainWindow));
+                        }
 
                         _browser.Main.LoadingManager.Hide();
                     });

@@ -21,7 +21,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Message
 
         internal class LoadStageProjectMessage : MessageBase
         {
-            public LoadStageProjectMessage(object sender, UserProfile userProfile, bool isStartForStandAlone) : base(sender)
+            public LoadStageProjectMessage(object sender, UserProfile userProfile, bool isStartForStandAlone) :
+                base(sender)
             {
                 UserProfile = userProfile;
                 IsStartForStandAlone = isStartForStandAlone;

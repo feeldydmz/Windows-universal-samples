@@ -49,12 +49,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             var openFileDialog = new OpenFileDialog
             {
-                InitialDirectory = string.IsNullOrEmpty(initialDirectory) ?
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) : initialDirectory,
+                InitialDirectory = string.IsNullOrEmpty(initialDirectory)
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                    : initialDirectory,
                 Filter = filter
             };
 
-            return  openFileDialog.ShowDialog() != true ? string.Empty : openFileDialog.FileName;
+            return openFileDialog.ShowDialog() != true ? string.Empty : openFileDialog.FileName;
         }
 
         public string OpenSaveFileDialog(string filePath, string filter, string defaultFileName = null)

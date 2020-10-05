@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
@@ -19,13 +16,11 @@ using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
 using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.SubtitleEditor.Resources;
 using Unity;
-using Application = System.Windows.Application;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
@@ -51,8 +46,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _durationStartTimeChangedCommand;
 
         private ICommand _enterCommand;
+        private string _idOfSearch;
 
         private ICommand _initializeCommand;
+
+        //private bool _isShowCaption;
+        private bool _isAdvancedSearch;
         private bool _isBusy;
 
         private bool _isConfirmButtonVisible;
@@ -62,25 +61,22 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private bool _isNextButtonVisible = true;
         private bool _isOpen;
-        //private bool _isShowCaption;
-        private bool _isAdvancedSearch;
 
         private string _keyword;
-        private string _nameOfSearch;
-        private string _idOfSearch;
 
         private IEnumerable<DisplayItem> _keywordTypeItems;
 
         private ICommand _loadCaptionCommand;
         private ICommand _loadCommand;
+        private string _nameOfSearch;
 
         private ICommand _nextStepCommand;
 
         private ICommand _openCommand;
 
         private ICommand _refreshCommand;
-        private ICommand _searchOptionChangeCommand;
         private ICommand _searchCommand;
+        private ICommand _searchOptionChangeCommand;
         private DisplayItem _selectedKeywordType;
         private int _selectedPageNo = 1;
 
@@ -266,7 +262,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _idOfSearch;
             set => Set(ref _idOfSearch, value);
         }
-        
+
         //public bool IsShowCaption
         //{
         //    get => _isShowCaption;
@@ -298,6 +294,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _closeCommand = _closeCommand ?? new RelayCommand(Close); }
         }
+
+        private VideoItemViewModel OldVideoItem { get; set; }
 
         private async void AddData()
         {
@@ -349,7 +347,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             if (_isLoading)
                 return;
-            await SearchAsync( selectedPageNo - 1, true);
+            await SearchAsync(selectedPageNo - 1, true);
         }
 
         private void OnDurationEndTimeChanged()
@@ -421,7 +419,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             OnLoadAction?.Invoke();
             IsConfirmButtonVisible = false;
             _isLoading = true;
-            await SearchAsync( 0);
+            await SearchAsync(0);
             _isLoading = false;
             IsOpen = true;
         }
@@ -430,8 +428,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             return true; //videoItem?.CaptionAssetItems?.Any() ?? false;
         }
-
-        private VideoItemViewModel OldVideoItem { get; set; }
 
         private async void LoadCaptionAsync(VideoItemViewModel videoItem)
         {
@@ -480,8 +476,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 //        Debug.WriteLine("not insert empty");
                 //    }
 
-               
-
 
                 OldVideoItem = videoItem;
                 IsConfirmButtonVisible = true;
@@ -497,7 +491,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private async void Refresh()
         {
-            await SearchAsync( 0);
+            await SearchAsync(0);
         }
 
         private void ChangedSearchOption()
@@ -592,7 +586,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             if (!IsAdvancedSearch)
             {
                 conditions.Add("q", Keyword);
-
             }
             else
             {
@@ -633,7 +626,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var video = SelectedVideoItem?.Source;
             var asset = SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Source;
             var selectedCaptionList =
-                SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Elements?.Where(caption => caption.IsSelected)
+                SelectedVideoItem?.CaptionAssetList?.SelectedCaptionAssetItem?.Elements
+                    ?.Where(caption => caption.IsSelected)
                     .Select(itemVm => itemVm.Source).ToList() ?? new List<Caption>();
 
             var subtitleViewModel = Bootstrapper.Container.Resolve<SubtitleViewModel>();

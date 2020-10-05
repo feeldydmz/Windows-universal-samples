@@ -34,7 +34,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <mz:StringToUpperConverter x:Key="StringToUpperConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
-            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter"/>
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter" />
 
         </ResourceDictionary>
     </UserControl.Resources>
@@ -57,7 +57,7 @@
 
                 <Border Grid.Row="0"
                         BorderBrush="{StaticResource Brush_ListBoxItemBorder}"
-                        BorderThickness="0,1,0,0"/>
+                        BorderThickness="0,1,0,0" />
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17, 12">
                     <Button Command="{StaticResource CloseLeftSideMenuCommand}" Margin="0,0,0,0"
                             Style="{StaticResource Style_IconMenuButton}">
@@ -67,20 +67,20 @@
                                 Width="30" Height="30" />
                         </Grid>
                     </Button>
-                    <TextBlock Text="{x:Static resources:Resource.CNT_OPEN}" 
+                    <TextBlock Text="{x:Static resources:Resource.CNT_OPEN}"
                                VerticalAlignment="Center"
                                Margin="17,0,0,0"
                                FontSize="12"
                                FontWeight="Bold"
-                               Foreground="#666666"/>
+                               Foreground="#666666" />
                 </StackPanel>
                 <Border Grid.Row="1">
-                    <Rectangle 
-                        Width="135" 
-                        Height="1" 
+                    <Rectangle
+                        Width="135"
+                        Height="1"
                         Fill="{StaticResource Brush_ListBoxItemBorder}"
                         Margin="50,0,0,0"
-                        HorizontalAlignment="Left"/>
+                        HorizontalAlignment="Left" />
                 </Border>
 
                 <Border Grid.Row="3">
@@ -196,9 +196,9 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <RadioButton x:Name="McmRadioButton" 
+                        <RadioButton x:Name="McmRadioButton"
                                      GroupName="LeftSideMainMenuGroup"
-                                     MouseEnter="OnMouseEnter" 
+                                     MouseEnter="OnMouseEnter"
                                      Click="McmRadioButton_OnClick">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
@@ -241,8 +241,8 @@
                                 <TextBlock Grid.Column="0"
                                            FontSize="12"
                                            Foreground="#222222"
-                                           Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}" 
-                                           Margin="10,0,0,0"/>
+                                           Text="{x:Static resources:Resource.CNT_OPEN_FROM_MCM}"
+                                           Margin="10,0,0,0" />
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
                                        HorizontalAlignment="Left"
@@ -320,8 +320,8 @@
                                 <TextBlock Grid.Column="0"
                                            FontSize="12"
                                            Foreground="#222222"
-                                           Text="{x:Static resources:Resource.CNT_RECENT_FILE}" 
-                                           Margin="10,0,0,0"/>
+                                           Text="{x:Static resources:Resource.CNT_RECENT_FILE}"
+                                           Margin="10,0,0,0" />
                                 <Image Grid.Column="2"
                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_arrow_right.png"
                                        HorizontalAlignment="Left"
@@ -366,10 +366,10 @@
                                                      GroupName="McmMenuGroup"
                                                      IsChecked="True"
                                                      Margin="3,3,15,3"
-                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}" >
+                                                     Command="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.LoadCommand}">
                                             <i:Interaction.Behaviors>
-                                                <behavior:LeftSideRadioMenuButtonBehavior 
-                                                    CloseCommand="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CloseCommand}"/>
+                                                <behavior:LeftSideRadioMenuButtonBehavior
+                                                    CloseCommand="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=VideoList.CloseCommand}" />
                                             </i:Interaction.Behaviors>
                                         </RadioButton>
 
@@ -398,7 +398,7 @@
                             <Border Grid.Row="1"
                                     Width="320"
                                     Visibility="{Binding ElementName=VideoRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <leftMenuView:McmVideoMenuView/>
+                                <leftMenuView:McmVideoMenuView />
                             </Border>
 
                             <Border Grid.Row="1"
@@ -424,22 +424,22 @@
                 </Grid>
             </Border>
 
-            <!--McmVideoMenuView에서 비디오 선택시 나오는 캡션 에셋 리스트 팝업--> 
-            <Border Grid.Column="2" 
-                    BorderThickness="1" 
+            <!--McmVideoMenuView에서 비디오 선택시 나오는 캡션 에셋 리스트 팝업-->
+            <Border Grid.Column="2"
+                    BorderThickness="1"
                     BorderBrush="#e0e2e6"
                     Background="White"
                     DataContext="{Binding VideoList, Source={StaticResource SubtitleViewModelLocator}}"
                     Visibility="{Binding Path=SelectedVideoItem.CaptionAssetList, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <!--<TextBlock Text="Second Caption List" Foreground="Red"/>-->
-                    <leftMenuView:CaptionAssetListView Grid.Row="0" 
-                                                   DataContext="{Binding SelectedVideoItem.CaptionAssetList, Mode=TwoWay}"
-                                                   Visibility="{Binding Path=CaptionAssetItems, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}"/>
+                    <leftMenuView:CaptionAssetListView Grid.Row="0"
+                                                       DataContext="{Binding SelectedVideoItem.CaptionAssetList, Mode=TwoWay}"
+                                                       Visibility="{Binding Path=CaptionAssetItems, Converter={StaticResource NullToCollapsedNVisibleConverter}, FallbackValue=Collapsed}" />
                     <Border Grid.Row="1"
                             BorderBrush="#e0e2e6"
                             BorderThickness="0,1,0,0">
@@ -449,18 +449,20 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition SharedSizeGroup="ButtonWidth" />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="1" 
+                            <Button Grid.Column="1"
                                     Margin="16,15"
                                     IsDefault="true"
                                     Visibility="{Binding IsConfirmButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Command="{Binding ConfirmCommand}" >
-                                <Button.Style >
+                                    Command="{Binding ConfirmCommand}">
+                                <Button.Style>
                                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ButtonDefault}">
-                                        <Setter Property="Content" Value="{x:Static resources:Resource.CNT_OPEN}"/>
+                                        <Setter Property="Content" Value="{x:Static resources:Resource.CNT_OPEN}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding VideoList.SelectedVideoItem.CaptionAssetList.IsNewCaptionAsset, Source={StaticResource SubtitleViewModelLocator} }" 
-                                                         Value="True">
-                                                <Setter Property="Content" Value="{x:Static resources:Resource.CNT_ADD}"/>
+                                            <DataTrigger
+                                                Binding="{Binding VideoList.SelectedVideoItem.CaptionAssetList.IsNewCaptionAsset, Source={StaticResource SubtitleViewModelLocator} }"
+                                                Value="True">
+                                                <Setter Property="Content"
+                                                        Value="{x:Static resources:Resource.CNT_ADD}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -474,4 +476,3 @@
         <!--<Border BorderBrush="#dfe3ee" BorderThickness="1" />-->
     </Grid>
 </UserControl>
-    

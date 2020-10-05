@@ -1,5 +1,4 @@
 ﻿using System;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
@@ -12,14 +11,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
     internal class CaptionElementItemViewModel : ViewModelBase
     {
         private bool _canDeploy;
+        private bool _isDirty;
         private bool _isDraft;
+        private bool _isOpened;
         private bool _isPreferred;
         private bool _isSelected;
-        private bool _isDirty;
-        private bool _isOpened;
         private SourceLocationKind _sourceLocation;
 
-        public CaptionElementItemViewModel(Caption caption, SourceLocationKind sourceLocation = SourceLocationKind.CreatedByEditor)
+        public CaptionElementItemViewModel(Caption caption,
+            SourceLocationKind sourceLocation = SourceLocationKind.CreatedByEditor)
         {
             Source = caption;
             Country = caption.Country;
@@ -31,13 +31,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Language = caption.Language;
             FileUrl = caption.Url;
             SourceLocation = sourceLocation;
-        }
-
-        private CaptionKind GetCaptionKind(string kind)
-        {
-            Enum.TryParse(kind, true, out CaptionKind captionKind);
-
-            return captionKind;
         }
 
         public Caption Source { get; }
@@ -96,6 +89,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _sourceLocation;
             set => Set(ref _sourceLocation, value);
+        }
+
+        private CaptionKind GetCaptionKind(string kind)
+        {
+            Enum.TryParse(kind, true, out CaptionKind captionKind);
+
+            return captionKind;
         }
     }
 }

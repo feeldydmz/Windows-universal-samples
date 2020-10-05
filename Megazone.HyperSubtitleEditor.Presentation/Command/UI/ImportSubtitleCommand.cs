@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
@@ -12,9 +10,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
     public class ImportSubtitleCommand : DependencyObject, ICommand
     {
-        private readonly WorkBarViewModel _workBarViewModel;
-        private readonly SubtitleViewModel _subtitleViewModel;
         private readonly IBrowser _browser;
+        private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly WorkBarViewModel _workBarViewModel;
 
         public ImportSubtitleCommand()
         {
@@ -33,14 +31,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             if (parameter is string content)
             {
                 if (content == Resource.CNT_IMPORT_CAPTION)
-                {
                     //_subtitleViewModel.OnImportSubtitleFile();
                     _browser.Main.ShowOpenSubtitleDialog();
-                }
-                else if(content == Resource.CNT_IMPORT_EXCEL)
-                {
-                    _browser.Main.ShowImportExcelDialog();
-                }
+                else if (content == Resource.CNT_IMPORT_EXCEL) _browser.Main.ShowImportExcelDialog();
             }
         }
 

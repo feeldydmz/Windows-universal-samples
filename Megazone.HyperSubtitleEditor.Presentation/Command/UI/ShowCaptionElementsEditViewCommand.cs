@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
@@ -13,8 +9,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
     public class ShowCaptionElementsEditViewCommand : DependencyObject, ICommand
     {
         private readonly CaptionElementsEditViewModel _captionElementsEditViewModel;
-        private readonly WorkBarViewModel _workBarViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
+        private readonly WorkBarViewModel _workBarViewModel;
 
         public ShowCaptionElementsEditViewCommand()
         {
@@ -35,7 +31,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                 _captionElementsEditViewModel.Show();
             else
                 _captionElementsEditViewModel.Close();
-            
         }
 
         public event EventHandler CanExecuteChanged

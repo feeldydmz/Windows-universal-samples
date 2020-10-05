@@ -14,9 +14,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 {
     public class ResetWorkBarCommand : DependencyObject, ICommand
     {
+        private readonly IBrowser _browser;
         private readonly SubtitleViewModel _subtitleViewModel;
         private readonly WorkBarViewModel _workBarViewModel;
-        private readonly IBrowser _browser;
 
         public ResetWorkBarCommand()
         {
@@ -31,28 +31,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             //if (_workBarViewModel.CaptionAssetItem == null && _workBarViewModel.VideoItem == null)
             //{
             if (_workBarViewModel.HasWorkData)
+                if (_subtitleViewModel.HasTab)
                 {
-                    if (_subtitleViewModel.HasTab)
-                    {
-                        var unMangedCaptionCount = _subtitleViewModel.Tabs?.Where(tab => string.IsNullOrEmpty(tab.Caption?.Id) && string.IsNullOrEmpty(tab.FilePath)).Count();
+                    var unMangedCaptionCount = _subtitleViewModel.Tabs?.Where(tab =>
+                        string.IsNullOrEmpty(tab.Caption?.Id) && string.IsNullOrEmpty(tab.FilePath)).Count();
 
-                        if (unMangedCaptionCount > 0)
-                        {
-                            return true;
-                        }
-                        // //= _subtitleViewModel.Tabs?.Where(tab => string.IsNullOrEmpty(tab.FilePath)).Count();
+                    if (unMangedCaptionCount > 0) return true;
+                    // //= _subtitleViewModel.Tabs?.Where(tab => string.IsNullOrEmpty(tab.FilePath)).Count();
 
-                        //if (unMangedCaptionCount > 0 && 
-                        //    unMangedCaptionCount != _subtitleViewModel.Tabs?.Count())
-                        //{
-                        //    return true;
-                        //}
+                    //if (unMangedCaptionCount > 0 && 
+                    //    unMangedCaptionCount != _subtitleViewModel.Tabs?.Count())
+                    //{
+                    //    return true;
+                    //}
 
-                        return _subtitleViewModel.Tabs?.Any(tab => tab.CheckDirty()) ?? false;
-                    }
+                    return _subtitleViewModel.Tabs?.Any(tab => tab.CheckDirty()) ?? false;
                 }
 
-                return false;
+            return false;
             //}
 
             ////Asset 없이 완전히 새로 만들어진 경우
@@ -67,11 +63,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                     Resource.MSG_CAPTION_ASSET_RESET_CONFIRM,
                     MessageBoxButton.OKCancel,
-                    Application.Current.MainWindow,
-                    TextAlignment.Center)) == MessageBoxResult.Cancel)
-            {
+                    Application.Current.MainWindow)) == MessageBoxResult.Cancel)
                 return;
-            }
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionResetMessage(this));
         }

@@ -44,7 +44,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             {
                 var result = _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_INFO,
                     Resource.MSG_LOAD_GROUP_FILE,
-                    MessageBoxButton.OKCancel, 
+                    MessageBoxButton.OKCancel,
                     Application.Current.MainWindow));
 
                 if (result == MessageBoxResult.Cancel)
@@ -63,10 +63,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
                     if (!_signInViewModel.SelectedStage.Id.Equals(group.Stage?.Id) ||
                         !_signInViewModel.SelectedProject.ProjectId.Equals(group.Project?.Id))
                     {
-                        var message = string.Format(Resource.MSG_CHANGE_PROJECT_WARNING, group.Stage.Name, group.Project.Name);
-                            
+                        var message = string.Format(Resource.MSG_CHANGE_PROJECT_WARNING, group.Stage.Name,
+                            group.Project.Name);
+
                         if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WAITING, message,
-                                MessageBoxButton.OK, 
+                                MessageBoxButton.OK,
                                 Application.Current.MainWindow,
                                 TextAlignment.Left)) == MessageBoxResult.OK)
                             return;
@@ -79,8 +80,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
             catch (Exception ex)
             {
                 _logger.Error.Write(ex.Message);
-                
-                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR, 
+
+                _browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_ERROR,
                     Resource.MSG_FILE_IMPORT_UNKOWN_ERROR,
                     MessageBoxButton.OK,
                     Application.Current.MainWindow));

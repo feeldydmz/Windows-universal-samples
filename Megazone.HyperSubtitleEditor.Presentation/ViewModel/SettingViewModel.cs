@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Windows;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Megazone.Core.Extension;
+using System.Windows;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
@@ -12,7 +9,6 @@ using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Browser;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Config;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.View;
-using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Strategy;
 using Megazone.SubtitleEditor.Resources;
@@ -26,13 +22,20 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private readonly IBrowser _browser;
         private readonly SubtitleViewModel _subtitle;
 
-        private DisplayItem _languageSelectedItem;
-
         private RelayCommand _applyCommand;
         private ConfigHolder _config;
+        private RelayCommand _confirmCommand;
         private RelayCommand _initiateCommand;
         private RelayCommand _initiateSubtitleCommand;
-        private RelayCommand _confirmCommand;
+
+        private IEnumerable<DisplayItem> _languageOptions = new List<DisplayItem>
+        {
+            new DisplayItem("자동", ""),
+            new DisplayItem("한국어", "ko-KR"),
+            new DisplayItem("English", "en-US")
+        };
+
+        private DisplayItem _languageSelectedItem;
 
         public SettingViewModel()
         {
@@ -49,13 +52,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _config;
             set => Set(ref _config, value);
         }
-
-        private IEnumerable<DisplayItem> _languageOptions = new List<DisplayItem>()
-        {
-            new DisplayItem("자동", ""),
-            new DisplayItem("한국어", "ko-KR"),
-            new DisplayItem("English", "en-US")
-        };
 
         public IEnumerable<DisplayItem> LanguageOptions
         {
@@ -152,14 +148,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void Save(ConfigHolder config)
         {
-            bool isChangedLanguage = !Config.Subtitle.Language.Equals(ConfigHolder.Current.Subtitle.Language);
+            var isChangedLanguage = !Config.Subtitle.Language.Equals(ConfigHolder.Current.Subtitle.Language);
 
             SettingSaveStrategyFactory.GetDefault()
                 .Save(config);
 
             if (isChangedLanguage)
                 AskForRestart();
-            
+
             MessageCenter.Instance.Send(new Message.SubtitleEditor.SettingsSavedMessage(this));
         }
 

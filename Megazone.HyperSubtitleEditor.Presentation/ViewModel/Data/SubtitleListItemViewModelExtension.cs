@@ -13,17 +13,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
         public static SubtitleItem ConvertToSubtitleItem(this ISubtitleListItemViewModel item)
         {
-            SubtitleItem newItem = new SubtitleItem()
+            var newItem = new SubtitleItem
             {
                 StartTime = item.StartTime,
                 EndTime = item.EndTime,
-                Number =  item.Number,
-                Texts =  item.Texts
+                Number = item.Number,
+                Texts = item.Texts
             };
 
 
             return newItem;
-
         }
     }
 }

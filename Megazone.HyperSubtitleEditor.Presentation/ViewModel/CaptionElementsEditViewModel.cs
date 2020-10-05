@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
-using Megazone.HyperSubtitleEditor.Presentation;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
+using Megazone.HyperSubtitleEditor.Presentation.Message.View;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
@@ -21,18 +17,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Singleton)]
     internal class CaptionElementsEditViewModel : ViewModelBase
     {
-        private bool _isShow;
-        private bool _isLocalCaptionOnly;
-        private IEnumerable<CaptionElementItemViewModel> _captionItems;
-        private string _assetName;
-        private string _assetId;
-        private IEnumerable<CaptionKind> _subtitleKinds;
+        private readonly SignInViewModel _signInViewModel;
         private readonly SubtitleViewModel _subtitleViewModel;
         private readonly WorkBarViewModel _workBarViewModel;
-        private readonly SignInViewModel _signInViewModel;
 
         private ICommand _applyCommand;
+        private string _assetId;
+        private string _assetName;
+        private IEnumerable<CaptionElementItemViewModel> _captionItems;
         private ICommand _closeCommand;
+        private bool _isLocalCaptionOnly;
+        private bool _isShow;
+        private IEnumerable<CaptionKind> _subtitleKinds;
+
+        public CaptionElementsEditViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
+            WorkBarViewModel workBarViewModel)
+        {
+            _signInViewModel = signInViewModel;
+            _subtitleViewModel = subtitleViewModel;
+            _workBarViewModel = workBarViewModel;
+
+            AssetName = null;
+            AssetId = null;
+
+            MessageCenter.Instance.Regist<CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
+        }
 
 
         public IEnumerable<CaptionElementItemViewModel> CaptionItems
@@ -71,32 +80,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _subtitleKinds, value);
         }
 
-        public ICommand ApplyCommand
-        {
-            get => _applyCommand = _applyCommand ?? new RelayCommand(Apply);
-        }
-        public ICommand CloseCommand
-        {
-            get => _closeCommand = _closeCommand ?? new RelayCommand(Close);
-        }
+        public ICommand ApplyCommand => _applyCommand = _applyCommand ?? new RelayCommand(Apply);
 
-        public CaptionElementsEditViewModel(SignInViewModel signInViewModel, SubtitleViewModel subtitleViewModel,
-            WorkBarViewModel workBarViewModel)
-        {
-            _signInViewModel = signInViewModel;
-            _subtitleViewModel = subtitleViewModel;
-            _workBarViewModel = workBarViewModel;
-
-            AssetName = null;
-            AssetId = null;
-
-            MessageCenter.Instance.Regist<Message.View.CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
-
-        }
+        public ICommand CloseCommand => _closeCommand = _closeCommand ?? new RelayCommand(Close);
 
         ~CaptionElementsEditViewModel()
         {
-            MessageCenter.Instance.Unregist<Message.View.CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
+            MessageCenter.Instance.Unregist<CaptionElementsEditView.ChangedTabMessage>(OnChangedTab);
         }
 
         public async void Show()
@@ -106,7 +96,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             AssetId = _workBarViewModel.CaptionAssetItem?.Id;
             AssetName = _workBarViewModel.CaptionAssetItem?.Name ?? "Untitled";
 
-            CaptionItems =  await MakeList();
+            CaptionItems = await MakeList();
         }
 
         public void Close()
@@ -117,7 +107,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public void Apply()
         {
             var openItems = new List<KeyValuePair<Caption, SourceLocationKind>>();
-            var closeItems= new List<SubtitleTabItemViewModel>();
+            var closeItems = new List<SubtitleTabItemViewModel>();
 
             foreach (var item in CaptionItems)
             {
@@ -131,10 +121,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     // 닫힐 탭
                     else
                     {
-
                         var tab = _subtitleViewModel.Tabs.FirstOrDefault(t => t.Caption?.Id == item.Id);
 
-                        if(tab is SubtitleTabItemViewModel tabItem)
+                        if (tab is SubtitleTabItemViewModel tabItem)
                             closeItems.Add(tabItem);
 
                         item.IsOpened = false;
@@ -145,8 +134,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             MessageCenter.Instance.Send(
-                new Message.SubtitleEditor.CaptionElementUpdateMessage(this, new CaptionElementUpdateMessageParameter(openItems, closeItems)));
-
+                new Message.SubtitleEditor.CaptionElementUpdateMessage(this,
+                    new CaptionElementUpdateMessageParameter(openItems, closeItems)));
         }
 
         private async Task<IEnumerable<CaptionElementItemViewModel>> MakeList()
@@ -154,7 +143,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             List<CaptionElementItemViewModel> newElementItemViewModel = null;
 
             var elementItemViewModelOfCloud = _workBarViewModel.CaptionAssetItem?.Elements?.ToList();
-            
+
             if (elementItemViewModelOfCloud != null)
             {
                 newElementItemViewModel = elementItemViewModelOfCloud;
@@ -178,7 +167,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 //elementItemViewModelOfCloud 가 null 이라면 tab에 있는 모든 caption element는 로컬 파일이고
                 //newElementItem 에 도 null이 됨
-                var newElementItem = _workBarViewModel.CaptionAssetItem?.Elements?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
+                var newElementItem =
+                    _workBarViewModel.CaptionAssetItem?.Elements?.FirstOrDefault(e => e.Id == tab.Caption?.Id);
 
                 if (newElementItem != null)
                 {
@@ -189,8 +179,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 {
                     // 로컬 파일 또는 직접 생성했지만 아직 Cloud에 올리지 않은 Caption Element
                     var caption = new Caption(tab.Caption?.Id, false, false, tab.LanguageCode, tab.CountryCode,
-                                tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
-                                tab.Caption?.Size ?? 0);
+                        tab.Kind.ToString().ToUpper(), tab.Name, tab.Caption?.Url, "", tab.Caption?.MimeType,
+                        tab.Caption?.Size ?? 0);
 
                     newElementItem = new CaptionElementItemViewModel(caption, tab.SourceLocation)
                     {
@@ -205,7 +195,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             return newElementItemViewModel;
         }
 
-        private async void OnChangedTab(Message.View.CaptionElementsEditView.ChangedTabMessage message)
+        private async void OnChangedTab(CaptionElementsEditView.ChangedTabMessage message)
         {
             if (IsShow)
                 CaptionItems = await MakeList();

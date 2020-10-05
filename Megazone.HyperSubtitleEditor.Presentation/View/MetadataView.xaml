@@ -86,28 +86,28 @@
             <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_NAME}"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
+                <Polygon Points="0,0 4.5, 2.3, 0, 4.5"
                          Margin="0,6,5,0"
-                         Stroke="#A4A5A6" 
-                         Fill="#A4A5A6" 
+                         Stroke="#A4A5A6"
+                         Fill="#A4A5A6"
                          VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Name}" 
-                           Style="{StaticResource ContentText}" 
+                <TextBlock Text="{Binding Name}"
+                           Style="{StaticResource ContentText}"
                            MaxWidth="150"
                            TextTrimming="CharacterEllipsis"
                            ToolTip="{Binding Name}" />
             </StackPanel>
         </StackPanel>
 
-        
+
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <TextBlock Text="ID"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
+                <Polygon Points="0,0 4.5, 2.3, 0, 4.5"
                          Margin="0,6,5,0"
-                         Stroke="#A4A5A6" 
-                         Fill="#A4A5A6" 
+                         Stroke="#A4A5A6"
+                         Fill="#A4A5A6"
                          VerticalAlignment="Center" />
                 <TextBlock Text="{Binding VideoId}" Style="{StaticResource ContentText}" />
             </StackPanel>
@@ -120,8 +120,8 @@
         </StackPanel>-->
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Orientation="Vertical">
-            <Rectangle Height="1" Width="305" Fill="#2d3344" HorizontalAlignment="Left"/>
-            <TextBlock Margin="0,20,0,0"  Text="{x:Static resources:Resource.CNT_VIDEO_META_CAPTIONS}"
+            <Rectangle Height="1" Width="305" Fill="#2d3344" HorizontalAlignment="Left" />
+            <TextBlock Margin="0,20,0,0" Text="{x:Static resources:Resource.CNT_VIDEO_META_CAPTIONS}"
                        Style="{StaticResource CaptionText}" />
             <ItemsControl ItemsSource="{Binding Captions, Mode=TwoWay}"
                           Foreground="White"
@@ -132,20 +132,20 @@
                     <DataTemplate DataType="{x:Type model:MetadataCaptionAssetInfo}">
                         <StackPanel Orientation="Horizontal" Margin="0,9,0,0">
                             <Image Margin="0,0,10,0"
-                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_assets_caption.png"/>
+                                   Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_assets_caption.png" />
                             <TextBlock Text="{Binding Name}"
                                        MaxWidth="150"
                                        TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Name}"/>
-                            <TextBlock Text="{Binding Id, StringFormat='{}({0})'}" 
+                                       ToolTip="{Binding Name}" />
+                            <TextBlock Text="{Binding Id, StringFormat='{}({0})'}"
                                        Margin="5,0,0,0"
                                        FontWeight="Normal"
                                        Foreground="#b6c0ce"
                                        TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Id}"/>
+                                       ToolTip="{Binding Id}" />
                         </StackPanel>
                     </DataTemplate>
-                    
+
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
@@ -155,11 +155,11 @@
             <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_STATUS}"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal">
-                <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
+                <Polygon Points="0,0 4.5, 2.3, 0, 4.5"
                          Margin="0,6,5,0"
-                         Stroke="#A4A5A6" 
-                         Fill="#A4A5A6" 
-                         VerticalAlignment="Center" />  
+                         Stroke="#A4A5A6"
+                         Fill="#A4A5A6"
+                         VerticalAlignment="Center" />
                 <Ellipse Width="8"
                          Height="8"
                          Fill="#2E9812"
@@ -174,10 +174,10 @@
             <TextBlock Text="{x:Static resources:Resource.CNT_VIDEO_META_JOBID}"
                        Style="{StaticResource CaptionText}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Polygon Points="0,0 4.5, 2.3, 0, 4.5" 
+                <Polygon Points="0,0 4.5, 2.3, 0, 4.5"
                          Margin="0,6,5,0"
-                         Stroke="#A4A5A6" 
-                         Fill="#A4A5A6" 
+                         Stroke="#A4A5A6"
+                         Fill="#A4A5A6"
                          VerticalAlignment="Center" />
                 <TextBlock Text="{Binding JobId}" Style="{StaticResource ContentText}" />
             </StackPanel>

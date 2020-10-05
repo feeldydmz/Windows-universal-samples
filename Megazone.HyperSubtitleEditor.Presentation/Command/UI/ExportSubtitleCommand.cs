@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel;
@@ -29,18 +25,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Command.UI
 
         public void Execute(object parameter)
         {
-            if (parameter is System.Windows.Controls.MenuItem menuItem)
+            if (parameter is MenuItem menuItem)
             {
                 var header = menuItem.Header as string;
 
                 if (header == Resource.CNT_EXPORT_ALL_SUBTITLE_FILE)
-                {
                     MessageCenter.Instance.Send(new Message.SubtitleEditor.SaveAllMessage(this));
-                }
                 else if (header == Resource.CNT_EXPORT_SUBTITLE_FILE)
-                {
                     MessageCenter.Instance.Send(new Message.SubtitleEditor.ExportSubtitleMessage(this));
-                }
             }
         }
 

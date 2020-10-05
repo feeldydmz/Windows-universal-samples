@@ -78,7 +78,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="55" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -169,10 +169,9 @@
                         <TextBlock Grid.Row="10" Grid.Column="0"
                                    Text="{Binding Source={x:Static resources:Resource.CNT_LANGUAGE}, StringFormat='{}{0} : '}" />
 
-                        <ComboBox Grid.Row="10" Grid.Column="1" 
+                        <ComboBox Grid.Row="10" Grid.Column="1"
                                   ItemsSource="{Binding LanguageOptions}"
-                                  SelectedItem="{Binding LanguageSelectedItem}"
-                                  >
+                                  SelectedItem="{Binding LanguageSelectedItem}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=Display}" Foreground="#333333" />
@@ -195,9 +194,9 @@
                                     HorizontalAlignment="Stretch"
                                     Value="{Binding Config.Subtitle.MediaBufferingSeconds, Mode=TwoWay}" />
 
-                        <Border Grid.Row="14" Grid.ColumnSpan="2"  Background="#FFf2f6fb" 
+                        <Border Grid.Row="14" Grid.ColumnSpan="2" Background="#FFf2f6fb"
                                 CornerRadius="3" Padding="12,8" VerticalAlignment="Bottom">
-                            <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap" 
+                            <TextBlock TextAlignment="Center" Margin="0" TextWrapping="Wrap"
                                        Text="{x:Static resources:Resource.MSG_VIDEO_PLAY_CONDITION}" />
                         </Border>
                     </Grid>

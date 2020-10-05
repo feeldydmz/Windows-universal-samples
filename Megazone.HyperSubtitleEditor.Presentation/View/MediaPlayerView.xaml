@@ -28,7 +28,7 @@
             <converters:PlayDurationTimeConverter x:Key="PlayDurationTimeConverter" />
             <mz:BooleanToCollapsedNVisibleConverter x:Key="BooleanToCollapsedNVisibleConverter" />
             <mz:NullToCollapsedNVisibleConverter x:Key="NullToCollapsedNVisibleConverter" />
-            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter"/>
+            <mz:NullToVisibleNCollapsedConverter x:Key="NullToVisibleNCollapsedConverter" />
 
             <Style TargetType="{x:Type mz:VideoElement}">
                 <Setter Property="Background" Value="Black" />
@@ -227,60 +227,60 @@
             <Border BorderBrush="#262f4d" BorderThickness="0,1" Background="#262f4d" />
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" 
-                        Visibility="{Binding IsPreview, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
-                    <Image  Width="21" Height="15" Margin="10,0,9,0"
-                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            Visibility="{Binding IsPreview, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
+                    <Image Width="21" Height="15" Margin="10,0,9,0"
+                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_video_icon.png" />
                     <TextBlock Text="{x:Static resources:Resource.CNT_ORIGINAL_VIDEO_CAPTION}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Foreground="White"
-                           FontSize="12"/>
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="White"
+                               FontSize="12" />
                 </StackPanel>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" 
-                        Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                    <Image  Width="21" Height="15" Margin="10,0,9,0"
-                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_preview_title.png" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <Image Width="21" Height="15" Margin="10,0,9,0"
+                           Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_preview_title.png" />
                     <TextBlock Text="{x:Static resources:Resource.CNT_PREVIEW_VIDEO}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Foreground="White"
-                           FontSize="12"/>
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="White"
+                               FontSize="12" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="2" 
+                <StackPanel Orientation="Horizontal" Grid.Column="2"
                             Visibility="{Binding WorkBar.VideoItem, Source={StaticResource SubtitleViewModelLocator}, Converter={StaticResource NullToCollapsedNVisibleConverter}}">
-                    <Button  
-                        Style="{StaticResource Style_VideoBarButton}" 
+                    <Button
+                        Style="{StaticResource Style_VideoBarButton}"
                         Margin="5,0"
                         Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
                         Command="{Binding ChangeToOriginalSourceCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" Width="14" Height="12" Margin="2,0,8,0"
                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_caption_element_reset.png" />
                             <TextBlock Grid.Column="1" Text="{x:Static resources:Resource.CNT_ORIGINAL_VIDEO_VIEW}" />
                         </Grid>
                     </Button>
-                    <Rectangle 
-                        Fill="#78828e" 
+                    <Rectangle
+                        Fill="#78828e"
                         Height="26" Width="1"
-                        Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"/>
+                        Visibility="{Binding IsPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" />
                 </StackPanel>
                 <Button Grid.Column="4" Style="{StaticResource Style_VideoBarButton}" Margin="5,0"
-                    Content="{x:Static resources:Resource.CNT_PREVIEW_VIDEO_REPLACE}"
-                    Command="{StaticResource ShowOpenVideoAddressWindowCommand}"/>
+                        Content="{x:Static resources:Resource.CNT_PREVIEW_VIDEO_REPLACE}"
+                        Command="{StaticResource ShowOpenVideoAddressWindowCommand}" />
             </Grid>
 
         </Grid>

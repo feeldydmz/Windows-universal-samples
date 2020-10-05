@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.Core.Windows.Mvvm;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Enum;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
-using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Unity;
 
@@ -67,22 +65,24 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             try
             {
                 if (Mode == SubtitleDialogViewMode.Add)
-                    MessageCenter.Instance.Send(new Message.SubtitleEditor.CaptionElementCreateNewMessage(this, new FileOpenedMessageParameter
-                    {
-                        Kind = SelectedSubtitleKind,
-                        Label = Label,
-                        LanguageCode = SelectedLanguage.LanguageCode,
-                        CountryCode = SelectedLanguage.CountryCode
-                    }));
+                    MessageCenter.Instance.Send(new Message.SubtitleEditor.CaptionElementCreateNewMessage(this,
+                        new FileOpenedMessageParameter
+                        {
+                            Kind = SelectedSubtitleKind,
+                            Label = Label,
+                            LanguageCode = SelectedLanguage.LanguageCode,
+                            CountryCode = SelectedLanguage.CountryCode
+                        }));
                 if (Mode == SubtitleDialogViewMode.Edit)
-                    MessageCenter.Instance.Send(new Message.SubtitleEditor.EditTabMessage(this, new EditTabMessageParameter
-                    {
-                        Id = TabId,
-                        Kind = SelectedSubtitleKind,
-                        Label = Label,
-                        LanguageCode = SelectedLanguage.LanguageCode,
-                        CountryCode = SelectedLanguage.CountryCode
-                    }));
+                    MessageCenter.Instance.Send(new Message.SubtitleEditor.EditTabMessage(this,
+                        new EditTabMessageParameter
+                        {
+                            Id = TabId,
+                            Kind = SelectedSubtitleKind,
+                            Label = Label,
+                            LanguageCode = SelectedLanguage.LanguageCode,
+                            CountryCode = SelectedLanguage.CountryCode
+                        }));
             }
             catch (Exception ex)
             {

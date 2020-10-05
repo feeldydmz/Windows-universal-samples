@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {
     public class CaptionOpenRequestedByIdMessageParameter
     {
-        public CaptionOpenRequestedByIdMessageParameter( string videoId, string captionAssetId, IEnumerable<string> captionElements)
+        public CaptionOpenRequestedByIdMessageParameter(string videoId, string captionAssetId,
+            IEnumerable<string> captionElements)
         {
             VideoId = videoId;
             CaptionAssetId = captionAssetId;

@@ -5,7 +5,6 @@ using Megazone.Core.IoC;
 using Megazone.Core.Log;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Model;
-using Megazone.HyperSubtitleEditor.Presentation.Message;
 using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
 using Megazone.SubtitleEditor.Resources;
 

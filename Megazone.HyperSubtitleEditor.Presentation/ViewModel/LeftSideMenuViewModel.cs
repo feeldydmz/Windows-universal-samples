@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
@@ -25,9 +23,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     internal class LeftSideMenuViewModel : ViewModelBase
     {
         private readonly IBrowser _browser;
+        private readonly CaptionAssetMenuViewModel _captionMenu;
         private readonly RecentlyLoader _recentlyLoader;
         private readonly VideoListViewModel _videoMenu;
-        private readonly CaptionAssetMenuViewModel _captionMenu;
+        private ICommand _clearRecentlyListCommand;
         private ICommand _closeCommand;
         private bool _hasRegisteredMessageHandlers;
         private bool _isOpen;
@@ -36,19 +35,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         private ICommand _loadRecentlyCommand;
 
         private ICommand _openRecentlyCommand;
-        private ICommand _selectedItemCommand;
-        private ICommand _clearRecentlyListCommand;
-
-        private RecentlyItemViewModel _selectedItem;
         private List<RecentlyItemViewModel> _recentlyItems;
 
         private ICommand _RefreshCommand;
+
+        private RecentlyItemViewModel _selectedItem;
+        private ICommand _selectedItemCommand;
         private ICommand _unloadCommand;
 
-        public LeftSideMenuViewModel(IBrowser browser, 
-                                     RecentlyLoader recentlyLoader,
-                                     VideoListViewModel videoMenu,
-                                     CaptionAssetMenuViewModel captionMenu)
+        public LeftSideMenuViewModel(IBrowser browser,
+            RecentlyLoader recentlyLoader,
+            VideoListViewModel videoMenu,
+            CaptionAssetMenuViewModel captionMenu)
         {
             _browser = browser;
             _recentlyLoader = recentlyLoader;
@@ -98,10 +96,37 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get { return _loadRecentlyCommand = _loadRecentlyCommand ?? new RelayCommand(LoadRecently); }
         }
-        
+
         public ICommand SelectedItemCommand
         {
-            get { return _selectedItemCommand = _selectedItemCommand ?? new RelayCommand<RecentlyItemViewModel>(SelectedRecentlyItem); }
+            get
+            {
+                return _selectedItemCommand =
+                    _selectedItemCommand ?? new RelayCommand<RecentlyItemViewModel>(SelectedRecentlyItem);
+            }
+        }
+
+        public ICommand OpenRecentlyCommand
+        {
+            get
+            {
+                return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand(OpenRecently, CanRecentlyItem);
+            }
+        }
+
+        public ICommand ClearRecentlyListCommand
+        {
+            get
+            {
+                return _clearRecentlyListCommand =
+                    _clearRecentlyListCommand ?? new RelayCommand<RecentlyItem>(ClearRecentlyList);
+            }
+        }
+
+
+        public ICommand RefreshCommand
+        {
+            get { return _RefreshCommand = _RefreshCommand ?? new RelayCommand(Refresh); }
         }
 
         private void SelectedRecentlyItem(RecentlyItemViewModel selectedItem)
@@ -109,32 +134,16 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             SelectedItem = selectedItem;
         }
 
-        public ICommand OpenRecentlyCommand
-        {
-            get { return _openRecentlyCommand = _openRecentlyCommand ?? new RelayCommand(OpenRecently, CanRecentlyItem); }
-        }
-
         private bool CanRecentlyItem()
         {
             return SelectedItem != null;
-        }
-
-        public ICommand ClearRecentlyListCommand
-        {
-            get { return _clearRecentlyListCommand = _clearRecentlyListCommand ?? new RelayCommand<RecentlyItem>(ClearRecentlyList); }
-        }
-
-        
-        public ICommand RefreshCommand
-        {
-            get { return _RefreshCommand = _RefreshCommand ?? new RelayCommand(Refresh); }
         }
 
         private void Refresh()
         {
             var videoListViewModel = Bootstrapper.Container.Resolve<VideoListViewModel>();
             var captionAssetListViewModel = Bootstrapper.Container.Resolve<CaptionAssetMenuViewModel>();
-            
+
             videoListViewModel.ClearSearchParameter();
             videoListViewModel.LoadCommand?.Execute(null);
 
@@ -149,7 +158,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 if (subtitleVm.Tabs.Any(tab => tab.CheckDirty()))
                     if (_browser.ShowConfirmWindow(new ConfirmWindowParameter(Resource.CNT_WARNING,
-                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS, 
+                            Resource.MSG_THERE_IS_WORK_IN_PROGRESS,
                             MessageBoxButton.OKCancel,
                             Application.Current.MainWindow)) !=
                         MessageBoxResult.OK)
@@ -171,7 +180,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //    new CaptionOpenMessageParameter(video, asset, selectedCaptionList, true)));
 
             MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this,
-                new CaptionOpenRequestedByIdMessageParameter(SelectedItem?.Video?.Id, SelectedItem?.RelatedCaptionId, SelectedItem?.CaptionElementIds)));
+                new CaptionOpenRequestedByIdMessageParameter(SelectedItem?.Video?.Id, SelectedItem?.RelatedCaptionId,
+                    SelectedItem?.CaptionElementIds)));
 
             //if (localFileFullPath.IsNullOrEmpty())
             //{
@@ -217,7 +227,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             foreach (var removeItem in removeItems) tempList.Remove(removeItem);
 
-            RecentlyItems = tempList.Select(r=> new RecentlyItemViewModel(r)).ToList();
+            RecentlyItems = tempList.Select(r => new RecentlyItemViewModel(r)).ToList();
         }
 
         private void Load()
@@ -226,7 +236,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private void Unload()
-        {   
+        {
             Console.WriteLine("Unload");
             //UnregisterMessageHandlers();
         }

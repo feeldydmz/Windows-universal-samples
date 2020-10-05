@@ -385,7 +385,7 @@
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_CAPTION}"
-                                          Command="{StaticResource ImportSubtitleCommand}" 
+                                          Command="{StaticResource ImportSubtitleCommand}"
                                           CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
                                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
                                           Command="{StaticResource ImportSubtitleCommand}"
@@ -393,29 +393,36 @@
                                 <!--<MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}">
                                    
                                 </MenuItem>-->
-                                <MenuItem ItemsSource="{Binding RecentlyItems}" Header="{x:Static resources:Resource.CNT_RECENT_LOCAL_FILE}">
+                                <MenuItem ItemsSource="{Binding RecentlyItems}"
+                                          Header="{x:Static resources:Resource.CNT_RECENT_LOCAL_FILE}">
                                     <MenuItem.ItemContainerStyle>
-                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Style_MenuItemDefault}">
-                                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
+                                        <Style TargetType="{x:Type MenuItem}"
+                                               BasedOn="{StaticResource Style_MenuItemDefault}">
+                                            <Setter Property="Command"
+                                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.OpenRecentlyCommand}" />
                                             <Setter Property="CommandParameter" Value="{Binding}" />
                                         </Style>
                                     </MenuItem.ItemContainerStyle>
                                     <MenuItem.ItemTemplate>
                                         <DataTemplate DataType="{x:Type data:RecentlyItem}">
-                                        <TextBlock x:Name="recentlyMenuItem" Foreground="Black"
-                                                   Text="{Binding FirstName}"/>
-                                        <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}}, Path=IsHighlighted}" Value="True">
-                                                    <Setter Property="Foreground" Value="White" TargetName="recentlyMenuItem"/>
+                                            <TextBlock x:Name="recentlyMenuItem" Foreground="Black"
+                                                       Text="{Binding FirstName}" />
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}}, Path=IsHighlighted}"
+                                                    Value="True">
+                                                    <Setter Property="Foreground" Value="White"
+                                                            TargetName="recentlyMenuItem" />
                                                 </DataTrigger>
-                                        </DataTemplate.Triggers>
+                                            </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </MenuItem.ItemTemplate>
                                     <MenuItem.Style>
-                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource Style_MenuItemDefault}">
+                                        <Style TargetType="{x:Type MenuItem}"
+                                               BasedOn="{StaticResource Style_MenuItemDefault}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding RecentlyItems.Count}" Value="0">
-                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="IsEnabled" Value="False" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -440,9 +447,10 @@
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_SUBTITLE_FILE}"
-                                          Command="{StaticResource ExportSubtitleCommand}" 
+                                          Command="{StaticResource ExportSubtitleCommand}"
                                           CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
-                                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_SUBTITLE_FILE}" InputGestureText="Ctrl+S"
+                                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_SUBTITLE_FILE}"
+                                          InputGestureText="Ctrl+S"
                                           Command="{StaticResource ExportSubtitleCommand}"
                                           CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
                                 <Separator />
@@ -630,7 +638,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0">
-                <views:WorkBarView Panel.ZIndex="999"/>
+                <views:WorkBarView Panel.ZIndex="999" />
             </Grid>
 
             <!--좌측 > 자막 편집 영역-->
@@ -646,10 +654,10 @@
                 <Border Grid.Row="0" Margin="0,-4,0,0">
                     <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
                             <!--탭추가버튼-->
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
                         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                             <ScrollViewer.Style>
@@ -1015,10 +1023,10 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        
+
                         <!--<StackPanel Grid.Column="1" Orientation="Horizontal" MinWidth="400">-->
-                       
-                            <Button Grid.Column="1" ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
+
+                        <Button Grid.Column="1" ToolTip="{x:Static resources:Resource.CNT_ADD_NEW_CAPTION}"
                                 Command="{StaticResource AddTabCommand}" Margin="-1,4,-1,0">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
@@ -1064,23 +1072,23 @@
                             </Grid>
                         </Button>
 
-                        
+
                         <!--</StackPanel>-->
                     </Grid>
                 </Border>
-                <Grid >
+                <Grid>
                     <!--<Border BorderBrush="red" BorderThickness="1"/>-->
                     <ToggleButton ToolTip="{x:Static resources:Resource.CNT_CAPTION_LIST_EDIT}"
-                                Command="{StaticResource ShowCaptionElementsEditViewCommand}" 
-                                IsChecked="{Binding Path=CaptionElementEdit.IsShow, Mode=TwoWay, Source={StaticResource SubtitleViewModelLocator}}"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Right">
+                                  Command="{StaticResource ShowCaptionElementsEditViewCommand}"
+                                  IsChecked="{Binding Path=CaptionElementEdit.IsShow, Mode=TwoWay, Source={StaticResource SubtitleViewModelLocator}}"
+                                  Margin="0,0,0,0"
+                                  HorizontalAlignment="Right">
                         <ToggleButton.Style>
                             <Style TargetType="{x:Type ToggleButton}">
                                 <Setter Property="UseLayoutRounding" Value="True" />
                                 <Setter Property="SnapsToDevicePixels" Value="True" />
                                 <Setter Property="FocusVisualStyle"
-                                            Value="{DynamicResource Style_DefaultFocusVisual}" />
+                                        Value="{DynamicResource Style_DefaultFocusVisual}" />
                                 <Setter Property="Background" Value="Transparent" />
                                 <Setter Property="Focusable" Value="False" />
                                 <Setter Property="BorderThickness" Value="1,1,1,1" />
@@ -1108,20 +1116,25 @@
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#EEFFFFFF" TargetName="Container"/>
+                                                    <Setter Property="Background" Value="#EEFFFFFF"
+                                                            TargetName="Container" />
                                                 </Trigger>
                                                 <Trigger Property="IsPressed" Value="True">
                                                     <Setter Property="Opacity" Value="0.7" TargetName="Container" />
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditCloseIcon" />
-                                                    <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditIcon" />
-                                                    <Setter Property="Background" Value="White"/>
-                                                    <Setter Property="BorderThickness" Value="1,1,1,0"/>
+                                                    <Setter Property="Visibility" Value="Hidden"
+                                                            TargetName="CaptionElementEditCloseIcon" />
+                                                    <Setter Property="Visibility" Value="Visible"
+                                                            TargetName="CaptionElementEditIcon" />
+                                                    <Setter Property="Background" Value="White" />
+                                                    <Setter Property="BorderThickness" Value="1,1,1,0" />
                                                 </Trigger>
                                                 <Trigger Property="IsChecked" Value="False">
-                                                    <Setter Property="Visibility" Value="Visible" TargetName="CaptionElementEditCloseIcon" />
-                                                    <Setter Property="Visibility" Value="Hidden" TargetName="CaptionElementEditIcon" />
+                                                    <Setter Property="Visibility" Value="Visible"
+                                                            TargetName="CaptionElementEditCloseIcon" />
+                                                    <Setter Property="Visibility" Value="Hidden"
+                                                            TargetName="CaptionElementEditIcon" />
                                                 </Trigger>
                                                 <Trigger Property="IsEnabled" Value="False">
                                                     <Setter Property="Opacity" Value="0.4" TargetName="Container" />
@@ -1132,11 +1145,10 @@
                                 </Setter>
                             </Style>
                         </ToggleButton.Style>
-                        
+
                     </ToggleButton>
                 </Grid>
 
-                
 
                 <ListView x:Name="SubtitleListView" Grid.Row="1"
                           Margin="0,4,0,0" BorderThickness="0,1,0,0"
@@ -1386,8 +1398,8 @@
                         Background="White">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="404*"/>
-                            <ColumnDefinition Width="43*"/>
+                            <ColumnDefinition Width="404*" />
+                            <ColumnDefinition Width="43*" />
                         </Grid.ColumnDefinitions>
                         <i:Interaction.Behaviors>
                             <mz:DropToCommandBehavior Command="{Binding DropToAddSubtitleCommand}" />
@@ -1408,14 +1420,14 @@
                                        Text="{x:Static resources:Resource.MSG_DRAG_OPEN_CAPTION}" />
                             <Grid Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Grid.Resources>
                                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_ButtonDefault}">
                                         <Setter Property="Background" Value="#FF5594d8" />
-                                        <Setter Property="Width" Value="95"/>
+                                        <Setter Property="Width" Value="95" />
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="Background" Value="#FF5fa5f0" />
@@ -1430,13 +1442,16 @@
                                 </Grid.Resources>
                                 <!--<Button Content="{x:Static resources:Resource.CNT_LOAD_CAPTION}" Margin="5,0"
                                         Command="{StaticResource OpenSubtitleCommand}" />-->
-                                <Button Grid.Column="0" Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}" Margin="5,0,0,0" 
+                                <Button Grid.Column="0" Content="{x:Static resources:Resource.CNT_CREATE_NEW_CAPTION}"
+                                        Margin="5,0,0,0"
                                         Command="{StaticResource AddTabCommand}" />
-                                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_IMPORT_CAPTION}" Margin="5,0,0,0" Width="124"
-                                        Command="{StaticResource ImportSubtitleCommand}" 
+                                <Button Grid.Column="1" Content="{x:Static resources:Resource.CNT_IMPORT_CAPTION}"
+                                        Margin="5,0,0,0" Width="124"
+                                        Command="{StaticResource ImportSubtitleCommand}"
                                         CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
-                                <Button Grid.Column="2" Content="{x:Static resources:Resource.CNT_IMPORT_EXCEL}" Margin="5,0,0,0" Width="124"
-                                        Command="{StaticResource ImportSubtitleCommand}" 
+                                <Button Grid.Column="2" Content="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
+                                        Margin="5,0,0,0" Width="124"
+                                        Command="{StaticResource ImportSubtitleCommand}"
                                         CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}" />
                             </Grid>
                         </Grid>
@@ -1453,7 +1468,7 @@
                         BorderThickness="1,0,1,1"
                         Background="White"
                         Visibility="{Binding Source={StaticResource SubtitleViewModelLocator},Path=CaptionElementEdit.IsShow, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
-                    <views:CaptionElementsEditView/>
+                    <views:CaptionElementsEditView />
                 </Border>
 
                 <!--메타데이터 왼쪽 사이드 바-->

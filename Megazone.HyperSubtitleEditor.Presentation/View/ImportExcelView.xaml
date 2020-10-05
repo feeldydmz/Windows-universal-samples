@@ -21,7 +21,7 @@
                 <ResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/View/CommonDataTemplete.xaml" />
                 <ResourceDictionary
-                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml"/>
+                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

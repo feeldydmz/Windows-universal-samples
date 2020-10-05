@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Domain;
-using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.ServiceInterface;
 using Megazone.Cloud.Media.ServiceInterface.Parameter;
 using Megazone.Core.Extension;
@@ -38,11 +36,11 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private ICommand _durationEndTimeChangedCommand;
 
-        private ICommand _enterCommand;
-
         private TimeSpan _durationStartTime;
 
         private ICommand _durationStartTimeChangedCommand;
+
+        private ICommand _enterCommand;
 
         private string _filePath;
 
@@ -134,6 +132,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _durationEndTimeChangedCommand ?? new RelayCommand(OnDurationEndTimeChanged);
             }
         }
+
         public ICommand EnterCommand
         {
             get { return _enterCommand = _enterCommand ?? new RelayCommand<string>(Enter); }
@@ -426,7 +425,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (IsBusy)
                     return false;
 
-                if (SelectedVideoItem != null && SelectedVideoItem.Encryptions != null && SelectedVideoItem.Encryptions.Contains("DRM"))
+                if (SelectedVideoItem != null && SelectedVideoItem.Encryptions != null &&
+                    SelectedVideoItem.Encryptions.Contains("DRM"))
                     return false;
 
                 if (SelectedVideoItem != null) return true;
@@ -465,7 +465,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private void OpenUrl()
         {
-            var matches = Regex.Match(UrlPath, @"/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/");
+            var matches = Regex.Match(UrlPath,
+                @"/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/");
 
             if (matches.Success)
                 MessageCenter.Instance.Send(new MediaPlayer.OpenMediaFromUrlMessage(this, UrlPath, false));

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -71,13 +70,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             _logger = logger;
             _signInViewModel = signInViewModel;
             CurrentPageNumber = 1;
-        }
-
-        //internal string DefaultProjectInfoFilePath => $"{Path.GetTempPath()}subtitleDefaultInfo.dat";
-
-        private string GetSavePath()
-        {
-            return $"{this.AppDataPath()}\\subtitleDefaultInfo.dat";
         }
 
         public bool IsProjectViewVisible
@@ -207,6 +199,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     _leftSlideNavigateCommand ?? new RelayCommand<string>(NavigateLeft);
             }
         }
+
         public ICommand RightSlideNavigateCommand
         {
             get { return _rightNavigateCommand = _rightNavigateCommand ?? new RelayCommand<string>(NavigateRight); }
@@ -217,6 +210,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get => _isBusy;
             set => Set(ref _isBusy, value);
         }
+
         public ICommand LoadCommand
         {
             get { return _loadCommand = _loadCommand ?? new RelayCommand(Load); }
@@ -236,7 +230,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
         }
 
-        
+        //internal string DefaultProjectInfoFilePath => $"{Path.GetTempPath()}subtitleDefaultInfo.dat";
+
+        private string GetSavePath()
+        {
+            return $"{this.AppDataPath()}\\subtitleDefaultInfo.dat";
+        }
+
+
         private void Load()
         {
             RegisterMessageHandlers();
@@ -271,9 +272,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     //stageItem.SelectedProject = DefaultProject;
                 }
             }
-            catch (System.InvalidOperationException e)
+            catch (InvalidOperationException e)
             {
-                return;
             }
             catch (Exception e)
             {
@@ -373,7 +373,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             await _languageLoader.LoadAsync();
 
-            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this, 
+            MessageCenter.Instance.Send(new CloudMedia.CaptionOpenRequestedByIdMessage(this,
                 new CaptionOpenRequestedByIdMessageParameter(videoId, assetId, captionIds)));
         }
 
@@ -530,7 +530,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsProjectViewVisible = true;
 
                 var stages =
-                    await _cloudMediaService.GetStagesAsync(new GetStagesParameter(_signInViewModel.GetAuthorizationAsync().Result),
+                    await _cloudMediaService.GetStagesAsync(
+                        new GetStagesParameter(_signInViewModel.GetAuthorizationAsync().Result),
                         CancellationToken.None);
 
                 StageItems = stages?.Select(stage => new StageItemViewModel(stage)).ToList() ??
@@ -541,7 +542,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var stageItem in StageItems)
                 {
                     var projects = await _cloudMediaService.GetProjectsAsync(
-                        new GetProjectsParameter(_signInViewModel.GetAuthorizationAsync().Result, stageItem.Id, stageItem.Name),
+                        new GetProjectsParameter(_signInViewModel.GetAuthorizationAsync().Result, stageItem.Id,
+                            stageItem.Name),
                         CancellationToken.None);
 
                     if (projects == null || projects.TotalCount == 0)
@@ -556,7 +558,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                     //}
 
                     var projectItems = projects.Results
-                        .Where(project => project.IsActive == true)
+                        .Where(project => project.IsActive)
                         .Select(project => new ProjectItemViewModel(stageItem.Id, project)
                         ).ToList();
                     stageItem.ProjectItems = projectItems;
@@ -629,11 +631,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 IsBusy = false;
 
                 if (isStartForStandAlone)
-                {
                     StartProjectByPass(AppContext.McmOpenData.StageId, AppContext.McmOpenData.ProjectId);
-
-                }
-
             }
             catch (Exception e)
             {
@@ -662,24 +660,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             }
 
             DefaultProjectSerialize serializeItem = null;
-            if (DefaultProject.IsDefault == true)
-            {
+            if (DefaultProject.IsDefault)
                 serializeItem = new DefaultProjectSerialize
                 {
                     StageId = DefaultProject.StageId,
                     ProjectId = DefaultProject.ProjectId
                 };
-            }
 
             SaveDefaultProject(serializeItem);
-            
         }
 
         private void SaveDefaultProject(DefaultProjectSerialize defaultProjectSerialize)
         {
             var profileData = JsonConvert.SerializeObject(defaultProjectSerialize);
 
-            var savePath =  GetSavePath();
+            var savePath = GetSavePath();
             File.WriteAllText(savePath, profileData);
         }
 

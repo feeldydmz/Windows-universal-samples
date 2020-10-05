@@ -55,8 +55,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
             public string AssetId { get; private set; }
             public IEnumerable<string> CaptionIds { get; private set; }
 
-            public McmData(string authorization, 
-                string stageId, 
+            public McmData(string authorization,
+                string stageId,
                 string projectId)
             {
                 Authorization = authorization;
@@ -69,8 +69,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
 
             public class Creator
             {
-                private string _authorization;
                 private string _assetId;
+                private string _authorization;
                 private IEnumerable<string> _captionIds;
                 private string _projectId;
                 private string _stageId;
@@ -80,13 +80,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
                 {
                     var configuration = new McmData(_authorization, _stageId, _projectId)
                     {
-                        VideoId = _videoId, 
+                        VideoId = _videoId,
                         AssetId = _assetId,
                         CaptionIds = _captionIds
                     };
 
                     return configuration;
                 }
+
                 public Creator SetAuthorization(string authorization)
                 {
                     _authorization = authorization;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Megazone.Core.IoC;
@@ -12,21 +11,31 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     internal class CaptionAssetListViewModel : ViewModelBase
     {
-        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems = null;
-        private CaptionAssetItemViewModel _selectedCaptionAssetItem;
+        private IEnumerable<CaptionAssetItemViewModel> _captionAssetItems;
 
         private ICommand _captionAssetSectionChangedCommand;
         private ICommand _captionElementSelectionChangedCommand;
 
         private bool _isNewCaptionAsset;
+        private CaptionAssetItemViewModel _selectedCaptionAssetItem;
 
-        
+        public CaptionAssetListViewModel(IEnumerable<CaptionAssetItemViewModel> captionAssetItems = null)
+        {
+            CaptionAssetItems = captionAssetItems;
+
+            if (CaptionAssetItems == null) return;
+
+            SelectFirstItem();
+        }
+
+
         public ICommand LeftButtonUpCommand
         {
             get
             {
                 return _captionAssetSectionChangedCommand =
-                    _captionAssetSectionChangedCommand ?? new RelayCommand<CaptionAssetItemViewModel>(CaptionAsstSelectionChanged);
+                    _captionAssetSectionChangedCommand ??
+                    new RelayCommand<CaptionAssetItemViewModel>(CaptionAsstSelectionChanged);
             }
         }
 
@@ -35,12 +44,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             get
             {
                 return _captionElementSelectionChangedCommand = _captionElementSelectionChangedCommand ??
-                                                         new RelayCommand<CaptionElementItemViewModel>(
-                                                             OnCaptionSelectionChanged);
+                                                                new RelayCommand<CaptionElementItemViewModel>(
+                                                                    OnCaptionSelectionChanged);
             }
         }
 
-        
+
         public IEnumerable<CaptionAssetItemViewModel> CaptionAssetItems
         {
             get => _captionAssetItems;
@@ -53,9 +62,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             {
                 // Id가 없는 CaptionAsset이 있다면 (캡션 새로 만들기 버튼임)
                 if (_captionAssetItems != null && _captionAssetItems.Any(c => string.IsNullOrEmpty(c.Id)))
-                {
-                    return !(_captionAssetItems.Any(c => !string.IsNullOrEmpty(c.Id)));
-                }
+                    return !_captionAssetItems.Any(c => !string.IsNullOrEmpty(c.Id));
 
                 return false;
             }
@@ -71,15 +78,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             get => _isNewCaptionAsset;
             set => Set(ref _isNewCaptionAsset, value);
-        }
-
-        public CaptionAssetListViewModel(IEnumerable<CaptionAssetItemViewModel> captionAssetItems = null)
-        {
-            CaptionAssetItems = captionAssetItems;
-
-            if (CaptionAssetItems == null) return;
-            
-            SelectFirstItem();
         }
 
         private void SelectFirstItem()

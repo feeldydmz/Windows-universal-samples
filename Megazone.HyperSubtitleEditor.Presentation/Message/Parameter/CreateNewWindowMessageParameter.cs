@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
-using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message.Parameter
 {

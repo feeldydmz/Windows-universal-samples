@@ -24,7 +24,7 @@
                 <mz:DesignTimeResourceDictionary
                     Source="/Megazone.HyperSubtitleEditor.Presentation;component/DesignTimeResourceDictionary.xaml" />
                 <ResourceDictionary
-                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml"/>
+                    Source="/Megazone.HyperSubtitleEditor.Presentation.Infrastructure;component/View/CommonObjectDataProviderDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -128,7 +128,8 @@
 
                     <TextBox Grid.Column="5" Grid.Row="1"
                              Text="{Binding Path=AssetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <ComboBox Grid.Column="5" Grid.Row="3" ItemsSource="{Binding Source={StaticResource CaptionKIndEnums}}"
+                    <ComboBox Grid.Column="5" Grid.Row="3"
+                              ItemsSource="{Binding Source={StaticResource CaptionKIndEnums}}"
                               SelectedItem="{Binding Path=SelectedSubtitleKind}" />
                     <Border Grid.Column="5" Grid.Row="5" BorderThickness="1"
                             BorderBrush="{StaticResource Brush_Border_Outer_Line_Color}">

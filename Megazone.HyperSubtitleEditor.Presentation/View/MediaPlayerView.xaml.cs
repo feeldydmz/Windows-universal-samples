@@ -37,12 +37,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         public static readonly DependencyProperty MediaSourceProperty =
             DependencyProperty.Register("MediaSource", typeof(string), typeof(MediaPlayerView),
                 new PropertyMetadata(
-                    (s, e) => { ((MediaPlayerView) s).OnMediaSourceProperty((string)e.NewValue, (string) e.OldValue); }));
+                    (s, e) =>
+                    {
+                        ((MediaPlayerView) s).OnMediaSourceProperty((string) e.NewValue, (string) e.OldValue);
+                    }));
 
         public static readonly DependencyProperty StreamIndexProperty =
             DependencyProperty.Register("StreamIndex", typeof(int), typeof(MediaPlayerView),
                 new PropertyMetadata(
-                    (s, e) => { ((MediaPlayerView) s).OnStreamIndexProperty((int)e.NewValue, (int)e.OldValue); }));
+                    (s, e) => { ((MediaPlayerView) s).OnStreamIndexProperty((int) e.NewValue, (int) e.OldValue); }));
 
         public static readonly DependencyProperty HasAudioOnlyProperty =
             DependencyProperty.Register("HasAudioOnly", typeof(bool), typeof(MediaPlayerView),
@@ -101,7 +104,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         public MediaHeaderData HeaderData
         {
-            get => (MediaHeaderData)GetValue(HeaderDataProperty);
+            get => (MediaHeaderData) GetValue(HeaderDataProperty);
             set => SetValue(HeaderDataProperty, value);
         }
 
@@ -265,7 +268,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void OnPlayStateChanged(MediaPlayStates playState)
         {
-            IsThumbnailVisible = playState == MediaPlayStates.Opened || 
+            IsThumbnailVisible = playState == MediaPlayStates.Opened ||
                                  playState == MediaPlayStates.Manual ||
                                  playState == MediaPlayStates.Stop ||
                                  playState == MediaPlayStates.Closed;
@@ -316,12 +319,19 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
             CurrentPosition = currentPosition;
         }
 
+        private void TypeUrlList_OnDropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb)
+                if (cb.Items.Count == 1)
+                    cb.IsDropDownOpen = false;
+        }
+
         #region Media Control Func
 
         private void OpenMedia(string mediaSource = null, int streamIndex = 0)
         {
-            var authorization = ((MediaPlayerViewModel)(this.DataContext)).getAuthorization();
-            var projectId = ((MediaPlayerViewModel)(this.DataContext)).ProjectId;
+            var authorization = ((MediaPlayerViewModel) DataContext).getAuthorization();
+            var projectId = ((MediaPlayerViewModel) DataContext).ProjectId;
 
             VideoElement.Source = mediaSource;
             VideoElement.Authorization = authorization;
@@ -332,8 +342,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
 
         private void PlayMedia(string mediaSource = null, int streamIndex = 0)
         {
-            var authorization = ((MediaPlayerViewModel) (this.DataContext)).getAuthorization();
-            var projectId = ((MediaPlayerViewModel)(this.DataContext)).ProjectId;
+            var authorization = ((MediaPlayerViewModel) DataContext).getAuthorization();
+            var projectId = ((MediaPlayerViewModel) DataContext).ProjectId;
 
             if (VideoElement == null)
                 return;
@@ -383,14 +393,5 @@ namespace Megazone.HyperSubtitleEditor.Presentation.View
         }
 
         #endregion
-
-        private void TypeUrlList_OnDropDownOpened(object sender, EventArgs e)
-        {
-            if (sender is ComboBox cb)
-            {
-                if (cb.Items.Count == 1)
-                    cb.IsDropDownOpen = false;
-            }
-        }
     }
 }

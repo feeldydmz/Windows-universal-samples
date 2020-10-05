@@ -32,7 +32,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var projectId = _signInViewModel.SelectedProject?.ProjectId;
 
             var reuslt = _recentlyItems
-                .Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId) && recently.IsOnLine.Equals(isOnline)) 
+                .Where(recently => recently.StageId.Equals(stageId) && recently.ProjectId.Equals(projectId) &&
+                                   recently.IsOnLine.Equals(isOnline))
                 .OrderByDescending(recently => recently.CreatedTime);
 
             Debug.WriteLine("---GetRecentlyItems---");
@@ -80,21 +81,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 if (item.Video != null && item.CaptionAsset != null)
                     // 비디오 저장시
                     foreach (var recentlyItem in _recentlyItems.Where(r => r.Video?.Id == item.Video?.Id &&
-                        r.CaptionAsset?.Id == item.CaptionAsset?.Id))
+                                                                           r.CaptionAsset?.Id == item.CaptionAsset?.Id))
                         toRemove.Add(recentlyItem);
                 else if (item.Video == null && item.CaptionAsset != null)
                     // 캡션에셋 저장시
-                    foreach (var recentlyItem in _recentlyItems.Where(r => r.CaptionAsset?.Id == item.CaptionAsset?.Id && r.Video == null))
+                    foreach (var recentlyItem in _recentlyItems.Where(r =>
+                        r.CaptionAsset?.Id == item.CaptionAsset?.Id && r.Video == null))
                         toRemove.Add(recentlyItem);
                 else if (item.Video != null && item.CaptionAsset == null)
                     // 비디오 저장시
                     foreach (var recentlyItem in _recentlyItems.Where(r => r.Video?.Id == item.Video?.Id))
                         toRemove.Add(recentlyItem);
                 else if (item.Video == null && item.CaptionAsset == null)
-                {
-                    foreach (var recentlyItem in _recentlyItems.Where(r => r.LocalFileFullPath== item.LocalFileFullPath))
+                    foreach (var recentlyItem in _recentlyItems.Where(
+                        r => r.LocalFileFullPath == item.LocalFileFullPath))
                         toRemove.Add(recentlyItem);
-                }
 
                 if (toRemove.Count() != 0) _recentlyItems.RemoveAll(toRemove.Contains);
 

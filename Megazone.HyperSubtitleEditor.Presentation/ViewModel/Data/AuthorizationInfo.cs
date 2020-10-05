@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Megazone.Cloud.Media.ServiceInterface.Model;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
@@ -10,7 +6,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data
     public class AuthorizationInfo : Authorization
     {
         public AuthorizationInfo(string accessToken, string refreshToken, string expires, DateTime expiresTime)
-         :base (accessToken, refreshToken, expires)
+            : base(accessToken, refreshToken, expires)
         {
             /*Authorization = authorization;
             ExpiresTime = expireTime;*/

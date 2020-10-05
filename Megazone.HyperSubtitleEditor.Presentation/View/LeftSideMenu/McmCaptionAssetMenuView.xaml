@@ -14,7 +14,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource SubtitleViewModelLocator}, Path=CaptionAssetMenu}"
-             AllowDrop="False" ClipToBounds="True" 
+             AllowDrop="False" ClipToBounds="True"
              x:Name="Root">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -38,9 +38,9 @@
 
             <Thickness x:Key="AdvancedSearchOptionMargin">0,2,0,1</Thickness>
 
-            <Style x:Key="Style_PlaceHolder" TargetType="{x:Type TextBox}" >
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="BorderBrush" Value="White"/>
+            <Style x:Key="Style_PlaceHolder" TargetType="{x:Type TextBox}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="BorderBrush" Value="White" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
@@ -53,9 +53,9 @@
                                     x:Name="textSource"
                                     Background="Transparent"
                                     Panel.ZIndex="2"
-                                    Foreground="#333333" 
+                                    Foreground="#333333"
                                     BorderThickness="0"
-                                    FontSize="11"/>
+                                    FontSize="11" />
                                 <TextBox Text="{TemplateBinding Tag}"
                                          Background="{TemplateBinding Background}"
                                          Panel.ZIndex="1"
@@ -72,7 +72,8 @@
                                                     <Setter Property="VerticalContentAlignment" Value="Center" />
                                                 </DataTrigger>
                                                 <DataTrigger
-                                                    Binding="{Binding Path=IsFocused, Source={x:Reference textSource}}" Value="True">
+                                                    Binding="{Binding Path=IsFocused, Source={x:Reference textSource}}"
+                                                    Value="True">
                                                     <Setter Property="Foreground" Value="Transparent" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -177,38 +178,39 @@
                     <!--<RowDefinition Height="Auto" />-->
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition/>
+                    <RowDefinition />
                     <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
 
                 <!--구분선-->
                 <Rectangle Grid.Row="0" Fill="#dfe3ee" Height="1" VerticalAlignment="Top" />
 
-                <Grid Grid.Row="0" 
-                      Margin="15,14,15,10" >
+                <Grid Grid.Row="0"
+                      Margin="15,14,15,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Text" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}"/>
-                                    <Setter Property="FontWeight" Value="bold"/>
-                                    <Setter Property="Foreground" Value="#222222"/>
+                                    <Setter Property="Text" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}" />
+                                    <Setter Property="FontWeight" Value="bold" />
+                                    <Setter Property="Foreground" Value="#222222" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsAdvancedSearch}"
                                                      Value="True">
-                                            <Setter Property="Text" Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}"/>
+                                            <Setter Property="Text"
+                                                    Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -220,16 +222,19 @@
                                 Command="{Binding Path=SearchOptionChangeCommand}"
                                 Margin="0,0,2,0">
                             <Grid>
-                                <Image Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
-                                       Width="13" Height="13" />
+                                <Image
+                                    Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_search_option_transform.png"
+                                    Width="13" Height="13" />
                             </Grid>
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style_IconMenuButton}">
-                                    <Setter Property="ToolTip" Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}"/>
+                                    <Setter Property="ToolTip"
+                                            Value="{x:Static resources:Resource.CNT_ADVANCED_SEARCH}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsAdvancedSearch, Mode=TwoWay}"
                                                      Value="True">
-                                            <Setter Property="ToolTip" Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}"/>
+                                            <Setter Property="ToolTip"
+                                                    Value="{x:Static resources:Resource.CNT_QUICK_SEARCH}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -239,53 +244,53 @@
 
 
                     <!-- 빠른 검색 -->
-                    <Border Grid.Row="1" 
-                            BorderBrush="#a0a8b6" 
-                            BorderThickness="1" 
+                    <Border Grid.Row="1"
+                            BorderBrush="#a0a8b6"
+                            BorderThickness="1"
                             Margin="{StaticResource AdvancedSearchOptionMargin}"
                             CornerRadius="2"
                             Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToCollapsedNVisibleConverter}}">
                         <TextBox x:Name="KeywordTextBox"
-                                         Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource Style_PlaceHolder}"
-                                         Tag="{x:Static resources:Resource.CNT_SEARCH}">
+                                 Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource Style_PlaceHolder}"
+                                 Tag="{x:Static resources:Resource.CNT_SEARCH}">
                             <i:Interaction.Behaviors>
                                 <mz:KeyEventToRunCommandBehavior
-                                            Command="{Binding Path=EnterCommand}"
-                                            Key="Enter" />
+                                    Command="{Binding Path=EnterCommand}"
+                                    Key="Enter" />
                             </i:Interaction.Behaviors>
                         </TextBox>
                     </Border>
 
                     <!--고급 검색-->
-                    <Grid Grid.Row="1" 
-                                  Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid Grid.Row="1"
+                          Visibility="{Binding IsAdvancedSearch, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
                             <!--<RowDefinition Height="30"/>-->
                         </Grid.RowDefinitions>
 
-                        <Border BorderBrush="#a0a8b6" 
-                                        BorderThickness="1" 
-                                        Margin="{StaticResource AdvancedSearchOptionMargin}"
-                                        CornerRadius="2">
+                        <Border BorderBrush="#a0a8b6"
+                                BorderThickness="1"
+                                Margin="{StaticResource AdvancedSearchOptionMargin}"
+                                CornerRadius="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="1"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{x:Static resources:Resource.CNT_NAME}" 
+                                <TextBlock Text="{x:Static resources:Resource.CNT_NAME}"
                                            VerticalAlignment="Center"
-                                           Margin="10,0,0,0"/>
+                                           Margin="10,0,0,0" />
                                 <Rectangle Grid.Column="1"
-                                           Height="15" 
+                                           Height="15"
                                            Width="1"
-                                           Fill="#a0a8b6"/>
+                                           Fill="#a0a8b6" />
                                 <TextBox x:Name="CaptionName" Grid.Column="2"
                                          Style="{StaticResource Style_PlaceHolder}"
                                          Text="{Binding NameOfSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -299,24 +304,24 @@
                             </Grid>
                         </Border>
 
-                        <Border Grid.Row="1"  
-                                        BorderBrush="#a0a8b6" 
-                                        BorderThickness="1"
-                                        Margin="{StaticResource AdvancedSearchOptionMargin}"
-                                        CornerRadius="2">
+                        <Border Grid.Row="1"
+                                BorderBrush="#a0a8b6"
+                                BorderThickness="1"
+                                Margin="{StaticResource AdvancedSearchOptionMargin}"
+                                CornerRadius="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="1"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{x:Static resources:Resource.CNT_ID}" 
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0,0,0"/>
+                                <TextBlock Text="{x:Static resources:Resource.CNT_ID}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0" />
                                 <Rectangle Grid.Column="1"
-                                                   Height="15" 
-                                                   Width="1"
-                                                   Fill="#a0a8b6"/>
+                                           Height="15"
+                                           Width="1"
+                                           Fill="#a0a8b6" />
                                 <TextBox x:Name="CaptionId" Grid.Column="2"
                                          Style="{StaticResource Style_PlaceHolder}"
                                          Text="{Binding IdOfSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -348,24 +353,24 @@
                             </i:Interaction.Behaviors>
                         </custom:PlaceholdCombobox>
 
-                        <Border Grid.Row="3"  
-                                BorderBrush="#a0a8b6" 
+                        <Border Grid.Row="3"
+                                BorderBrush="#a0a8b6"
                                 BorderThickness="1"
                                 Margin="{StaticResource AdvancedSearchOptionMargin}"
                                 CornerRadius="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="1"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{x:Static resources:Resource.CNT_LABEL}"
                                            VerticalAlignment="Center"
-                                           Margin="10,0,0,0"/>
+                                           Margin="10,0,0,0" />
                                 <Rectangle Grid.Column="1"
-                                           Height="15" 
+                                           Height="15"
                                            Width="1"
-                                           Fill="#a0a8b6"/>
+                                           Fill="#a0a8b6" />
                                 <TextBox x:Name="LabelTextBox"
                                          Grid.Column="2"
                                          Style="{StaticResource Style_PlaceHolder}"
@@ -385,7 +390,7 @@
                                                   MySelectedItem="{Binding Path=SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   MyDataTemplateSelector="{StaticResource LanguageItemTemplateSelector}"
                                                   DefaultText="{x:Static resources:Resource.CNT_LANGUAGE}"
-                                                  Foreground="#333333" >
+                                                  Foreground="#333333">
                             <i:Interaction.Behaviors>
                                 <mz:KeyEventToRunCommandBehavior
                                     Command="{Binding Path=EnterCommand}"
@@ -396,49 +401,49 @@
 
                     <!--검색 버튼 영역-->
                     <StackPanel Grid.Row="2"
-                                        Orientation="Vertical"
-                                        VerticalAlignment="Center">
+                                Orientation="Vertical"
+                                VerticalAlignment="Center">
 
-                        <Border Height="1" 
-                                        BorderBrush="#e0e2e6"
-                                        BorderThickness="1"
-                                        VerticalAlignment="Top"
-                                        Margin="0,10,0,10"/>
+                        <Border Height="1"
+                                BorderBrush="#e0e2e6"
+                                BorderThickness="1"
+                                VerticalAlignment="Top"
+                                Margin="0,10,0,10" />
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="1"/>
-                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="1" />
+                                <ColumnDefinition Width="25" />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Style="{StaticResource Style_SearchButton}"
-                                            ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
-                                            VerticalAlignment="Stretch"
-                                            HorizontalAlignment="Stretch"
-                                            Command="{Binding Path=SearchCommand}"
-                                            CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
+                                    ToolTip="{x:Static resources:Resource.CNT_SEARCH}"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding Path=SearchCommand}"
+                                    CommandParameter="{Binding ElementName=KeywordTextBox, Path=Text}">
                                 <StackPanel Orientation="Horizontal"
-                                                    VerticalAlignment="Center">
+                                            VerticalAlignment="Center">
                                     <Image
-                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
-                                                Width="25" Height="25" />
+                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_search_nor.png"
+                                        Width="25" Height="25" />
                                     <TextBlock Text="{x:Static resources:Resource.CNT_SEARCH}"
-                                                       Foreground="White"
-                                                       VerticalAlignment="Center"/>
+                                               Foreground="White"
+                                               VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
 
-                            <Rectangle Grid.Column="1" Width="1" Fill="#293053"/>
+                            <Rectangle Grid.Column="1" Width="1" Fill="#293053" />
 
                             <Button Grid.Column="2" Style="{StaticResource Style_RefreshButton}"
-                                            ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"
-                                            Command="{Binding Path=RefreshCommand}">
+                                    ToolTip="{x:Static resources:Resource.CNT_REFRESH}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Command="{Binding Path=RefreshCommand}">
                                 <Grid Margin="3">
                                     <Image
-                                                Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png"
-                                                Width="13" 
-                                                Height="13" />
+                                        Source="pack://application:,,,/Megazone.HyperSubtitleEditor.Presentation.Resource;component/Image/img_btn_noun_refresh.png"
+                                        Width="13"
+                                        Height="13" />
                                 </Grid>
                             </Button>
                         </Grid>
@@ -450,7 +455,7 @@
 
                 <!--Caption 검색 결과-->
                 <Border Grid.Row="2">
-                    <custom:CaptionAssetListView DataContext="{Binding CaptionAssetList, Mode=TwoWay}"/> 
+                    <custom:CaptionAssetListView DataContext="{Binding CaptionAssetList, Mode=TwoWay}" />
                 </Border>
 
                 <!--구분선-->

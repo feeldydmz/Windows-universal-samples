@@ -11,7 +11,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 {
     public class MetadataCaptionAssetInfo : ViewModelBase
     {
+        private string _id;
         private string _name;
+
+        public MetadataCaptionAssetInfo(string name, string id)
+        {
+            _name = name;
+            _id = id;
+        }
 
         public string Name
         {
@@ -19,18 +26,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             set => Set(ref _name, value);
         }
 
-        private string _id;
-
         public string Id
         {
             get => _id;
             set => Set(ref _id, value);
-        }
-
-        public MetadataCaptionAssetInfo(string name, string id)
-        {
-            _name = name;
-            _id = id;
         }
     }
 
@@ -41,21 +40,21 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         private readonly WorkBarViewModel _workBarViewModel;
         private string _attributions;
+        private List<MetadataCaptionAssetInfo> _captions;
         private string _categories;
         private ICommand _closeVideoInfoPopupCommand;
         private string _duration;
         private bool _isShow;
         private string _jobId;
-        private string _videoId;
         private string _mediaType;
         private string _name;
 
         private ICommand _openMetadataPopupCommand;
-        private List<MetadataCaptionAssetInfo> _captions;
 
         private string _status;
         private string _tags;
-        
+        private string _videoId;
+
         internal MetadataViewModel(WorkBarViewModel workBarViewModel)
         {
             _workBarViewModel = workBarViewModel;
@@ -173,7 +172,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
             Duration = _workBarViewModel.VideoItem.Duration.ToString(@"hh\:mm\:ss");
             JobId = _workBarViewModel.VideoItem.Source?.Job?.Id ?? "None";
-            VideoId = _workBarViewModel.VideoItem.Id?? "None";
+            VideoId = _workBarViewModel.VideoItem.Id ?? "None";
             Name = _workBarViewModel.VideoItem.Name ?? "None";
 
             //if (_workBarViewModel?.VideoItem?.Source?.Sources != null)
@@ -189,26 +188,23 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             //            Captions.Add(rendition);
             //        }
 
-            List<MetadataCaptionAssetInfo> captions= new List<MetadataCaptionAssetInfo>();
+            var captions = new List<MetadataCaptionAssetInfo>();
 
             if (_workBarViewModel?.VideoItem?.CaptionAssetList?.CaptionAssetItems != null)
-            {
                 foreach (var captionAssetItem in _workBarViewModel?.VideoItem?.CaptionAssetList?.CaptionAssetItems)
-                {
                     //var caption = $"{captionAssetItem.Name} ({captionAssetItem.Id})";
 
                     captions.Add(new MetadataCaptionAssetInfo(captionAssetItem.Name, captionAssetItem.Id));
-                }
-            }
 
             if (!string.IsNullOrEmpty(_workBarViewModel?.CaptionAssetItem?.Id))
             {
                 //var caption = $"{_workBarViewModel?.CaptionAssetItem.Name} ({_workBarViewModel?.CaptionAssetItem.Id})";
 
-                var hasCaption =  captions.FirstOrDefault(c=>c.Id== _workBarViewModel.CaptionAssetItem.Id);
+                var hasCaption = captions.FirstOrDefault(c => c.Id == _workBarViewModel.CaptionAssetItem.Id);
 
                 if (hasCaption == null)
-                    captions.Add(new MetadataCaptionAssetInfo(_workBarViewModel?.CaptionAssetItem.Name, _workBarViewModel?.CaptionAssetItem.Id));
+                    captions.Add(new MetadataCaptionAssetInfo(_workBarViewModel?.CaptionAssetItem.Name,
+                        _workBarViewModel?.CaptionAssetItem.Id));
             }
 
             Captions = captions;

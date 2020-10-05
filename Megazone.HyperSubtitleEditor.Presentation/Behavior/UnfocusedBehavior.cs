@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Message;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
 {
@@ -17,20 +11,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         public static readonly DependencyProperty IsVisibleProperty =
             DependencyProperty.Register("IsVisible", typeof(bool), typeof(UnfocusedBehavior),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    (s, e) => { ((UnfocusedBehavior)s).OnIsOpenPropertyChanged((bool)e.NewValue); }));
+                    (s, e) => { ((UnfocusedBehavior) s).OnIsOpenPropertyChanged((bool) e.NewValue); }));
 
         public bool IsVisible
         {
-            get => (bool)GetValue(IsVisibleProperty);
+            get => (bool) GetValue(IsVisibleProperty);
             set => SetValue(IsVisibleProperty, value);
         }
 
         private void OnIsOpenPropertyChanged(bool newValue)
         {
             if (AssociatedObject != null)
-            {
                 AssociatedObject.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
-            }
         }
 
         protected override void OnAttached()
@@ -63,7 +55,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         private void AssociatedObjectOnGotFocus(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("AssociatedObjectOnGotFocus");
-
         }
 
 

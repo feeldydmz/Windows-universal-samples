@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
-using Megazone.HyperSubtitleEditor.Presentation.Message.Parameter;
-using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
+﻿using Megazone.HyperSubtitleEditor.Presentation.Infrastructure.Messagenger;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.Message
 {
-    class RecentlyLoader
+    internal class RecentlyLoader
     {
         internal class ChangeItemMessage : MessageBase
         {

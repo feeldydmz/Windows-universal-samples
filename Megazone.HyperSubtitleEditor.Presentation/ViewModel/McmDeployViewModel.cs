@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Core.IoC;
 using Megazone.Core.Windows.Mvvm;
@@ -156,8 +155,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 return new CaptionElementItemViewModel(caption)
                 {
                     //...여기에 checkSave
-                    IsSelected = !string.IsNullOrEmpty(tab.Name) 
-                                 && !string.IsNullOrEmpty(tab.LanguageCode) 
+                    IsSelected = !string.IsNullOrEmpty(tab.Name)
+                                 && !string.IsNullOrEmpty(tab.LanguageCode)
                                  && !string.IsNullOrEmpty(tab.CountryCode)
                                  && tab.CheckSave(),
 

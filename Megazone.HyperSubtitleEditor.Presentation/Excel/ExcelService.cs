@@ -61,7 +61,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Excel
                                 if (!string.IsNullOrEmpty(splitLanguageAndCountry[0]))
                                     excelFileInfo.LanguageCode = splitLanguageAndCountry[0];
 
-                                if (splitLanguageAndCountry.Length > 1 && !string.IsNullOrEmpty(splitLanguageAndCountry[1]))
+                                if (splitLanguageAndCountry.Length > 1 &&
+                                    !string.IsNullOrEmpty(splitLanguageAndCountry[1]))
                                     excelFileInfo.CountryCode = splitLanguageAndCountry[1];
                             }
 

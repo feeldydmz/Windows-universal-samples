@@ -118,9 +118,9 @@
                 <Separator />
 
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_ALL_SUBTITLE_FILE}"
-                          Command="{StaticResource ExportSubtitleCommand}" 
+                          Command="{StaticResource ExportSubtitleCommand}"
                           CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
-                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_SUBTITLE_FILE}" InputGestureText="Ctrl+S" 
+                <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_SUBTITLE_FILE}" InputGestureText="Ctrl+S"
                           Command="{StaticResource ExportSubtitleCommand}"
                           CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_EXPORT_EXCEL}"
@@ -129,14 +129,14 @@
                 <Separator />
 
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_CAPTION}"
-                          Command="{StaticResource ImportSubtitleCommand}" 
+                          Command="{StaticResource ImportSubtitleCommand}"
                           CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
                 <MenuItem Header="{x:Static resources:Resource.CNT_IMPORT_EXCEL}"
                           Command="{StaticResource ImportSubtitleCommand}"
                           CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource Self}}" />
 
                 <Separator />
-                
+
                 <MenuItem Header="{x:Static resources:Resource.CNT_DOWNLOAD_EXCEL_TEMPLET}"
                           Command="{StaticResource DownloadExcelTemplet}" />
                 <Separator />

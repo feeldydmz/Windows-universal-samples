@@ -12,10 +12,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
     [Inject(Scope = LifetimeScope.Transient)]
     public class AssetEditorViewModel : ViewModelBase
     {
+        private readonly bool _isBusy = false;
         private string _assetName;
 
         private ICommand _confirmCommand;
-        private readonly bool _isBusy = false;
         private ICommand _loadCommand;
 
         public CaptionAsset CaptionAsset { get; set; }

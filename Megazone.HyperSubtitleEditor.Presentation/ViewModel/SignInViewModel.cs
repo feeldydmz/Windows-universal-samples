@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Megazone.Cloud.Media.Repository;
 using Megazone.Cloud.Media.ServiceInterface;
@@ -131,10 +130,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public async Task<AuthorizationInfo> GetAuthorizationAsync()
         {
-            if (CheckExpireTime())
-            {
-                await RefreshAuthorizationAsync();
-            }
+            if (CheckExpireTime()) await RefreshAuthorizationAsync();
             // 유효성 검사.
             // 유효한 토큰인지 확인한다.
             // 유효하지 않다면, refresh token을 받도록 exception을 낸다.
@@ -143,9 +139,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
         public void SetAuthorization(Authorization authorization)
         {
-            int expireTimeForSec = int.Parse(authorization.Expires) - 60;
+            var expireTimeForSec = int.Parse(authorization.Expires) - 60;
 
-            _authorization = new AuthorizationInfo(authorization.AccessToken, authorization.RefreshToken, authorization.Expires, DateTime.Now.AddSeconds(expireTimeForSec));
+            _authorization = new AuthorizationInfo(authorization.AccessToken, authorization.RefreshToken,
+                authorization.Expires, DateTime.Now.AddSeconds(expireTimeForSec));
         }
 
         public void Logout()
@@ -165,7 +162,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var authorization = await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
+                var authorization =
+                    await _cloudMediaService.LoginByAuthorizationCodeAsync(code, CancellationToken.None);
 
                 // accessToken 이 Expire 되기 1분전에 미리 받아오기
 
@@ -181,13 +179,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 _logger.Error.Write(ex);
             }
         }
-        
+
         public bool CheckExpireTime()
         {
-            if (_authorization != null && _authorization.ExpiresTime < DateTime.Now)
-            {
-                return true;
-            }
+            if (_authorization != null && _authorization.ExpiresTime < DateTime.Now) return true;
 
             return false;
         }
@@ -196,9 +191,10 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                var refreshAuthorization = await _cloudMediaService.RefreshByRefreshCodeAsync(_authorization.RefreshToken,
+                var refreshAuthorization = await _cloudMediaService.RefreshByRefreshCodeAsync(
+                    _authorization.RefreshToken,
                     _authorization.AccessToken, CancellationToken.None);
-                
+
                 if (string.IsNullOrEmpty(refreshAuthorization?.AccessToken))
                     return;
 
@@ -250,7 +246,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         {
             try
             {
-                 var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898(_password);
+                var profileData = JsonConvert.SerializeObject(_authorization).EncryptWithRfc2898(_password);
 
                 File.WriteAllText(AuthorizationFilePath, profileData);
             }
@@ -297,20 +293,18 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                                       !string.IsNullOrEmpty(AppContext.McmOpenData.ProjectId);
 
             if (!hasStagAndProjectId)
-            {
                 if (!_config.Subtitle.AutoLogin)
                 {
                     SetSourceUri(AuthorizationRepository.LOGIN_URL);
                     return;
                 }
-            }
 
             _authorization = LoadAuthorization();
 
-             if (_authorization != null)
-                 OpenProjectViewAsync(hasStagAndProjectId);
-             else
-                 SetSourceUri(AuthorizationRepository.LOGIN_URL);
+            if (_authorization != null)
+                OpenProjectViewAsync(hasStagAndProjectId);
+            else
+                SetSourceUri(AuthorizationRepository.LOGIN_URL);
         }
 
         public void NavigateToProject(string code)
@@ -323,4 +317,4 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             LoginByAuthorizationCodeAsync(code);
         }
     }
-} 
+}

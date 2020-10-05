@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
-using Megazone.HyperSubtitleEditor.Presentation.View.LeftSideMenu;
 
 namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
@@ -17,6 +14,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         private IList<string> _encryptions;
 
         private bool _hasSelectedCaption;
+
         private string _primaryImageUrl;
         //private CaptionAssetItemViewModel _selectedCaptionAsset;
 
@@ -44,7 +42,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             {
                 CaptionAssetList = null;
             }
-            else {
+            else
+            {
                 var list = video.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                            new List<CaptionAssetItemViewModel>();
 
@@ -130,7 +129,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             var list = source.Captions?.Select(asset => new CaptionAssetItemViewModel(asset)).ToList() ??
                        new List<CaptionAssetItemViewModel>();
-          
+
             TotalCaptionCount = list.Sum(asset => asset.Source.Elements?.Count() ?? 0);
 
             list.Add(CaptionAssetItemViewModel.Empty);

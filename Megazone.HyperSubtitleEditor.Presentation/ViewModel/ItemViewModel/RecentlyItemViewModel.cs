@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Megazone.Cloud.Media.Domain.Assets;
 using Megazone.Cloud.Media.Domain;
 using Megazone.HyperSubtitleEditor.Presentation.Infrastructure;
 using Megazone.HyperSubtitleEditor.Presentation.ViewModel.Data;
@@ -12,15 +8,15 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 {
     public class RecentlyItemViewModel : ViewModelBase
     {
+        private IEnumerable<string> _captionElementIds;
+        private bool _hasRelatedCaption;
+        private string _id;
+        private string _name;
         private RecentlyItem _recentlyItem;
+        private string _relatedCaptionId;
+        private string _relatedCaptionName;
 
         private Video _video;
-        private string _name;
-        private string _id;
-        private string _relatedCaptionName;
-        private string _relatedCaptionId;
-        private bool _hasRelatedCaption;
-        private IEnumerable<string> _captionElementIds;
 
         public RecentlyItemViewModel(RecentlyItem recentlyItem)
         {
@@ -30,7 +26,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
 
             _name = recentlyItem.FirstName;
             _id = recentlyItem.FirstId;
-            
+
             _hasRelatedCaption = _video != null && recentlyItem.CaptionAsset != null;
             _relatedCaptionName = recentlyItem.CaptionAsset?.Name;
             _relatedCaptionId = recentlyItem.CaptionAsset?.Id;
@@ -43,7 +39,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             get => _video;
             set => Set(ref _video, value);
         }
-        
+
 
         public string Name
         {
@@ -79,7 +75,6 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
         {
             get => _captionElementIds;
             private set => Set(ref _captionElementIds, value);
-
         }
     }
 }
