@@ -7,7 +7,7 @@
 # signtool.exe sign /f [SHA-1인증서이름].pfx /p [인증서패스워드] /tr [타임스탬프주소] /v [서명할파일].cab
 
 # 빌드 조건 설정.
-$buildversion = "0.9.1.3006";
+$buildversion = "0.9.1.3009";
 $coustomName = ""; #Types: NEXON, ATOMY, GAMEVIL, GENERAL
 
 #전자서명 대상 파일 구하기.

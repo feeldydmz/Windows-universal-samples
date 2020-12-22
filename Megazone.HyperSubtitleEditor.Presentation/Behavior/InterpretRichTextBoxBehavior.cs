@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Markup;
 using Megazone.Core.VideoTrack;
@@ -40,20 +42,33 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Behavior
         {
             base.OnAttached();
             AssociatedObject.TextChanged += AssociatedObject_TextChanged;
+            AssociatedObject.PreviewKeyDown += AssociatedObject_KeyDown;
+
 
             //DataObject.AddPastingHandler(AssociatedObject, OnPaste);
         }
 
-        //private void OnPaste(object sender, DataObjectPastingEventArgs e)
-        //{
-        //    var isText = e.SourceDataObject.GetDataPresent(DataFormats.Rtf, true);
-        //    if (!isText) return;
-        //    var text = e.SourceDataObject.GetData(DataFormats.Rtf) as string;
-        //    if (!string.IsNullOrEmpty(text))
-        //    {
+        private void AssociatedObject_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != Key.V || (Keyboard.Modifiers != ModifierKeys.Control)) return;
 
-        //    }
-        //}
+            RichTextBox richTextBox = sender as RichTextBox;
+
+            if (richTextBox == null) return;
+
+            var textData = (string)Clipboard.GetData("Text");
+            
+            if (richTextBox.Selection.IsEmpty)
+                richTextBox.CaretPosition.GetPositionAtOffset(0, LogicalDirection.Backward)?.InsertTextInRun(textData);
+            else
+            {
+                var range = new TextRange(richTextBox.Selection.Start, richTextBox.Selection.End) {Text = ""};
+
+                richTextBox.CaretPosition.GetPositionAtOffset(0, LogicalDirection.Backward)?.InsertTextInRun(textData);
+            }
+            
+            e.Handled = true;
+        }
 
         private void AssociatedObject_TextChanged(object sender, TextChangedEventArgs e)
         {

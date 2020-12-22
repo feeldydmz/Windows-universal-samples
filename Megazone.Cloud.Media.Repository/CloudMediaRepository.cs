@@ -48,7 +48,8 @@ namespace Megazone.Cloud.Media.Repository
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
-                .AddHeader("projectId", request.ProjectId);
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("generateAccessUrl", "true");
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
                 .Execute(restRequest).Convert<TAsset>();
@@ -60,7 +61,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
-                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString());
+                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString())
+                .AddQueryParameter("generateAccessUrl", "true");
 
             foreach (var condition in request.SearchConditions)
                 restRequest.AddQueryParameter(condition.Key, condition.Value);
@@ -73,7 +75,8 @@ namespace Megazone.Cloud.Media.Repository
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
-                .AddHeader("projectId", request.ProjectId);
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("generateAccessUrl", "true");
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
                 .Execute(restRequest).Convert<CaptionAsset>();
@@ -86,7 +89,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
-                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString());
+                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString())
+                .AddQueryParameter("generateAccessUrl", "true");
 
             foreach (var condition in request.SearchConditions)
                 restRequest.AddQueryParameter(condition.Key, condition.Value);
@@ -176,7 +180,8 @@ namespace Megazone.Cloud.Media.Repository
         {
             var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
-                .AddHeader("projectId", request.ProjectId);
+                .AddHeader("projectId", request.ProjectId)
+                .AddQueryParameter("generateAccessUrl", "true");
 
             return RestSharpExtension.CreateRestClient(request.Endpoint)
                 .Execute(restRequest).Convert<Video>();
@@ -188,7 +193,8 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
-                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString());
+                .AddQueryParameter("limit", request.Pagination.LimitPerPage.ToString())
+                .AddQueryParameter("generateAccessUrl", "true");
 
             foreach (var condition in request.SearchConditions)
                 restRequest.AddQueryParameter(condition.Key, condition.Value);
