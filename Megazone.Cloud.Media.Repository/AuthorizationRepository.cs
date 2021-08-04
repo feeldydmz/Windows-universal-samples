@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using Megazone.Cloud.Media.Domain;
@@ -10,12 +11,17 @@ namespace Megazone.Cloud.Media.Repository
     [Inject(Source = typeof(IAuthorizationRepository), Scope = LifetimeScope.Transient)]
     public class AuthorizationRepository : IAuthorizationRepository
     {
-        private const string Domain = "oauth.megazone.io";
+        private const string Domain = "login.megazone.com";
+        //private const string Domain = "oauth.megazone.io";
         //private const string Domain = "megaone.io";
+
+        //public const string LOGIN_URL =
+        //    "https://" + Domain +
+        //    "/oauth/authorize?response_type=code&client_id=d1J99hKQAdWH1C9lKM70QqeCDJI3zu&redirect_uri=https://console.media.stg.continuum.co.kr/megazone/login";
 
         public const string LOGIN_URL =
             "https://" + Domain +
-            "/oauth/authorize?response_type=code&client_id=0a31e7dc-65eb-4430-9025-24f9e3d7d60d&redirect_uri=https://console.media.stg.continuum.co.kr/megazone/login";
+            "/oauth/authorize?response_type=code&client_id=d1J99hKQAdWH1C9lKM70QqeCDJI3zu&redirect_uri=https://console.cloudplex.megazone.io/megazone/login";
 
         public AuthorizationResponse Get(AuthorizationRequest request)
         {
@@ -23,14 +29,36 @@ namespace Megazone.Cloud.Media.Repository
             // 인증 URL : https://oauth.megazone.io/oauth/token
             var clientAuthorization = GetClientAuthorization(); 
             var content =
-                $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.media.stg.continuum.co.kr/megazone/login";
+                $"code={request.Code}&grant_type=authorization_code&redirect_uri=https://console.cloudplex.megazone.io/megazone/login";
+
+            //var restRequest = new RestRequest("v2/oauth_token", Method.GET)
+            //    //var restRequest = new RestRequest("v1/token", Method.GET)
+            //    .AddHeader("Authorization", $"Basic {clientAuthorization}")
+            //    .AddParameter("code", request.Code)
+            //    .AddParameter("clientId", "d1J99hKQAdWH1C9lKM70QqeCDJI3zu")
+            //    .AddParameter("redirectUrl", "https://console.cloudplex.megazone.io/megazone/login");
+
+            //    //.AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
+            //Debug.WriteLine("--- restRequest : ", restRequest.ToString());
+
+            //var rest = new RestClient($" https://api.cloudplex.megazone.io")
+            //{
+            //    UserAgent = "Hyper series/Megazone.Cloud.Media.SubtitleEditor"
+            //};
 
             var restRequest = new RestRequest("oauth/token", Method.POST)
                 //var restRequest = new RestRequest("v1/token", Method.GET)
-                .AddHeader("Authorization", $"Basic {clientAuthorization}")
-                .AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
+                //.AddHeader("Authorization", $"Basic {clientAuthorization}")
+                .AddParameter("code", request.Code)
+                .AddParameter("grant_type", "authorization_code")
+                .AddParameter("client_id", "d1J99hKQAdWH1C9lKM70QqeCDJI3zu")
+                .AddParameter("client_secret", "rXjJLRKgQzzaeDizw6pJz7h63v8MGp")
+                .AddParameter("redirect_uri", "https://console.cloudplex.megazone.io/megazone/login");
 
-            var rest = new RestClient($"https://{Domain}")
+            //.AddParameter("application/x-www-form-urlencoded", content, ParameterType.RequestBody);
+            Debug.WriteLine("--- restRequest : ", restRequest.ToString());
+
+            var rest = new RestClient($" https://login.megazone.com")
             {
                 UserAgent = "Hyper series/Megazone.Cloud.Media.SubtitleEditor"
             };
@@ -94,9 +122,9 @@ namespace Megazone.Cloud.Media.Repository
         {
             // API : https://api.media.megazone.io/v1/me
 
-            var restRequest = new RestRequest("resource/v1/me", Method.GET)
+            var restRequest = new RestRequest("userinfo/v1/me", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}");
-            var apiEndpoint = $"https://{Domain}";
+            var apiEndpoint = "https://www.megazoneapis.com";
             var response = RestSharpExtension.CreateRestClient(apiEndpoint).Execute(restRequest);
 
 
@@ -107,6 +135,8 @@ namespace Megazone.Cloud.Media.Repository
         {
             const string clientId = "0a31e7dc-65eb-4430-9025-24f9e3d7d60d";
             const string clientSecretKey = "02255b95-cb75-4b28-9c0a-30f4afd02f00";
+            //const string clientId = "d1J99hKQAdWH1C9lKM70QqeCDJI3zu";
+            //const string clientSecretKey = "rXjJLRKgQzzaeDizw6pJz7h63v8MGp";
             return Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecretKey}"));
         }
     }

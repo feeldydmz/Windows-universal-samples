@@ -41,5 +41,7 @@ namespace Megazone.Cloud.Media.ServiceInterface
         Task<string> ReadAsync(Uri fileUri, CancellationToken cancellationToken);
         Task DeleteCaptionAssetAsync(DeleteCaptionAssetParameter parameter, CancellationToken cancellationToken);
         string GetWebHostEndPoint();
+
+        string Endpoint { get; set; }
     }
 }

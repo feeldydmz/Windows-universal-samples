@@ -63,7 +63,12 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         public StageItemViewModel SelectedStage
         {
             get => _selectedStage;
-            set => Set(ref _selectedStage, value);
+            set
+            {
+                Set(ref _selectedStage, value);
+
+                _cloudMediaService.Endpoint = value.Endpoint;
+            }
         }
 
         public ProjectItemViewModel SelectedProject

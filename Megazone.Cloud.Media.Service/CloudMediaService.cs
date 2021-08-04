@@ -20,20 +20,22 @@ namespace Megazone.Cloud.Media.Service
     {
         // ReSharper disable once InconsistentNaming
 #if Dev
-       private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.dev.megazone.io"; // develop version
+       private const string SPACE_ENDPOINT = "https://api.cloudplex.dev.megazone.io"; // develop version
        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop version
 #elif STAGING
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.stg.megazone.io"; // stage version
+        private const string SPACE_ENDPOINT = "https://api.cloudplex.stg.megazone.io"; // stage version
         public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.stg.megazone.io";
 #elif DEBUG
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version
+        private const string SPACE_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version  https://api.cloudplex.dev.megazone.io
         public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.megazone.io";
 #else
-        private const string CLOUD_MEDIA_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version
+        private const string SPACE_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version
         public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.megazone.io";
 #endif
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly ICloudMediaRepository _cloudMediaRepository;
+
+        public string Endpoint { get; set; }
 
         public CloudMediaService(IAuthorizationRepository authorizationRepository,
             ICloudMediaRepository cloudMediaRepository)
@@ -85,7 +87,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var asset = _cloudMediaRepository.GetAsset<RenditionAsset>(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                var asset = _cloudMediaRepository.GetAsset<RenditionAsset>(new AssetRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
 
                 var renditionAssetList = new List<RenditionAsset> {asset};
@@ -116,7 +118,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetAssets<VideoAsset>(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetAssets<VideoAsset>(new AssetListRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,
                     parameter.SearchConditions));
 
@@ -160,15 +162,15 @@ namespace Megazone.Cloud.Media.Service
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(
-                () => _cloudMediaRepository.GetProjects(new ProjectListRequest(CLOUD_MEDIA_ENDPOINT,
-                    parameter.Authorization.AccessToken, parameter.StageId, parameter.Name)), cancellationToken);
+                () => _cloudMediaRepository.GetProjects(new ProjectListRequest(parameter.Endpoint,
+                    parameter.Authorization.AccessToken)), cancellationToken);
         }
 
         public async Task<IEnumerable<Stage>> GetStagesAsync(GetStagesParameter parameter,
             CancellationToken cancellationToken)
         {
             return await Task.Factory.StartNew(
-                () => _cloudMediaRepository.GetStages(CLOUD_MEDIA_ENDPOINT, parameter.Authorization.AccessToken),
+                () => _cloudMediaRepository.GetStages(SPACE_ENDPOINT, parameter.Authorization.AccessToken),
                 cancellationToken);
         }
 
@@ -187,7 +189,7 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetCaptionAssets(new AssetListRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetCaptionAssets(new AssetListRequest(Endpoint,
                     accessToken, parameter.StageId, parameter.ProjectId, parameter.Pagination,
                     parameter.SearchConditions));
 
@@ -201,7 +203,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
 
                 return !response.MediaType?.ToUpper().Equals("TEXT") ?? false ? null : response;
@@ -224,7 +226,7 @@ namespace Megazone.Cloud.Media.Service
                     null, folderPath);
 
                 var response = _cloudMediaRepository.CreateCaptionAsset(new AssetRequest<CaptionAsset>(
-                    CLOUD_MEDIA_ENDPOINT,
+                    Endpoint,
                     accessToken, stageId, projectId, null, asset));
 
                 return response;
@@ -243,7 +245,7 @@ namespace Megazone.Cloud.Media.Service
                 var status = parameter.Status;
                 var folderPath = parameter.FolderPath;
 
-                var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var asset = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(Endpoint, accessToken,
                     stageId, projectId, assetId));
 
                 if (asset == null)
@@ -255,7 +257,7 @@ namespace Megazone.Cloud.Media.Service
                     asset.IngestType, asset.Duration, asset.Version, asset.CreatedAt, asset.Elements, folderPath);
 
                 var response = _cloudMediaRepository.UpdateCaptionAsset(
-                    new AssetRequest<CaptionAsset>(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId,
+                    new AssetRequest<CaptionAsset>(Endpoint, accessToken, stageId, projectId, assetId,
                         updateAsset));
                 return response;
             }, cancellationToken);
@@ -273,7 +275,7 @@ namespace Megazone.Cloud.Media.Service
                 var assetVersion = parameter.AssetVersion;
                 var caption = parameter.Caption;
 
-                return _cloudMediaRepository.UpdateCaptionElement(new CaptionRequest(CLOUD_MEDIA_ENDPOINT,
+                return _cloudMediaRepository.UpdateCaptionElement(new CaptionRequest(Endpoint,
                     accessToken, stageId, projectId, assetId, assetVersion, caption));
             }, cancellationToken);
         }
@@ -290,7 +292,7 @@ namespace Megazone.Cloud.Media.Service
 
             return await Task.Factory.StartNew(() => 
                 _cloudMediaRepository.CreateCaptionElement(
-                new CaptionRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, element)), 
+                new CaptionRequest(Endpoint, accessToken, stageId, projectId, assetId, version, element)), 
                 cancellationToken);
         }
 
@@ -306,7 +308,7 @@ namespace Megazone.Cloud.Media.Service
 
             return await Task.Factory.StartNew(() =>
                     _cloudMediaRepository.CreateCaptionElementBulk(
-                        new CaptionBulkRequest(CLOUD_MEDIA_ENDPOINT, accessToken, stageId, projectId, assetId, version, elements)),
+                        new CaptionBulkRequest(Endpoint, accessToken, stageId, projectId, assetId, version, elements)),
                 cancellationToken);
         }
 
@@ -316,7 +318,7 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetVideos(new VideoListRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var response = _cloudMediaRepository.GetVideos(new VideoListRequest(Endpoint, accessToken,
                     parameter.StageId, parameter.ProjectId, parameter.Pagination, parameter.SearchConditions));
 
                 var totalCount = response?.TotalCount ?? 0;
@@ -329,9 +331,10 @@ namespace Megazone.Cloud.Media.Service
         public async Task<IEnumerable<Language>> GetLanguageAsync(GetLanguageParameter parameter,
             CancellationToken cancellationToken)
         {
+            Debug.WriteLine($"GetLanguageAsync Endpoint : ${Endpoint}");
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetLanguages(new LanguageRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetLanguages(new LanguageRequest(Endpoint,
                     parameter.AuthorizationAccessToken, parameter.StageId, parameter.ProjectId));
 
                 return response;
@@ -342,7 +345,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var response = _cloudMediaRepository.GetVideo(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                var response = _cloudMediaRepository.GetVideo(new VideoRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId));
 
                 return response;
@@ -354,7 +357,7 @@ namespace Megazone.Cloud.Media.Service
             // 캡션 추가.
             return await Task.Factory.StartNew(() =>
             {
-                var result = _cloudMediaRepository.UpdateVideoCaptions(new VideoRequest(CLOUD_MEDIA_ENDPOINT,
+                var result = _cloudMediaRepository.UpdateVideoCaptions(new VideoRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
                     parameter.Video));
                 return result ? parameter.Video : null;
@@ -366,7 +369,7 @@ namespace Megazone.Cloud.Media.Service
         {
             return await Task.Factory.StartNew(() =>
             {
-                var results = _cloudMediaRepository.BulkCaptionAsset(new BulkCaptionAssetRequest(CLOUD_MEDIA_ENDPOINT,
+                var results = _cloudMediaRepository.BulkCaptionAsset(new BulkCaptionAssetRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.VideoId,
                     parameter.VideoVersion, parameter.AssetIds));
                 return results;
@@ -379,7 +382,7 @@ namespace Megazone.Cloud.Media.Service
             return await Task.Factory.StartNew(() =>
             {
                 var accessToken = parameter.Authorization.AccessToken;
-                var response = _cloudMediaRepository.GetSetting(new SettingRequest(CLOUD_MEDIA_ENDPOINT, accessToken,
+                var response = _cloudMediaRepository.GetSetting(new SettingRequest(Endpoint, accessToken,
                     parameter.StageId, parameter.ProjectId));
                 return response;
             }, cancellationToken);
@@ -391,7 +394,7 @@ namespace Megazone.Cloud.Media.Service
             {
                 var accessToken = parameter.Authorization.AccessToken;
                 var response = _cloudMediaRepository.GetUploadUrl(
-                    new GetUploadUrlRequest(CLOUD_MEDIA_ENDPOINT, accessToken, parameter.StageId,
+                    new GetUploadUrlRequest(Endpoint, accessToken, parameter.StageId,
                         parameter.ProjectId, parameter.AssetId, parameter.FileName, parameter.IsAttachId));
                 return response;
             }, cancellationToken);
@@ -421,7 +424,7 @@ namespace Megazone.Cloud.Media.Service
                 var assetId = parameter.CaptionAssetId;
                 var version = parameter.Version;
 
-                var result = _cloudMediaRepository.DeleteCaptionAsset(new DeleteAssetRequest(CLOUD_MEDIA_ENDPOINT,
+                var result = _cloudMediaRepository.DeleteCaptionAsset(new DeleteAssetRequest(Endpoint,
                     accessToken,
                     stageId, projectId, assetId, version));
                 Debug.Assert(!result, "Asset 삭제 실패.");

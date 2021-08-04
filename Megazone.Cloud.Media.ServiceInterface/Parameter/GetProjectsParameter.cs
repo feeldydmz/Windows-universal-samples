@@ -4,15 +4,14 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
 {
     public class GetProjectsParameter
     {
-        public GetProjectsParameter(Authorization authorization, string stageId, string name)
+        public GetProjectsParameter(Authorization authorization, string endpoint)
         {
             Authorization = authorization;
-            StageId = stageId;
-            Name = name;
+            Endpoint = endpoint;
         }
 
         public Authorization Authorization { get; }
-        public string StageId { get; }
-        public string Name { get; }
+        public string Endpoint { get; }
+        
     }
 }

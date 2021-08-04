@@ -9,7 +9,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
 {
     public class WebBrowserAttachedProperty
     {
-        private const string CODE_PATTEN = "code=";
+        private const string CODE_PATTERN = "code=";
         private const string MEGAONE_OAUTH_PATTEN = "megazone/login?";
 
         public static readonly DependencyProperty UriSourceProperty =
@@ -38,6 +38,8 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
                             var command = (ICommand) e.NewValue;
                             var absoluteUri = a.Uri.AbsoluteUri;
                             var document2 = browser.Document as IHTMLDocument2;
+                            
+                            Debug.WriteLine($"--- absoluteUri : {absoluteUri}");
 
                             var isMyPageUrl = (absoluteUri.IndexOf("my.megazone.io", StringComparison.Ordinal)) > -1 ? true : false;
 
@@ -57,13 +59,13 @@ namespace Megazone.HyperSubtitleEditor.Presentation.Infrastructure.AttachedPrope
                             // MegaOne Oauth 일때만 url에 들어있는 'code=' 체크
                             if (!isMegaoneOAuth) return;
 
-                            var codeIndex = absoluteUri.IndexOf(CODE_PATTEN, StringComparison.Ordinal);
+                            var codeIndex = absoluteUri.IndexOf(CODE_PATTERN, StringComparison.Ordinal);
 
                             if (codeIndex == -1) return;
 
                             document2?.execCommand("ClearAuthenticationCache");
                                 
-                            var code = absoluteUri.Substring(codeIndex + CODE_PATTEN.Length);
+                            var code = absoluteUri.Substring(codeIndex + CODE_PATTERN.Length);
                                 
                             if (command.CanExecute(code))
                                 command.Execute(code);

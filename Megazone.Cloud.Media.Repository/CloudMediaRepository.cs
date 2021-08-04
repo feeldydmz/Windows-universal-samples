@@ -24,7 +24,7 @@ namespace Megazone.Cloud.Media.Repository
     {
         public TAsset CreateAsset<TAsset>(AssetRequest<TAsset> request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.POST)
+            var restRequest = new RestRequest($"assets", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Asset);
@@ -35,7 +35,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public CaptionAsset CreateCaptionAsset(AssetRequest<CaptionAsset> request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.POST)
+            var restRequest = new RestRequest($"assets", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Asset);
@@ -46,7 +46,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public TAsset GetAsset<TAsset>(AssetRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.GET)
+            var restRequest = new RestRequest($"assets/{request.AssetId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("generateAccessUrl", "true");
@@ -57,7 +57,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public AssetListResponse<TAsset> GetAssets<TAsset>(AssetListRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.GET)
+            var restRequest = new RestRequest($"assets", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
@@ -73,7 +73,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public CaptionAsset GetCaptionAsset(AssetRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.GET)
+            var restRequest = new RestRequest($"assets/{request.AssetId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("generateAccessUrl", "true");
@@ -84,8 +84,8 @@ namespace Megazone.Cloud.Media.Repository
 
         public AssetListResponse<CaptionAsset> GetCaptionAssets(AssetListRequest request)
         {
-            //var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/captions", Method.GET)
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.GET)
+            //var restRequest = new RestRequest($"assets/captions", Method.GET)
+            var restRequest = new RestRequest($"assets", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
@@ -102,16 +102,15 @@ namespace Megazone.Cloud.Media.Repository
         public IEnumerable<Stage> GetStages(string apiEndpoint, string accessToken)
         {
             var restRequest =
-                new RestRequest("v1/stages", Method.GET).AddHeader("Authorization", $"Bearer {accessToken}");
+                new RestRequest("v2/spaces", Method.GET).AddHeader("Authorization", $"Bearer {accessToken}");
 
             return RestSharpExtension.CreateRestClient(apiEndpoint).Execute(restRequest).Convert<IEnumerable<Stage>>();
         }
 
         public ProjectListResponse GetProjects(ProjectListRequest listRequest)
         {
-            var restRequest = new RestRequest($"v1/stages/{listRequest.StageId}/projects", Method.GET)
-                .AddHeader("Authorization", $"Bearer {listRequest.AccessToken}")
-                .AddHeader("stageId", listRequest.StageId);
+            var restRequest = new RestRequest($"/projects", Method.GET)
+                .AddHeader("Authorization", $"Bearer {listRequest.AccessToken}");
 
             var response = RestSharpExtension.CreateRestClient(listRequest.Endpoint).Execute(restRequest);
 
@@ -120,7 +119,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public Settings GetSetting(SettingRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/settings", Method.GET)
+            var restRequest = new RestRequest($"settings", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId);
 
@@ -130,7 +129,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public AssetUploadUrl GetUploadUrl(GetUploadUrlRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/upload-url",
+            var restRequest = new RestRequest($"assets/{request.AssetId}/upload-url",
                     Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -168,7 +167,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public IEnumerable<Language> GetLanguages(LanguageRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/languages", Method.GET)
+            var restRequest = new RestRequest($"languages", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId);
 
@@ -178,7 +177,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public Video GetVideo(VideoRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}", Method.GET)
+            var restRequest = new RestRequest($"videos/{request.VideoId}", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("generateAccessUrl", "true");
@@ -189,7 +188,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public VideoListResponse GetVideos(VideoListRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos", Method.GET)
+            var restRequest = new RestRequest($"videos", Method.GET)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("offset", request.Pagination.Offset.ToString())
@@ -207,7 +206,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public TAsset UpdateAsset<TAsset>(AssetRequest<TAsset> request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets", Method.PUT)
+            var restRequest = new RestRequest($"assets", Method.PUT)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Asset);
@@ -218,7 +217,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public CaptionAsset UpdateCaptionAsset(AssetRequest<CaptionAsset> request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.Asset.Id}", Method.PATCH)
+            var restRequest = new RestRequest($"assets/{request.Asset.Id}", Method.PATCH)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId).AddQueryParameter("version", request.Asset.Version.ToString())
                 .AddJsonString(request.Asset);
@@ -229,7 +228,7 @@ namespace Megazone.Cloud.Media.Repository
 
         public Video UpdateVideo(VideoRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}", Method.PUT)
+            var restRequest = new RestRequest($"videos/{request.VideoId}", Method.PUT)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddJsonString(request.Video);
@@ -241,7 +240,7 @@ namespace Megazone.Cloud.Media.Repository
         public bool UpdateVideoCaptions(VideoRequest request)
         {
             var captionAssetList = request.Video.Captions.Select(asset => new VideoAsset(asset.Id)).ToList();
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk",
+            var restRequest = new RestRequest($"videos/{request.VideoId}/captions/bulk",
                     Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -265,7 +264,7 @@ language: "fr"
 size: 280
 url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
              */
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements",
+            var restRequest = new RestRequest($"assets/{request.AssetId}/elements",
                     Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -285,7 +284,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public Caption UpdateCaptionElement(CaptionRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/{request.Caption.Id}",
+            var restRequest = new RestRequest($"assets/{request.AssetId}/elements/{request.Caption.Id}",
                     Method.PATCH)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -297,7 +296,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public Caption CreateCaptionElement(CaptionRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements",
+            var restRequest = new RestRequest($"assets/{request.AssetId}/elements",
                     Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -316,7 +315,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public IEnumerable<Caption> CreateCaptionElementBulk(CaptionBulkRequest request)
         {
-                var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}/elements/bulk",
+                var restRequest = new RestRequest($"assets/{request.AssetId}/elements/bulk",
                     Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
@@ -337,7 +336,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public bool DeleteCaptionAsset(DeleteAssetRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/assets/{request.AssetId}", Method.DELETE)
+            var restRequest = new RestRequest($"assets/{request.AssetId}", Method.DELETE)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("version", request.Version.ToString());
@@ -347,7 +346,7 @@ url: "https://mz-cm-transcoding-output.s3.amazonaws.com/mz-cm-v1/test.vtt"
 
         public IEnumerable<CaptionAsset> BulkCaptionAsset(BulkCaptionAssetRequest request)
         {
-            var restRequest = new RestRequest($"v1/stages/{request.StageId}/videos/{request.VideoId}/captions/bulk", Method.POST)
+            var restRequest = new RestRequest($"videos/{request.VideoId}/captions/bulk", Method.POST)
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("version", request.VideoVersion.ToString())

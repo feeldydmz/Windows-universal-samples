@@ -542,8 +542,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
                 foreach (var stageItem in StageItems)
                 {
                     var projects = await _cloudMediaService.GetProjectsAsync(
-                        new GetProjectsParameter(_signInViewModel.GetAuthorizationAsync().Result, stageItem.Id,
-                            stageItem.Name),
+                        new GetProjectsParameter(_signInViewModel.GetAuthorizationAsync().Result, stageItem.Endpoint),
                         CancellationToken.None);
 
                     if (projects == null || projects.TotalCount == 0)

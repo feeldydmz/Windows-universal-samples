@@ -18,12 +18,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel.ItemViewModel
             Name = stage.Name;
             SymbolTitle = string.IsNullOrEmpty(Name) ? "E" : Name.Substring(0, 1);
             ProjectItems = stage.Projects?.Select(project => new ProjectItemViewModel(stage.Id, project)).ToList();
+            Endpoint = stage.Endpoint;
         }
 
         public Stage Source { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string SymbolTitle { get; set; }
+        public string Endpoint { get; set; }
 
         public bool IsSelected
         {
