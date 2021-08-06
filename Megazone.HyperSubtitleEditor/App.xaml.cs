@@ -19,9 +19,7 @@ namespace Megazone.HyperSubtitleEditor
     /// </summary>
     public partial class App : Application
     {
-        private readonly UnhandledExceptionDelegator _unhandledExceptionDelegator;
-
-        public App()
+        private readonly UnhandledExceptionDelegator _unhandledExceptionDelegator; public App()
         {
 
             

@@ -21,13 +21,16 @@ namespace Megazone.Cloud.Media.Service
         // ReSharper disable once InconsistentNaming
 #if Dev
        private const string SPACE_ENDPOINT = "https://api.cloudplex.dev.megazone.io"; // develop version
-       public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "http://mz-cm-console-dev.s3-website.ap-northeast-2.amazonaws.com"; // develop version
+       public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.dev.megazone.io"; // develop version
 #elif STAGING
         private const string SPACE_ENDPOINT = "https://api.cloudplex.stg.megazone.io"; // stage version
         public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.stg.megazone.io";
 #elif DEBUG
-        private const string SPACE_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version  https://api.cloudplex.dev.megazone.io
-        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.megazone.io";
+        private const string SPACE_ENDPOINT = "https://api.cloudplex.stg.megazone.io"; // stage version
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.stg.megazone.io";
+#elif QA
+        private const string SPACE_ENDPOINT = "https://api.cloudplex.qa.megazone.io"; // stage version
+        public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.qa.megazone.io";
 #else
         private const string SPACE_ENDPOINT = "https://api.cloudplex.megazone.io"; // production version
         public const string CLOUD_PLEX_WEB_HOST_ENDPOINT = "https://console.cloudplex.megazone.io";
@@ -206,7 +209,11 @@ namespace Megazone.Cloud.Media.Service
                 var response = _cloudMediaRepository.GetCaptionAsset(new AssetRequest(Endpoint,
                     parameter.Authorization.AccessToken, parameter.StageId, parameter.ProjectId, parameter.AssetId));
 
-                return !response.MediaType?.ToUpper().Equals("TEXT") ?? false ? null : response;
+                string[] arr = { "CAPTION", "TEXT"};
+                var temp = arr.Contains(response.MediaType?.ToUpper()) ? response : null;
+                Debug.WriteLine(" test : ", temp);
+                return temp;
+                //return !response.MediaType?.ToUpper().Equals("CAPTION") ?? false ? null : response;
             }, cancellationToken);
         }
 
