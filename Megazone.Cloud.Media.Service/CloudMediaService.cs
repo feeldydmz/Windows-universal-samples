@@ -402,7 +402,7 @@ namespace Megazone.Cloud.Media.Service
                 var accessToken = parameter.Authorization.AccessToken;
                 var response = _cloudMediaRepository.GetUploadUrl(
                     new GetUploadUrlRequest(Endpoint, accessToken, parameter.StageId,
-                        parameter.ProjectId, parameter.AssetId, parameter.FileName, parameter.IsAttachId));
+                        parameter.ProjectId, parameter.AssetId, parameter.ElementId, parameter.FileName, parameter.ShouldOverwrite));
                 return response;
             }, cancellationToken);
         }

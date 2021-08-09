@@ -501,7 +501,7 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
             var uploadData = GetTextBy(caption);
             var fileName = GetFileName(caption);
 
-            var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, true);
+            var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, false);
 
             return assetUploadUrl;
         }
@@ -558,9 +558,9 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
 
                 var uploadData = GetTextBy(caption);
 
-                var fileName = GetFileName(caption);
+                //var fileName = GetFileName(caption);
 
-                var assetUploadUrl = await UploadCaptionFileAsync(assetId, fileName, uploadData, false);
+                var assetUploadUrl = await UploadCaptionFileAsync(assetId, caption.Label, uploadData, true, caption.Id);
 
                 if (assetUploadUrl != null)
                     return await _cloudMediaService.UpdateCaptionElementAsync(
@@ -577,14 +577,14 @@ namespace Megazone.HyperSubtitleEditor.Presentation.ViewModel
         }
 
         private async Task<AssetUploadUrl> UploadCaptionFileAsync(string assetId, string fileName, string uploadData,
-            bool isAttacheId)
+            bool shouldOverwrite = false, string elementId = null)
         {
             var authorization = _signInViewModel.GetAuthorizationAsync().Result;
             var stageId = _signInViewModel.SelectedStage.Id;
             var projectId = _signInViewModel.SelectedProject.ProjectId;
 
             var uploadPath = await _cloudMediaService.GetUploadUrlAsync(
-                new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName, isAttacheId),
+                new GetUploadUrlParameter(authorization, stageId, projectId, assetId, fileName, shouldOverwrite, elementId),
                 CancellationToken.None);
 
             ////업로드 로직

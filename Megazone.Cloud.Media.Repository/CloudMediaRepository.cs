@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Megazone.Cloud.Media.Domain;
 using Megazone.Cloud.Media.Domain.Assets;
+using Megazone.Core.Extension;
 using Megazone.Core.IoC;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -134,7 +135,13 @@ namespace Megazone.Cloud.Media.Repository
                 .AddHeader("Authorization", $"Bearer {request.AccessToken}")
                 .AddHeader("projectId", request.ProjectId)
                 .AddQueryParameter("fileName", request.FileName)
-                .AddQueryParameter("isAttachId", request.IsAttachId.ToString());
+                .AddQueryParameter("shouldOverwrite", request.ShouldOverwrite.ToString().ToLower());
+
+            if (!request.ElementId.IsNullOrEmpty())
+            {
+                Debug.WriteLine($"----- in element");
+                restRequest.AddQueryParameter("elementId", request.ElementId);
+            }
 
             var response = RestSharpExtension.CreateRestClient(request.Endpoint).Execute(restRequest);
 

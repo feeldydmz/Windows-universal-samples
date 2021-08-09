@@ -10,15 +10,17 @@ namespace Megazone.Cloud.Media.ServiceInterface.Parameter
     public class GetUploadUrlParameter : RequiredParameter
     {
         public GetUploadUrlParameter(Authorization authorization, string stageId, string projectId,
-            string assetId, string fileName, bool isAttachId) : base(authorization, stageId, projectId)
+            string assetId, string fileName, bool shouldOverwrite, string elementId) : base(authorization, stageId, projectId)
         {
             AssetId = assetId;
             FileName = fileName;
-            IsAttachId = isAttachId;
+            ShouldOverwrite = shouldOverwrite;
+            ElementId = elementId;
         }
 
         public string AssetId { get; }
         public string FileName { get; }
-        public bool IsAttachId { get; }
+        public bool ShouldOverwrite { get; }
+        public string ElementId { get;  }
     }
 }

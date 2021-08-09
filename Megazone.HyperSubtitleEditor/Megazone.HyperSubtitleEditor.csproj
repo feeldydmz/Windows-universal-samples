@@ -311,7 +311,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <Version>0.9.2.2002</Version>
+    <Version>0.9.2.4004</Version>
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <ItemGroup>
